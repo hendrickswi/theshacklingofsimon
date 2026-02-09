@@ -2,8 +2,8 @@
 
 public interface IDamageable : IEntity
 {
-    float Health { get; }
-    float MaxHealth { get; }
+    float Health { get; set; }
+    float MaxHealth { get; set; }
 
     void TakeDamage(float amt);
     void Heal(float amt);
