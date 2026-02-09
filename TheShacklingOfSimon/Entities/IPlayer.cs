@@ -32,9 +32,16 @@ public interface IPlayer : IDamageable
     // IPlayer-implementing classes will act as the context for the State pattern
     IPlayerState CurrentState { get; }
     
-    void EquipItem();
-    void EquipWeapon();
+    // pos is the index of the IItem in the player's Inventory
+    void EquipItem(int pos);
+    
+    // pos is the index of the IWeapon in the player's Inventory
+    void EquipWeapon(int pos);
+    
+    // direction is the direction to attack in
     void Attack(Vector2 direction);
+    
+    // direction is the direction to move to.
     void Move(Vector2 direction);
 
     void ChangeState(IPlayerState newState);

@@ -3,8 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace TheShacklingOfSimon.Entities;
 
-// Listing IEntity only for readability
-public abstract class DamageableEntity : IEntity, IDamageable
+public abstract class DamageableEntity : IDamageable
 {
     // Properties from IEntity
     public Vector2 Position { get; set; }
