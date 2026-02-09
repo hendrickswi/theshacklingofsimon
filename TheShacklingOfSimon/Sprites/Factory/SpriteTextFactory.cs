@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Sprites.Factory;
 
@@ -9,8 +10,9 @@ public class SpriteTextFactory : ISpriteFactory
         // TODO
     }
 
-    public void CreateSprite()
+    public ISprite CreateSprite()
     {
+        return null;
         // TODO
     }
 }
