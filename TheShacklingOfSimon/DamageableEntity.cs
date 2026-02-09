@@ -6,13 +6,14 @@ namespace TheShacklingOfSimon.Controllers;
 // Listing IEntity only for readability
 public abstract class DamageableEntity : IEntity, IDamageable
 {
-    // From IEntity
+    // Properties from IEntity
     public Vector2 Position { get; set; }
     
-    // From IDamageable
+    // Properties from IDamageable
     public float Health { get; set; }
     public float MaxHealth { get; set; }
 
+    // Methods from IDamageable
     public void TakeDamage(float amt)
     {
         Health -= amt;
@@ -36,4 +37,6 @@ public abstract class DamageableEntity : IEntity, IDamageable
 
     // Differing sprites per concrete class
     public abstract void Die();
+    
+    // Methods from IEntity will go here
 }
