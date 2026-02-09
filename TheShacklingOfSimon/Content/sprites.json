@@ -1,0 +1,18 @@
+{
+  "sprites": [
+    {
+      "name": "PlayerIdle",
+      "frames": [
+        {},
+        {}
+      ]
+    },
+    {
+      "name": "PlayerWalkDown",
+      "frames": [
+        {},
+        {}
+      ]
+    }
+  ]
+}
