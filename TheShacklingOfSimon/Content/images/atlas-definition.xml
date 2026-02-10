@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>images/characters</Texture>
+    <Regions>
+        <Region name="marioStand" x="276" y="36" width="15" height="24" />
+        <Region name="marioRun-1" x="291" y="36" width="15" height="24" />
+        <Region name="marioRun-2" x="305" y="36" width="15" height="24" />
+        <Region name="marioRun-3" x="321" y="36" width="15" height="24" />
+        <Region name="marioJump" x="355" y="36" width="16" height="24" />
+        <Region name="marioTwerk-1" x="373" y="36" width="13" height="24" />
+        <Region name="marioTwerk-2" x="389" y="36" width="13" height="24" />
+    </Regions>
+    <Animations>
+        <Animation name="mario-idle" delay="1000">
+            <Frame region="marioStand" />
+        </Animation>
+        <Animation name="mario-run" delay="100">
+            <Frame region="marioRun-1" />
+            <Frame region="marioRun-2" />
+            <Frame region="marioRun-3" />
+            <Frame region="marioRun-2" />
+        </Animation>
+        <Animation name="mario-jump" delay="1000">
+            <Frame region="marioJump" />
+        </Animation>
+        <Animation name="mario-twerk" delay="200">
+            <Frame region="marioTwerk-1" />
+            <Frame region="marioTwerk-2" />
+        </Animation>
+    </Animations>
+</TextureAtlas>

@@ -13,7 +13,25 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin player.png
+#begin Credits.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Credits.spritefont
+
+#begin images/atlas-definition.xml
+/copy:images/atlas-definition.xml
+
+#begin images/characters.gif
 /importer:TextureImporter
 /processor:TextureProcessor
-/build:misc.png
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/characters.gif
+
