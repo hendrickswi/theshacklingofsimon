@@ -16,5 +16,6 @@ internal interface IEntity
     void Draw(SpriteBatch spriteBatch);
     void SetSprite();
     void Discontinue();
-    // void Interact();
+    // void Interact(IEntity other);
+    // void OnCollision();
 }
