@@ -7,5 +7,5 @@ namespace TheShacklingOfSimon.Sprites.Factory;
 public interface ISpriteFactory
 {
     void LoadAllTextures(ContentManager content);
-    ISprite CreateSprite();
+    ISprite CreateSprite(string spriteName);
 }

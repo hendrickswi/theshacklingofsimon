@@ -5,6 +5,6 @@ namespace TheShacklingOfSimon.Sprites.Products;
 
 public interface ISprite
 {
-    public void Draw(SpriteBatch spriteBatch);
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos);
     public void Update(GameTime delta);
 }

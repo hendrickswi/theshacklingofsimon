@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TheShacklingOfSimon.Sprites.Products;
 
-public class Sprite2 : ISprite
+public class AnimatedSprite : ISprite
 {
     private readonly Texture2D _texture;
     private readonly Vector2 _pos;
@@ -15,19 +15,18 @@ public class Sprite2 : ISprite
     private double _timer;
     private readonly double _speed;
     
-    public Sprite2(Texture2D texture, Vector2 pos, Rectangle[] sourceRectangle)
+    public AnimatedSprite(Texture2D texture, Rectangle[] sourceRectangle)
     {
         this._texture = texture;
-        this._pos = pos;
         this._sourceRectangle = sourceRectangle;
         this._currentFrame = 0;
         this._timer = 0;
         this._speed = 0.25;
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos)
     {
-        spriteBatch.Draw(_texture, _pos, _sourceRectangle[_currentFrame], Color.White);
+        spriteBatch.Draw(_texture, pos, _sourceRectangle[_currentFrame], Color.White);
     }
 
     public void Update(GameTime delta)

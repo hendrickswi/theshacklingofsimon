@@ -1,17 +1,84 @@
 {
   "sprites": [
     {
-      "name": "PlayerIdle",
+      "name": "PlayerHeadIdleDown",
       "frames": [
-        {},
-        {}
+        { "x": 4, "y": 21, "w": 38, "h": 31 }
       ]
     },
     {
-      "name": "PlayerWalkDown",
+      "name": "PlayerHeadShootingDown",
       "frames": [
-        {},
-        {}
+        { "x": 4, "y": 21, "w": 38, "h": 31 },
+        { "x": 47, "y": 23, "w": 34, "h": 28 }
+      ]
+    },
+    {
+      "name": "PlayerHeadIdleRight",
+      "frames": [
+        { "x": 90, "y": 21, "w": 38, "h": 31 }
+      ]
+    },
+    {
+      "name": "PlayerHeadShootingRight",
+      "frames": [
+        { "x": 90, "y": 21, "w": 38, "h": 31 },
+        { "x": 133, "y": 23, "w": 34, "h": 28 }
+      ]
+    },
+    {
+      "name": "PlayerHeadIdleUp",
+      "frames": [
+        { "x": 176, "y": 21, "w": 38, "h": 31 }
+      ]
+    },
+    {
+      "name": "PlayerHeadShootingUp",
+      "frames": [
+        { "x": 176, "y": 21, "w": 38, "h": 31 },
+        { "x": 219, "y": 23, "w": 34, "h": 28 }
+      ]
+    },
+    {
+      "name": "PlayerHeadIdleLeft",
+      "frames": [
+        { "x": 262, "y": 21, "w": 38, "h": 31 }
+      ]
+    },
+    {
+      "name": "PlayerHeadShootingLeft",
+      "frames": [
+        { "x": 262, "y": 21, "w": 38, "h": 31 },
+        { "x": 305, "y": 23, "w": 34, "h": 28 }
+      ]
+    },
+    {
+      "name": "PlayerWalkVertical",
+      "frames": [
+        { "x": 9, "y": 73, "w": 26, "h": 23 },
+        { "x": 51, "y": 73, "w": 26, "h": 23 },
+        { "x": 93, "y": 73, "w": 26, "h": 23 },
+        { "x": 135, "y": 73, "w": 26, "h": 23 },
+        { "x": 177, "y": 73, "w": 26, "h": 23 },
+        { "x": 219, "y": 73, "w": 26, "h": 23 }
+      ]
+    },
+    {
+      "name": "PlayerWalkHorizontal",
+      "frames": [
+        { "x": 11, "y": 111, "w": 22, "h": 23 },
+        { "x": 53, "y": 111, "w": 22, "h": 23 },
+        { "x": 95, "y": 111, "w": 22, "h": 23 },
+        { "x": 137, "y": 111, "w": 22, "h": 23 },
+        { "x": 179, "y": 111, "w": 22, "h": 23 },
+        { "x": 221, "y": 111, "w": 22, "h": 23 }
+      ]
+    },
+    {
+      "name": "PlayerHurt",
+      "frames": [
+        { "x": 6, "y": 236, "w": 36, "h": 33 },
+        { "x": 48, "y": 236, "w": 36, "h": 33 }
       ]
     }
   ]

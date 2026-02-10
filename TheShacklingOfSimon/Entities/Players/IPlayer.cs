@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Weapons;
 
-namespace TheShacklingOfSimon.Entities;
+namespace TheShacklingOfSimon.Entities.Players;
 
 public interface IPlayer : IDamageable
 {
@@ -28,10 +28,17 @@ public interface IPlayer : IDamageable
     IWeapon CurrentWeapon { get; }
     IItem CurrentItem { get; }
     
-    // Data packet passed to Weapons as damage modifiers
-    PlayerStats CurrentStats { get; }
+    
     // IPlayer-implementing classes will act as the context for the State pattern
     IPlayerState CurrentState { get; }
+    
+    void AddWeaponToInventory(IWeapon weapon);
+
+    IWeapon RemoveWeaponFromInventory(int pos);
+
+    void AddItemToInventory(IItem item);
+
+    IItem RemoveItemFromInventory(int pos);
     
     // pos is the index of the IItem in the player's Inventory
     void EquipItem(int pos);
@@ -39,10 +46,8 @@ public interface IPlayer : IDamageable
     // pos is the index of the IWeapon in the player's Inventory
     void EquipWeapon(int pos);
     
-    // direction is the direction to attack in
     void Attack(Vector2 direction);
     
-    // direction is the direction to move to.
     void Move(Vector2 direction);
 
     void ChangeState(IPlayerState newState);

@@ -3,7 +3,5 @@
 public struct ProjectileStats
 {
     public float Damage;
-    public float DamageMultiplier;
     public float Speed;
-    public float SpeedMultiplier;
 }

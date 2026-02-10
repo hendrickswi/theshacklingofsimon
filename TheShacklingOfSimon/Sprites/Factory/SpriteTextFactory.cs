@@ -10,7 +10,7 @@ public class SpriteTextFactory : ISpriteFactory
         // TODO
     }
 
-    public ISprite CreateSprite()
+    public ISprite CreateSprite(string spriteName)
     {
         return null;
         // TODO

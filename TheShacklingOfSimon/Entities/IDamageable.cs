@@ -12,10 +12,10 @@ public interface IDamageable : IEntity
      * from IEntity
      */
     
-    float Health { get; set; }
-    float MaxHealth { get; set; }
+    int Health { get; }
+    int MaxHealth { get; }
 
-    void TakeDamage(float amt);
-    void Heal(float amt);
+    void TakeDamage(int amt);
+    void Heal(int amt);
     void Die();
 }
