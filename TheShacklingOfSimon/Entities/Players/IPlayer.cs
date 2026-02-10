@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Weapons;
 
 namespace TheShacklingOfSimon.Entities;
 

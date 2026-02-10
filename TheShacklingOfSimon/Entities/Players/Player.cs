@@ -1,6 +1,6 @@
 ﻿namespace TheShacklingOfSimon.Entities;
 
-public class DamageableEntity
+public class Player : DamageableEntity, IPlayer
 {
     
 }
