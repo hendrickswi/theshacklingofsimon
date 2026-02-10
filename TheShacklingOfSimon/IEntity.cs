@@ -8,7 +8,6 @@ internal interface IEntity
     // Common properties of *every* entity
     public Vector2 Position { get; set; }
     public Vector2 Velocity { get; set; }
-    public float Health { get; set; }
     public bool IsActive { get; set; } = true;
     public Vector2 Hitbox { get; set; }
 
