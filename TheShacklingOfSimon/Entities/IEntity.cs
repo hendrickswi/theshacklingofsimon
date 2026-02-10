@@ -8,11 +8,11 @@ namespace TheShacklingOfSimon.Entities;
 public interface IEntity
 {
     // Common properties of *every* entity
-    public Vector2 Position { get; set; }
-    public Vector2 Velocity { get; set; }
-    public bool IsActive { get; set; }
-    public Rectangle Hitbox { get; set; }
-    public ISprite Sprite { get; set; }
+    Vector2 Position { get; }
+    Vector2 Velocity { get; }
+    bool IsActive { get; }
+    Rectangle Hitbox { get; }
+    ISprite Sprite { get; }
     
     void Update(GameTime delta);
     void Draw(SpriteBatch spriteBatch);

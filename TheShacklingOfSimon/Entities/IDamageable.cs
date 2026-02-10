@@ -8,7 +8,7 @@ public interface IDamageable : IEntity
      * Vector2 Velocity { get; set; }
      * bool IsActive { get; set; }
      * Rectangle Hitbox { get; set; }
-     * ISprite sprite { get; set; }
+     * ISprite Sprite { get; set; }
      * 
      * void Update(GameTime delta),
      * void Draw(SpriteBatch spriteBatch),
@@ -25,5 +25,4 @@ public interface IDamageable : IEntity
 
     void TakeDamage(int amt);
     void Heal(int amt);
-    void Die();
 }

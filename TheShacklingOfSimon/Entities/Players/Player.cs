@@ -6,16 +6,18 @@ namespace TheShacklingOfSimon.Entities.Players;
 
 public class Player : DamageableEntity, IPlayer
 {
-    // Inherits Health and Max 
-    
     public IWeapon CurrentWeapon { get; private set; }
     public IItem CurrentItem { get; private set; }
-    public Inventory Inventory { get; }
+    public Inventory Inventory { get; private set; }
     
-    public IPlayerState CurrentState { get; }
+    public IPlayerState CurrentState { get; private set; }
+    public Vector2 FacingDirection { get; private set; }
 
-    public Player()
+    public Player(Vector2 startPosition)
     {
+        // IEntity properties
+        Position = startPosition;
+        
         this.Health = 3;
         this.MaxHealth = 3;
         this.Inventory = new Inventory();
