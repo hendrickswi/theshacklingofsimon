@@ -105,7 +105,7 @@ public class Player : DamageableEntity, IPlayer
 
     public void AttackSecondary(Vector2 direction)
     {
-        CurrentHeadState.HandleAttack(this, direction);
+        CurrentHeadState.HandleAttackSecondary(this, direction);
     }
 
     public void Move(Vector2 direction)

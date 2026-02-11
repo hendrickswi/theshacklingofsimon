@@ -14,6 +14,6 @@ public class AttackSecondary : ICommand
 
     public void Execute()
     {
-        _player.Attack(new Vector2(0, 0));
+        _player.AttackSecondary(new Vector2(0, 0));
     }
 }
