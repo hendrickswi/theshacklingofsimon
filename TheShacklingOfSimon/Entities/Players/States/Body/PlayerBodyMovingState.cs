@@ -16,11 +16,6 @@ public class PlayerBodyMovingState : IPlayerBodyState
         _player = player;
     }
     
-    public void Update(GameTime delta)
-    {
-        _player.Sprite.Update(delta);
-    }
-    
     public void Enter()
     {
         UpdateSprite();
@@ -32,6 +27,11 @@ public class PlayerBodyMovingState : IPlayerBodyState
          * No-op for now
          * Could use this later for stopping any sounds related to moving (e.g., walking)
          */
+    }
+    
+    public void Update(GameTime delta)
+    {
+        _player.Sprite.Update(delta);
     }
 
     public void HandleMovement(Vector2 direction)
