@@ -15,9 +15,14 @@ public class TextSprite : ISprite
         this._text = text;
     }
     
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, SpriteEffects effects)
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
     {
         spriteBatch.DrawString(_font, _text, pos, color);
+    }
+    
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+    {
+        spriteBatch.DrawString(_font, _text, pos, color, rotation, origin, scale, effects, layerDepth);
     }
 
     public void Update(GameTime delta)

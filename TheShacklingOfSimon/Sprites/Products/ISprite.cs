@@ -5,6 +5,11 @@ namespace TheShacklingOfSimon.Sprites.Products;
 
 public interface ISprite
 {
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, SpriteEffects effects);
+    // Basic Draw()
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color);
+    // Full control Draw()
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos, 
+        Color color, float rotation, Vector2 origin, 
+        float scale, SpriteEffects effects, float layerDepth);
     public void Update(GameTime delta);
 }
