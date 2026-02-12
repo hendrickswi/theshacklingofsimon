@@ -35,7 +35,7 @@ public class PlayerBodyIdleState : IPlayerBodyState
     {
         if (direction != Vector2.Zero)
         {
-            _player.ChangeState(new PlayerBodyMovingState(_player));
+            _player.ChangeBodyState(new PlayerBodyMovingState(_player));
         }
     }
 }
