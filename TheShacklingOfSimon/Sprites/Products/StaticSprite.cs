@@ -15,9 +15,9 @@ public class StaticSprite : ISprite
         this._sourceRectangle = sourceRectangle;
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos)
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, SpriteEffects effects)
     {
-        spriteBatch.Draw(_texture, pos, _sourceRectangle, Color.White);
+        spriteBatch.Draw(_texture, pos, _sourceRectangle, color);
     }
 
     public void Update(GameTime delta)

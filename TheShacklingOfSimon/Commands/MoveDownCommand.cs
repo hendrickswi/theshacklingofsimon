@@ -5,7 +5,7 @@ namespace TheShacklingOfSimon.Commands;
 
 public class MoveDownCommand : ICommand
 {
-    private readonly Player _player;
+    private readonly IPlayer _player;
 
     public MoveDownCommand(Player player)
     {
@@ -14,6 +14,6 @@ public class MoveDownCommand : ICommand
 
     public void Execute()
     {
-        _player.Move(new Vector2(0, 1));
+        _player.RegisterMoveInput(new Vector2(0, 1));
     }
 }

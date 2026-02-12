@@ -15,9 +15,9 @@ public class TextSprite : ISprite
         this._text = text;
     }
     
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos)
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, SpriteEffects effects)
     {
-        spriteBatch.DrawString(_font, _text, pos, Color.Black);
+        spriteBatch.DrawString(_font, _text, pos, color);
     }
 
     public void Update(GameTime delta)

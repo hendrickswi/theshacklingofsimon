@@ -53,6 +53,12 @@
       ]
     },
     {
+      "name": "PlayerBodyIdle",
+      "frames": [
+        { "x": 9, "y": 73, "w": 26, "h": 23}
+      ]
+    },
+    {
       "name": "PlayerWalkVertical",
       "frames": [
         { "x": 9, "y": 73, "w": 26, "h": 23 },

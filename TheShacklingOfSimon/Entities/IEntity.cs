@@ -9,10 +9,10 @@ public interface IEntity
 {
     // Common properties of *every* entity
     Vector2 Position { get; }
-    Vector2 Velocity { get; }
+    Vector2 Velocity { get; set; }
     bool IsActive { get; }
     Rectangle Hitbox { get; }
-    ISprite Sprite { get; }
+    ISprite Sprite { get; set; }
     
     void Update(GameTime delta);
     void Draw(SpriteBatch spriteBatch);

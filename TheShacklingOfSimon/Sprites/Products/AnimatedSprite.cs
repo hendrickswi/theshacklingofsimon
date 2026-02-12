@@ -24,9 +24,9 @@ public class AnimatedSprite : ISprite
         this._speed = 0.25;
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos)
+    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, SpriteEffects effects)
     {
-        spriteBatch.Draw(_texture, pos, _sourceRectangle[_currentFrame], Color.White);
+        spriteBatch.Draw(_texture, pos, _sourceRectangle[_currentFrame], color);
     }
 
     public void Update(GameTime delta)

@@ -26,9 +26,9 @@ public class Player : DamageableEntity, IPlayer
 
     public float MoveSpeedStat { get; private set; }
     public float DamageMultiplierStat { get; private set; }
-    public Vector2 FacingDirection { get; private set; }
     
     private readonly Vector2 _headOffset = new Vector2(0, -15);
+    private Vector2 _movementInput;
 
     public Player(Vector2 startPosition)
     {
@@ -58,7 +58,7 @@ public class Player : DamageableEntity, IPlayer
         
         this.CurrentHeadState = new PlayerHeadIdleState();
         this.CurrentBodyState = new PlayerBodyIdleState();
-        this.FacingDirection = new Vector2(0, -1);
+        this._movementInput = Vector2.Zero;
     }
 
     public void AddWeaponToInventory(IWeapon weapon)
@@ -94,7 +94,6 @@ public class Player : DamageableEntity, IPlayer
         if (pos < Inventory.Items.Count)
         {
             CurrentItem = Inventory.Items[pos];
-            DamageMultiplierStat = CurrentItem.
         }
     }
 
@@ -107,21 +106,33 @@ public class Player : DamageableEntity, IPlayer
     {
         CurrentHeadState.HandleAttackSecondary(this, direction);
     }
-
-    public void Move(Vector2 direction)
+    
+    public void RegisterMoveInput(Vector2 direction)
     {
-        CurrentBodyState.HandleMovement(this, direction);
+        /*
+         * Allow diagonal movement
+         * 
+         * Also catches edge cases where the player
+         * presses three movement keys
+         */
+        _movementInput += direction;
     }
 
     public override void Update(GameTime delta)
     {
-        CurrentHeadState.Update(this, delta);
-        CurrentBodyState.Update(this, delta);
+        if (_movementInput.LengthSquared() > 0)
+        {
+            _movementInput.Normalize();
+        }
+        CurrentBodyState.HandleMovement(this, _movementInput);
+        _movementInput = Vector2.Zero;
         
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
-        
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);
+        
+        CurrentHeadState.Update(this, delta);
+        CurrentBodyState.Update(this, delta);
     }
 
     public override void Draw(SpriteBatch spriteBatch)

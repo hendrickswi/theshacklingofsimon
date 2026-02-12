@@ -9,10 +9,10 @@ public abstract class DamageableEntity : IDamageable
 {
     // Properties from IEntity
     public Vector2 Position { get; protected set; }
-    public Vector2 Velocity { get; protected set; }
+    public Vector2 Velocity { get; set; }
     public bool IsActive { get; protected set; }
     public Rectangle Hitbox { get; protected set; }
-    public ISprite Sprite { get; protected set; }
+    public ISprite Sprite { get; set; }
     
     // Properties from IDamageable
     public int Health { get; protected set; }

@@ -56,7 +56,7 @@ public interface IPlayer : IDamageable
     
     void Attack(Vector2 direction);
     void AttackSecondary(Vector2 direction);
-    void Move(Vector2 direction);
+    void RegisterMoveInput(Vector2 direction);
     
     void ChangeHeadState(IPlayerHeadState newHeadState);
     void ChangeBodyState(IPlayerBodyState newBodyState);
