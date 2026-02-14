@@ -15,7 +15,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
         _player = player;
         
         // Default to looking down
-        _lookingDirection = (lastDirection.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : lastDirection;
+        _lookingDirection = (lastDirection.Length() < 0.0001f) ? new Vector2(0, 1) : lastDirection;
     }
 
     public void Enter()

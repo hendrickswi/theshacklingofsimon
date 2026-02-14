@@ -19,7 +19,7 @@ public class PrimaryAttackDynamicMouseCommand : ICommand
         Vector2 mousePos = new Vector2(mouseState.X, mouseState.Y);
         Vector2 direction = mousePos - _player.Position;
 
-        if (direction.LengthSquared() < 0.0001f)
+        if (direction.Length() < 0.0001f)
         {
             direction.Normalize();
         }
