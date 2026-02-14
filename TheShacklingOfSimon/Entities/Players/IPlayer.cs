@@ -57,8 +57,6 @@ public interface IPlayer : IDamageable
     void EquipPrimaryWeapon(int pos);
     void EquipSecondaryWeapon(int pos);
     
-    void Attack(Vector2 direction);
-    void AttackSecondary(Vector2 direction);
     void RegisterMoveInput(Vector2 direction);
     void RegisterPrimaryAttackInput(Vector2 direction);
     void RegisterSecondaryAttackInput(Vector2 direction);

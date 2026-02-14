@@ -12,21 +12,24 @@ namespace TheShacklingOfSimon.Sprites.Factory;
 public class SpriteFactory
 {
     /*
-     * Singleton pattern to prevent all Entity classes from instantiating
+     * Singleton "antipattern" to prevent client classes from instantiating
      * an instance of this.
      * Without this pattern it will be a huge performance penalty.
+     *      i.e., every Entity instantiates an instance.
      */
     private static SpriteFactory _instance = new SpriteFactory();
     public static SpriteFactory Instance => _instance;
 
     private Dictionary<string, Texture2D> _textureStorage;
     private Dictionary<string, SpriteFont> _fontStorage;
-    private Dictionary<string, Rectangle[]> _map;
+    private Dictionary<string, Rectangle[]> _rectangleData;
 
     private SpriteFactory()
     {
-        _map = new Dictionary<string, Rectangle[]>();
         _textureStorage = new Dictionary<string, Texture2D>();
+        _fontStorage = new Dictionary<string, SpriteFont>();
+        _rectangleData = new Dictionary<string, Rectangle[]>();
+        
     }
     
     /*
@@ -63,7 +66,7 @@ public class SpriteFactory
                     sprite.Frames[i].H
                 );
             }
-            _map.TryAdd(sprite.Name, frames);
+            _rectangleData.TryAdd(sprite.Name, frames);
         }
     }
 
@@ -80,7 +83,7 @@ public class SpriteFactory
     {
         ISprite sprite = null;
         bool invalidTexture = _textureStorage.TryGetValue(spriteName, out var texture);
-        bool invalidSourceRectangle = _map.TryGetValue(spriteName, out var frames);
+        bool invalidSourceRectangle = _rectangleData.TryGetValue(spriteName, out var frames);
 
         if (!invalidTexture || !invalidSourceRectangle)
         {
@@ -93,7 +96,7 @@ public class SpriteFactory
     {
         ISprite sprite = null;
         bool textureExists = _textureStorage.TryGetValue(spriteName, out var texture);
-        bool sourceRectangleExists = _map.TryGetValue(spriteName, out var frame);
+        bool sourceRectangleExists = _rectangleData.TryGetValue(spriteName, out var frame);
 
         if (textureExists && sourceRectangleExists)
         {

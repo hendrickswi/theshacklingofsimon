@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Players.States;
@@ -6,6 +7,7 @@ using TheShacklingOfSimon.Entities.Players.States.Body;
 using TheShacklingOfSimon.Entities.Players.States.Head;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.Weapons;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace TheShacklingOfSimon.Entities.Players;
 
@@ -42,6 +44,8 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     
     private readonly Vector2 _headOffset = new Vector2(0, -15);
     private Vector2 _movementInput;
+    private Vector2 _primaryAttackInput;
+    private Vector2 _secondaryAttackInput;
 
     public PlayerWithTwoSprites(Vector2 startPosition)
     {
@@ -73,7 +77,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         this.SecondaryAttackCooldown = 0.5f;
         
         this.CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
-        this.CurrentState = new PlayerBodyIdleState(this);
+        this.CurrentBodyState = new PlayerBodyIdleState(this);
         this._movementInput = Vector2.Zero;
     }
 
@@ -120,16 +124,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
             CurrentItem = Inventory.Items[pos];
         }
     }
-
-    public void Attack(Vector2 direction)
-    {
-        CurrentHeadState.HandleAttack(direction, PrimaryAttackCooldown);
-    }
-
-    public void AttackSecondary(Vector2 direction)
-    {
-        CurrentHeadState.HandleAttackSecondary(direction, SecondaryAttackCooldown);
-    }
     
     public void RegisterMoveInput(Vector2 direction)
     {
@@ -144,22 +138,36 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
     public void RegisterPrimaryAttackInput(Vector2 direction)
     {
-        // TODO
+        _primaryAttackInput += direction;
     }
 
     public void RegisterSecondaryAttackInput(Vector2 direction)
     {
-        // TODO
+        _secondaryAttackInput += direction;
     }
 
     public override void Update(GameTime delta)
     {
-        if (_movementInput.LengthSquared() > 0.0001f)
+        // Movement logic
+        if (_movementInput.Length() > 0.0001f)
         {
             _movementInput.Normalize();
+            CurrentBodyState.HandleMovement(_movementInput);
         }
-        CurrentBodyState.HandleMovement(_movementInput);
         _movementInput = Vector2.Zero;
+        
+        // Attack logic
+        if (_primaryAttackInput.Length() > 0.0001f)
+        {
+            CurrentHeadState.HandlePrimaryAttack(_primaryAttackInput, PrimaryAttackCooldown);
+        }
+        if (_secondaryAttackInput.Length() > 0.0001f)
+        {
+            CurrentHeadState.HandleSecondaryAttack(_secondaryAttackInput, SecondaryAttackCooldown);
+        }
+
+        _primaryAttackInput = Vector2.Zero;
+        _secondaryAttackInput = Vector2.Zero;
         
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
@@ -172,7 +180,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public override void Draw(SpriteBatch spriteBatch)
     {
         SpriteEffects flip = SpriteEffects.None;
-        if (Velocity.X < 0)
+        if (Velocity.X < -0.0001f)
         {
             flip = SpriteEffects.FlipHorizontally;
         }
@@ -204,17 +212,23 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     // More explicit interface implementation
     void IPlayer.ChangeState(IPlayerState newState)
     {
-        if (newState is IPlayerHeadState)
+        switch (newState)
         {
-            ChangeHeadState((IPlayerHeadState)newState);
-        }
-        else if (newState is IPlayerBodyState)
-        {
-            ChangeBodyState((IPlayerBodyState)newState);
-        }
-        else
-        {
-            throw new ArgumentException("newState must be of type IPlayerHeadState, IPlayerBodyState.");
+            case IPlayerHeadState:
+            {
+                ChangeHeadState((IPlayerHeadState)newState);
+                break;
+            }
+
+            case IPlayerBodyState:
+            {
+                ChangeBodyState((IPlayerBodyState)newState);
+                break;
+            }
+            default:
+            {
+                throw new ArgumentException("newState must be of type IPlayerHeadState, IPlayerBodyState.");
+            }
         }
     }
 }

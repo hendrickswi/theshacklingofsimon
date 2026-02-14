@@ -60,12 +60,12 @@ public class PlayerHeadAttackingState : IPlayerHeadState
         }
     }
 
-    public void HandleAttack(Vector2 direction, float stateDuration)
+    public void HandlePrimaryAttack(Vector2 direction, float stateDuration)
     {
         // No-op
     }
 
-    public void HandleAttackSecondary(Vector2 direction, float stateDuration)
+    public void HandleSecondaryAttack(Vector2 direction, float stateDuration)
     {
         // No-op
     }

@@ -15,7 +15,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
         _player = player;
         
         // Default to looking down
-        _lookingDirection = (lastDirection.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : lastDirection;
+        _lookingDirection = (lastDirection.Length() < 0.0001f) ? new Vector2(0, 1) : lastDirection;
     }
 
     public void Enter()
@@ -36,7 +36,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
         _player.Sprite.Update(delta);
     }
 
-    public void HandleAttack(Vector2 direction, float stateDuration)
+    public void HandlePrimaryAttack(Vector2 direction, float stateDuration)
     {
         Vector2 cardinal = GetCardinalDirection(direction);
         if (cardinal != Vector2.Zero)
@@ -45,7 +45,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
         }
     }
 
-    public void HandleAttackSecondary(Vector2 direction, float stateDuration)
+    public void HandleSecondaryAttack(Vector2 direction, float stateDuration)
     {
         Vector2 cardinal = GetCardinalDirection(direction);
         if (cardinal != Vector2.Zero)

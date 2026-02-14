@@ -12,6 +12,6 @@ public interface IPlayerHeadState : IPlayerState
      * from IPlayerState
      */
     
-    void HandleAttack(Vector2 direction, float stateDuration);
-    void HandleAttackSecondary(Vector2 direction, float stateDuration);
+    void HandlePrimaryAttack(Vector2 direction, float stateDuration);
+    void HandleSecondaryAttack(Vector2 direction, float stateDuration);
 }
