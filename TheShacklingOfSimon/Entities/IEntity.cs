@@ -17,5 +17,5 @@ public interface IEntity
     void Update(GameTime delta);
     void Draw(SpriteBatch spriteBatch);
     void Discontinue();
-    // void Interact(IEntity other);
+    void Interact(IEntity other);
 }
