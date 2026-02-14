@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Mouse;
 

@@ -1,4 +1,4 @@
-﻿namespace TheShacklingOfSimon.Input.Mouse;
+﻿namespace TheShacklingOfSimon.Input;
 
 public struct XYPoint
 {

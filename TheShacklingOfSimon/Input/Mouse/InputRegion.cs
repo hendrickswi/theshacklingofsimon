@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework.Input;
-
-namespace TheShacklingOfSimon.Input;
+﻿namespace TheShacklingOfSimon.Input.Mouse;
 
 public struct InputRegion
 {

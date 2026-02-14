@@ -1,5 +1,6 @@
 ﻿using System.Resources;
 using Microsoft.Xna.Framework.Input;
+using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Mouse;
 
 namespace TheShacklingOfSimon.Controllers.Mouse;

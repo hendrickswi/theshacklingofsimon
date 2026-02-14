@@ -1,4 +1,5 @@
-﻿using TheShacklingOfSimon.Input.Mouse;
+﻿using TheShacklingOfSimon.Input;
+using TheShacklingOfSimon.Input.Mouse;
 
 namespace TheShacklingOfSimon.Controllers.Mouse;
 
