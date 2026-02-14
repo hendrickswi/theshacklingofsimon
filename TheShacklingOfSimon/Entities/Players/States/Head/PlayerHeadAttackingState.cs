@@ -58,6 +58,10 @@ public class PlayerHeadAttackingState : IPlayerHeadState
         {
             _player.ChangeHeadState(new PlayerHeadIdleState(_player, _direction));
         }
+        else
+        {
+            _player.HeadSprite.Update(delta);
+        }
     }
 
     public void HandlePrimaryAttack(Vector2 direction, float stateDuration)

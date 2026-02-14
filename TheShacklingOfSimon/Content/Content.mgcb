@@ -13,25 +13,13 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Credits.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Credits.spritefont
-
-#begin images/atlas-definition.xml
-/copy:images/atlas-definition.xml
-
-#begin images/characters.gif
+#begin player.png
 /importer:TextureImporter
 /processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/characters.gif
+/build:player.png
+
+#begin File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:File.spritefont
 

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Players.States;
 using TheShacklingOfSimon.Entities.Players.States.Body;
 using TheShacklingOfSimon.Entities.Players.States.Head;
+using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -42,7 +43,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public float PrimaryAttackCooldown { get; set; }
     public float SecondaryAttackCooldown { get; set; }
     
-    private readonly Vector2 _headOffset = new Vector2(0, -15);
+    private readonly Vector2 _headOffset = new Vector2(-5, -15);
     private Vector2 _movementInput;
     private Vector2 _primaryAttackInput;
     private Vector2 _secondaryAttackInput;
@@ -55,7 +56,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         IsActive = true;
         // Arbitrarily sized hitbox of 20x20
         Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 20, 20);
-        // Not setting the initial Sprite in the constructor
+        
         
         // IDamageable properties
         this.Health = 3;
@@ -63,12 +64,12 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         
         // Player properties
         this.Inventory = new Inventory();
-        this.Inventory.AddWeapon(new BasicWeapon());
-        this.Inventory.AddWeapon(new BombWeapon());
-        this.Inventory.AddItem(new NoneItem());
-        this.CurrentPrimaryWeapon = Inventory.Weapons[0];
-        this.CurrentSecondaryWeapon = Inventory.Weapons[1];
-        this.CurrentItem = Inventory.Items[0];
+        // this.Inventory.AddWeapon(new BasicWeapon());
+        // this.Inventory.AddWeapon(new BombWeapon());
+        // this.Inventory.AddItem(new NoneItem());
+        // this.CurrentPrimaryWeapon = Inventory.Weapons[0];
+        // this.CurrentSecondaryWeapon = Inventory.Weapons[1];
+        // this.CurrentItem = Inventory.Items[0];
         
         // These can all be overriden with public set method
         this.DamageMultiplierStat = 1.0f;
@@ -78,6 +79,8 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         
         this.CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
         this.CurrentBodyState = new PlayerBodyIdleState(this);
+        this.CurrentHeadState.Enter();
+        this.CurrentBodyState.Enter();
         this._movementInput = Vector2.Zero;
     }
 
@@ -184,9 +187,18 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         {
             flip = SpriteEffects.FlipHorizontally;
         }
+
+        if (Sprite != null)
+        {
+            Sprite.Draw(spriteBatch, Position, Color.White, 0.0f,
+                        new Vector2(0, 0), 1.0f, flip, 0.0f);
+        }
+
+        if (HeadSprite != null)
+        {
+            HeadSprite.Draw(spriteBatch, Position + _headOffset, Color.White);
+        }
         
-        Sprite.Draw(spriteBatch, Position, Color.White, 0.0f,
-            new Vector2(0, 0), 1.0f, flip, 0.0f);
     }
 
     public void ChangeHeadState(IPlayerHeadState newHeadState)

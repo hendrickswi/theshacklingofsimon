@@ -5,6 +5,7 @@ using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Sprites.Factory.Data;
 using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Sprites.Factory;
@@ -37,21 +38,30 @@ public class SpriteFactory
      */
     public void LoadTexture(ContentManager content, string jsonPathName, string spriteName)
     {
+        Texture2D texture = content.Load<Texture2D>(spriteName);
         if (_textureStorage.ContainsKey(spriteName))
         {
             throw new ArgumentException("Key-value pair already exists for key " + spriteName + ".");
         }
+        _textureStorage.Add(spriteName, texture);
         
-        _textureStorage.Add(spriteName, content.Load<Texture2D>(spriteName));
         string jsonPath = Path.Combine(content.RootDirectory, jsonPathName);
         if (!File.Exists(jsonPath))
         {
             // Prevent "ghost" instances
             _textureStorage.Remove(spriteName);
-            throw new FileNotFoundException("Could not find PlayerDefaultSprite.json at " + jsonPath + ".");
+            throw new FileNotFoundException("Could not find jsonPathName at " + jsonPath + ".");
         }
+        
+        // Read JSON file contents
+        string jsonContent = File.ReadAllText(jsonPath);
 
-        SpriteDataRoot data = JsonSerializer.Deserialize<SpriteDataRoot>(jsonPath);
+        // Deserialize file contents
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+        SpriteDataRoot data = JsonSerializer.Deserialize<SpriteDataRoot>(jsonContent, options);
         
         // Turn all the sprite data from the JSON file into Rectangle data
         foreach ( SpriteData sprite in data.Sprites )
@@ -67,6 +77,7 @@ public class SpriteFactory
                 );
             }
             _rectangleData.TryAdd(sprite.Name, frames);
+            _textureStorage.TryAdd(sprite.Name, texture);
         }
     }
 
@@ -82,10 +93,10 @@ public class SpriteFactory
     public ISprite CreateAnimatedSprite(string spriteName)
     {
         ISprite sprite = null;
-        bool invalidTexture = _textureStorage.TryGetValue(spriteName, out var texture);
-        bool invalidSourceRectangle = _rectangleData.TryGetValue(spriteName, out var frames);
+        bool textureExists = _textureStorage.TryGetValue(spriteName, out var texture);
+        bool sourceRectanglesExist = _rectangleData.TryGetValue(spriteName, out var frames);
 
-        if (!invalidTexture || !invalidSourceRectangle)
+        if (textureExists && sourceRectanglesExist)
         {
             sprite = new AnimatedSprite(texture, frames);
         }

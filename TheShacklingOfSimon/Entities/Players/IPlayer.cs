@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players.States;
+using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Weapons;
 
 namespace TheShacklingOfSimon.Entities.Players;

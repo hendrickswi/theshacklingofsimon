@@ -10,6 +10,7 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Mouse;
+using TheShacklingOfSimon.Sprites.Factory;
 using KeyboardInput = TheShacklingOfSimon.Controllers.Keyboard.KeyboardInput;
 
 namespace TheShacklingOfSimon;
@@ -35,64 +36,32 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        Rectangle screenDimensions = GraphicsDevice.Viewport.Bounds;
-        
-        _entities = new List<IEntity>();
-        _player =
-            new PlayerWithTwoSprites(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
-        _entities.Add(_player);
         _keyboardController = new KeyboardController(new MonoGameKeyboardService());
         _mouseController = new MouseController(new MonoGameMouseService());
-        
-        /*
-         * Controls are initialized here using RegisterCommand()
-         * Use a KeyboardInput or MouseInput struct to register an input for mouse/keyboard
-         * Then use some ICommand concrete class to register *what* that input does.
-         *
-         * e.g., _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Escape), new ExitCommand(this));
-         * or _mouseController.RegisterCommand(
-         *      new MouseInput(new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height), BinaryInputState.Pressed, MouseButton.Right), 
-         *      new ExitCommand(this));
-         * to register the D0 key and right click to exit the game.
-         */
-        // Movement controls
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.W), new MoveUpCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.A), new MoveLeftCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.S), new MoveDownCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.D), new MoveUpCommand(_player));
-        
-        // Attacking controls
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.E), new SecondaryAttackNeutralCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.LeftShift), new SecondaryAttackNeutralCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.RightShift), new SecondaryAttackNeutralCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Up), new PrimaryAttackUpCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Left), new PrimaryAttackLeftCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Down), new PrimaryAttackDownCommand(_player));
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Right), new PrimaryAttackRightCommand(_player));
-        
-        _mouseController.RegisterCommand(
-            new MouseInput(
-                new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
-                BinaryInputState.Pressed, 
-                MouseButton.Right), 
-            new SecondaryAttackNeutralCommand(_player));
-        _mouseController.RegisterCommand(
-            new MouseInput(
-                new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
-                BinaryInputState.Pressed,
-                MouseButton.Left),
-            new PrimaryAttackDynamicMouseCommand(_player)
-            );
-        
-        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Escape), new ExitCommand(this));
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
+        Rectangle screenDimensions = GraphicsDevice.Viewport.Bounds;
+        
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        _texture = Content.Load<Texture2D>("misc");
+        
+        // Content pipeline first
+        _texture = Content.Load<Texture2D>("player");
         _font = Content.Load<SpriteFont>("File");
+        
+        // Load stuff into factory after
+        SpriteFactory.Instance.LoadTexture(Content, "PlayerDefaultSprite.json", "player");
+        
+        // Create entities now that the sprite factory has textures
+        _entities = new List<IEntity>();
+        _player =
+            new PlayerWithTwoSprites(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
+        _entities.Add(_player);
+        
+        // Register controls now that the player exists
+        RegisterControls(screenDimensions);
     }
 
     protected override void Update(GameTime delta)
@@ -128,5 +97,50 @@ public class Game1 : Game
         
         _spriteBatch.End();
         base.Draw(delta);
+    }
+
+    private void RegisterControls(Rectangle screenDimensions)
+    {
+        /*
+         * Controls are initialized here using RegisterCommand()
+         * Use a KeyboardInput or MouseInput struct to register an input for mouse/keyboard
+         * Then use some ICommand concrete class to register *what* that input does.
+         *
+         * e.g., _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Escape), new ExitCommand(this));
+         * or _mouseController.RegisterCommand(
+         *      new MouseInput(new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height), BinaryInputState.Pressed, MouseButton.Right), 
+         *      new ExitCommand(this));
+         * to register the D0 key and right click to exit the game.
+         */
+        // Movement controls
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.W), new MoveUpCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.A), new MoveLeftCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.S), new MoveDownCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.D), new MoveRightCommand(_player));
+        
+        // Attacking controls
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.E), new SecondaryAttackNeutralCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.LeftShift), new SecondaryAttackNeutralCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.RightShift), new SecondaryAttackNeutralCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Up), new PrimaryAttackUpCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Left), new PrimaryAttackLeftCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Down), new PrimaryAttackDownCommand(_player));
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Right), new PrimaryAttackRightCommand(_player));
+        
+        _mouseController.RegisterCommand(
+            new MouseInput(
+                new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
+                BinaryInputState.Pressed, 
+                MouseButton.Right), 
+            new SecondaryAttackNeutralCommand(_player));
+        _mouseController.RegisterCommand(
+            new MouseInput(
+                new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
+                BinaryInputState.Pressed,
+                MouseButton.Left),
+            new PrimaryAttackDynamicMouseCommand(_player)
+            );
+        
+        _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Escape), new ExitCommand(this));
     }
 }

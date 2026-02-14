@@ -33,7 +33,10 @@ public class PlayerHeadIdleState : IPlayerHeadState
 
     public void Update(GameTime delta)
     {
-        _player.Sprite.Update(delta);
+        if (_player.HeadSprite != null)
+        {
+            _player.HeadSprite.Update(delta);
+        }
     }
 
     public void HandlePrimaryAttack(Vector2 direction, float stateDuration)
@@ -74,7 +77,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
 
         if (newAnimationName != _currentAnimation)
         {
-            _player.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName);
+            _player.HeadSprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName);
             _currentAnimation = newAnimationName;
         }
     }
