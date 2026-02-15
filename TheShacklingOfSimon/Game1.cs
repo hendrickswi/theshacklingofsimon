@@ -50,33 +50,42 @@ public class Game1 : Game
         
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
-        // Content pipeline first
-        _texture = Content.Load<Texture2D>("player");
+        // Create Content pipeline 
         _font = Content.Load<SpriteFont>("File");
         
-        // Load stuff into factory after
+        // Load Player Sprites into factory 
         SpriteFactory.Instance.LoadTexture(Content, "PlayerDefaultSprite.json", "player");
-        
-        // Create entities now that the sprite factory has textures
-        _entities = new List<IEntity>();
+
+        //load Tile Sprites
+        SpriteFactory.Instance.LoadTexture(Content, "images/Rocks.json", "images/Rocks");
+        SpriteFactory.Instance.LoadTexture(Content, "images/Spikes.json", "images/Spikes");
+
+        tileManager = new TileManager(SpriteFactory.Instance);
+
+		// Create entities now that the sprite factory has textures
+		_entities = new List<IEntity>();
         _player =
             new PlayerWithTwoSprites(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
         _entities.Add(_player);
         
         // Register controls now that the player exists
         RegisterControls(screenDimensions);
-    }
+
+       
+	}
 
     protected override void Update(GameTime delta)
     {
         _keyboardController.Update();
         _mouseController.Update();
-        
-        /*
+
+		/*
          * Add various other things that need to be updated.
          */
-        
-        foreach (IEntity e in _entities)
+
+		tileManager.Update(delta);
+
+		foreach (IEntity e in _entities)
         {
             e.Update(delta);
         }
@@ -89,11 +98,14 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
 
-        /*
+		/*
          * Add various other things that need to be drawn
          *      e.g., ITile objects, GUI, etc.
          */
-        foreach (IEntity e in _entities)
+
+		tileManager.Draw(_spriteBatch);
+
+		foreach (IEntity e in _entities)
         {
             e.Draw(_spriteBatch);
         }
@@ -130,10 +142,17 @@ public class Game1 : Game
         _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Down), new PrimaryAttackDownCommand(_player));
         _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Right), new PrimaryAttackRightCommand(_player));
 
+        //Tile Manager Controls
+        _keyboardController.RegisterCommand(
+	        new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Y),
+	        new NextTileCommand(tileManager));
 
+        _keyboardController.RegisterCommand(
+	        new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.T),
+	        new PreviousTileCommand(tileManager));
 
-        //Mouse controls
-        _mouseController.RegisterCommand(
+		//Mouse controls
+		_mouseController.RegisterCommand(
             new MouseInput(
                 new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
                 BinaryInputState.Pressed,
@@ -147,74 +166,8 @@ public class Game1 : Game
             new PrimaryAttackDynamicMouseCommand(_player)
             );
 
+
+
         _keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Escape), new ExitCommand(this));
-        base.Initialize();
-    }
-
-    protected override void LoadContent()
-    {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-        _texture = Content.Load<Texture2D>("misc");
-        _font = Content.Load<SpriteFont>("File");
-
-        //load Tile Sprites
-        SpriteFactory.Instance.LoadTexture(Content, "images/Rocks.json", "images/Rocks");
-		SpriteFactory.Instance.LoadTexture(Content, "images/Spikes.json", "images/Spikes");
-
-
-		//Tile Manager initialization and Controls
-		tileManager = new TileManager(SpriteFactory.Instance);
-
-		_keyboardController.RegisterCommand(
-			new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Y),
-			new NextTileCommand(tileManager));
-
-		_keyboardController.RegisterCommand(
-			new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.T),
-			new PreviousTileCommand(tileManager));
-
-
-	}
-
-	protected override void Update(GameTime delta)
-    {
-        _keyboardController.Update();
-        _mouseController.Update();
-
-		/*
-         * Add various other things that need to be updated.
-         */
-
-		tileManager.Update(delta);
-
-
-		foreach (IEntity e in _entities)
-        {
-            e.Update(delta);
-        }
-        base.Update(delta);
-
-    }
-    
-    protected override void Draw(GameTime delta)
-    {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
-        _spriteBatch.Begin();
-
-		/*
-         * Add various other things that need to be drawn
-         *      e.g., ITile objects, GUI, etc.
-         */
-
-		tileManager.Draw(_spriteBatch);
-
-
-		foreach (IEntity e in _entities)
-        {
-            e.Draw(_spriteBatch);
-        }
-        
-        _spriteBatch.End();
-        base.Draw(delta);
     }
 }
