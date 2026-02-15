@@ -1,0 +1,15 @@
+{
+	"Sprites": [
+		{
+			"Name": "images/Red_Heart",
+			"Frames": [
+				{
+					"X": 0,
+					"Y": 0,
+					"W": 16,
+					"H": 13
+				}
+			]
+		}
+	]
+}

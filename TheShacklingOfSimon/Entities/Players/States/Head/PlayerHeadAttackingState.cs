@@ -24,7 +24,7 @@ public class PlayerHeadAttackingState : IPlayerHeadState
     public void Enter()
     {
         // _direction is already "cardinalized" from PlayerHeadIdleState
-        _weapon.Fire(_player.Position, _direction, new ProjectileStats(1.0f * _player.DamageMultiplierStat, 20.0f));
+        _weapon.Fire(_player.Position, _direction, new ProjectileStats(1.0f * _player.DamageMultiplierStat, 200.0f));
 
         string spriteAnimationName = "PlayerHeadShootingDown";
         if (_direction.X > 0)
