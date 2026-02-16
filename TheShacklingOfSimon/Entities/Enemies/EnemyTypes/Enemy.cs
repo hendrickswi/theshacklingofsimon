@@ -12,9 +12,6 @@ namespace TheShacklingOfSimon.Entities.Enemies;
 public class Enemy : DamageableEntity, IEnemy
 {    
     public IEnemyState CurrentState { get; private set; }
-    
-    // Use explicit interface implementation 
-    IEnemyState IEnemy.CurrentState => CurrentState;
 
     public float MoveSpeedStat { get; set; }
     public float AttackDamage{ get; set; }
@@ -116,11 +113,5 @@ public class Enemy : DamageableEntity, IEnemy
             CurrentState = newState;
             CurrentState.Enter();
         }
-    }
-
-    // More explicit interface implementation
-    void IEnemy.ChangeState(IEnemyState newState)
-    {
-        ChangeState(newState);
     }
 }
