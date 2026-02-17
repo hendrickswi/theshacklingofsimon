@@ -55,28 +55,25 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         Position = startPosition;
         Velocity = Vector2.Zero;
         IsActive = true;
-        // Arbitrarily sized hitbox of 20x20
-        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 20, 20);
+        // Arbitrarily sized hitbox of 30x30
+        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 30, 30);
         
         // IDamageable properties
-        this.Health = 3;
-        this.MaxHealth = 3;
+        this.Health = 6;
+        this.MaxHealth = 6;
         
         // Player properties
-        this.Inventory = new Inventory();
-        // this.Inventory.AddWeapon(new BasicWeapon());
-        // this.Inventory.AddWeapon(new BombWeapon());
-        // this.Inventory.AddItem(new NoneItem());
-        // this.CurrentPrimaryWeapon = Inventory.Weapons[0];
-        // this.CurrentSecondaryWeapon = Inventory.Weapons[1];
-        // this.CurrentItem = Inventory.Items[0];
-        
         // These can all be overriden with public set method
         this.DamageMultiplierStat = 1.0f;
-        this.MoveSpeedStat = 20.0f;
-        this.PrimaryAttackCooldown = 0.5f;
+        this.MoveSpeedStat = 100.0f;
+        this.PrimaryAttackCooldown = 0.4f;
         this.SecondaryAttackCooldown = 1.5f;
-        this.MovementFrameDuration = 0.12f;
+        this.MovementFrameDuration = 0.1f;
+        this.Inventory = new Inventory();
+        /*
+         * Other properties such as CurrentPrimaryWeapon set by public methods
+         * after instantiation 
+         */
         
         this.CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
         this.CurrentBodyState = new PlayerBodyIdleState(this);
@@ -209,7 +206,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
-        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);
+        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 30, 30);
         
         CurrentHeadState.Update(delta);
         CurrentBodyState.Update(delta);

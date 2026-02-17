@@ -6,14 +6,14 @@ namespace TheShacklingOfSimon.Entities.Players.States.Head;
 
 public class PlayerHeadIdleState : IPlayerHeadState
 {
-    private PlayerWithTwoSprites _player;
+    private readonly PlayerWithTwoSprites _player;
+    private readonly Vector2 _lookingDirection;
     private string _currentAnimation;
-    private Vector2 _lookingDirection;
 
     public PlayerHeadIdleState(PlayerWithTwoSprites player, Vector2 lookingDirection)
     {
         this._player = player;
-        this._lookingDirection = lookingDirection;
+        this._lookingDirection = GetCardinalDirection(lookingDirection);
     }
 
     public void Enter()
