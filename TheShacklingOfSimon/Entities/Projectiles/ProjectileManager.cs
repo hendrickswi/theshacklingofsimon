@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TheShacklingOfSimon.Projectiles;
+namespace TheShacklingOfSimon.Entities.Projectiles;
 
 public class ProjectileManager
 {

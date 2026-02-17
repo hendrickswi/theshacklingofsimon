@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using TheShacklingOfSimon.Projectiles;
+using TheShacklingOfSimon.Entities.Projectiles;
 
 namespace TheShacklingOfSimon.Weapons;
 

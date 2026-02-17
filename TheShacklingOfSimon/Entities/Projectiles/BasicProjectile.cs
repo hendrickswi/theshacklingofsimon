@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
-namespace TheShacklingOfSimon.Projectiles;
+namespace TheShacklingOfSimon.Entities.Projectiles;
 
 public class BasicProjectile : IProjectile
 {

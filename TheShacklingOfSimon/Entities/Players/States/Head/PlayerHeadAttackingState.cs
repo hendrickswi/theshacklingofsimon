@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using TheShacklingOfSimon.Projectiles;
+using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Weapons;
 

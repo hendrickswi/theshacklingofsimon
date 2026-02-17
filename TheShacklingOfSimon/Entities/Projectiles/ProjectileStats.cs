@@ -1,4 +1,4 @@
-﻿namespace TheShacklingOfSimon.Projectiles;
+﻿namespace TheShacklingOfSimon.Entities.Projectiles;
 
 public record struct ProjectileStats
 {
