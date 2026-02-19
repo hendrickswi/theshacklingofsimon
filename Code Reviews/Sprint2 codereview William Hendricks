@@ -1,0 +1,83 @@
+Author: William Hendricks (hendrickswi)
+Date: 02/19/26
+Sprint 2
+File(s) being reviewed: Enemy.cs, IEnemyState-implementing classes
+Author of file: Ethan Chitturi (CoolestToDoIt)
+
+Comments: 
+    1) The movement implementation in its current state will not work. You have defined
+    a Pathfind() method, which will return a Vector2 to, say, a Game class, but provide 
+    no method to actually update the private instance variable _movementInput, which is 
+    then used in the Update() method to delegate movement to the current 
+    IEnemyState-implementing class.
+
+    2) It seems that any Enemy instance will be stuck in the attacking state unless the 
+    HandleMovement() method is called, which is not a given. This is because you do not 
+    have a set duration for the attacking state, which would be passed into the constructor 
+    for EnemyAttackingState. 
+
+    3) The HandleAttack() method in the EnemyAttackingState should be a no-op; we are already
+    in the attacking state. You should not be able to cancel the current attacking state, thus
+    circumventing the attack cooldown.
+
+    4) You do not need to pass in the attackDamage, attackCooldown, and attackRange floats
+    to the HandleAttack() method in all three of EnemyIdleState, EnemyAttackingState, and
+    EnemyMovingState, as these are publically accessible properties from the private _enemy
+    instance variable.
+
+    5) The variable type for the private _enemy field in all the IEnemyState classes should be
+    IEnemy, not Enemy. This is to allow polymorphism and reusability for the enemy states.
+
+    6) This has to change in both the enemy and player state classes: The UpdateSprite() 
+    method is currently reliant on the sprite data always being named EnemyWalkVertical, 
+    EnemyWalkRight, PlayerWalkHorizontal, etc. In the future, when we add more sprite data for
+    differing enemies and even differing player "skins", this hard-coding will not work.
+    
+    7) The Enemy class is missing an IWeapon property. We are using Weapon classes to actually
+    spawn projectiles onto screen through the Fire() method.
+    
+    In my opinion, this implementation of an enemy class needs a little work for functionality.
+    In terms of code quality: 
+        It is quite readable.
+        Due to the nature of the State pattern, should be quite maintainable after all 
+            the fixes are implemented. 
+        It also has relatively loose coupling--it only uses float, Vector2 (which could be 
+            considered near a primitive), and IEnemyState (which is a custom defined interface)). 
+            Even after adding IWeapon, which is another custom defined interface, the coupling 
+            should be loose. 
+        It will be very reusable after implementing some of the suggested changes.
+
+Suggested changes: 
+    1) If you want to use the same structure the PlayerWithTwoSprites class used to allow
+    movement, alongside the Pathfind() method you already defined, you need to a) add a 
+    RegisterMovement() method, and b) create the relevant ICommand-implementing classes 
+    to call the RegisterMovement() method for each cardinal direction.
+    
+    2) Pass in a "stateDuration" float in the constructor for EnemyAttackingState. Assign
+    this parameter to a _stateDuration instance variable. Then, use it in the Update() method
+    to determine if _enemy.CurrentState should still be EnemyAttackingState.
+    
+    3) I see two ways you can do this: Make the HandleAttack() method in 
+    EnemyAttackingState a no-op, OR make a queue system where attacks can be queued. Note that
+    implementing a queue system will likely increase the complexity of the class significantly,
+    while providing little-to-no noticeable improvement, as the player is not controlling
+    these enemy instances. 
+    
+    4) Simply remove the parameters and use your already-defined _enemy instance variable.
+    
+    5) Change the variable type of _enemy to IEnemy for all IEnemyState-implementing classes.
+    
+    6) Hypothetical change: An implementation of reusable enemy and player state clases, and by
+    extension, UpdateSprite() will require the ability to reference the correct data in the
+    SpriteFactory class, which is loaded upon startup. We could require one more string 
+    parameter for the constructors of the classes that need an UpdateSprite() method, which
+    would allow UpdateSprite() to pass that string into SpriteFactory.CreateAnimatedSprite()
+    or SpriteFactory.CreateStaticSprite().
+        e.g., the string parameter is "PlayerHeadIdle". then 
+        if(GetCardinalDirection(_lookingDirection) == Vector2.UnitY) {
+            SpriteFactory.CreateStaticSprite("PlayerHeadIdle" + "Down");
+        }
+    Again, this is a hypothetical change we can implement in Sprint 3. We will have to test 
+    to see if this idea works.
+    
+    7) Add an IWeapon property to the Enemy class
