@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Commands;
+using TheShacklingOfSimon.Commands.Attack;
 using TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
+using TheShacklingOfSimon.Commands.Movement;
 using TheShacklingOfSimon.Commands.Tile_Commands_and_temporary_Manager;
 using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Keyboard;
@@ -159,9 +161,9 @@ public class Game1 : Game
 		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.D), new MoveRightCommand(_player));
 
 		// Attacking controls
-		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.E), new SecondaryAttackNeutralCommand(_player));
-		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.LeftShift), new SecondaryAttackNeutralCommand(_player));
-		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.RightShift), new SecondaryAttackNeutralCommand(_player));
+		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.E), new SecondaryAttackDownCommand(_player));
+		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.LeftShift), new SecondaryAttackDownCommand(_player));
+		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.RightShift), new SecondaryAttackDownCommand(_player));
 		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Up), new PrimaryAttackUpCommand(_player));
 		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Left), new PrimaryAttackLeftCommand(_player));
 		_keyboardController.RegisterCommand(new KeyboardInput(BinaryInputState.Pressed, KeyboardButton.Down), new PrimaryAttackDownCommand(_player));
@@ -191,7 +193,7 @@ public class Game1 : Game
 				new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
 				BinaryInputState.Pressed,
 				MouseButton.Right),
-			new SecondaryAttackNeutralCommand(_player));
+			new SecondaryAttackDownCommand(_player));
 		_mouseController.RegisterCommand(
 			new MouseInput(
 				new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),

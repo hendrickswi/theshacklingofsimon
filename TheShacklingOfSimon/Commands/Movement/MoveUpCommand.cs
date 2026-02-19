@@ -1,7 +1,7 @@
-﻿using TheShacklingOfSimon.Entities.Players;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Entities.Players;
 
-namespace TheShacklingOfSimon.Commands;
+namespace TheShacklingOfSimon.Commands.Movement;
 
 
 public class MoveUpCommand : ICommand
