@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
 
-namespace TheShacklingOfSimon.Commands;
+namespace TheShacklingOfSimon.Commands.Attack;
 
 public class PrimaryAttackDownCommand : ICommand
 {

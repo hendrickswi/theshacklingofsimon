@@ -39,7 +39,7 @@ public interface IPlayer : IDamageable
     IItem CurrentItem { get; }
     
     // IPlayer-implementing classes will act as the context for the State pattern
-    IPlayerState CurrentBodyState { get; }
+    IPlayerState CurrentState { get; }
     
     float MoveSpeedStat { get; set; }
     float DamageMultiplierStat { get; set; }

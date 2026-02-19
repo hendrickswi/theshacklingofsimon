@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using TheShacklingOfSimon.Entities.Players;
 
-namespace TheShacklingOfSimon.Commands;
+namespace TheShacklingOfSimon.Commands.Attack;
 
 public class PrimaryAttackDynamicMouseCommand : ICommand
 {

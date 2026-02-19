@@ -23,7 +23,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public IPlayerBodyState CurrentBodyState { get; private set; }
     
     // Use explicit interface implementation 
-    IPlayerState IPlayer.CurrentBodyState => CurrentBodyState;
+    IPlayerState IPlayer.CurrentState => CurrentBodyState;
     
     /*
      * Additional sprite to handle the head.
