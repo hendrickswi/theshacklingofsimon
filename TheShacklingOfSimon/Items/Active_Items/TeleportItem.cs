@@ -38,7 +38,7 @@ public class TeleportItem : IItem
         Effects = new ItemEffects(0, 0, 0, 0, false);
     }
 
-    // Call this once per frame from wherever you update items / player
+    // Call this once per frame from wherever we update items / player
     public void Update(GameTime gameTime)
     {
         if (_cooldownTimer > 0f)
@@ -51,20 +51,16 @@ public class TeleportItem : IItem
         if (_cooldownTimer > 0f) return;
 
         Vector2 dir = Player.Velocity;
+
+        // If player isn't moving, don't blink and don't consume cooldown
         if (dir.LengthSquared() < 0.0001f)
-        {
-            // default “down” if not moving
-            dir = Vector2.UnitY;
-        }
-        else
-        {
-            dir.Normalize();
-        }
+            return;
+
+        dir.Normalize();
 
         Vector2 start = Player.Position;
         Vector2 target = start + dir * _blinkDistance;
 
-        // Try target, if invalid, step backward until valid or give up
         Vector2 candidate = target;
         float traveledBack = 0f;
 
@@ -72,6 +68,10 @@ public class TeleportItem : IItem
         {
             if (_isValidPosition(candidate))
             {
+                // Extra safety: don't consume if we didn't actually move
+                if ((candidate - start).LengthSquared() < 0.0001f)
+                    return;
+
                 Player.TeleportTo(candidate);
                 _cooldownTimer = _cooldownSeconds;
                 return;
@@ -81,6 +81,6 @@ public class TeleportItem : IItem
             traveledBack += _step;
         }
 
-        // If nowhere valid, do nothing 
+        // If nowhere valid, do nothing (no cooldown spent)
     }
 }
