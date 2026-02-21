@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Commands.Attack;
 using TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
@@ -16,6 +16,7 @@ using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Mouse;
+using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Weapons;
 using KeyboardInput = TheShacklingOfSimon.Controllers.Keyboard.KeyboardInput;
@@ -84,12 +85,6 @@ public class Game1 : Game
 
 		_tileManager = new TileManager(SpriteFactory.Instance);
 
-		//load Item Sprites and manager
-		SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");
-		SpriteFactory.Instance.LoadTexture(Content, "images/Red_Heart.json", "images/Red_Heart");
-
-		_itemManager = new ItemManager(SpriteFactory.Instance);
-
 		// Create entities now that the sprite factory has textures
 		_entities = new List<IEntity>();
 		_player =
@@ -103,8 +98,19 @@ public class Game1 : Game
 		_player.EquipSecondaryWeapon(0);
 		_player.SecondaryAttackCooldown = 0.5f;
 
-		// Register controls now that the player exists
-		RegisterControls(screenDimensions);
+        // temporary items for demo
+        _player.AddItemToInventory(new TeleportItem(_player, pos => true));
+        _player.AddItemToInventory(new AdrenalineItem(_player));
+
+
+        //load Item Sprites and manager
+        SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");
+        SpriteFactory.Instance.LoadTexture(Content, "images/Red_Heart.json", "images/Red_Heart");
+
+        _itemManager = new ItemManager(_player, SpriteFactory.Instance);
+
+        // Register controls now that the player exists
+        RegisterControls(screenDimensions);
 	}
 
 	protected override void Update(GameTime delta)
@@ -119,8 +125,9 @@ public class Game1 : Game
 		_projectileManager.Update(delta);
 		_tileManager.Update(delta);
 		_itemManager.Update(delta);
+        _player.CurrentItem?.Update(delta);
 
-		foreach (IEntity e in _entities)
+        foreach (IEntity e in _entities)
 		{
 			e.Update(delta);
 		}
@@ -195,9 +202,12 @@ public class Game1 : Game
 		_keyboardController.RegisterCommand(
 			new KeyboardInput(InputState.JustPressed, KeyboardButton.U),
 			new PreviousItemCommand(_itemManager));
+        _keyboardController.RegisterCommand(
+            new KeyboardInput(InputState.JustPressed, KeyboardButton.Space),
+            new UseItemCommand(_player));
 
-		//Mouse controls
-		_mouseController.RegisterCommand(
+//Mouse controls
+        _mouseController.RegisterCommand(
 			new MouseInput(
 				new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
 				InputState.Pressed,

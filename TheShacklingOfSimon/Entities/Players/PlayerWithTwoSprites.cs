@@ -41,6 +41,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public float MoveSpeedStat { get; set; }
     public float DamageMultiplierStat { get; set; }
     public float PrimaryAttackCooldown { get; set; }
+    public float ProjectileSpeedMultiplierStat { get; set; }
     public float SecondaryAttackCooldown { get; set; }
     public float MovementFrameDuration { get; set; }
     
@@ -67,6 +68,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         this.DamageMultiplierStat = 1.0f;
         this.MoveSpeedStat = 100.0f;
         this.PrimaryAttackCooldown = 0.5f;
+        this.ProjectileSpeedMultiplierStat = 1.0f;
         this.SecondaryAttackCooldown = 1.5f;
         this.MovementFrameDuration = 0.1f;
         this.Inventory = new Inventory();
@@ -179,6 +181,13 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         {
             _secondaryAttackInput += direction;
         }
+    }
+
+    public void TeleportTo(Vector2 worldPosition)
+    {
+        Position = worldPosition;
+        Velocity = Vector2.Zero; // stop sliding after teleport
+        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 30, 30);
     }
 
     public override void Update(GameTime delta)

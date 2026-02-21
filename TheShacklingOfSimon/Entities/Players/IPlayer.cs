@@ -43,6 +43,7 @@ public interface IPlayer : IDamageable
     
     float MoveSpeedStat { get; set; }
     float DamageMultiplierStat { get; set; }
+    float ProjectileSpeedMultiplierStat { get; set; }
     float PrimaryAttackCooldown { get; set; }
     float SecondaryAttackCooldown { get; set; }
     
@@ -61,6 +62,8 @@ public interface IPlayer : IDamageable
     void RegisterMoveInput(Vector2 direction);
     void RegisterPrimaryAttackInput(Vector2 direction);
     void RegisterSecondaryAttackInput(Vector2 direction);
+
+    void TeleportTo(Vector2 worldPosition);
 
     void ChangeState(IPlayerState newState);
 }

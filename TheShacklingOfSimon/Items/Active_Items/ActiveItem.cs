@@ -3,10 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
-using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Sprites.Products;
 
-namespace TheShacklingOfSimon.Items;
+namespace TheShacklingOfSimon.Items.Active_Items;
 public class ActiveItem : IItem
 {
     public string Name { get; set; }

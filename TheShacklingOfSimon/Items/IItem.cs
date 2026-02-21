@@ -10,4 +10,6 @@ public interface IItem
     IPlayer Player { get; }
     ItemEffects Effects { get; }
     void Effect();
+
+    void Update(GameTime gameTime) { }
 }
