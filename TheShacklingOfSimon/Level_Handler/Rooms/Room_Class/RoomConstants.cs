@@ -1,4 +1,4 @@
-﻿namespace TheShacklingOfSimon.Room_Manager.Rooms
+﻿namespace TheShacklingOfSimon.Level_Handler.Rooms.Room_Class
 {
     internal class RoomConstants
     {

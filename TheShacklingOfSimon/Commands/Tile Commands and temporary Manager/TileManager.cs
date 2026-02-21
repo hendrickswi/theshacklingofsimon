@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TheShacklingOfSimon.Room_Manager.Tiles;
+using TheShacklingOfSimon.Level_Handler.Tiles;
 using TheShacklingOfSimon.Sprites.Factory;
 
 namespace TheShacklingOfSimon.Commands.Tile_Commands_and_temporary_Manager;
@@ -21,7 +21,7 @@ public class TileManager
 		Vector2 center = new Vector2(400, 300);
 
 		tiles.Add(new RockTile(rockSprite, center));
-		tiles.Add(new RockTile(spikeSprite, center));
+		tiles.Add(new SpikeTile(spikeSprite, center));
 
 		currentIndex = 0;
 	}
