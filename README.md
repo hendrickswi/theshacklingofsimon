@@ -11,8 +11,10 @@ esc to quit the game<br><br>
 Temporary controls for sprint2:<br>
 Y to show the next tile<br>
 T to show the previous tile<br>
-I to show the next item<br>
-U to show the previous item<br><br>
+
+I to select the next item<br>
+U to select the previous item<br><br>
+SPACE to use the currently selected item<br>
 
 Known bugs:<br>
 Memory usage is extremely high for projectiles. Caused by: not using a object pool or simply dereferencing the projectiles when they are unused
