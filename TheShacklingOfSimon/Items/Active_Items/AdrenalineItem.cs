@@ -25,10 +25,10 @@ public class AdrenalineItem : IItem
     public AdrenalineItem(
         IPlayer player,
         float durationSeconds = 4.0f,
-        float cooldownSeconds = 2.0f,     // match teleport
-        float moveSpeedMultiplier = 1.75f,
+        float cooldownSeconds = 5.0f,     // match teleport
+        float moveSpeedMultiplier = 2f,
         float fireRateMultiplier = 0.50f, // half cooldown => 2x fire rate
-        float projSpeedMultiplier = 1.75f)
+        float projSpeedMultiplier = 2f)
     {
         Player = player;
 
@@ -55,7 +55,7 @@ public class AdrenalineItem : IItem
             {
                 EndBuff();
 
-                // Cooldown starts AFTER the effect finishes
+                // Cooldown starts after the effect finishes
                 _cooldownTimer = _cooldownSeconds;
             }
             return; // do not tick cooldown while buff is active
@@ -71,7 +71,7 @@ public class AdrenalineItem : IItem
         // Can't activate during cooldown
         if (_cooldownTimer > 0f) return;
 
-        // If already active, refresh duration (optional but feels good)
+        // If already active, refresh duration (optional but possibly useful for another item)
         if (_buffActive)
         {
             _buffTimer = _durationSeconds;
