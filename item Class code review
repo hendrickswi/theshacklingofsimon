@@ -1,0 +1,25 @@
+Author: Akrem Ramadan
+
+IItem interface
+  Update(GameTime gameTime) { } in an interface requires C default interface methods, if your project target/framework doesn’t support it cleanly, move to an abstract base class or extension method.
+  Effect() naming is vague; consider Apply() / Use() to clarify intent.
+  Player on every item tightly couples items to the player; consider passing player into Effect(player) to reduce coupling. 
+
+ItemEffects
+  Uses public fields, we should be using immutable properties/readonly record struct to prevent accidental mutation and improve maintainability. 
+  OneTime vs constructor param consumable is inconsistent naming. Choose one and stick wit it
+  Mixed responsibilities: “stat modifiers” + “consumable behavior” in one struct. Maybe consider separating (e.g., StatModifiers + IsConsumable).
+
+ArmorItem / DamageItem / SpeedItem
+  Effect() is empty, so these items currently do nothing (effects never applied).
+  These overlap with what PassiveItem is doing either:
+    make these inherit from PassiveItem, or delete them and instantiate PassiveItem with different ItemEffects.
+
+PassiveItem
+  Effects is never initialized, so Effect() applies default zeros (no change).
+  Name/Description settable but not set, initialize them in the constructor.
+  ClearEffect() exists but not in IItem, either add to interface or keep consistent usage pattern (only some items support removal).
+  
+ActiveItem
+  Same issues as PassiveItem: Effects uninitialized; Name/Description not set.
+  Effects.OneTime comment indicates missing behavior, if one-time items exist, implement consumption/removal or remove the flag for now.
