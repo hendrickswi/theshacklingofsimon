@@ -19,8 +19,8 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public IWeapon CurrentSecondaryWeapon { get; private set; }
     public IItem CurrentItem { get; private set; }
     
-    public IPlayerHeadState CurrentHeadState { get; private set; }
-    public IPlayerBodyState CurrentBodyState { get; private set; }
+    private IPlayerHeadState CurrentHeadState { get; set; }
+    private IPlayerBodyState CurrentBodyState { get; set; }
     
     // Use explicit interface implementation 
     IPlayerState IPlayer.CurrentState => CurrentBodyState;
@@ -77,7 +77,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         this.ProjectileSpeedMultiplierStat = 1.0f;
         this.SecondaryAttackCooldown = 1.5f;
         this.MovementFrameDuration = 0.1f;
-        this.InvulnerabilityDuration = 0.2f;
+        this.InvulnerabilityDuration = 0.333334f;
         this.Inventory = new Inventory();
         
         /*
@@ -200,6 +200,12 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
     public override void TakeDamage(int damage)
     {
+        // No-op if the player is already in the damaged state
+        if (CurrentBodyState is PlayerBodyDamagedState)
+        {
+            return;
+        }        
+        
         base.TakeDamage(damage);
         
         // Case for player dying

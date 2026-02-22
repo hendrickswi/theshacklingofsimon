@@ -29,9 +29,6 @@ public class PlayerBodyDamagedState : IPlayerBodyState
         /*
          * Could use this later for stopping any sounds related to moving (e.g., walking)
          */
-        
-        // Default to looking down
-        _player.ChangeHeadState(new PlayerHeadIdleState(_player, new Vector2(0, 1)));
     }
 
     public void Update(GameTime delta)
@@ -40,6 +37,7 @@ public class PlayerBodyDamagedState : IPlayerBodyState
         if (_timer >= _stateDuration)
         {
             _player.ChangeBodyState(new PlayerBodyIdleState(_player));
+            _player.ChangeHeadState(new PlayerHeadIdleState(_player, new Vector2(0, 1)));
         }
         else
         {
@@ -49,10 +47,13 @@ public class PlayerBodyDamagedState : IPlayerBodyState
 
     public void HandleMovement(Vector2 direction, float frameDuration)
     {
-        if (direction.LengthSquared() >= 0.0001f)
+        if (direction.LengthSquared() < 0.0001f)
+        {
+            _player.Velocity = Vector2.Zero;
+        }
+        else
         {
             _player.Velocity = direction * _player.MoveSpeedStat;
-            // Do not change the sprite
         }
     }
 }
