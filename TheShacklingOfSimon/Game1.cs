@@ -93,7 +93,8 @@ public class Game1 : Game
 			new PlayerWithTwoSprites(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
 		_entities.Add(_player);
 
-		_player.AddWeaponToInventory(new BasicWeapon(_projectileManager));
+		_player.AddWeaponToInventory(new BombWeapon(_projectileManager));
+	
 		_player.EquipPrimaryWeapon(0);
 		
 		// temporary until bomb weapon is added
