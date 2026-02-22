@@ -91,13 +91,19 @@
     {
       "name": "PlayerHurt",
       "frames": [
-        { "x": 72, "y": 285, "w": 40, "h": 40 }
+        { "x": 72, "y": 290, "w": 40, "h": 40 }
       ]
     },
     {
-      "name": "PlayerDead",
+      "name": "PlayerDeadAnimation",
       "frames": [
-        { "x": 125, "y": 291, "w": 46, "h": 40 }
+        { "x": 5, "y": 286, "w": 37 , "h": 39 }
+      ]
+    },
+    {
+      "name": "PlayerDeadFinal",
+      "frames" : [
+        { "x": 126, "y": 293, "w": 46, "h": 40 }
       ]
     }
   ]

@@ -36,7 +36,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public ISprite BodySprite { get; set; }
     
     // Use explicit interface implementation 
-    [Obsolete("Error: PlayerWithTwoSprites does not use Sprite property. Use BodySprite or HeadSprite instead.", true)]
+    [Obsolete("PlayerWithTwoSprites does not use Sprite property. Use BodySprite or HeadSprite instead.", true)]
     public new ISprite Sprite
     {
         get => BodySprite;
@@ -49,9 +49,11 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public float ProjectileSpeedMultiplierStat { get; set; }
     public float SecondaryAttackCooldown { get; set; }
     public float MovementFrameDuration { get; set; }
+    public float DeathFrameDuration { get; set; }
     public float InvulnerabilityDuration { get; set; }
     
     private readonly Vector2 _headOffset = new Vector2(-4.75f, -16);
+    private readonly Vector2 _damagedStateOffset = new Vector2(0, -5);
     private Vector2 _movementInput;
     private Vector2 _primaryAttackInput;
     private Vector2 _secondaryAttackInput;
@@ -69,14 +71,15 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         this.Health = 6;
         this.MaxHealth = 6;
         
-        // Player properties--default
+        // Player property defaults
         // These can all be overriden with public set method
         this.DamageMultiplierStat = 1.0f;
         this.MoveSpeedStat = 100.0f;
         this.PrimaryAttackCooldown = 0.5f;
         this.ProjectileSpeedMultiplierStat = 1.0f;
         this.SecondaryAttackCooldown = 1.5f;
-        this.MovementFrameDuration = 0.1f;
+        this.MovementFrameDuration = 0.05f;
+        this.DeathFrameDuration = 1.0f;
         this.InvulnerabilityDuration = 0.333334f;
         this.Inventory = new Inventory();
         
@@ -211,13 +214,16 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         // Case for player dying
         if (Health <= 0)
         {
-            // ChangeHeadState(new PlayerHeadDeadState(this));
-            // ChangeBodyState(new PlayerBodyDeadState(this, ...));
+            ChangeHeadState(new PlayerHeadDeadState(this));
+            ChangeBodyState(new PlayerBodyDeadState(this, DeathFrameDuration, DeathFrameDuration));
+        }
+        // If not dead, then damaged
+        else
+        {
+            ChangeHeadState(new PlayerHeadDamagedState(this));
+            ChangeBodyState(new PlayerBodyDamagedState(this, InvulnerabilityDuration));
         }
         
-        // If not dead, then damaged
-        ChangeHeadState(new PlayerHeadDamagedState(this));
-        ChangeBodyState(new PlayerBodyDamagedState(this, InvulnerabilityDuration));
     }
 
     public override void Update(GameTime delta)
@@ -261,7 +267,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
         if (BodySprite != null)
         {
-            BodySprite.Draw(spriteBatch, Position, Color.White, 0.0f,
+            Vector2 drawPos = (CurrentBodyState is PlayerBodyDamagedState) ? 
+                    Position + _damagedStateOffset : Position;
+            BodySprite.Draw(spriteBatch, drawPos, Color.White, 0.0f,
                         new Vector2(0, 0), 1.0f, flip, 0.0f);
         }
 
@@ -291,7 +299,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         }
     }
 
-    // More explicit interface implementation
+    // More explicit interface implementation for renaming purposes
     void IPlayer.ChangeState(IPlayerState newState)
     {
         switch (newState)
