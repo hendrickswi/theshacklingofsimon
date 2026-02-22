@@ -76,7 +76,7 @@ public class BombProjectile : IProjectile
         if (!hasExploded)
         {
             // Draw bomb sprite
-            Sprite?.Draw(spriteBatch, Position, Color.White);
+            Sprite?.Draw(spriteBatch, Position, Color.Gray);
         }
         else
         {
