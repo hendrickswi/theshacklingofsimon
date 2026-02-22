@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
 
-namespace TheShacklingOfSimon.Commands.Movement;
+namespace TheShacklingOfSimon.Commands.PlayerMovement;
 
 public class MoveLeftCommand : ICommand
 {

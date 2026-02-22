@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
 
-namespace TheShacklingOfSimon.Items;
+namespace TheShacklingOfSimon.Items.Active_Items;
 
 public class TeleportItem : IItem
 {

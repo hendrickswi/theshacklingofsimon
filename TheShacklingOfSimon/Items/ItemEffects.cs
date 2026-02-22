@@ -1,3 +1,5 @@
+namespace TheShacklingOfSimon.Items;
+
 public record struct ItemEffects
 {
     public int Attack;
