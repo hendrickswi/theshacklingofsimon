@@ -40,7 +40,7 @@ public interface IEnemy : IDamageable
 
     // are attacks specialized to each enemy or considered weapons
     //void Attack(Vector2 direction, float attackDamage, float attackCooldown, float attackRange);
-    void FindTarget();
+    Vector2 FindTarget();
     void Pathfind(Vector2 targetPosition);
     void RegisterAttack(Vector2 direction);
     void ChangeState(IEnemyState newState);

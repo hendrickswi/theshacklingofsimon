@@ -1,4 +1,3 @@
-using System.Numerics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies.States;
@@ -49,13 +48,21 @@ public class Enemy : DamageableEntity, IEnemy
         this._attack = Vector2.Zero;
     }
 
-    public void FindTarget()
+    public Vector2 FindTarget() //this method will return (0,0) if no target found
     {
         // Placeholder for target finding logic, e.g., find the player or other entities
+        return Position + new Vector2(100, 0); // This will be replaced with actual target finding logic in a real implementation
     }
 
     public void Pathfind(Vector2 targetPosition)
     {
+        //pre-check if target is found
+        if (targetPosition == Vector2.Zero)
+        {
+            _movementInput = Vector2.Zero;
+            return;
+        }
+
         // Simple pathfinding logic: move directly towards the target
         Vector2 direction = targetPosition - Position;
         if (direction.LengthSquared() > 0.0001f)
@@ -65,15 +72,28 @@ public class Enemy : DamageableEntity, IEnemy
         _movementInput += direction * MoveSpeedStat;
     }
 
-    public void RegisterAttack(Vector2 direction)
+    public void RegisterAttack(Vector2 targetDirection)
     {
+        if (targetDirection == Vector2.Zero)
+        {
+            _attack = Vector2.Zero;
+            return;
+        }
+        Vector2 direction = targetDirection - Position;
+        if (direction.LengthSquared() > 0.0001f)
+        {
+            direction.Normalize();
+        }
         _attack += direction;
     }
 
     public override void Update(GameTime delta)
     {
+        // Find target
+        Vector2 targetPosition = FindTarget();
+
         // Movement logic
-        Pathfind(Position + new Vector2(0.01f, 0.01f)); // This will be replaced with actual target position in a real implementation
+        Pathfind(targetPosition);
         if (_movementInput.LengthSquared() > 0.0001f)
         {
             _movementInput.Normalize();
@@ -82,8 +102,9 @@ public class Enemy : DamageableEntity, IEnemy
         _movementInput = Vector2.Zero;
         
         // Attack logic
-        if (_attack.LengthSquared() > 0.0001f)
+        if (targetPosition.LengthSquared() > 0.0001f)
         {
+            RegisterAttack(targetPosition);
             CurrentState.HandleAttack(_attack, AttackCooldown);
         }
 
