@@ -6,6 +6,7 @@ using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
 using TheShacklingOfSimon.Commands.PlayerAttack;
 using TheShacklingOfSimon.Commands.PlayerMovement;
+using TheShacklingOfSimon.Commands.Temporary_Commands;
 using TheShacklingOfSimon.Commands.Tile_Commands_and_temporary_Manager;
 using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Keyboard;
@@ -179,7 +180,6 @@ public class Game1 : Game
 		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.D), new MoveRightCommand(_player));
 
 		// Attacking controls
-		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.E), new SecondaryAttackDownCommand(_player));
 		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.LeftShift), new SecondaryAttackDownCommand(_player));
 		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.RightShift), new SecondaryAttackDownCommand(_player));
 		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.Up), new PrimaryAttackUpCommand(_player));
@@ -207,6 +207,12 @@ public class Game1 : Game
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.Space),
             new UseItemCommand(_player));
+        
+        // Temporary method to trigger player damaged state for sprint 2
+        _keyboardController.RegisterCommand(
+	        new KeyboardInput(InputState.Pressed, KeyboardButton.E),
+	        new TriggerPlayerDamagedState(_player, 1)
+	        );
 
 //Mouse controls
         _mouseController.RegisterCommand(

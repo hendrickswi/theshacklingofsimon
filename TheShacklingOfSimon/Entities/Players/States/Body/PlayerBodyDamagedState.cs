@@ -1,4 +1,5 @@
 
+using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players.States.Head;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Sprites.Factory;
@@ -20,15 +21,17 @@ public class PlayerBodyDamagedState : IPlayerBodyState
     
     public void Enter()
     {
-        _player.Sprite = SpriteFactory.Instance.CreateStaticSprite("");
+        _player.BodySprite = SpriteFactory.Instance.CreateStaticSprite("PlayerHurt");
     }
 
     public void Exit()
     {
         /*
-         * No-op for now
          * Could use this later for stopping any sounds related to moving (e.g., walking)
          */
+        
+        // Default to looking down
+        _player.ChangeHeadState(new PlayerHeadIdleState(_player, new Vector2(0, 1)));
     }
 
     public void Update(GameTime delta)
@@ -40,17 +43,16 @@ public class PlayerBodyDamagedState : IPlayerBodyState
         }
         else
         {
-            _player.HeadSprite.Update(delta);
+            _player.BodySprite.Update(delta);
         }
     }
 
-    public void HandlePrimaryAttack(Vector2 direction, float stateDuration)
+    public void HandleMovement(Vector2 direction, float frameDuration)
     {
-        // No-op
-    }
-
-    public void HandleSecondaryAttack(Vector2 direction, float stateDuration)
-    {
-        // No-op
+        if (direction.LengthSquared() >= 0.0001f)
+        {
+            _player.Velocity = direction * _player.MoveSpeedStat;
+            // Do not change the sprite
+        }
     }
 }

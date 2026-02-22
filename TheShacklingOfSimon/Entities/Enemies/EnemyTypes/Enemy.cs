@@ -49,7 +49,7 @@ public class Enemy : DamageableEntity, IEnemy
     {
         // Simple pathfinding logic: move directly towards the target
         Vector2 direction = targetPosition - Position;
-        if (direction.Length() > 0.0001f)
+        if (direction.LengthSquared() > 0.0001f)
         {
             direction.Normalize();
         }
@@ -64,7 +64,7 @@ public class Enemy : DamageableEntity, IEnemy
     public override void Update(GameTime delta)
     {
         // Movement logic
-        if (_movementInput.Length() > 0.0001f)
+        if (_movementInput.LengthSquared() > 0.0001f)
         {
             _movementInput.Normalize();
         }
@@ -72,7 +72,7 @@ public class Enemy : DamageableEntity, IEnemy
         _movementInput = Vector2.Zero;
         
         // Attack logic
-        if (_attack.Length() > 0.0001f)
+        if (_attack.LengthSquared() > 0.0001f)
         {
             CurrentState.HandleAttack(_attack, AttackDamage, AttackCooldown, AttackRange);
         }

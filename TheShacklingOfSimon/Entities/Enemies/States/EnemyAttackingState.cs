@@ -14,7 +14,7 @@ public class EnemyAttackingState : IEnemyState
     {
         _enemy = enemy;
         // Default to looking down
-        _direction = (attackInput.Length() < 0.0001f) ? new Vector2(0, 1) : attackInput;
+        _direction = (attackInput.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : attackInput;
     }
     public void Enter()
     {

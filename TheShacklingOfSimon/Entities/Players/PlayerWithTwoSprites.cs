@@ -37,7 +37,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     
     // Use explicit interface implementation 
     [Obsolete("Error: PlayerWithTwoSprites does not use Sprite property. Use BodySprite or HeadSprite instead.", true)]
-    ISprite IEntity.Sprite
+    public new ISprite Sprite
     {
         get => BodySprite;
         set => BodySprite = value;
@@ -205,8 +205,8 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         // Case for player dying
         if (Health <= 0)
         {
-            ChangeHeadState(new PlayerHeadDeadState(this));
-            ChangeBodyState(new PlayerBodyDeadState(this, ...));
+            // ChangeHeadState(new PlayerHeadDeadState(this));
+            // ChangeBodyState(new PlayerBodyDeadState(this, ...));
         }
         
         // If not dead, then damaged
@@ -217,7 +217,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public override void Update(GameTime delta)
     {
         // Movement logic
-        if (_movementInput.Length() > 0.0001f)
+        if (_movementInput.LengthSquared() > 0.0001f)
         {
             _movementInput.Normalize();
         }
@@ -225,11 +225,11 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         _movementInput = Vector2.Zero;
         
         // Attack logic
-        if (_primaryAttackInput.Length() > 0.0001f)
+        if (_primaryAttackInput.LengthSquared() > 0.0001f)
         {
             CurrentHeadState.HandlePrimaryAttack(_primaryAttackInput, PrimaryAttackCooldown);
         }
-        if (_secondaryAttackInput.Length() > 0.0001f)
+        if (_secondaryAttackInput.LengthSquared() > 0.0001f)
         {
             CurrentHeadState.HandleSecondaryAttack(_secondaryAttackInput, SecondaryAttackCooldown);
         }
@@ -253,9 +253,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
             flip = SpriteEffects.FlipHorizontally;
         }
 
-        if (Sprite != null)
+        if (BodySprite != null)
         {
-            Sprite.Draw(spriteBatch, Position, Color.White, 0.0f,
+            BodySprite.Draw(spriteBatch, Position, Color.White, 0.0f,
                         new Vector2(0, 0), 1.0f, flip, 0.0f);
         }
 
