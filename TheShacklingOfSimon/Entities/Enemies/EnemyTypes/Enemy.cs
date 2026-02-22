@@ -1,17 +1,19 @@
+using System.Numerics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies.States;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using TheShacklingOfSimon.Weapons;
 
 
-namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
+namespace TheShacklingOfSimon.Entities.Enemies;
 
 public class Enemy : DamageableEntity, IEnemy
 {    
     public IEnemyState CurrentState { get; private set; }
+    public IWeapon GetWeapon { get; private set; }
 
     public float MoveSpeedStat { get; set; }
-    public float AttackDamage{ get; set; }
     public float AttackCooldown { get; set; }
     public float AttackRange { get; set; }
 
@@ -19,14 +21,7 @@ public class Enemy : DamageableEntity, IEnemy
     private Vector2 _attack;
 
     public Enemy(Vector2 startPosition)
-    {
-        // IEntity properties
-        Position = startPosition;
-        Velocity = Vector2.Zero;
-        IsActive = true;
-        // Arbitrarily sized hitbox of 20x20
-        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 20, 20);
-        
+    {   
         // IDamageable properties
         this.Health = 3;
         this.MaxHealth = 3;
@@ -34,18 +29,32 @@ public class Enemy : DamageableEntity, IEnemy
         // Enemy properties
         
         // These can all be overriden with public set method
-        this.MoveSpeedStat = 20.0f;
+        this.MoveSpeedStat = 5.0f;
         this.AttackCooldown = 0.2f;
         this.AttackRange = 50.0f;
-        this.AttackDamage = 1.0f;
         
-        this.CurrentState = new EnemyIdleState(this, Velocity);
+        Reset(startPosition);
+    }
+
+    public void Reset(Vector2 startPosition)
+    {
+        Position = startPosition;
+        Velocity = Vector2.Zero;
+        IsActive = true;
+        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 20, 20);
+        Health = MaxHealth;
+        ChangeState(new EnemyIdleState(this, GetWeapon, Velocity));
         this.CurrentState.Enter();
         this._movementInput = Vector2.Zero;
         this._attack = Vector2.Zero;
     }
 
-    public Vector2 Pathfind(Vector2 targetPosition)
+    public void FindTarget()
+    {
+        // Placeholder for target finding logic, e.g., find the player or other entities
+    }
+
+    public void Pathfind(Vector2 targetPosition)
     {
         // Simple pathfinding logic: move directly towards the target
         Vector2 direction = targetPosition - Position;
@@ -53,7 +62,7 @@ public class Enemy : DamageableEntity, IEnemy
         {
             direction.Normalize();
         }
-        return direction * MoveSpeedStat;
+        _movementInput += direction * MoveSpeedStat;
     }
 
     public void RegisterAttack(Vector2 direction)
@@ -64,6 +73,7 @@ public class Enemy : DamageableEntity, IEnemy
     public override void Update(GameTime delta)
     {
         // Movement logic
+        Pathfind(Position + new Vector2(0.01f, 0.01f)); // This will be replaced with actual target position in a real implementation
         if (_movementInput.LengthSquared() > 0.0001f)
         {
             _movementInput.Normalize();
@@ -74,7 +84,7 @@ public class Enemy : DamageableEntity, IEnemy
         // Attack logic
         if (_attack.LengthSquared() > 0.0001f)
         {
-            CurrentState.HandleAttack(_attack, AttackDamage, AttackCooldown, AttackRange);
+            CurrentState.HandleAttack(_attack, AttackCooldown);
         }
 
         _attack = Vector2.Zero;

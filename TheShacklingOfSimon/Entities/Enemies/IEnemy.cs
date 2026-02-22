@@ -33,15 +33,15 @@ public interface IEnemy : IDamageable
     
     // IEnemy-implementing classes will act as the context for the State pattern
     IEnemyState CurrentState { get; }
-
+    
     float MoveSpeedStat { get; set; }
-    float AttackDamage{ get; set; }
     float AttackCooldown { get; set; }
     float AttackRange { get; set; }
 
     // are attacks specialized to each enemy or considered weapons
     //void Attack(Vector2 direction, float attackDamage, float attackCooldown, float attackRange);
-    Vector2 Pathfind(Vector2 targetPosition);
+    void FindTarget();
+    void Pathfind(Vector2 targetPosition);
     void RegisterAttack(Vector2 direction);
     void ChangeState(IEnemyState newState);
 }

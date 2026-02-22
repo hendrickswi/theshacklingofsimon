@@ -1,17 +1,19 @@
 using System;
 using Microsoft.Xna.Framework;
-using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.Weapons;
 
 namespace TheShacklingOfSimon.Entities.Enemies.States;
 
 public class EnemyMovingState : IEnemyState
 {
-    private Enemy _enemy;
+    private IEnemy _enemy;
+    private IWeapon _weapon;
+    private Vector2 _direction;
     private string _currentAnimation;
     private Vector2 _lookingDirection;
 
-    public EnemyMovingState(Enemy enemy, Vector2 lastDirection)
+    public EnemyMovingState(IEnemy enemy, Vector2 lastDirection)
     {
         _enemy = enemy;
         // Default to looking down
@@ -34,18 +36,15 @@ public class EnemyMovingState : IEnemyState
 
     public void HandleMovement(Vector2 direction)
     {
-        if (direction != Vector2.Zero)
-        {
-            _enemy.ChangeState(new EnemyMovingState(_enemy, direction));
-        }
+        // no-op
     }
 
-    public void HandleAttack(Vector2 attackInput, float attackDamage, float attackCooldown, float attackRange)
+    public void HandleAttack(Vector2 direction, float stateDuration)
     {
-        Vector2 cardinal = GetCardinalDirection(attackInput);
-        if (attackInput != Vector2.Zero)
+        Vector2 cardinal = GetCardinalDirection(direction);
+        if (direction != Vector2.Zero)
         {
-            _enemy.ChangeState(new EnemyAttackingState(_enemy, cardinal, attackDamage, attackCooldown, attackRange));
+            _enemy.ChangeState(new EnemyAttackingState(_enemy, _weapon, direction, stateDuration));
         }
     }
 

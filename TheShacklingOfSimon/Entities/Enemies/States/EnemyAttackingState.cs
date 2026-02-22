@@ -1,27 +1,30 @@
-using System;
 using Microsoft.Xna.Framework;
-using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
+using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.Weapons;
 
 namespace TheShacklingOfSimon.Entities.Enemies.States;
 
 public class EnemyAttackingState : IEnemyState
 {
-    private Enemy _enemy;
+    private IEnemy _enemy;
+    private IWeapon _weapon;
     private Vector2 _direction;
+    private float _timer;
+    private readonly float _stateDuration;
 
-    public EnemyAttackingState(Enemy enemy, Vector2 attackInput, float attackDamage, float attackCooldown, float attackRange)
+    public EnemyAttackingState(IEnemy enemy, IWeapon weapon, Vector2 direction, float stateDuration)
     {
         _enemy = enemy;
+        _weapon = weapon;
+        _stateDuration = stateDuration;
         // Default to looking down
-        _direction = (attackInput.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : attackInput;
+        _direction = (direction.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : direction;
     }
     public void Enter()
     {
-        // _direction is already "cardinalized" from PlayerHeadIdleState
-
-        // could implement as weapons not being specialized to one enemy
-        //_weapon.Fire(_player.Position, _direction, new ProjectileStats(1.0f * _player.DamageMultiplierStat, 20.0f));
+        // _direction is already "cardinalized" from PlayerHeadIdleState consider changing to match movement direction
+        _weapon.Fire(_enemy.Position, _direction, new ProjectileStats(1.0f, 200.0f));
 
         string spriteAnimationName = "EnemyAttack";
 
@@ -35,7 +38,15 @@ public class EnemyAttackingState : IEnemyState
 
     public void Update(GameTime delta)
     {
-        _enemy.Sprite.Update(delta);
+        _timer += (float)delta.ElapsedGameTime.TotalSeconds;
+        if (_timer >= _stateDuration)
+        {
+            _enemy.ChangeState(new EnemyIdleState(_enemy, _weapon, Vector2.Zero));
+        }
+        else
+        {
+            _enemy.Sprite.Update(delta);
+        }
     }
 
     public void HandleMovement(Vector2 direction)
@@ -46,29 +57,8 @@ public class EnemyAttackingState : IEnemyState
         }
     }
 
-    public void HandleAttack(Vector2 attackInput, float attackDamage, float attackCooldown, float attackRange)
+    public void HandleAttack(Vector2 direction, float stateDuration)
     {
-        Vector2 cardinal = GetCardinalDirection(attackInput);
-        if (attackInput != Vector2.Zero)
-        {
-            _enemy.ChangeState(new EnemyAttackingState(_enemy, cardinal, attackDamage, attackCooldown, attackRange));
-        }
-    }
-
-    private Vector2 GetCardinalDirection(Vector2 input)
-    {
-        Vector2 cardinal = Vector2.Zero;
-        if (Math.Sqrt(input.X * input.X + input.Y * input.Y) > float.Epsilon)
-        {
-            if (Math.Abs(input.X) > Math.Abs(input.Y))
-            {
-                cardinal = new Vector2(Math.Sign(input.X), 0);
-            }
-            else
-            {
-                cardinal = new Vector2(0, Math.Sign(input.Y));
-            }
-        }
-        return cardinal;
+        // no-op
     }
 }

@@ -8,5 +8,5 @@ public interface IEnemyState
     void Exit();
     void Update(GameTime delta);
     void HandleMovement(Vector2 movementInput);
-    void HandleAttack(Vector2 attackInput, float attackDamage, float attackCooldown, float attackRange);
+    void HandleAttack(Vector2 direction, float stateDuration);
 }
