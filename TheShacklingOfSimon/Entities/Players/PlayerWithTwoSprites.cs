@@ -49,6 +49,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public float ProjectileSpeedMultiplierStat { get; set; }
     public float SecondaryAttackCooldown { get; set; }
     public float MovementFrameDuration { get; set; }
+    public float InvulnerabilityDuration { get; set; }
     
     private readonly Vector2 _headOffset = new Vector2(-4.75f, -16);
     private Vector2 _movementInput;
@@ -68,7 +69,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         this.Health = 6;
         this.MaxHealth = 6;
         
-        // Player properties
+        // Player properties--default
         // These can all be overriden with public set method
         this.DamageMultiplierStat = 1.0f;
         this.MoveSpeedStat = 100.0f;
@@ -76,7 +77,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         this.ProjectileSpeedMultiplierStat = 1.0f;
         this.SecondaryAttackCooldown = 1.5f;
         this.MovementFrameDuration = 0.1f;
+        this.InvulnerabilityDuration = 0.2f;
         this.Inventory = new Inventory();
+        
         /*
          * Other properties such as CurrentPrimaryWeapon set by public methods
          * after instantiation 
@@ -193,6 +196,22 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         Position = worldPosition;
         Velocity = Vector2.Zero; // stop sliding after teleport
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 30, 30);
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
+        
+        // Case for player dying
+        if (Health <= 0)
+        {
+            ChangeHeadState(new PlayerHeadDeadState(this));
+            ChangeBodyState(new PlayerBodyDeadState(this, ...));
+        }
+        
+        // If not dead, then damaged
+        ChangeHeadState(new PlayerHeadDamagedState(this));
+        ChangeBodyState(new PlayerBodyDamagedState(this, InvulnerabilityDuration));
     }
 
     public override void Update(GameTime delta)
