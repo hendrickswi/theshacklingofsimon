@@ -15,7 +15,7 @@ public class PlayerBodyIdleState : IPlayerBodyState
     public void Enter()
     {
         _player.Velocity = Vector2.Zero;
-        _player.Sprite = SpriteFactory.Instance.CreateStaticSprite("PlayerBodyIdle");
+        _player.BodySprite = SpriteFactory.Instance.CreateStaticSprite("PlayerBodyIdle");
     }
 
     public void Exit()
@@ -28,7 +28,7 @@ public class PlayerBodyIdleState : IPlayerBodyState
 
     public void Update(GameTime delta)
     {
-        _player.Sprite.Update(delta);
+        _player.BodySprite.Update(delta);
     }
 
     public void HandleMovement(Vector2 direction, float frameDuration)

@@ -33,10 +33,15 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
      *      as opposed to a ShootingMoving combined state.
      */
     public ISprite HeadSprite { get; set; }
-    /*
-     * Sprite property inherited from IEntity
-     * Sprite is arbitrarily the body sprite in this class.
-     */ 
+    public ISprite BodySprite { get; set; }
+    
+    // Use explicit interface implementation 
+    [Obsolete("Error: PlayerWithTwoSprites does not use Sprite property. Use BodySprite or HeadSprite instead.", true)]
+    ISprite IEntity.Sprite
+    {
+        get => BodySprite;
+        set => BodySprite = value;
+    }
 
     public float MoveSpeedStat { get; set; }
     public float DamageMultiplierStat { get; set; }

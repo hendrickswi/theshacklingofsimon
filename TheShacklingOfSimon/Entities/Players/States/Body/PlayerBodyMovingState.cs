@@ -30,7 +30,7 @@ public class PlayerBodyMovingState : IPlayerBodyState
     
     public void Update(GameTime delta)
     {
-        _player.Sprite.Update(delta);
+        _player.BodySprite.Update(delta);
     }
 
     public void HandleMovement(Vector2 direction, float frameDuration)
@@ -67,7 +67,7 @@ public class PlayerBodyMovingState : IPlayerBodyState
 
         if (newAnimationName != _currentAnimation)
         {
-            _player.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, _animationSpeed);
+            _player.BodySprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, _animationSpeed);
             _currentAnimation = newAnimationName;
         }
     }
