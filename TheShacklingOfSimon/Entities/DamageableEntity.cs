@@ -25,7 +25,7 @@ public abstract class DamageableEntity : IDamageable
     public abstract void Draw(SpriteBatch spriteBatch);
     
     // Methods from IDamageable
-    public void TakeDamage(int amt)
+    public virtual void TakeDamage(int amt)
     {
         Health -= amt;
         if (Health <= 0)
@@ -34,7 +34,7 @@ public abstract class DamageableEntity : IDamageable
         }
     }
 
-    public void Heal(int amt)
+    public virtual void Heal(int amt)
     {
         if (Health + amt <= MaxHealth)
         {
@@ -45,8 +45,7 @@ public abstract class DamageableEntity : IDamageable
             Health = MaxHealth;
         }
     }
-
-    // Likely to be overriden by DamageableEntity-extending classes
+    
     public virtual void Discontinue()
     {
         IsActive = false;
