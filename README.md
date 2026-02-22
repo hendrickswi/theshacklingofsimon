@@ -19,4 +19,3 @@ SPACE to use the currently selected item<br>
 E to cause player to take damage (6 times for death)<br>
 
 Known bugs:<br>
-Memory usage is extremely high for projectiles. Caused by: not using a object pool or simply dereferencing the projectiles when they are unused
