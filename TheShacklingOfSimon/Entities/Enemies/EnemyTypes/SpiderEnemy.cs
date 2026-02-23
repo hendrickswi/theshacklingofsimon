@@ -3,12 +3,16 @@ using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies.States;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using TheShacklingOfSimon.Weapons;
+using TheShacklingOfSimon.Sprites.Factory;
+using System;
+using TheShacklingOfSimon.Sprites.Products;
 
 
 namespace TheShacklingOfSimon.Entities.Enemies;
 
-public class Enemy : DamageableEntity, IEnemy
+public class SpiderEnemy : DamageableEntity, IEnemy
 {    
+
     public IEnemyState CurrentState { get; private set; }
     public IWeapon Weapon { get; private set; }
 
@@ -19,7 +23,7 @@ public class Enemy : DamageableEntity, IEnemy
     private Vector2 _movementInput;
     private Vector2 _attack;
 
-    public Enemy(Vector2 startPosition)
+    public SpiderEnemy(Vector2 startPosition)
     {   
         // IDamageable properties
         this.Health = 3;
@@ -28,9 +32,12 @@ public class Enemy : DamageableEntity, IEnemy
         // Enemy properties
         
         // These can all be overriden with public set method
-        this.MoveSpeedStat = 5.0f;
+        this.MoveSpeedStat = 17.0f;
         this.AttackCooldown = 0.2f;
         this.AttackRange = 50.0f;
+        this.Weapon = new BasicWeapon(new Projectiles.ProjectileManager());
+
+        this.Sprite = SpriteFactory.Instance.CreateStaticSprite("EnemyIdleDown");
         
         Reset(startPosition);
     }
@@ -42,7 +49,7 @@ public class Enemy : DamageableEntity, IEnemy
         IsActive = true;
         Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 20, 20);
         Health = MaxHealth;
-        ChangeState(new EnemyIdleState(this, Velocity));
+        this.CurrentState = new EnemyIdleState(this, Velocity);
         this.CurrentState.Enter();
         this._movementInput = Vector2.Zero;
         this._attack = Vector2.Zero;
@@ -94,19 +101,23 @@ public class Enemy : DamageableEntity, IEnemy
 
         // Movement logic
         Pathfind(targetPosition);
+        _movementInput = new Vector2(0.5f, 0f); // for testing
         if (_movementInput.LengthSquared() > 0.0001f)
         {
             _movementInput.Normalize();
         }
+        Velocity = _movementInput * MoveSpeedStat; // <-- apply velocity
         CurrentState.HandleMovement(_movementInput);
         _movementInput = Vector2.Zero;
         
         // Attack logic
+        /*
         if (targetPosition.LengthSquared() > 0.0001f)
         {
             RegisterAttack(targetPosition);
             CurrentState.HandleAttack(_attack, AttackCooldown);
         }
+        */
 
         _attack = Vector2.Zero;
         
@@ -137,9 +148,9 @@ public class Enemy : DamageableEntity, IEnemy
     {
         if (CurrentState != newState)
         {
-            CurrentState.Exit();
+            CurrentState?.Exit();
             CurrentState = newState;
-            CurrentState.Enter();
+            CurrentState?.Enter();
         }
     }
 }

@@ -13,10 +13,10 @@ public class EnemyAttackingState : IEnemyState
     private float _timer;
     private readonly float _stateDuration;
 
-    public EnemyAttackingState(IEnemy enemy, IWeapon weapon, Vector2 direction, float stateDuration)
+    public EnemyAttackingState(IEnemy enemy, Vector2 direction, float stateDuration)
     {
         _enemy = enemy;
-        _weapon = weapon;
+        _weapon = enemy.Weapon;
         _stateDuration = stateDuration;
         // Default to looking down
         _direction = (direction.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : direction;
@@ -41,7 +41,7 @@ public class EnemyAttackingState : IEnemyState
         _timer += (float)delta.ElapsedGameTime.TotalSeconds;
         if (_timer >= _stateDuration)
         {
-            _enemy.ChangeState(new EnemyIdleState(_enemy, _weapon, Vector2.Zero));
+            _enemy.ChangeState(new EnemyIdleState(_enemy, Vector2.Zero));
         }
         else
         {

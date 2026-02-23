@@ -17,6 +17,9 @@
 
         <Content Include="Content\PlayerDefaultSprite.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory> </Content>
+
+        <Content Include="Content\SpiderEnemy.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory> </Content>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Icon.ico">

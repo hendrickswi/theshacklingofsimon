@@ -8,16 +8,15 @@ namespace TheShacklingOfSimon.Entities.Enemies.States;
 public class EnemyMovingState : IEnemyState
 {
     private IEnemy _enemy;
-    private IWeapon _weapon;
-    private Vector2 _direction;
     private string _currentAnimation;
-    private Vector2 _lookingDirection;
+    private Vector2 _direction;
 
     public EnemyMovingState(IEnemy enemy, Vector2 lastDirection)
     {
         _enemy = enemy;
         // Default to looking down
-        _lookingDirection = (lastDirection.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : lastDirection;
+        _direction = (lastDirection.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : lastDirection;
+        _enemy.Velocity = _direction * _enemy.MoveSpeedStat;
     }
     public void Enter()
     {
@@ -31,12 +30,21 @@ public class EnemyMovingState : IEnemyState
 
     public void Update(GameTime delta)
     {
-        _enemy.Sprite.Update(delta);
+        _enemy.Sprite?.Update(delta);
     }
 
     public void HandleMovement(Vector2 direction)
     {
-        // no-op
+        if (direction.LengthSquared() < 0.0001f)
+        {
+            _enemy.Velocity = Vector2.Zero;
+            _enemy.ChangeState(new EnemyIdleState(_enemy, direction));
+        }
+        else
+        {
+            _enemy.Velocity = direction * _enemy.MoveSpeedStat;
+            UpdateSprite();
+        }
     }
 
     public void HandleAttack(Vector2 direction, float stateDuration)
@@ -44,13 +52,13 @@ public class EnemyMovingState : IEnemyState
         Vector2 cardinal = GetCardinalDirection(direction);
         if (direction != Vector2.Zero)
         {
-            _enemy.ChangeState(new EnemyAttackingState(_enemy, _weapon, direction, stateDuration));
+            _enemy.ChangeState(new EnemyAttackingState(_enemy, cardinal, stateDuration));
         }
     }
 
     private void UpdateSprite()
     {
-        string newAnimationName = "EnemyWalkVertical";
+        string newAnimationName = "EnemyWalkRight";
         
         /*
          * Walking animation is horizontally biased.
@@ -65,6 +73,7 @@ public class EnemyMovingState : IEnemyState
         {
             newAnimationName = "EnemyWalkLeft";
         }
+        /* for testing
         else if (_enemy.Velocity.Y < 0)
         {
             newAnimationName = "EnemyWalkUp";
@@ -73,6 +82,7 @@ public class EnemyMovingState : IEnemyState
         {
             newAnimationName = "EnemyWalkDown";
         }
+        */
 
         if (newAnimationName != _currentAnimation)
         {

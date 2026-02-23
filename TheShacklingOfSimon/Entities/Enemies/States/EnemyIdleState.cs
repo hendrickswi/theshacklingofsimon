@@ -12,10 +12,10 @@ public class EnemyIdleState : IEnemyState
     private Vector2 _direction;
     private string _currentAnimation;
 
-    public EnemyIdleState(IEnemy enemy, IWeapon weapon, Vector2 direction)
+    public EnemyIdleState(IEnemy enemy, Vector2 direction)
     {
         _enemy = enemy;
-        _weapon = weapon;
+        _weapon = _enemy.Weapon;
         // Default to looking down
         _direction = (direction.LengthSquared() < 0.0001f) ? new Vector2(0, 1) : direction;
     }
@@ -47,7 +47,7 @@ public class EnemyIdleState : IEnemyState
         Vector2 cardinal = GetCardinalDirection(direction);
         if (direction != Vector2.Zero)
         {
-            _enemy.ChangeState(new EnemyAttackingState(_enemy, _weapon, cardinal, stateDuration));
+            _enemy.ChangeState(new EnemyAttackingState(_enemy, cardinal, stateDuration));
 
         }
     }
@@ -55,6 +55,7 @@ public class EnemyIdleState : IEnemyState
     private void UpdateSprite()
     {
         string newAnimationName = "EnemyIdleDown";
+        /* for testing
         Vector2 cardinal = GetCardinalDirection(_direction);
         
         if (cardinal == Vector2.UnitX)
@@ -69,10 +70,10 @@ public class EnemyIdleState : IEnemyState
         {
             newAnimationName = "EnemyIdleUp";
         }
-
+        */
         if (newAnimationName != _currentAnimation)
         {
-            _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
+            _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(newAnimationName);
             _currentAnimation = newAnimationName;
         }
     }

@@ -12,6 +12,7 @@ using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Input;
@@ -44,6 +45,8 @@ public class Game1 : Game
 	private List<IEntity> _entities;
 	private ProjectileManager _projectileManager; //_projectileManager = new ProjectileManager();
 
+	//temp for enemy
+	private IEnemy _spiderEnemy;
 
 
 	public Game1()
@@ -76,6 +79,9 @@ public class Game1 : Game
 		// Load Player Sprites into factory 
 		SpriteFactory.Instance.LoadTexture(Content, "PlayerDefaultSprite.json", "player");
 
+		// Load Enemy Sprites into factory
+		SpriteFactory.Instance.LoadTexture(Content, "SpiderEnemy.json", "SpiderEnemy");
+
 		// Load Projectile Sprites and Manager_projectileManager.Update(delta);
 
 		_projectileManager = new ProjectileManager();
@@ -105,6 +111,8 @@ public class Game1 : Game
         _player.AddItemToInventory(new TeleportItem(_player, pos => true));
         _player.AddItemToInventory(new AdrenalineItem(_player));
 
+		_spiderEnemy = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f));
+		_entities.Add(_spiderEnemy);
 
         //load Item Sprites and manager
         SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");
