@@ -1,0 +1,19 @@
+Author: Rushikh Mungara
+Date: 2/21/2026
+Sprint 2
+File(s) being reviewed:TileMap.cs Room.cs RoomFactory.cs RoomManager.cs RoomConstants.cs RoomFileData.cs
+Author of files:Akrem Ramadan 
+
+Comments:
+TileMap.cs is currently handling multiple responsibilities: tile storage, update logic, draw logic, collision queries, and tile creation. While the implementation is clean and readable, the inclusion of CreateTile() introduces coupling between TileMap and concrete tile types (RockTile, HoleTile) as well as SpriteFactory. This slightly violates the Single Responsibility Principle and may reduce scalability if additional tile types are introduced.
+The use of string-based tile identifiers in CreateTile(string tileType, Point gridPos) introduces potential fragility. Typos or mismatched string values could cause runtime errors. A more type-safe approach (such as an enum or a dedicated TileFactory) would reduce error risk and improve maintainability.
+The collision helper method GetTilesIntersecting(Rectangle rect) is efficient and well-designed; however, care should be taken with rectangle boundary calculations to avoid potential off-by-one issues due to how Rectangle.Right and Rectangle.Bottom behave in MonoGame.
+The sparse tile storage using Dictionary<Point, ITile> is an effective optimization choice, as it avoids storing floor tiles and reduces unnecessary iteration. This is a strong architectural decision and improves performance.
+
+Suggested changes:
+Extract tile creation logic from TileMap into a dedicated TileFactory class. TileMap should focus solely on grid storage, updating, drawing, and querying tiles. RoomFactory (or a loader class) can then use TileFactory to construct tiles before placing them into the TileMap.
+Replace string-based tile type identifiers with a safer alternative:
+Introduce a TileType enum, or
+Use a registry-based TileFactory pattern to map identifiers to constructors.
+Adjust collision boundary calculations in GetTilesIntersecting() to ensure correct behavior:
+
