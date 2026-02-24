@@ -2,12 +2,12 @@ using TheShacklingOfSimon.Entities.Players;
 
 namespace TheShacklingOfSimon.Commands.Temporary_Commands;
 
-public class TriggerPlayerDamagedState : ICommand
+public class TriggerPlayerDamagedStateCommand : ICommand
 {
     private readonly IPlayer _player;
     private readonly int _dmg;
 
-    public TriggerPlayerDamagedState(IPlayer player, int dmg)
+    public TriggerPlayerDamagedStateCommand(IPlayer player, int dmg)
     {
         _player = player;
         _dmg = dmg;

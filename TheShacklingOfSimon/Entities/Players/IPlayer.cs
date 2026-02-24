@@ -48,13 +48,9 @@ public interface IPlayer : IDamageable
     float SecondaryAttackCooldown { get; set; }
     
     void AddWeaponToInventory(IWeapon weapon);
-
     IWeapon RemoveWeaponFromInventory(int pos);
-
     void AddItemToInventory(IItem item);
-
     IItem RemoveItemFromInventory(int pos);
-    
     void EquipItem(int pos);
     void EquipPrimaryWeapon(int pos);
     void EquipSecondaryWeapon(int pos);
@@ -63,7 +59,8 @@ public interface IPlayer : IDamageable
     void RegisterPrimaryAttackInput(Vector2 direction);
     void RegisterSecondaryAttackInput(Vector2 direction);
 
-    void TeleportTo(Vector2 worldPosition);
+    void SetPosition(Vector2 worldPosition);
+    void Reset(Vector2 startPosition);
 
     void ChangeState(IPlayerState newState);
 }

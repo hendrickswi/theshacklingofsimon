@@ -60,41 +60,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
     public PlayerWithTwoSprites(Vector2 startPosition)
     {
-        // IEntity properties
-        this.Position = startPosition;
-        this.Velocity = Vector2.Zero;
-        this.IsActive = true;
-        // Arbitrarily sized hitbox of 30x30
-        this.Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 30, 30);
-        
-        // IDamageable properties
-        this.Health = 6;
-        this.MaxHealth = 6;
-        
-        // Player property defaults
-        // These can all be overriden with public set method
-        this.DamageMultiplierStat = 1.0f;
-        this.MoveSpeedStat = 100.0f;
-        this.PrimaryAttackCooldown = 0.5f;
-        this.ProjectileSpeedMultiplierStat = 1.0f;
-        this.SecondaryAttackCooldown = 1.5f;
-        this.MovementFrameDuration = 0.05f;
-        this.DeathFrameDuration = 1.0f;
-        this.InvulnerabilityDuration = 0.333334f;
-        this.Inventory = new Inventory();
-        
-        /*
-         * Other properties such as CurrentPrimaryWeapon set by public methods
-         * after instantiation 
-         */
-        
-        this.CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
-        this.CurrentBodyState = new PlayerBodyIdleState(this);
-        this.CurrentHeadState.Enter();
-        this.CurrentBodyState.Enter();
-        this._movementInput = Vector2.Zero;
-        this._primaryAttackInput = Vector2.Zero;
-        this._secondaryAttackInput = Vector2.Zero;
+        Initialize(startPosition);
     }
 
     public void AddWeaponToInventory(IWeapon weapon)
@@ -194,7 +160,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         }
     }
 
-    public void TeleportTo(Vector2 worldPosition)
+    public void SetPosition(Vector2 worldPosition)
     {
         Position = worldPosition;
         Velocity = Vector2.Zero; // stop sliding after teleport
@@ -223,7 +189,11 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
             ChangeHeadState(new PlayerHeadDamagedState(this));
             ChangeBodyState(new PlayerBodyDamagedState(this, InvulnerabilityDuration));
         }
-        
+    }
+
+    public void Reset(Vector2 startPosition)
+    {
+        Initialize(startPosition);
     }
 
     public override void Update(GameTime delta)
@@ -320,5 +290,49 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
                 throw new ArgumentException("newState must be of type IPlayerHeadState, IPlayerBodyState.");
             }
         }
+    }
+
+    private void Initialize(Vector2 startPosition)
+    {
+        /*
+         * Constructor logic moved here so Reset() can invoke
+         * constructor logic without duplicating code
+         */
+        
+        // IEntity properties
+        this.Position = startPosition;
+        this.Velocity = Vector2.Zero;
+        this.IsActive = true;
+        // Arbitrarily sized hitbox of 30x30
+        this.Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 30, 30);
+        
+        // IDamageable properties
+        this.Health = 6;
+        this.MaxHealth = 6;
+        
+        // Player property defaults
+        // These can all be overriden with public set method
+        this.DamageMultiplierStat = 1.0f;
+        this.MoveSpeedStat = 100.0f;
+        this.PrimaryAttackCooldown = 0.5f;
+        this.ProjectileSpeedMultiplierStat = 1.0f;
+        this.SecondaryAttackCooldown = 1.5f;
+        this.MovementFrameDuration = 0.05f;
+        this.DeathFrameDuration = 1.0f;
+        this.InvulnerabilityDuration = 0.333334f;
+        this.Inventory = new Inventory();
+        
+        /*
+         * Other properties such as CurrentPrimaryWeapon set by public methods
+         * after instantiation
+         */
+        
+        this.CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
+        this.CurrentBodyState = new PlayerBodyIdleState(this);
+        this.CurrentHeadState.Enter();
+        this.CurrentBodyState.Enter();
+        this._movementInput = Vector2.Zero;
+        this._primaryAttackInput = Vector2.Zero;
+        this._secondaryAttackInput = Vector2.Zero;
     }
 }

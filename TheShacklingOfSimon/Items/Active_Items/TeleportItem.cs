@@ -72,7 +72,7 @@ public class TeleportItem : IItem
                 if ((candidate - start).LengthSquared() < 0.0001f)
                     return;
 
-                Player.TeleportTo(candidate);
+                Player.SetPosition(candidate);
                 _cooldownTimer = _cooldownSeconds;
                 return;
             }

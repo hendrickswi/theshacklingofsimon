@@ -219,7 +219,15 @@ public class Game1 : Game
         // Temporary key for triggering player damaged and deadstate for sprint 2
         _keyboardController.RegisterCommand(
 	        new KeyboardInput(InputState.Pressed, KeyboardButton.E),
-	        new TriggerPlayerDamagedState(_player, 1)
+	        new TriggerPlayerDamagedStateCommand(_player, 1)
+	        );
+        
+        // Temporary key for triggering player Reset() for sprint 2
+        _keyboardController.RegisterCommand(
+	        new KeyboardInput(InputState.Pressed, KeyboardButton.R),
+	        new ResetPlayerCommand(_player, 
+		        new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f)
+		        )
 	        );
 
 //Mouse controls
