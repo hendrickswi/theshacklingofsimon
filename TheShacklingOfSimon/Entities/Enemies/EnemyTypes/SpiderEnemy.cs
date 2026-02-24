@@ -18,6 +18,7 @@ public class SpiderEnemy : DamageableEntity, IEnemy
 
     public float MoveSpeedStat { get; set; }
     public float AttackCooldown { get; set; }
+    private float _attackTimer;
     public float AttackRange { get; set; }
 
     private Vector2 _movementInput;
@@ -39,7 +40,8 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         
         // These can all be overriden with public set method
         this.MoveSpeedStat = 17.0f;
-        this.AttackCooldown = 0.2f;
+        this.AttackCooldown = 3000.0f;
+        _attackTimer = 0f;
         this.AttackRange = 50.0f;
         this.Weapon = new BasicWeapon(new Projectiles.ProjectileManager());
 
@@ -67,10 +69,8 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         return Position + new Vector2(100, 0); // This will be replaced with actual target finding logic in a real implementation
     }
 
-    private void Wander(GameTime delta)
+    private void Wander(float dt)
     {
-        float dt = (float)delta.ElapsedGameTime.TotalSeconds;
-        
         _wanderTimer -= dt;
 
         if (_wanderTimer <= 0f)
@@ -123,13 +123,14 @@ public class SpiderEnemy : DamageableEntity, IEnemy
 
     public override void Update(GameTime delta)
     {
+        float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         // Find target
         //Vector2 targetPosition = FindTarget();
 
         // Movement logic
         //Pathfind(targetPosition);
         //_movementInput = new Vector2(0.5f, 0f); // for testing
-        Wander(delta);
+        Wander(dt);
         if (_movementInput.LengthSquared() > 0.0001f)
         {
             _movementInput.Normalize();
@@ -139,6 +140,14 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         _movementInput = Vector2.Zero;
         
         // Attack logic
+        _attackTimer -= dt;
+        if (_attackTimer < 0f)
+            _attackTimer = 0f;
+        if (_attackTimer <= 0f)
+        {
+            CurrentState.HandleAttack(Velocity, AttackCooldown);
+            _attackTimer = AttackCooldown; // reset cooldown
+        }
         /*
         if (targetPosition.LengthSquared() > 0.0001f)
         {
@@ -149,7 +158,6 @@ public class SpiderEnemy : DamageableEntity, IEnemy
 
         _attack = Vector2.Zero;
         
-        float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);
         

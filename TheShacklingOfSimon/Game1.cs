@@ -46,8 +46,10 @@ public class Game1 : Game
 	private ProjectileManager _projectileManager; //_projectileManager = new ProjectileManager();
 
 	//temp for enemy
+	private EnemyManager _enemyManager;
 	private IEnemy _spiderEnemy1;
 	private IEnemy _spiderEnemy2;
+	private IEnemy _spiderEnemy3;
 
 
 	public Game1()
@@ -113,9 +115,17 @@ public class Game1 : Game
         _player.AddItemToInventory(new AdrenalineItem(_player));
 
 		_spiderEnemy1 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f));
-		_entities.Add(_spiderEnemy1);
-		_spiderEnemy2 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.15f));
-		_entities.Add(_spiderEnemy2);
+		//_entities.Add(_spiderEnemy1);
+		_spiderEnemy2 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.15f, screenDimensions.Height * 0.15f));
+		//_entities.Add(_spiderEnemy2);
+		_spiderEnemy3 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.8f, screenDimensions.Height * 0.7f));
+		//_entities.Add(_spiderEnemy3);
+
+		//to allow for cycling through enemies
+		_enemyManager = new EnemyManager();
+		_enemyManager.AddEnemy(_spiderEnemy1);
+		_enemyManager.AddEnemy(_spiderEnemy2);
+		_enemyManager.AddEnemy(_spiderEnemy3);
 
         //load Item Sprites and manager
         SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");
@@ -161,6 +171,8 @@ public class Game1 : Game
 		_projectileManager.Draw(_spriteBatch);
 		_tileManager.Draw(_spriteBatch);
 		_itemManager.Draw(_spriteBatch);
+		_enemyManager.Update(delta);
+		_enemyManager.Draw(_spriteBatch);
 
 		foreach (IEntity e in _entities)
 		{
@@ -232,6 +244,15 @@ public class Game1 : Game
 		        new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f)
 		        )
 	        );
+
+		// Temporary keys for cycling through enemies for sprint 2
+		_keyboardController.RegisterCommand(
+			new KeyboardInput(InputState.JustPressed, KeyboardButton.O),
+			new NextEnemyCommand(_enemyManager));
+
+		_keyboardController.RegisterCommand(
+			new KeyboardInput(InputState.JustPressed, KeyboardButton.P),
+			new PreviousEnemyCommand(_enemyManager));
 
 //Mouse controls
         _mouseController.RegisterCommand(
