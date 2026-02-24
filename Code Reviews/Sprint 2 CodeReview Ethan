@@ -1,0 +1,19 @@
+Author: Ethan Chitturi
+Date: 2/23/2026
+Sprint 2
+File(s) being reviewed:IPlayer.cs, PlayerWithTwoSprites.cs, IPlayerState.cs, PlayerHeadIdleState.cs, PlayerHeadAttackingState.cs, IPlayerHeadState.cs, IPlayerBodyState.cs, PlayerBodyIdleState.cs, PlayerBodyMovingState.cs
+Author of files: William Hendricks
+
+Comments:
+1. IPlayer as it stands right now seems to have a separated methods relating to inventory handling for weapons and items. I am wondering if it is possible to cut down on these by implementing some logic for these into the inventory class itself. I checked the inventory class and it seems to be used as only a collection manager. Given that the only inventories in the game are player owned could it be possible to shift those methods from being player implemented to inventory implemented. For example if AddItemToInventory and AddWeapon are shortened to AddToInventory and have the Inventory class check which object is being added, or even just have an overloaded method.
+
+2. In PlayerWithTwoSprites update has the logic explicitly written in the method. This applies to my enemy.update as well but I am thinking if splitting the movement and attack logic into separate functions could make it feel a little easier to read. I was also thinking it would help cut down on the size of the PlayerWithTwoSprites file by making the current weapon/item properties stick into the inventory class. This might help with the previous idea of cutting down the separated methods.
+
+3. In PlayerHeadIdleState because the direction is already cardinalized when the state is created could we use that initial variable instead of recardinalizing it when HandleAttack is called? Could this be possible with the use in Update?
+
+Suggested changes:
+1. I would suggest to try and squeeze more use out of the inventory class in the ways mentioned before as it could help decrease the size of the PlayerWithTwoSprites.cs file a good chunk. It would also make any inventory changes or HUD implementation a little easier because of the decoupling.
+
+2. The update method in PlayerWithTwoSprites as mentioned above might be easier to read and change if it is spread into separate logic methods. This allows the update to look more like a series of method calls instead of including if statements.
+
+3. You mentioned this in my code review but I was unable to get to it as well (as this is especially important in enemies), but the abstraction of sprite calls will definitely play a factor in how easy it is to scale up the choices for players. It will also allow us to refactor some bits of the class into more general ones.

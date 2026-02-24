@@ -106,8 +106,9 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         _movementInput += direction * MoveSpeedStat;
     }
 
-    public void RegisterAttack(Vector2 targetDirection)
+    public void RegisterAttack(float dt, Vector2 targetDirection)
     {
+        /*
         if (targetDirection == Vector2.Zero)
         {
             _attack = Vector2.Zero;
@@ -119,14 +120,20 @@ public class SpiderEnemy : DamageableEntity, IEnemy
             direction.Normalize();
         }
         _attack += direction;
+        */
+        // Attack logic
+        _attackTimer -= dt;
+        if (_attackTimer < 0f)
+            _attackTimer = 0f;
+        if (_attackTimer <= 0f)
+        {
+            CurrentState.HandleAttack(Velocity, AttackCooldown);
+            _attackTimer = AttackCooldown; // reset cooldown
+        }
     }
 
-    public override void Update(GameTime delta)
+    public void RegisterMovement(float dt, Vector2 targetPosition)
     {
-        float dt = (float)delta.ElapsedGameTime.TotalSeconds;
-        // Find target
-        //Vector2 targetPosition = FindTarget();
-
         // Movement logic
         //Pathfind(targetPosition);
         //_movementInput = new Vector2(0.5f, 0f); // for testing
@@ -138,16 +145,15 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         Velocity = _movementInput * MoveSpeedStat; // <-- apply velocity
         CurrentState.HandleMovement(_movementInput);
         _movementInput = Vector2.Zero;
-        
-        // Attack logic
-        _attackTimer -= dt;
-        if (_attackTimer < 0f)
-            _attackTimer = 0f;
-        if (_attackTimer <= 0f)
-        {
-            CurrentState.HandleAttack(Velocity, AttackCooldown);
-            _attackTimer = AttackCooldown; // reset cooldown
-        }
+    }
+
+    public override void Update(GameTime delta)
+    {
+        float dt = (float)delta.ElapsedGameTime.TotalSeconds;
+        // Find target
+        //Vector2 targetPosition = FindTarget();
+        RegisterMovement(dt, new Vector2(0f, 0f)); // No specific target for now, just wander
+        RegisterAttack(dt, Position + Velocity); // Attack in the direction of movement for testing
         /*
         if (targetPosition.LengthSquared() > 0.0001f)
         {

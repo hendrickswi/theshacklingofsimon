@@ -45,6 +45,7 @@ public interface IEnemy : IDamageable
     //void Attack(Vector2 direction, float attackDamage, float attackCooldown, float attackRange);
     Vector2 FindTarget();
     void Pathfind(Vector2 targetPosition);
-    void RegisterAttack(Vector2 direction);
+    void RegisterMovement(float dt, Vector2 targetPosition);
+    void RegisterAttack(float dt, Vector2 targetDirection);
     void ChangeState(IEnemyState newState);
 }
