@@ -46,7 +46,8 @@ public class Game1 : Game
 	private ProjectileManager _projectileManager; //_projectileManager = new ProjectileManager();
 
 	//temp for enemy
-	private IEnemy _spiderEnemy;
+	private IEnemy _spiderEnemy1;
+	private IEnemy _spiderEnemy2;
 
 
 	public Game1()
@@ -111,8 +112,10 @@ public class Game1 : Game
         _player.AddItemToInventory(new TeleportItem(_player, pos => true));
         _player.AddItemToInventory(new AdrenalineItem(_player));
 
-		_spiderEnemy = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f));
-		_entities.Add(_spiderEnemy);
+		_spiderEnemy1 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f));
+		_entities.Add(_spiderEnemy1);
+		_spiderEnemy2 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.15f));
+		_entities.Add(_spiderEnemy2);
 
         //load Item Sprites and manager
         SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");

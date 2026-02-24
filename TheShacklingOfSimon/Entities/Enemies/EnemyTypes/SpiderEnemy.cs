@@ -23,6 +23,12 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     private Vector2 _movementInput;
     private Vector2 _attack;
 
+    // Wander variables
+    private static Random _rng = new Random();
+    private float _wanderTimer;
+    private float _wanderInterval = 1.5f;
+    private Vector2 _wanderDirection;
+
     public SpiderEnemy(Vector2 startPosition)
     {   
         // IDamageable properties
@@ -61,6 +67,27 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         return Position + new Vector2(100, 0); // This will be replaced with actual target finding logic in a real implementation
     }
 
+    private void Wander(GameTime delta)
+    {
+        float dt = (float)delta.ElapsedGameTime.TotalSeconds;
+        
+        _wanderTimer -= dt;
+
+        if (_wanderTimer <= 0f)
+        {
+            float angle = (float)(_rng.NextDouble() * Math.PI * 2);
+
+            _wanderDirection = new Vector2(
+                (float)Math.Cos(angle),
+                (float)Math.Sin(angle)
+            );
+
+            _wanderTimer = _wanderInterval;
+        }
+
+        _movementInput = _wanderDirection;
+    }
+
     public void Pathfind(Vector2 targetPosition)
     {
         //pre-check if target is found
@@ -97,11 +124,12 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     public override void Update(GameTime delta)
     {
         // Find target
-        Vector2 targetPosition = FindTarget();
+        //Vector2 targetPosition = FindTarget();
 
         // Movement logic
-        Pathfind(targetPosition);
-        _movementInput = new Vector2(0.5f, 0f); // for testing
+        //Pathfind(targetPosition);
+        //_movementInput = new Vector2(0.5f, 0f); // for testing
+        Wander(delta);
         if (_movementInput.LengthSquared() > 0.0001f)
         {
             _movementInput.Normalize();
