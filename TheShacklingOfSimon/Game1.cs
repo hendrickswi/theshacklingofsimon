@@ -271,6 +271,7 @@ public class Game1 : Game
 			);
 		
 		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.Escape), new ExitCommand(this));
+		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.Q), new ExitCommand(this));
 	}
 }
 
