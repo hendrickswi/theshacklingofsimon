@@ -150,6 +150,7 @@ public class Game1 : Game
 		_tileManager.Update(delta);
 		_itemManager.Update(delta);
         _player.CurrentItem?.Update(delta);
+		_enemyManager.Update(delta);
 
         foreach (IEntity e in _entities)
 		{
@@ -171,7 +172,6 @@ public class Game1 : Game
 		_projectileManager.Draw(_spriteBatch);
 		_tileManager.Draw(_spriteBatch);
 		_itemManager.Draw(_spriteBatch);
-		_enemyManager.Update(delta);
 		_enemyManager.Draw(_spriteBatch);
 
 		foreach (IEntity e in _entities)
