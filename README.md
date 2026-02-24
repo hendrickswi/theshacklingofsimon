@@ -17,5 +17,6 @@ I to select the next item<br>
 U to select the previous item<br>
 SPACE to use the currently selected item<br>
 E to cause player to take damage (6 times for death)<br>
+R to reset player
 
 Known bugs:<br>
