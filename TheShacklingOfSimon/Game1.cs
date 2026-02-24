@@ -115,11 +115,11 @@ public class Game1 : Game
         _player.AddItemToInventory(new TeleportItem(_player, pos => true));
         _player.AddItemToInventory(new AdrenalineItem(_player));
 
-		_spiderEnemy1 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f));
+		_spiderEnemy1 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f), new BasicWeapon(_projectileManager));
 		//_entities.Add(_spiderEnemy1);
-		_spiderEnemy2 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.15f, screenDimensions.Height * 0.15f));
+		_spiderEnemy2 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.15f, screenDimensions.Height * 0.15f), new BasicWeapon(_projectileManager));
 		//_entities.Add(_spiderEnemy2);
-		_spiderEnemy3 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.8f, screenDimensions.Height * 0.7f));
+		_spiderEnemy3 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.8f, screenDimensions.Height * 0.7f), new BasicWeapon(_projectileManager));
 		//_entities.Add(_spiderEnemy3);
 
 		//to allow for cycling through enemies

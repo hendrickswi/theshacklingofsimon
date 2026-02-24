@@ -29,7 +29,7 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     private float _wanderInterval = 1.5f;
     private Vector2 _wanderDirection;
 
-    public SpiderEnemy(Vector2 startPosition)
+    public SpiderEnemy(Vector2 startPosition, IWeapon weapon)
     {   
         // IDamageable properties
         this.Health = 3;
@@ -42,7 +42,7 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         this.AttackCooldown = 3000.0f;
         _attackTimer = 0f;
         this.AttackRange = 50.0f;
-        this.Weapon = new BasicWeapon(new Projectiles.ProjectileManager());
+        this.Weapon = weapon;
 
         this.Sprite = SpriteFactory.Instance.CreateStaticSprite("EnemyIdleDown");
         
