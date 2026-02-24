@@ -1,14 +1,13 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies.States;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
-using TheShacklingOfSimon.Weapons;
 using TheShacklingOfSimon.Sprites.Factory;
-using System;
-using TheShacklingOfSimon.Sprites.Products;
+using TheShacklingOfSimon.Weapons;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 
-namespace TheShacklingOfSimon.Entities.Enemies;
+namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
 public class SpiderEnemy : DamageableEntity, IEnemy
 {    

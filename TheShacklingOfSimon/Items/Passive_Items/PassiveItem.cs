@@ -1,12 +1,6 @@
-using Microsoft.VisualBasic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
-using TheShacklingOfSimon.Items;
-using TheShacklingOfSimon.Sprites.Products;
 
-namespace TheShacklingOfSimon.Items;
+namespace TheShacklingOfSimon.Items.Passive_Items;
 public class PassiveItem : IItem
 {
     public string Name { get; set; }

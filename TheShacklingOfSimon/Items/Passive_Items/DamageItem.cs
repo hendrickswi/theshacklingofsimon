@@ -1,7 +1,6 @@
-using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
 
-namespace TheShacklingOfSimon.Items;
+namespace TheShacklingOfSimon.Items.Passive_Items;
 
 public class DamageItem : IItem
 {
