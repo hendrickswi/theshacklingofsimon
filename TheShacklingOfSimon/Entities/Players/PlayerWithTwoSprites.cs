@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Players.States;
@@ -8,7 +7,6 @@ using TheShacklingOfSimon.Entities.Players.States.Head;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.Weapons;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace TheShacklingOfSimon.Entities.Players;
 
@@ -43,10 +41,14 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         set => BodySprite = value;
     }
 
+    /*
+     * Player property defaults that can be overriden by public
+     * set methods
+     */
     public float MoveSpeedStat { get; set; }
     public float DamageMultiplierStat { get; set; }
-    public float PrimaryAttackCooldown { get; set; }
     public float ProjectileSpeedMultiplierStat { get; set; }
+    public float PrimaryAttackCooldown { get; set; }
     public float SecondaryAttackCooldown { get; set; }
     public float MovementFrameDuration { get; set; }
     public float DeathFrameDuration { get; set; }
@@ -54,6 +56,8 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     
     private readonly Vector2 _headOffset = new Vector2(-4.75f, -16);
     private readonly Vector2 _damagedStateOffset = new Vector2(0, -5);
+    
+    // Vectors for handling player controls
     private Vector2 _movementInput;
     private Vector2 _primaryAttackInput;
     private Vector2 _secondaryAttackInput;
@@ -299,19 +303,13 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
          * constructor logic without duplicating code
          */
         
-        // IEntity properties
         this.Position = startPosition;
         this.Velocity = Vector2.Zero;
         this.IsActive = true;
-        // Arbitrarily sized hitbox of 30x30
         this.Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 30, 30);
-        
-        // IDamageable properties
         this.Health = 6;
         this.MaxHealth = 6;
         
-        // Player property defaults
-        // These can all be overriden with public set method
         this.DamageMultiplierStat = 1.0f;
         this.MoveSpeedStat = 100.0f;
         this.PrimaryAttackCooldown = 0.5f;
