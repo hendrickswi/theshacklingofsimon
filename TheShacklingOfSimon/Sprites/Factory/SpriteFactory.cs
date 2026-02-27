@@ -31,7 +31,6 @@ public class SpriteFactory
         _textureStorage = new Dictionary<string, Texture2D>();
         _fontStorage = new Dictionary<string, SpriteFont>();
         _rectangleData = new Dictionary<string, Rectangle[]>();
-        
     }
     
     /*

@@ -35,6 +35,7 @@ public class CollisionManager
                      *      their respective health, state, physics, etc.
                      */
                     _dynamicEntities[i].OnCollision(_dynamicEntities[j]);
+                    _dynamicEntities[j].OnCollision(_dynamicEntities[i]);
                 }
             }
         }
@@ -66,5 +67,39 @@ public class CollisionManager
         /*
          * Do not check static vs. static entities
          */
+    }
+
+    public void AddDynamicEntity(IEntity dynamicEntity)
+    {
+        _dynamicEntities.Add(dynamicEntity);
+    }
+
+    public IEntity RemoveDynamicEntity(int pos)
+    {
+        IEntity result = null;
+        if (pos < _dynamicEntities.Count)
+        {
+            result = _dynamicEntities[pos];
+            _dynamicEntities.RemoveAt(pos);
+        }
+
+        return result;
+    }
+
+    public void AddStaticEntity(IEntity staticEntity)
+    {
+        _staticEntities.Add(staticEntity);
+    }
+
+    public IEntity RemoveStaticEntity(int pos)
+    {
+        IEntity result = null;
+        if (pos < _staticEntities.Count)
+        {
+            result = _staticEntities[pos];
+            _staticEntities.RemoveAt(pos);
+        }
+
+        return result;
     }
 }
