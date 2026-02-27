@@ -2,5 +2,9 @@
 
 public enum CollisionSide
 {
-    
+    Left, 
+    Right,
+    Top,
+    Bottom,
+    None
 }

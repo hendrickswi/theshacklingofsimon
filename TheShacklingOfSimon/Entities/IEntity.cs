@@ -6,6 +6,7 @@ using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Level_Handler.Tiles;
 using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Entities;
@@ -21,7 +22,9 @@ public interface IEntity
     void Update(GameTime delta);
     void Draw(SpriteBatch spriteBatch);
     void Discontinue();
+    void OnCollision(IEntity other);
     void OnCollision(IPlayer player);
     void OnCollision(IEnemy enemy);
     void OnCollision(IProjectile projectile);
+    void OnCollision(ITile tile);
 }
