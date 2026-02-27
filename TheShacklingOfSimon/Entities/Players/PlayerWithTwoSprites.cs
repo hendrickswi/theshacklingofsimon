@@ -173,7 +173,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     {
         Position = worldPosition;
         Velocity = Vector2.Zero; // stop sliding after teleport
-        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 30, 30);
+        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
     }
 
     public override void TakeDamage(int damage)
@@ -232,7 +232,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
-        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 30, 30);
+        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
 
         CurrentHeadState.Update(delta);
         CurrentBodyState.Update(delta);
@@ -283,7 +283,10 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
     public override void OnCollision(ITile tile)
     {
-        switch (CollisionDetector.GetCollisionSide(this.Hitbox, tile.Hitbox))
+        Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(Hitbox, tile.Hitbox);
+        Position += mtv;
+        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
+        switch (CollisionDetector.GetCollisionSideFromMtv(mtv))
         {
             case CollisionSide.Left or CollisionSide.Right:
             {
@@ -293,10 +296,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
             case CollisionSide.Top or CollisionSide.Bottom:
             {
                 Velocity = new Vector2(Velocity.X, 0.0f);
-                break;
-            }
-            default:
-            {
                 break;
             }
         }
@@ -362,34 +361,34 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
          * constructor logic without duplicating code
          */
         
-        this.Position = startPosition;
-        this.Velocity = Vector2.Zero;
-        this.IsActive = true;
-        this.Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 30, 30);
-        this.Health = 6;
-        this.MaxHealth = 6;
+        Position = startPosition;
+        Velocity = Vector2.Zero;
+        IsActive = true;
+        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 30, 30);
+        Health = 6;
+        MaxHealth = 6;
         
-        this.DamageMultiplierStat = 1.0f;
-        this.MoveSpeedStat = 100.0f;
-        this.PrimaryAttackCooldown = 0.5f;
-        this.ProjectileSpeedMultiplierStat = 1.0f;
-        this.SecondaryAttackCooldown = 1.5f;
-        this.MovementFrameDuration = 0.05f;
-        this.DeathFrameDuration = 1.0f;
-        this.InvulnerabilityDuration = 0.333334f;
-        this.Inventory = new Inventory();
+        DamageMultiplierStat = 1.0f;
+        MoveSpeedStat = 100.0f;
+        PrimaryAttackCooldown = 0.5f;
+        ProjectileSpeedMultiplierStat = 1.0f;
+        SecondaryAttackCooldown = 1.5f;
+        MovementFrameDuration = 0.05f;
+        DeathFrameDuration = 1.0f;
+        InvulnerabilityDuration = 0.333334f;
+        Inventory = new Inventory();
         
         /*
          * Other properties such as CurrentPrimaryWeapon set by public methods
          * after instantiation
          */
         
-        this.CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
-        this.CurrentBodyState = new PlayerBodyIdleState(this);
-        this.CurrentHeadState.Enter();
-        this.CurrentBodyState.Enter();
-        this._movementInput = Vector2.Zero;
-        this._primaryAttackInput = Vector2.Zero;
-        this._secondaryAttackInput = Vector2.Zero;
+        CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
+        CurrentBodyState = new PlayerBodyIdleState(this);
+        CurrentHeadState.Enter();
+        CurrentBodyState.Enter();
+        _movementInput = Vector2.Zero;
+        _primaryAttackInput = Vector2.Zero;
+        _secondaryAttackInput = Vector2.Zero;
     }
 }
