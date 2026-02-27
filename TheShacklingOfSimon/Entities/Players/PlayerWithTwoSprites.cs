@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players.States;
@@ -260,30 +261,58 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
     public override void OnCollision(IPlayer otherPlayer)
     {
-        // TODO
+        // No-op for now
     }
 
     public override void OnCollision(IEnemy enemy)
     {
-        // TODO
+        // Delegate logic to the enemy states
+        // Could add a "thorns" effect here
     }
 
     public override void OnCollision(IProjectile projectile)
     {
-        // TODO
+        /*
+         * Delegate logic to the specific projectile
+         * Allows decorator pattern to work properly without
+         * complex conditional logic
+         *      i.e., should this projectile poison?
+         *      should it shatter? etc.
+         */
     }
 
     public override void OnCollision(ITile tile)
     {
-        // TODO
+        switch (CollisionDetector.GetCollisionSide(this.Hitbox, tile.Hitbox))
+        {
+            case CollisionSide.Left or CollisionSide.Right:
+            {
+                Velocity = new Vector2(0.0f, Velocity.Y);
+                break;
+            }
+            case CollisionSide.Top or CollisionSide.Bottom:
+            {
+                Velocity = new Vector2(Velocity.X, 0.0f);
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
     }
 
     public override void OnCollision(IPickup pickup)
     {
-        // TODO
+        /*
+         * Delegate logic to the specific pickup
+         * Avoids complex conditional logic
+         *      i.e., should this pickup heal?
+         *      is it a weapon? a key? etc.
+         */
     }
 
-public void ChangeHeadState(IPlayerHeadState newHeadState)
+    public void ChangeHeadState(IPlayerHeadState newHeadState)
     {
         if (CurrentHeadState != newHeadState)
         {

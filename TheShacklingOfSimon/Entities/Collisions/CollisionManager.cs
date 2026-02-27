@@ -25,10 +25,16 @@ public class CollisionManager
             {
                 if (CollisionDetector.CheckRectangleCollision(
                         _dynamicEntities[i].Hitbox,
-                        _dynamicEntities[j].Hitbox)
-                   )
+                        _dynamicEntities[j].Hitbox
+                        )
+                    )
                 {
-                    _dynamicEntities[i].
+                    /*
+                     * Trigger the "double dispatch"
+                     *      i.e., let the entities resolve their own changes to
+                     *      their respective health, state, physics, etc.
+                     */
+                    _dynamicEntities[i].OnCollision(_dynamicEntities[j]);
                 }
             }
         }
@@ -36,6 +42,26 @@ public class CollisionManager
         /*
          * Check dynamic vs. static entities
          */
+        foreach (IEntity dynamicEntity in _dynamicEntities)
+        {
+            foreach (IEntity staticEntity in _staticEntities)
+            {
+                if (CollisionDetector.CheckRectangleCollision(
+                        dynamicEntity.Hitbox,
+                        staticEntity.Hitbox
+                        )
+                    )
+                {
+                    /*
+                     * Trigger the "double dispatch"
+                     *      i.e., let the entities resolve their own changes to
+                     *      their respective health, state, physics, etc.
+                     */
+                    dynamicEntity.OnCollision(staticEntity);
+                    staticEntity.OnCollision(dynamicEntity);
+                }
+            }
+        }
         
         /*
          * Do not check static vs. static entities
