@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Level_Handler.Tiles;
 using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Entities;
@@ -30,6 +31,7 @@ public abstract class DamageableEntity : IDamageable
     public abstract void OnCollision(IPlayer player);
     public abstract void OnCollision(IEnemy enemy);
     public abstract void OnCollision(IProjectile projectile);
+    public abstract void OnCollision(ITile tile);
     
     // Methods from IDamageable
     public virtual void TakeDamage(int amt)
@@ -57,4 +59,10 @@ public abstract class DamageableEntity : IDamageable
     {
         IsActive = false;
     }
+    
+    public virtual void OnCollision(IEntity other)
+    {
+        other.OnCollision(this);
+    }
 }
+    
