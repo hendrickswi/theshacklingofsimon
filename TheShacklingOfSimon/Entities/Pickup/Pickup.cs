@@ -1,6 +1,9 @@
 using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Sprites.Products;
 
@@ -26,11 +29,18 @@ public class Pickup : IPickup
         IsActive = false;
     }
 
-    /* To be implemented after Sprint 2:
-    * void Interact(IEntity other)
-    *
-    * from IEntity
-    */
+    public void OnCollision(IPlayer player)
+    {
+        
+    }
+    public void OnCollision(IEnemy enemy)
+    {
+        
+    }
+    public void OnCollision(IProjectile projectile)
+    {
+        
+    }
 
     IItem Item { get; set; }
     IItem IPickup.Item { get => Item; set => Item = value; }

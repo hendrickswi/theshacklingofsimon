@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Entities;
@@ -23,6 +26,10 @@ public abstract class DamageableEntity : IDamageable
     public abstract void Update(GameTime delta);
 
     public abstract void Draw(SpriteBatch spriteBatch);
+
+    public abstract void OnCollision(IPlayer player);
+    public abstract void OnCollision(IEnemy enemy);
+    public abstract void OnCollision(IProjectile projectile);
     
     // Methods from IDamageable
     public virtual void TakeDamage(int amt)
