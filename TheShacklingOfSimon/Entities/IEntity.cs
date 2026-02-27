@@ -27,4 +27,5 @@ public interface IEntity
     void OnCollision(IEnemy enemy);
     void OnCollision(IProjectile projectile);
     void OnCollision(ITile tile);
+    void OnCollision(IPickup pickup);
 }

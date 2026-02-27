@@ -1,10 +1,14 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players.States;
 using TheShacklingOfSimon.Entities.Players.States.Body;
 using TheShacklingOfSimon.Entities.Players.States.Head;
+using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
+using TheShacklingOfSimon.Level_Handler.Tiles;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.Weapons;
 
@@ -16,13 +20,13 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public IWeapon CurrentPrimaryWeapon { get; private set; }
     public IWeapon CurrentSecondaryWeapon { get; private set; }
     public IItem CurrentItem { get; private set; }
-    
+
     private IPlayerHeadState CurrentHeadState { get; set; }
     private IPlayerBodyState CurrentBodyState { get; set; }
-    
+
     // Use explicit interface implementation 
     IPlayerState IPlayer.CurrentState => CurrentBodyState;
-    
+
     /*
      * Additional sprite to handle the head.
      * Allows non-combinatorial states
@@ -32,7 +36,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
      */
     public ISprite HeadSprite { get; set; }
     public ISprite BodySprite { get; set; }
-    
+
     // Use explicit interface implementation 
     [Obsolete("PlayerWithTwoSprites does not use Sprite property. Use BodySprite or HeadSprite instead.", true)]
     public new ISprite Sprite
@@ -53,10 +57,10 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public float MovementFrameDuration { get; set; }
     public float DeathFrameDuration { get; set; }
     public float InvulnerabilityDuration { get; set; }
-    
+
     private readonly Vector2 _headOffset = new Vector2(-4.75f, -16);
     private readonly Vector2 _damagedStateOffset = new Vector2(0, -5);
-    
+
     // Vectors for handling player controls
     private Vector2 _movementInput;
     private Vector2 _primaryAttackInput;
@@ -91,7 +95,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
         return weapon;
     }
-    
+
     public void AddItemToInventory(IItem item)
     {
         Inventory.AddItem(item);
@@ -136,12 +140,12 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
             CurrentItem = Inventory.Items[pos];
         }
     }
-    
+
     public void RegisterMoveInput(Vector2 direction)
     {
         /*
          * Allow diagonal movement
-         * 
+         *
          * Also catches edge cases where the player
          * presses three movement keys
          */
@@ -177,10 +181,10 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         if (CurrentBodyState is PlayerBodyDamagedState)
         {
             return;
-        }        
-        
+        }
+
         base.TakeDamage(damage);
-        
+
         // Case for player dying
         if (Health <= 0)
         {
@@ -207,14 +211,16 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         {
             _movementInput.Normalize();
         }
+
         CurrentBodyState.HandleMovement(_movementInput, MovementFrameDuration);
         _movementInput = Vector2.Zero;
-        
+
         // Attack logic
         if (_primaryAttackInput.LengthSquared() > 0.0001f)
         {
             CurrentHeadState.HandlePrimaryAttack(_primaryAttackInput, PrimaryAttackCooldown);
         }
+
         if (_secondaryAttackInput.LengthSquared() > 0.0001f)
         {
             CurrentHeadState.HandleSecondaryAttack(_secondaryAttackInput, SecondaryAttackCooldown);
@@ -222,11 +228,11 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
         _primaryAttackInput = Vector2.Zero;
         _secondaryAttackInput = Vector2.Zero;
-        
+
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 30, 30);
-        
+
         CurrentHeadState.Update(delta);
         CurrentBodyState.Update(delta);
     }
@@ -241,10 +247,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
         if (BodySprite != null)
         {
-            Vector2 drawPos = (CurrentBodyState is PlayerBodyDamagedState) ? 
-                    Position + _damagedStateOffset : Position;
+            Vector2 drawPos = (CurrentBodyState is PlayerBodyDamagedState) ? Position + _damagedStateOffset : Position;
             BodySprite.Draw(spriteBatch, drawPos, Color.White, 0.0f,
-                        new Vector2(0, 0), 1.0f, flip, 0.0f);
+                new Vector2(0, 0), 1.0f, flip, 0.0f);
         }
 
         if (HeadSprite != null)
@@ -253,7 +258,32 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         }
     }
 
-    public void ChangeHeadState(IPlayerHeadState newHeadState)
+    public override void OnCollision(IPlayer otherPlayer)
+    {
+        // TODO
+    }
+
+    public override void OnCollision(IEnemy enemy)
+    {
+        // TODO
+    }
+
+    public override void OnCollision(IProjectile projectile)
+    {
+        // TODO
+    }
+
+    public override void OnCollision(ITile tile)
+    {
+        // TODO
+    }
+
+    public override void OnCollision(IPickup pickup)
+    {
+        // TODO
+    }
+
+public void ChangeHeadState(IPlayerHeadState newHeadState)
     {
         if (CurrentHeadState != newHeadState)
         {

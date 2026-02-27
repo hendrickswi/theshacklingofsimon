@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Level_Handler.Tiles;
@@ -32,6 +33,16 @@ public abstract class DamageableEntity : IDamageable
     public abstract void OnCollision(IEnemy enemy);
     public abstract void OnCollision(IProjectile projectile);
     public abstract void OnCollision(ITile tile);
+    public abstract void OnCollision(IPickup pickup);
+    
+    public void OnCollision(IEntity other)
+    {
+        /*
+         * Will call the correct OnCollision() method because
+         * *this* is a known type. Avoids conditional "type-of" logic
+         */
+        other.OnCollision(this);
+    }
     
     // Methods from IDamageable
     public virtual void TakeDamage(int amt)
@@ -58,11 +69,6 @@ public abstract class DamageableEntity : IDamageable
     public virtual void Discontinue()
     {
         IsActive = false;
-    }
-    
-    public virtual void OnCollision(IEntity other)
-    {
-        other.OnCollision(this);
     }
 }
     
