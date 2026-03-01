@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Products;
 
-namespace TheShacklingOfSimon.Level_Handler.Tiles
+namespace TheShacklingOfSimon.Level_Handler.Tiles.Obstacles
 {
     // Pit tile: blocks ground entities, flying entities can pass over it
     public sealed class HoleTile : Tile

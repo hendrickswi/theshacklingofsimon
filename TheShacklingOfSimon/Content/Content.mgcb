@@ -110,6 +110,21 @@
 #begin PlayerDefaultSprite.json
 /copy:PlayerDefaultSprite.json
 
+#begin Room_Jsons/room_00.json
+/copy:Room_Jsons/room_00.json
+
+#begin Room_Jsons/room_01.json
+/copy:Room_Jsons/room_01.json
+
+#begin Room_Jsons/room_02.json
+/copy:Room_Jsons/room_02.json
+
+#begin Room_Jsons/room_03.json
+/copy:Room_Jsons/room_03.json
+
+#begin Room_Jsons/room_index.json
+/copy:Room_Jsons/room_index.json
+
 #begin SpiderEnemy.png
 /importer:TextureImporter
 /processor:TextureProcessor

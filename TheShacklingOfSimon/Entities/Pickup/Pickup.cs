@@ -5,6 +5,7 @@ using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
+using TheShacklingOfSimon.Level_Handler.Tiles;
 using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Entities.Pickup;
@@ -29,6 +30,11 @@ public class Pickup : IPickup
         IsActive = false;
     }
 
+    public void OnCollision(IEntity other)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void OnCollision(IPlayer player)
     {
         
@@ -40,6 +46,16 @@ public class Pickup : IPickup
     public void OnCollision(IProjectile projectile)
     {
         
+    }
+
+    public void OnCollision(ITile tile)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnCollision(IPickup pickup)
+    {
+        throw new System.NotImplementedException();
     }
 
     IItem Item { get; set; }

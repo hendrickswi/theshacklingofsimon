@@ -37,4 +37,9 @@
       <Folder Include="Content\bin\DesktopGL\Content\" />
       <Folder Include="Entities\Enemies\" />
     </ItemGroup>
+    <ItemGroup>
+      <None Update="Content\Room_Jsons\room_index.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>

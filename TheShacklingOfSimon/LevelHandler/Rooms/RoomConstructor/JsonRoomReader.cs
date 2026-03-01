@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using TheShacklingOfSimon.Level_Handler.Rooms.Room_Class;
 
 namespace TheShacklingOfSimon.Level_Handler.Rooms.Room_Constructor
@@ -14,7 +15,7 @@ namespace TheShacklingOfSimon.Level_Handler.Rooms.Room_Constructor
 
         // Folder under Content.RootDirectory where room json files live
         private static readonly string RoomFolder =
-            Path.Combine("Room_Manager", "Rooms", "Room_Constructor", "Room_Jsons");
+            Path.Combine("Room_Jsons");
 
         public JsonRoomReader(ContentManager content)
         {
@@ -23,6 +24,9 @@ namespace TheShacklingOfSimon.Level_Handler.Rooms.Room_Constructor
             {
                 PropertyNameCaseInsensitive = true
             };
+
+            // Allows: "type": "Rock" -> TileType.Rock
+            options.Converters.Add(new JsonStringEnumConverter());
         }
 
         // roomId matches filename: "room_01" -> ".../Room_Jsons/room_01.json"

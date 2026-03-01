@@ -2,6 +2,10 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies.States;
+using TheShacklingOfSimon.Entities.Pickup;
+using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Level_Handler.Tiles;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -183,6 +187,31 @@ public class SpiderEnemy : DamageableEntity, IEnemy
                         new Vector2(0, 0), 1.0f, flip, 0.0f);
         }
         
+    }
+
+    public override void OnCollision(IPlayer player)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnCollision(IEnemy enemy)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnCollision(IProjectile projectile)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnCollision(ITile tile)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnCollision(IPickup pickup)
+    {
+        throw new NotImplementedException();
     }
 
     public void ChangeState(IEnemyState newState)

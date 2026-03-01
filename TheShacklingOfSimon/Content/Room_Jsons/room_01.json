@@ -1,0 +1,21 @@
+{
+  "id": "room_01",
+  "tiles": [
+    { "x": 2, "y": 2, "type": "Rock" },
+    { "x": 6, "y": 3, "type": "Spike" },
+    { "x": 10, "y": 4, "type": "Fire" }
+  ],
+  "entities": [],
+  "doors": [
+    {
+      "x": 0,
+      "y": 3,
+      "to": { "room": "room_00", "spawn": { "x": 11, "y": 3 } }
+    },
+    {
+      "x": 12,
+      "y": 3,
+      "to": { "room": "room_02", "spawn": { "x": 1, "y": 3 } }
+    }
+  ]
+}

@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Level_Handler.Tiles.Tile_Constructor;
 using TheShacklingOfSimon.Sprites.Products;
 
-namespace TheShacklingOfSimon.Level_Handler.Tiles
+namespace TheShacklingOfSimon.Level_Handler.Tiles.Obstacles
 {
     // Solid obstacle that can be destroyed by bombs
     public sealed class RockTile : Tile, IBombableTile

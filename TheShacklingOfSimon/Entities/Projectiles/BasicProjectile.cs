@@ -1,5 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Pickup;
+using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Level_Handler.Tiles;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
@@ -71,4 +75,34 @@ public class BasicProjectile : IProjectile
 	{
 		IsActive = false;
 	}
+
+    public void OnCollision(IEntity other)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnCollision(IPlayer player)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnCollision(IEnemy enemy)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnCollision(IProjectile projectile)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnCollision(ITile tile)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnCollision(IPickup pickup)
+    {
+        throw new System.NotImplementedException();
+    }
 }

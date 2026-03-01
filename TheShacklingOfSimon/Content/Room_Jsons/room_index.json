@@ -1,0 +1,4 @@
+{
+    "startingRoom": "room_01",
+    "rooms": ["room_00", "room_01", "room_02", "room_03"]
+}

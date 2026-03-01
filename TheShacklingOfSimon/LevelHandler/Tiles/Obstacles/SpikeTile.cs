@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.Level_Handler.Tiles.Tile_Constructor;
 using TheShacklingOfSimon.Sprites.Products;
 
-namespace TheShacklingOfSimon.Level_Handler.Tiles
+namespace TheShacklingOfSimon.Level_Handler.Tiles.Obstacles
 {
     // Walkable hazard; collision system should apply damage on overlap
     public sealed class SpikeTile : Tile, ITriggerTile

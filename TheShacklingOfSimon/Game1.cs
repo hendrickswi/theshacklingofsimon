@@ -21,6 +21,9 @@ using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Mouse;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Items.Active_Items;
+using TheShacklingOfSimon.Level_Handler.Rooms.Room_Constructor;
+using TheShacklingOfSimon.Level_Handler.Rooms.RoomManager;
+using TheShacklingOfSimon.LevelHandler.Rooms.RoomManager;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Weapons;
 using KeyboardInput = TheShacklingOfSimon.Controllers.Keyboard.KeyboardInput;
@@ -38,9 +41,9 @@ public class Game1 : Game
 	private IController<KeyboardInput> _keyboardController;
 	private IMouseService _mouseService;
 	private IController<MouseInput> _mouseController;
-	
-	private TileManager _tileManager; //Temporary tile switching for sprint 2
-	private ItemManager _itemManager; //Temporary item switching for sprint 2
+
+    private RoomManager _roomManager; //room manager for sprint 3
+    private ItemManager _itemManager; //Temporary item switching for sprint 2
 
 	private IPlayer _player;
 	private List<IEntity> _entities;
@@ -91,16 +94,18 @@ public class Game1 : Game
 		_projectileManager = new ProjectileManager();
 
 
-		//load Tile Sprites and Manager
+		//load Tile Sprites and room Manager
 		SpriteFactory.Instance.LoadTexture(Content, "images/Rocks.json", "images/Rocks");
 		SpriteFactory.Instance.LoadTexture(Content, "images/Spikes.json", "images/Spikes");
         SpriteFactory.Instance.LoadTexture(Content, "images/Fire.json", "images/Fire");
 
+        var roomReader = new JsonRoomReader(Content);
+        var indexReader = new RoomIndexReader(Content);
+        var roomFactory = new RoomFactory();
+        _roomManager = new RoomManager(roomReader, indexReader, roomFactory, preserveRoomState: true);
 
-        _tileManager = new TileManager(SpriteFactory.Instance);
-
-		// Create entities now that the sprite factory has textures
-		_entities = new List<IEntity>();
+        // Create entities now that the sprite factory has textures
+        _entities = new List<IEntity>();
 		_player =
 			new PlayerWithTwoSprites(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
 		_entities.Add(_player);
@@ -148,7 +153,7 @@ public class Game1 : Game
          */
 
 		_projectileManager.Update(delta);
-		_tileManager.Update(delta);
+		_roomManager.Update(delta);
 		_itemManager.Update(delta);
         _player.CurrentItem?.Update(delta);
 		_enemyManager.Update(delta);
@@ -171,7 +176,7 @@ public class Game1 : Game
          *      e.g., ITile objects, GUI, etc.
          */
 		_projectileManager.Draw(_spriteBatch);
-		_tileManager.Draw(_spriteBatch);
+		_roomManager.Draw(_spriteBatch);
 		_itemManager.Draw(_spriteBatch);
 		_enemyManager.Draw(_spriteBatch);
 
@@ -211,17 +216,17 @@ public class Game1 : Game
 		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.Down), new PrimaryAttackDownCommand(_player));
 		_keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.Right), new PrimaryAttackRightCommand(_player));
 
-		//Tile Manager Controls
-		_keyboardController.RegisterCommand(
-			new KeyboardInput(InputState.JustPressed, KeyboardButton.Y),
-			new NextTileCommand(_tileManager));
+        // Room Manager Controls (Sprint 3)
+        _keyboardController.RegisterCommand(
+            new KeyboardInput(InputState.JustPressed, KeyboardButton.Y),
+            new NextRoomCommand(_roomManager));
 
-		_keyboardController.RegisterCommand(
-			new KeyboardInput(InputState.JustPressed, KeyboardButton.T),
-			new PreviousTileCommand(_tileManager));
+        _keyboardController.RegisterCommand(
+            new KeyboardInput(InputState.JustPressed, KeyboardButton.T),
+            new PreviousRoomCommand(_roomManager));
 
-		//Item Manager Controls
-		_keyboardController.RegisterCommand(
+        //Item Manager Controls
+        _keyboardController.RegisterCommand(
 			new KeyboardInput(InputState.JustPressed, KeyboardButton.I),
 			new NextItemCommand(_itemManager));
 
