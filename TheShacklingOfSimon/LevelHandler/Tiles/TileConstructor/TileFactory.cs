@@ -25,7 +25,7 @@ namespace TheShacklingOfSimon.Level_Handler.Tiles.Tile_Constructor
             };
         }
 
-        // NEW: TileMap is required so GridToWorld uses the room origin (centering).
+        // TileMap is required so GridToWorld uses the room origin (centering).
         public ITile Create(TileType type, TileMap tileMap, Point gridPos)
         {
             if (tileMap == null) throw new ArgumentNullException(nameof(tileMap));
