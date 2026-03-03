@@ -263,14 +263,14 @@ public class Game1 : Game
 //Mouse controls
         _mouseController.RegisterCommand(
 			new MouseInput(
-				new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
+				new MouseInputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
 				InputState.Pressed,
 				MouseButton.Right),
 			new SecondaryAttackDynamicMouseCommand(_player, _mouseService)
 			);
 		_mouseController.RegisterCommand(
 			new MouseInput(
-				new InputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
+				new MouseInputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
 				InputState.Pressed,
 				MouseButton.Left),
 			new PrimaryAttackDynamicMouseCommand(_player, _mouseService)

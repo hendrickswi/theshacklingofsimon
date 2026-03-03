@@ -1,4 +1,5 @@
 ﻿using System.Resources;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Mouse;
@@ -7,10 +8,10 @@ namespace TheShacklingOfSimon.Controllers.Mouse;
 
 public class MonoGameMouseService : IMouseService
 {
-    public XYPoint GetPosition()
+    public Vector2 GetPosition()
     {
         MouseState state = Microsoft.Xna.Framework.Input.Mouse.GetState();
-        return new XYPoint(state.X, state.Y);
+        return new Vector2(state.X, state.Y);
     }
 
     public InputState GetButtonState(MouseButton button)

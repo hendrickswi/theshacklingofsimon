@@ -1,13 +1,13 @@
 ﻿namespace TheShacklingOfSimon.Input.Mouse;
 
-public struct InputRegion
+public struct MouseInputRegion
 {
-    public int X;
-    public int Y;
-    public int Width;
-    public int Height;
+    public float X;
+    public float Y;
+    public float Width;
+    public float Height;
 
-    public InputRegion(int x, int y, int width, int height)
+    public MouseInputRegion(float x, float y, float width, float height)
     {
         X = x;
         Y = y;
@@ -15,7 +15,7 @@ public struct InputRegion
         Height = height;
     }
 
-    public bool ContainsPoint(int x, int y)
+    public bool ContainsPoint(float x, float y)
     {
         bool contains = false;
         if (x >= X && x <= X + Width &&

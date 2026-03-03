@@ -18,11 +18,8 @@ public class SecondaryAttackDynamicMouseCommand : ICommand
 
     public void Execute()
     {
-        XYPoint pos = _mouseService.GetPosition();
-
-        Vector2 mousePos = new Vector2(pos.X, pos.Y);
-        Vector2 mouseDelta = mousePos - _player.Position;
-
+        Vector2 pos = _mouseService.GetPosition();
+        Vector2 mouseDelta = pos - _player.Position;
         if (mouseDelta.LengthSquared() > 0.0001f)
         {
             mouseDelta.Normalize();

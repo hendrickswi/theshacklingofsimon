@@ -19,11 +19,11 @@ public class KeyboardController : IController<KeyboardInput>
 
 	public void RegisterCommand(KeyboardInput k, Commands.ICommand cmd)
 	{
-		_map.TryAdd(k, cmd);
+		bool success = _map.TryAdd(k, cmd);
 
-		if (!_previousStates.ContainsKey(k.Button))
+		if (success)
 		{
-			_previousStates[k.Button] = InputState.Released;
+			_previousStates.Add(k.Button, InputState.Released);
 		}
 	}
 

@@ -1,10 +1,11 @@
-﻿using TheShacklingOfSimon.Input;
+﻿using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Mouse;
 
 namespace TheShacklingOfSimon.Controllers.Mouse;
 
 public interface IMouseService
 {
-    XYPoint GetPosition();
+    Vector2 GetPosition();
     InputState GetButtonState(MouseButton button);
 }

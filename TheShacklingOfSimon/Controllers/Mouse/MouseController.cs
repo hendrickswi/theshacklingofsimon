@@ -29,12 +29,15 @@ public class MouseController : IController<MouseInput>
 
     public void RegisterCommand(MouseInput input, Commands.ICommand cmd)
     {
-        // Avoid an ArgumentException if k is already in the map.
-        _map.TryAdd(input, cmd);
+        bool success = _map.TryAdd(input, cmd);
+        if (success)
+        {
+            _prevStates.Add(input.Button, InputState.Released);
+        }
     }
     public void Update()
     {
-        XYPoint pos = _mouseService.GetPosition();
+        Vector2 pos = _mouseService.GetPosition();
 
         foreach (var entry in _map)
         {
