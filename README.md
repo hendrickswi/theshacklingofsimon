@@ -11,8 +11,8 @@ Left click (and mouse position relative to player) for shooting<br>
 Right click for bombs<br>
 
 Temporary controls for sprint2:<br>
-Y to show the next tile<br>
-T to show the previous tile<br>
+Y to show the next room<br>
+T to show the previous room<br>
 I to select the next item<br>
 U to select the previous item<br>
 O to show the next enemy<br>
