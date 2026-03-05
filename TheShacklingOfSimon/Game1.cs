@@ -179,10 +179,14 @@ public class Game1 : Game
 		 *		Could just unload everything with _collisionManager.RemoveDynamicEntity()
 		 *		and _collisionManager.RemoveStaticEntity()
 		 *		until the returned object is null.
+		 * 
 		 *		OR
+		 * 
 		 *		Better idea: _collisionManager.ClearEntityLists()
-		 *			calls Clear() for both of the Lists
-		 *			This is an O(2*1) operation vs O(2*n^2)
+		 *			assigns _staticEntities and _dynamicEntities a new List<IEntity>
+		 *			Old Lists will be GC'd later.
+		 *			This is an O(2*1) operation vs O(2*n^2).
+		 *				or vs O(2*n) for List.Clear().
 		 * 
 		 * Then just call LoadRoom() from the proposed RoomLoader class
 		 */
