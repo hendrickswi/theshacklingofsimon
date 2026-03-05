@@ -189,6 +189,15 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         
     }
 
+    public override void OnCollision(IEntity other)
+    {
+        /*
+         * Will call the correct OnCollision() method because
+         * *this* is a known type. Avoids conditional "type-of" logic
+         */
+        other.OnCollision(this);
+    }
+    
     public override void OnCollision(IPlayer player)
     {
         throw new NotImplementedException();

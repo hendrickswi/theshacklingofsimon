@@ -34,15 +34,7 @@ public abstract class DamageableEntity : IDamageable
     public abstract void OnCollision(IProjectile projectile);
     public abstract void OnCollision(ITile tile);
     public abstract void OnCollision(IPickup pickup);
-    
-    public void OnCollision(IEntity other)
-    {
-        /*
-         * Will call the correct OnCollision() method because
-         * *this* is a known type. Avoids conditional "type-of" logic
-         */
-        other.OnCollision(this);
-    }
+    public abstract void OnCollision(IEntity other);
     
     // Methods from IDamageable
     public virtual void TakeDamage(int amt)

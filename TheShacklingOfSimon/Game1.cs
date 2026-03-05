@@ -147,6 +147,10 @@ public class Game1 : Game
         RegisterControls(screenDimensions);
 
         _collisionManager = new CollisionManager();
+        _collisionManager.AddDynamicEntity(_player);
+        _collisionManager.AddDynamicEntity(_spiderEnemy1);
+        _collisionManager.AddDynamicEntity(_spiderEnemy2);
+        _collisionManager.AddDynamicEntity(_spiderEnemy3);
         basicWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
 	}
 
@@ -169,6 +173,10 @@ public class Game1 : Game
 		{
 			e.Update(delta);
 		}
+        
+        // this is crashing the game rn because of the NotImplementedExceptions in Entity classes.
+        // _collisionManager.Update(delta); 
+        
 		base.Update(delta);
 
 	}

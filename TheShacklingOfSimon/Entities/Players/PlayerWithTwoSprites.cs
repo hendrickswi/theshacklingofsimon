@@ -259,6 +259,15 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         }
     }
 
+    public override void OnCollision(IEntity other)
+    {
+        /*
+         * Will call the correct OnCollision() method because
+         * *this* is a known type. Avoids conditional "type-of" logic
+         */
+        other.OnCollision(this);
+    }
+    
     public override void OnCollision(IPlayer otherPlayer)
     {
         // No-op for now--no other players planned
