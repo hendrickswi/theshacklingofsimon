@@ -263,25 +263,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     public override void OnCollision(IEntity other)
     {
         if (other == null || !IsActive) return;
-
-        switch (other)
-        {
-            case ITile tile:
-                OnCollision(tile);
-                break;
-            case IEnemy enemy:
-                OnCollision(enemy);
-                break;
-            case IProjectile projectile:
-                OnCollision(projectile);
-                break;
-            case IPickup pickup:
-                OnCollision(pickup);
-                break;
-            case IPlayer player:
-                OnCollision(player);
-                break;
-        }
+        other.OnCollision(this);
     }
 
     public override void OnCollision(IPlayer otherPlayer)

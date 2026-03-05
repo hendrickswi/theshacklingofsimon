@@ -2,7 +2,7 @@
   "id": "room_01",
   "tiles": [
     { "x": 3, "y": 3, "type": "Rock" },
-    { "x": 7, "y": 4, "type": "Spike" },
+    { "x": 7, "y": 3, "type": "Spike" },
     { "x": 11, "y": 5, "type": "Fire" }
   ],
   "entities": [],

@@ -58,15 +58,7 @@ namespace TheShacklingOfSimon.LevelHandler.Tiles
         public virtual void OnCollision(IEntity other)
         {
             if (other == null || !IsActive) return;
-
-            switch (other)
-            {
-                case IPlayer player: OnCollision(player); break;
-                case IEnemy enemy: OnCollision(enemy); break;
-                case IProjectile projectile: OnCollision(projectile); break;
-                case ITile tile: OnCollision(tile); break;
-                case IPickup pickup: OnCollision(pickup); break;
-            }
+            other.OnCollision(this);
         }
 
         // Default no-ops (override in specific tiles if needed)

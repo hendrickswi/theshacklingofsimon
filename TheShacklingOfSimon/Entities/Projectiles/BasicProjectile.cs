@@ -78,16 +78,8 @@ public class BasicProjectile : IProjectile
 
     public void OnCollision(IEntity other)
     {
-        if (!IsActive || other == null) return;
-
-        switch (other)
-        {
-            case ITile tile: OnCollision(tile); break;
-            case IEnemy enemy: OnCollision(enemy); break;
-            case IPlayer player: OnCollision(player); break;
-            case IProjectile projectile: OnCollision(projectile); break;
-            case IPickup pickup: OnCollision(pickup); break;
-        }
+        if (other == null || !IsActive) return;
+        other.OnCollision(this);
     }
 
     public void OnCollision(ITile tile)

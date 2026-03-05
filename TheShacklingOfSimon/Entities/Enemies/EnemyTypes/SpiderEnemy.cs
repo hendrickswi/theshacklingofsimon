@@ -193,25 +193,7 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     public override void OnCollision(IEntity other)
     {
         if (other == null || !IsActive) return;
-
-        switch (other)
-        {
-            case ITile tile:
-                OnCollision(tile);
-                break;
-            case IPlayer player:
-                OnCollision(player);
-                break;
-            case IEnemy enemy:
-                OnCollision(enemy);
-                break;
-            case IProjectile projectile:
-                OnCollision(projectile);
-                break;
-            case IPickup pickup:
-                OnCollision(pickup);
-                break;
-        }
+        other.OnCollision(this);
     }
 
     public override void OnCollision(IPlayer player)
