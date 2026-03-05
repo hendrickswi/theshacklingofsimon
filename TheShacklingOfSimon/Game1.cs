@@ -91,7 +91,6 @@ public class Game1 : Game
 		SpriteFactory.Instance.LoadTexture(Content, "SpiderEnemy.json", "SpiderEnemy");
 
 		// Load Projectile Sprites and Manager_projectileManager.Update(delta);
-
 		_projectileManager = new ProjectileManager();
 		
 		//load Tile Sprites and room Manager
@@ -151,7 +150,30 @@ public class Game1 : Game
         _collisionManager.AddDynamicEntity(_spiderEnemy1);
         _collisionManager.AddDynamicEntity(_spiderEnemy2);
         _collisionManager.AddDynamicEntity(_spiderEnemy3);
+        
+        /*
+         * Subscribe the collision manager to the event of a new projectile
+         * being created from basicWeapon and bombWeapon
+         */
         basicWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
+        bombWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
+        
+        // TODO: Can add projectile manager subscriptions here
+        // Or really any spot after the weapons are created
+        
+        // TODO: Need to add the "pre-loaded" entities (from JSON data) to the collision manager
+		/*
+		 * Perhaps _roomManager.CurrentRoom.GetEnemies() and
+		 *		_roomManager.CurrentRoom.GetItems() (for pre-loaded items) and
+		 *		_roomManager.CurrentRoom.GetTiles()
+		 * These methods would return a List<IEnemy>, List<IItem>, and List<ITile>
+		 * Then do for-each loops, doing _collisionManager.AddDynamicEntity()
+		 *		and _collisionManager.AddStaticEntity() as appropriate
+		 *
+		 * It is worth noting this action will need to be repeated for every room,
+		 * so maybe move this to a private method?
+		 *		Or even a class (i.e., RoomLoader).
+		 */
 	}
 
 	protected override void Update(GameTime delta)
