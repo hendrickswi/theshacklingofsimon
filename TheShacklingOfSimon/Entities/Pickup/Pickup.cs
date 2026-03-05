@@ -2,6 +2,7 @@ using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
@@ -11,6 +12,7 @@ using TheShacklingOfSimon.Sprites.Products;
 namespace TheShacklingOfSimon.Entities.Pickup;
 public class Pickup : IPickup
 {
+    IItem Item { get; set; }
     Vector2 Position { get; }
     Vector2 Velocity { get; }
     bool IsActive { get; set; }
@@ -32,20 +34,21 @@ public class Pickup : IPickup
 
     public void OnCollision(IEntity other)
     {
-        throw new System.NotImplementedException();
+        // overload
     }
 
     public void OnCollision(IPlayer player)
     {
-        
+        player.AddItemToInventory(Item);
+        Discontinue();
     }
     public void OnCollision(IEnemy enemy)
     {
-        
+        throw new System.NotImplementedException();
     }
     public void OnCollision(IProjectile projectile)
     {
-        
+        throw new System.NotImplementedException();
     }
 
     public void OnCollision(ITile tile)
@@ -55,10 +58,8 @@ public class Pickup : IPickup
 
     public void OnCollision(IPickup pickup)
     {
-        throw new System.NotImplementedException();
+        // no-op
     }
-
-    IItem Item { get; set; }
     IItem IPickup.Item { get => Item; set => Item = value; }
 
     Vector2 IEntity.Position => Position;
