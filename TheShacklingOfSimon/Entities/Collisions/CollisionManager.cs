@@ -98,10 +98,9 @@ public class CollisionManager
     }
 
     public void ClearEntityLists()
-    {
-        _dynamicEntities = new List<IEntity>();
-        _staticEntities = new List<IEntity>();
-        
-        // Old lists will be GC'd later (no variable references them anymore)
+    {  
+        //clear for readonly
+        _dynamicEntities.Clear();
+        _staticEntities.Clear();
     }
 }
