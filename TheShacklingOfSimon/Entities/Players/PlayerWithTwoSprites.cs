@@ -303,12 +303,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
     public override void OnCollision(IPickup pickup)
     {
-        /*
-         * Delegate logic to the specific pickup
-         * Avoids complex conditional logic
-         *      i.e., should this pickup heal?
-         *      is it a weapon? a key? etc.
-         */
+        pickup.OnCollision(this);
     }
 
     public void ChangeHeadState(IPlayerHeadState newHeadState)
