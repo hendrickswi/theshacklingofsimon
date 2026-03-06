@@ -122,10 +122,34 @@ public class BombProjectile : IProjectile
         }
     }
 
-    public void OnCollision(IEnemy enemy) { }
+    public void OnCollision(IEnemy enemy)
+    {
+        if (hasExploded)
+        {
+            enemy.TakeDamage(this.Stats.Damage);   
+        }
+    }
 
-    public void OnCollision(IPlayer player) { }
-    public void OnCollision(IProjectile projectile) { }
-    public void OnCollision(IPickup pickup) { }
+    public void OnCollision(IPlayer player)
+    {
+        if (hasExploded)
+        {
+            player.TakeDamage(this.Stats.Damage);   
+        }
+    }
+
+    public void OnCollision(IProjectile projectile)
+    {
+        /*
+         * No-op for now
+         * Could easily make projectiles cancel themselves out
+         * by calling Discontinue() here.
+         */
+    }
+
+    public void OnCollision(IPickup pickup)
+    {
+        // No-op
+    }
 
 }

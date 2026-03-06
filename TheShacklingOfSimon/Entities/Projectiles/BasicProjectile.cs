@@ -101,8 +101,31 @@ public class BasicProjectile : IProjectile
     }
 
     // for now these are no ops, they still need implementation or simple behaviors
-    public void OnCollision(IEnemy enemy) { Discontinue(); }
-    public void OnCollision(IPlayer player) { }
-    public void OnCollision(IProjectile projectile) { }
-    public void OnCollision(IPickup pickup) { }
+    public void OnCollision(IEnemy enemy)
+    {
+	    enemy.TakeDamage(this.Stats.Damage);
+	    Discontinue();
+    }
+
+    public void OnCollision(IPlayer player)
+    {
+		player.TakeDamage(this.Stats.Damage);   
+		Discontinue();
+    }
+
+    public void OnCollision(IProjectile projectile)
+    {
+		/*
+		 * No-op for now
+		 * Could easily make projectiles cancel themselves out
+		 * by calling Discontinue() here.
+		 */
+    }
+
+    public void OnCollision(IPickup pickup)
+    {
+	    /*
+	     * No-op
+	     */
+    }
 }
