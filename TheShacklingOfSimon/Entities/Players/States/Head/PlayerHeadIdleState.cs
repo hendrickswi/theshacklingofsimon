@@ -33,7 +33,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
     {
         if (_player.HeadSprite != null)
         {
-            _player.HeadSprite.Update(delta);
+            _player.HeadSprite?.Update(delta);
         }
     }
 
@@ -57,20 +57,23 @@ public class PlayerHeadIdleState : IPlayerHeadState
     
     private void UpdateSprite()
     {
-        string newAnimationName = "PlayerHeadIdleDown";
+        string newAnimationName = _player.GetSkin("Head");
         Vector2 cardinal = GetCardinalDirection(_lookingDirection);
-        
         if (cardinal == Vector2.UnitX)
         {
-            newAnimationName = "PlayerHeadIdleRight";
+            newAnimationName += "IdleRight";
         }
         else if (cardinal == -Vector2.UnitX)
         {
-            newAnimationName = "PlayerHeadIdleLeft";
+            newAnimationName += "IdleLeft";
         }
         else if (cardinal == -Vector2.UnitY)
         {
-            newAnimationName = "PlayerHeadIdleUp";
+            newAnimationName += "IdleUp";
+        }
+        else
+        {
+            newAnimationName += "IdleDown";
         }
 
         if (newAnimationName != _currentAnimation)
@@ -83,7 +86,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
     private Vector2 GetCardinalDirection(Vector2 input)
     {
         Vector2 cardinal = Vector2.Zero;
-        if (Math.Sqrt(input.X * input.X + input.Y * input.Y) > float.Epsilon)
+        if (input.LengthSquared() > float.Epsilon)
         {
             if (Math.Abs(input.X) > Math.Abs(input.Y))
             {

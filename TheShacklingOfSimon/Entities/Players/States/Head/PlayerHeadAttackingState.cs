@@ -7,37 +7,64 @@ namespace TheShacklingOfSimon.Entities.Players.States.Head;
 
 public class PlayerHeadAttackingState : IPlayerHeadState
 {
-    private PlayerWithTwoSprites _player;
-    private IWeapon _weapon;
-    private Vector2 _direction;
+    private readonly PlayerWithTwoSprites _player;
+    private readonly IWeapon _weapon;
+    private readonly Vector2 _direction;
     private float _timer;
     private readonly float _stateDuration;
 
     public PlayerHeadAttackingState(PlayerWithTwoSprites player, IWeapon weapon, Vector2 direction, float stateDuration)
     {
-        this._player = player;
-        this._weapon = weapon;
-        this._direction = direction;
-        this._stateDuration = stateDuration;
+        _player = player;
+        _weapon = weapon;
+        _direction = direction;
+        _timer = 0.0f;
+        _stateDuration = stateDuration;
     }
 
     public void Enter()
     {
         // _direction is already "cardinalized" from PlayerHeadIdleState
-        _weapon.Fire(_player.Position, _direction, new ProjectileStats(_player.DamageMultiplierStat, 200.0f * _player.ProjectileSpeedMultiplierStat));
+        Vector2 projectileStartPos;
+        if (_direction == Vector2.UnitX)
+        {
+            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y);
+        }
+        else if (_direction == -Vector2.UnitX)
+        {
+            projectileStartPos = new Vector2(_player.Position.X - 10.0f, _player.Position.Y);
+        }
+        else if (_direction == Vector2.UnitY)
+        {
+            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y);
+        }
+        else
+        {
+            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y - 10.0f);
+        }
+        
+        _weapon.Fire(
+            projectileStartPos,
+            _direction, 
+            new ProjectileStats(_player.DamageMultiplierStat, 200.0f * _player.ProjectileSpeedMultiplierStat)
+            );
 
-        string spriteAnimationName = "PlayerHeadShootingDown";
-        if (_direction.X > 0)
+        string spriteAnimationName = _player.GetSkin("Head");
+        if (_direction.X > float.Epsilon)
         {
-            spriteAnimationName = "PlayerHeadShootingRight";
+            spriteAnimationName += "ShootingRight";
         }
-        else if (_direction.X < 0)
+        else if (_direction.X < -float.Epsilon)
         {
-            spriteAnimationName = "PlayerHeadShootingLeft";
+            spriteAnimationName += "ShootingLeft";
         }
-        else if (_direction.Y < 0)
+        else if (_direction.Y < -float.Epsilon)
         {
-            spriteAnimationName = "PlayerHeadShootingUp";
+            spriteAnimationName += "ShootingUp";
+        }
+        else
+        {
+            spriteAnimationName += "ShootingDown";
         }
 
         _player.HeadSprite = SpriteFactory.Instance.CreateAnimatedSprite(spriteAnimationName, _stateDuration * 0.51f);
@@ -60,7 +87,7 @@ public class PlayerHeadAttackingState : IPlayerHeadState
         }
         else
         {
-            _player.HeadSprite.Update(delta);
+            _player.HeadSprite?.Update(delta);
         }
     }
 

@@ -21,7 +21,8 @@ public class PlayerBodyDamagedState : IPlayerBodyState
     
     public void Enter()
     {
-        _player.BodySprite = SpriteFactory.Instance.CreateStaticSprite("PlayerHurt");
+        string spritePrefix = _player.GetSkin("Body");
+        _player.BodySprite = SpriteFactory.Instance.CreateStaticSprite(spritePrefix + "Hurt");
     }
 
     public void Exit()
@@ -41,7 +42,7 @@ public class PlayerBodyDamagedState : IPlayerBodyState
         }
         else
         {
-            _player.BodySprite.Update(delta);
+            _player.BodySprite?.Update(delta);
         }
     }
 

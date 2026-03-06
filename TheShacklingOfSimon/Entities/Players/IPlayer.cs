@@ -31,7 +31,7 @@ public interface IPlayer : IDamageable
      * void TakeDamage(float amt),
      * void Heal(float amt)
      * from IDamageable
-     */ 
+     */
     
     Inventory Inventory { get; }
     IWeapon CurrentPrimaryWeapon { get; }
@@ -62,5 +62,8 @@ public interface IPlayer : IDamageable
     void SetPosition(Vector2 worldPosition);
     void Reset(Vector2 startPosition);
 
+    void SetSkin(string category, string skinPrefix);
+    string GetSkin(string category);
+    
     void ChangeState(IPlayerState newState);
 }

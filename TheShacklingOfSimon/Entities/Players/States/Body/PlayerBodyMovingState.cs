@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Factory;
 
 namespace TheShacklingOfSimon.Entities.Players.States.Body;
@@ -30,7 +31,7 @@ public class PlayerBodyMovingState : IPlayerBodyState
     
     public void Update(GameTime delta)
     {
-        _player.BodySprite.Update(delta);
+        _player.BodySprite?.Update(delta);
     }
 
     public void HandleMovement(Vector2 direction, float frameDuration)
@@ -48,21 +49,21 @@ public class PlayerBodyMovingState : IPlayerBodyState
     }
 
     private void UpdateSprite()
-    {
-        string newAnimationName = "PlayerWalkVertical";
+    { 
+        string newAnimationName = _player.GetSkin("Body");
         
         /*
          * Walking animation is horizontally biased.
          * e.g., If walking northeast (both up and right),
          * the horizontal walk animation is played.
          */
-        if (_player.Velocity.X != 0)
+        if (MathF.Abs(_player.Velocity.X) > float.Epsilon)
         {
-            newAnimationName = "PlayerWalkHorizontal";
+            newAnimationName += "WalkHorizontal";
         }
-        else if (_player.Velocity.Y != 0)
+        else if (MathF.Abs(_player.Velocity.Y) > float.Epsilon)
         {
-            newAnimationName = "PlayerWalkVertical";
+            newAnimationName += "WalkVertical";
         }
 
         if (newAnimationName != _currentAnimation)

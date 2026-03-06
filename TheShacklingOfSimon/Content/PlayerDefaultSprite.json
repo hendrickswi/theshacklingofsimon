@@ -59,7 +59,7 @@
       ]
     },
     {
-      "name": "PlayerWalkVertical",
+      "name": "PlayerBodyWalkVertical",
       "frames": [
         { "x": 9, "y": 73, "w": 29, "h": 22 },
         { "x": 40, "y": 73, "w": 29, "h": 22 },
@@ -74,7 +74,7 @@
       ]
     },
     {
-      "name": "PlayerWalkHorizontal",
+      "name": "PlayerBodyWalkHorizontal",
       "frames": [
         { "x": 10, "y": 116, "w": 29, "h": 22 },
         { "x": 41, "y": 116, "w": 29, "h": 22 },
@@ -89,19 +89,19 @@
       ]
     },
     {
-      "name": "PlayerHurt",
+      "name": "PlayerBodyHurt",
       "frames": [
         { "x": 72, "y": 290, "w": 40, "h": 40 }
       ]
     },
     {
-      "name": "PlayerDeadAnimation",
+      "name": "PlayerBodyDeadAnimation",
       "frames": [
         { "x": 5, "y": 286, "w": 37 , "h": 39 }
       ]
     },
     {
-      "name": "PlayerDeadFinal",
+      "name": "PlayerBodyDeadFinal",
       "frames" : [
         { "x": 126, "y": 293, "w": 46, "h": 40 }
       ]
