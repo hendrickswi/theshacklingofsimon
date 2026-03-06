@@ -273,57 +273,41 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
 
     public override void OnCollision(IEnemy enemy)
     {
-        // Delegate logic to the enemy states
-        // Could add a "thorns" effect here
+        /*
+         * No-op for now
+         * Collision logic handled mainly by specific concrete enemy class: Avoids complex
+         * conditional logic in the player class.
+         *
+         * Could eventually add a "thorns" effect for damaging the enemy
+         * or any other interaction of the form (player does something to enemy).
+         */
     }
 
     public override void OnCollision(IProjectile projectile)
     {
         /*
-         * Delegate logic to the specific projectile
-         * Allows decorator pattern to work properly without
-         * complex conditional logic
-         *      i.e., should this projectile poison?
-         *      should it shatter? etc.
+         * No-op
+         * Collision logic handled by specific concrete projectile class: Avoids complex
+         * conditional logic in the player class.
          */
     }
 
     public override void OnCollision(ITile tile)
     {
-        if (tile == null) return;
-
-        // 1) Trigger effects for walkable hazards (spikes/fire/etc.)
-        if (tile is LevelHandler.Tiles.TileConstructor.ITriggerTile trigger)
-        {
-            trigger.OnIntersect(this);
-        }
-
-        // 2) Only resolve physics if the tile actually blocks movement
-        if (!tile.BlocksGround) return;
-
-        Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(Hitbox, tile.Hitbox);
-        if (mtv == Vector2.Zero) return;
-
-        Position += mtv;
-        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
-
-        switch (CollisionDetector.GetCollisionSideFromMtv(mtv))
-        {
-            case CollisionSide.Left:
-            case CollisionSide.Right:
-                Velocity = new Vector2(0.0f, Velocity.Y);
-                break;
-
-            case CollisionSide.Top:
-            case CollisionSide.Bottom:
-                Velocity = new Vector2(Velocity.X, 0.0f);
-                break;
-        }
+        /*
+         * No-op
+         * Collision logic handled by specific concrete tile class: Avoids complex
+         * conditional logic in the player class.
+         */
     }
 
     public override void OnCollision(IPickup pickup)
     {
-        pickup.OnCollision(this);
+        /*
+         * No-op
+         * Collision logic handled by specific concrete pickup class: Avoids complex
+         * conditional logic in the player class.
+         */
     }
 
     public void ChangeHeadState(IPlayerHeadState newHeadState)
