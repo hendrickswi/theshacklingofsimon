@@ -12,21 +12,36 @@ using TheShacklingOfSimon.Sprites.Products;
 namespace TheShacklingOfSimon.Entities.Pickup;
 public class Pickup : IPickup
 {
-    IItem Item { get; set; }
-    Vector2 Position { get; }
-    Vector2 Velocity { get; }
-    bool IsActive { get; set; }
-    Rectangle Hitbox { get; }
-    ISprite Sprite { get; }
+    public IItem Item { get; set; }
+    public Vector2 Position { get; private set; }
+    public Vector2 Velocity { get; set; }
+    public bool IsActive { get; private set; }
+    public Rectangle Hitbox { get; private set; }
+    public ISprite Sprite { get; set; }
+
+    public Pickup(Vector2 position, IItem item, ISprite sprite)
+    {
+        Item = item;
+        Position = position;
+        Velocity = Vector2.Zero;
+        IsActive = true;
+        Hitbox = new Rectangle((int)position.X, (int)position.Y, 32, 32);
+        Sprite = sprite;
+    }
 
     public void Update(GameTime delta)
     {
-        //Interact(IEntity player);
+        // No-op
     }
+    
     public void Draw(SpriteBatch spriteBatch)
     {
-        
+        if (Sprite != null)
+        {
+            Sprite.Draw(spriteBatch, Position, Color.White);
+        }
     }
+    
     public void Discontinue()
     {
         IsActive = false;
@@ -34,7 +49,7 @@ public class Pickup : IPickup
 
     public void OnCollision(IEntity other)
     {
-        // overload
+        other.OnCollision(this);
     }
 
     public void OnCollision(IPlayer player)
@@ -42,33 +57,23 @@ public class Pickup : IPickup
         player.AddItemToInventory(Item);
         Discontinue();
     }
+    
     public void OnCollision(IEnemy enemy)
     {
-        throw new System.NotImplementedException();
+        // No-op
     }
     public void OnCollision(IProjectile projectile)
     {
-        throw new System.NotImplementedException();
+        // No-op
     }
 
     public void OnCollision(ITile tile)
     {
-        throw new System.NotImplementedException();
+        // No-op
     }
 
     public void OnCollision(IPickup pickup)
     {
-        // no-op
+        // No-op
     }
-    IItem IPickup.Item { get => Item; set => Item = value; }
-
-    Vector2 IEntity.Position => Position;
-
-    Vector2 IEntity.Velocity { get; set; }
-
-    bool IEntity.IsActive => IsActive;
-
-    Rectangle IEntity.Hitbox => Hitbox;
-
-    ISprite IEntity.Sprite { get; set; }
 }

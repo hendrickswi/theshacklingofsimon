@@ -51,7 +51,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
      * set methods
      */
     public float MoveSpeedStat { get; set; }
-    public float DamageMultiplierStat { get; set; }
+    public int DamageMultiplierStat { get; set; }
     public float ProjectileSpeedMultiplierStat { get; set; }
     public float PrimaryAttackCooldown { get; set; }
     public float SecondaryAttackCooldown { get; set; }
@@ -385,7 +385,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         Health = 6;
         MaxHealth = 6;
         
-        DamageMultiplierStat = 1.0f;
+        DamageMultiplierStat = 1;
         MoveSpeedStat = 100.0f;
         PrimaryAttackCooldown = 0.5f;
         ProjectileSpeedMultiplierStat = 1.0f;

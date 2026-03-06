@@ -42,7 +42,7 @@ public interface IPlayer : IDamageable
     IPlayerState CurrentState { get; }
     
     float MoveSpeedStat { get; set; }
-    float DamageMultiplierStat { get; set; }
+    int DamageMultiplierStat { get; set; }
     float ProjectileSpeedMultiplierStat { get; set; }
     float PrimaryAttackCooldown { get; set; }
     float SecondaryAttackCooldown { get; set; }

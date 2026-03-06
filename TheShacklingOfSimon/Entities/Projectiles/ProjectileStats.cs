@@ -2,10 +2,10 @@
 
 public record struct ProjectileStats
 {
-    public float Damage;
+    public int Damage;
     public float Speed;
 
-    public ProjectileStats(float damage, float speed)
+    public ProjectileStats(int damage, float speed)
     {
         Damage = damage;
         Speed = speed;
