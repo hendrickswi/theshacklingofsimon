@@ -32,6 +32,9 @@ public interface IEnemy : IDamageable
      * from IDamageable
      */
     
+    // For the manager
+    bool MarkedForRemoval { get; }
+
     // IEnemy-implementing classes will act as the context for the State pattern
     IEnemyState CurrentState { get; }
     
@@ -43,6 +46,7 @@ public interface IEnemy : IDamageable
 
     // are attacks specialized to each enemy or considered weapons
     //void Attack(Vector2 direction, float attackDamage, float attackCooldown, float attackRange);
+    void MarkForRemoval();
     Vector2 FindTarget();
     void RegisterMovement(float dt, Vector2 targetPosition);
     void RegisterAttack(float dt, Vector2 targetDirection);

@@ -11,8 +11,9 @@ public class PreviousEnemyCommand : ICommand
         _enemyManager = enemyManager;
     }
 
+    //not for use in current implementation
     public void Execute()
     {
-        _enemyManager.PreviousEnemy();
+        //_enemyManager.PreviousEnemy();
     }
 }

@@ -7,43 +7,51 @@ namespace TheShacklingOfSimon.Entities.Enemies
     public class EnemyManager
     {
         private readonly List<IEnemy> _enemies = new();
-        private int _currentIndex = 0;
+
+        public IReadOnlyList<IEnemy> Enemies => _enemies.AsReadOnly();
 
         public void AddEnemy(IEnemy enemy)
         {
-            _enemies.Add(enemy);
+            if (enemy != null && !_enemies.Contains(enemy))
+            {
+                _enemies.Add(enemy);
+            }
         }
 
-        public void NextEnemy()
+        public void RemoveEnemy(IEnemy enemy)
         {
-            if (_enemies.Count == 0) return;
-
-            _currentIndex++;
-            if (_currentIndex >= _enemies.Count)
-                _currentIndex = 0;
-        }
-
-        public void PreviousEnemy()
-        {
-            if (_enemies.Count == 0) return;
-
-            _currentIndex--;
-            if (_currentIndex < 0)
-                _currentIndex = _enemies.Count - 1;
+            if (enemy != null)
+            {
+                _enemies.Remove(enemy);
+            }
         }
 
         public void Update(GameTime gameTime)
         {
-            if (_enemies.Count == 0) return;
+            for (int i = _enemies.Count - 1; i >= 0; i--)
+            {
+                IEnemy enemy = _enemies[i];
+                enemy.Update(gameTime);
 
-            _enemies[_currentIndex].Update(gameTime);
+                // Remove enemies that are marked for removal
+                if (enemy.MarkedForRemoval)
+                {
+                    _enemies.RemoveAt(i);
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (_enemies.Count == 0) return;
+            foreach (IEnemy enemy in _enemies)
+            {
+                enemy.Draw(spriteBatch);
+            }
+        }
 
-            _enemies[_currentIndex].Draw(spriteBatch);
+        public void ClearAllEnemies()
+        {
+            _enemies.Clear();
         }
     }
 }

@@ -23,6 +23,7 @@ public class EnemyAttackingState : IEnemyState
     }
     public void Enter()
     {
+        _timer = 0f;
         // _direction is already "cardinalized" from PlayerHeadIdleState consider changing to match movement direction
         _weapon.Fire(_enemy.Position, _direction, new ProjectileStats(1.0f, 200.0f));
 
@@ -42,16 +43,17 @@ public class EnemyAttackingState : IEnemyState
         if (_timer >= _stateDuration)
         {
             _enemy.ChangeState(new EnemyIdleState(_enemy, Vector2.Zero));
+            return;
         }
         else
         {
-            _enemy.Sprite.Update(delta);
+            _enemy.Sprite?.Update(delta);
         }
     }
 
     public void HandleMovement(Vector2 direction)
     {
-        if (direction != Vector2.Zero)
+        if (direction.LengthSquared() > 0.0001f && _timer >= _stateDuration)
         {
             _enemy.ChangeState(new EnemyMovingState(_enemy, direction));
         }

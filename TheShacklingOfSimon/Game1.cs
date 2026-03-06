@@ -53,9 +53,6 @@ public class Game1 : Game
 
     //temp for enemy
     private EnemyManager _enemyManager;
-    private IEnemy _spiderEnemy1;
-    private IEnemy _spiderEnemy2;
-    private IEnemy _spiderEnemy3;
 
     private CollisionManager _collisionManager;
 
@@ -127,15 +124,11 @@ public class Game1 : Game
         _player.AddItemToInventory(new TeleportItem(_player, pos => true));
         _player.AddItemToInventory(new AdrenalineItem(_player));
 
-        _spiderEnemy1 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f), new BasicWeapon(_projectileManager));
-        _spiderEnemy2 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.15f, screenDimensions.Height * 0.15f), new BasicWeapon(_projectileManager));
-        _spiderEnemy3 = new SpiderEnemy(new Vector2(screenDimensions.Width * 0.8f, screenDimensions.Height * 0.7f), new BasicWeapon(_projectileManager));
 
         //to allow for cycling through enemies
         _enemyManager = new EnemyManager();
-        _enemyManager.AddEnemy(_spiderEnemy1);
-        _enemyManager.AddEnemy(_spiderEnemy2);
-        _enemyManager.AddEnemy(_spiderEnemy3);
+        _enemyManager.AddEnemy(new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f), new BasicWeapon(_projectileManager)));
+        _enemyManager.AddEnemy(new SpiderEnemy(new Vector2(screenDimensions.Width * 0.4f, screenDimensions.Height * 0.3f), new BasicWeapon(_projectileManager)));
 
         //load Item Sprites and manager
         SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");
@@ -151,9 +144,10 @@ public class Game1 : Game
         // Persistent dynamic colliders (demo setup)
         _persistentDynamicEntities.Clear();
         _persistentDynamicEntities.Add(_player);
-        _persistentDynamicEntities.Add(_spiderEnemy1);
-        _persistentDynamicEntities.Add(_spiderEnemy2);
-        _persistentDynamicEntities.Add(_spiderEnemy3);
+        foreach (IEnemy enemy in _enemyManager.Enemies)
+        {
+            _persistentDynamicEntities.Add(enemy);
+        }
 
         /*
          * Subscribe the collision manager to the event of a new projectile
@@ -295,15 +289,6 @@ public class Game1 : Game
                 () => RegisterRoomCollidables(_roomManager.CurrentRoom)
             )
         );
-
-        // Temporary keys for cycling through enemies for sprint 2
-        _keyboardController.RegisterCommand(
-            new KeyboardInput(InputState.JustPressed, KeyboardButton.O),
-            new NextEnemyCommand(_enemyManager));
-
-        _keyboardController.RegisterCommand(
-            new KeyboardInput(InputState.JustPressed, KeyboardButton.P),
-            new PreviousEnemyCommand(_enemyManager));
 
         // Mouse controls
         _mouseController.RegisterCommand(

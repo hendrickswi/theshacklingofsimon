@@ -11,13 +11,14 @@ using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using TheShacklingOfSimon.Entities.Enemies.Movement;
-using System.ComponentModel.Design;
 
 
 namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
 public class SpiderEnemy : DamageableEntity, IEnemy
 {    
+
+    public bool MarkedForRemoval { get; private set; }
 
     public IEnemyState CurrentState { get; private set; }
     public IWeapon Weapon { get; private set; }
@@ -27,7 +28,7 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     private float _attackTimer;
     public float AttackRange { get; set; }
 
-    private EnemyMovement _movement;
+    private EnemyMovementManager _movement;
     private Vector2 _movementInput;
     private Vector2 _attack;
 
@@ -38,13 +39,13 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         this.MaxHealth = 3;
         
         // Movement class properties
-        _movement = new EnemyMovement();
+        _movement = new EnemyMovementManager();
         
         // These can all be overriden with public set method
         this.MoveSpeedStat = 17.0f;
         this.AttackCooldown = 3.0f;
         _attackTimer = 0f;
-        this.AttackRange = 50.0f;
+        this.AttackRange = 10.0f;
         this.Weapon = weapon;
 
         this.Sprite = SpriteFactory.Instance.CreateStaticSprite("EnemyIdleDown");
@@ -65,52 +66,61 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         this._attack = Vector2.Zero;
     }
 
+    public void MarkForRemoval()
+    {
+        MarkedForRemoval = true;
+    }
+
     public Vector2 FindTarget() //this method will return (0,0) if no target found
     {
         // Placeholder for target finding logic, e.g., find the player or other entities
-        return new Vector2(0, 0);
+        Vector2 targetPosition = Position + new Vector2(25, 0);
+        Vector2 targetDirection = targetPosition - Position;
+        return targetDirection;
     }
 
     public void RegisterAttack(float dt, Vector2 targetDirection)
     {
-        /*
-        if (targetDirection == Vector2.Zero)
+        if (targetDirection.LengthSquared() > AttackRange)
         {
             _attack = Vector2.Zero;
-            return;
         }
-        Vector2 direction = targetDirection - Position;
-        if (direction.LengthSquared() > 0.0001f)
+        else
         {
-            direction.Normalize();
+            Vector2 direction = targetDirection;
+
+            if (direction.LengthSquared() > 0.0001f)
+                direction.Normalize();
+
+            _attack = direction;
         }
-        _attack += direction;
-        */
-        // Attack logic
+
+        // Attack cooldown logic
         _attackTimer -= dt;
         if (_attackTimer < 0f)
             _attackTimer = 0f;
-        if (_attackTimer <= 0f)
+
+        if (_attackTimer <= 0f && _attack != Vector2.Zero)
         {
-            CurrentState.HandleAttack(Velocity, AttackCooldown);
-            _attackTimer = AttackCooldown; // reset cooldown
+            CurrentState.HandleAttack(_attack, AttackCooldown);
+            _attackTimer = AttackCooldown;
         }
         _attack = Vector2.Zero;
     }
 
-    public void StandardMovement(float dt, Vector2 targetPosition)
+    public void StandardMovement(float dt, Vector2 targetDirection)
     {
-        if (targetPosition.LengthSquared() < 0.0001f)
+        if (targetDirection.LengthSquared() > AttackRange)
             _movementInput = _movement.Wander(dt);
         else
-            _movementInput = _movement.Pathfind(Position, targetPosition);
+            _movementInput = _movement.Pathfind(targetDirection);
     }
 
-    public void RegisterMovement(float dt, Vector2 targetPosition)
+    public void RegisterMovement(float dt, Vector2 targetDirection)
     {
         // Movement logic
         _movementInput = Vector2.Zero;
-        StandardMovement(dt, targetPosition);
+        StandardMovement(dt, targetDirection);
         if (_movementInput.LengthSquared() > 0.0001f)
         {
             _movementInput.Normalize();
@@ -124,9 +134,9 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     {
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         // Find target
-        Vector2 targetPosition = FindTarget();
-        RegisterMovement(dt,targetPosition); // No specific target for now, just wander
-        RegisterAttack(dt, Position + Velocity); // Attack in the direction of movement for testing
+        Vector2 targetDirection = FindTarget();
+        RegisterMovement(dt, targetDirection); // No specific target for now, just wander
+        RegisterAttack(dt, targetDirection); // Attack in the direction of movement for testing
         
         Position += Velocity * dt;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);

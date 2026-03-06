@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace TheShacklingOfSimon.Entities.Enemies.Movement
 {
-    public class EnemyMovement
+    public class EnemyMovementManager
     {
         private static Random _rng = new Random();
 
@@ -11,7 +11,7 @@ namespace TheShacklingOfSimon.Entities.Enemies.Movement
         private float _wanderInterval;
         private Vector2 _wanderDirection;
 
-        public EnemyMovement(float wanderInterval = 1.5f)
+        public EnemyMovementManager(float wanderInterval = 1.5f)
         {
             _wanderInterval = wanderInterval;
             _wanderTimer = 0f;
@@ -37,15 +37,13 @@ namespace TheShacklingOfSimon.Entities.Enemies.Movement
             return _wanderDirection;
         }
 
-        public Vector2 Pathfind(Vector2 position, Vector2 targetPosition)
+        public Vector2 Pathfind(Vector2 targetDirection)
         {
-            if (targetPosition == Vector2.Zero)
+            if (targetDirection.LengthSquared() < 0.0001f)
                 return Vector2.Zero;
 
-            Vector2 direction = targetPosition - position;
-
-            if (direction.LengthSquared() > 0.0001f)
-                direction.Normalize();
+            Vector2 direction = targetDirection;
+            direction.Normalize();
 
             return direction;
         }
