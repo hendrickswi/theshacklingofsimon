@@ -100,6 +100,10 @@ public class SpriteFactory
         {
             sprite = new AnimatedSprite(texture, frames, animationSpeed);
         }
+        else
+        {
+            Console.WriteLine("WARNING: SpriteFactory could not find texture " + spriteName);
+        }
         return sprite;
     }
     
@@ -112,9 +116,13 @@ public class SpriteFactory
         if (textureExists && sourceRectangleExists)
         {
             if (frame.Length > 0)
-            {
+            {d
                 sprite = new StaticSprite(texture, frame[0]);
             }
+        }
+        else
+        {
+            Console.WriteLine("WARNING: SpriteFactory could not find texture " + spriteName);
         }
         return sprite;
     }
