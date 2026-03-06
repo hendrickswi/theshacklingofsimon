@@ -384,7 +384,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         Position = startPosition;
         Velocity = Vector2.Zero;
         IsActive = true;
-        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 30, 30);
+        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 20, 20);
         Health = 6;
         MaxHealth = 6;
         

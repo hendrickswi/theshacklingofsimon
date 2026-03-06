@@ -12,6 +12,7 @@ public class PlayerHeadAttackingState : IPlayerHeadState
     private readonly Vector2 _direction;
     private float _timer;
     private readonly float _stateDuration;
+    private readonly float _extraProjectileOffset = 10.0f;
 
     public PlayerHeadAttackingState(PlayerWithTwoSprites player, IWeapon weapon, Vector2 direction, float stateDuration)
     {
@@ -28,19 +29,19 @@ public class PlayerHeadAttackingState : IPlayerHeadState
         Vector2 projectileStartPos;
         if (_direction == Vector2.UnitX)
         {
-            projectileStartPos = new Vector2(_player.Position.X + _player.Hitbox.X, _player.Position.Y);
+            projectileStartPos = new Vector2(_player.Position.X + _player.Hitbox.Width + _extraProjectileOffset, _player.Position.Y);
         }
         else if (_direction == -Vector2.UnitX)
         {
-            projectileStartPos = new Vector2(_player.Position.X - 10.0f, _player.Position.Y);
+            projectileStartPos = new Vector2(_player.Position.X - _extraProjectileOffset, _player.Position.Y);
         }
         else if (_direction == Vector2.UnitY)
         {
-            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y);
+            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y + _player.Hitbox.Height + _extraProjectileOffset);
         }
         else
         {
-            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y - 10.0f);
+            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y - _extraProjectileOffset);
         }
         
         _weapon.Fire(

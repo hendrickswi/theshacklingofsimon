@@ -97,8 +97,7 @@ public class BasicProjectile : IProjectile
             Discontinue();
         }
     }
-
-    // for now these are no ops, they still need implementation or simple behaviors
+    
     public void OnCollision(IEnemy enemy)
     {
 	    enemy.TakeDamage(this.Stats.Damage);
@@ -107,9 +106,8 @@ public class BasicProjectile : IProjectile
 
     public void OnCollision(IPlayer player)
     {	
-		//This code is bugged and makes it so even player made shots hit themselves probably fix this 
-		//player.TakeDamage(this.Stats.Damage);   
-		//Discontinue();
+		player.TakeDamage(this.Stats.Damage);   
+		Discontinue();
     }
 
     public void OnCollision(IProjectile projectile)
