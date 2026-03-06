@@ -116,7 +116,7 @@ public class SpriteFactory
         if (textureExists && sourceRectangleExists)
         {
             if (frame.Length > 0)
-            {d
+            {
                 sprite = new StaticSprite(texture, frame[0]);
             }
         }
