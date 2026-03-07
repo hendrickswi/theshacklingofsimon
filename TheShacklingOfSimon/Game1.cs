@@ -91,6 +91,7 @@ public class Game1 : Game
 
         // Load Enemy Sprites into factory
         SpriteFactory.Instance.LoadTexture(Content, "SpiderEnemy.json", "SpiderEnemy");
+        SpriteFactory.Instance.LoadTexture(Content, "BlackMaw.json", "BlackMaw");
 
         // Load Projectile Sprites and Manager_projectileManager.Update(delta);
         _projectileManager = new ProjectileManager();
@@ -128,7 +129,7 @@ public class Game1 : Game
         //eventually to be handled by room manager
         _enemyManager = new EnemyManager();
         _enemyManager.AddEnemy(new SpiderEnemy(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.25f), _projectileManager));
-        _enemyManager.AddEnemy(new SpiderEnemy(new Vector2(screenDimensions.Width * 0.4f, screenDimensions.Height * 0.3f), _projectileManager));
+        _enemyManager.AddEnemy(new BlackMaw(new Vector2(screenDimensions.Width * 0.4f, screenDimensions.Height * 0.3f), _projectileManager));
 
         //load Item Sprites and manager
         SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");

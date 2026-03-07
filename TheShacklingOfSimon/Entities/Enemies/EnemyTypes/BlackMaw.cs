@@ -15,9 +15,10 @@ using TheShacklingOfSimon.Entities.Enemies.Movement;
 
 namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
-public class RamEnemy : DamageableEntity, IEnemy
+public class BlackMaw : DamageableEntity, IEnemy
 {    
 
+    public string Name => "BlackMaw";
     public bool MarkedForRemoval { get; private set; }
 
     public IEnemyState CurrentState { get; private set; }
@@ -35,7 +36,7 @@ public class RamEnemy : DamageableEntity, IEnemy
     private Vector2 _attack;
 
     //should take out the projectile manager and weapon, will do once tested
-    public RamEnemy(Vector2 startPosition, ProjectileManager projectileManager)
+    public BlackMaw(Vector2 startPosition, ProjectileManager projectileManager)
     {   
         // IDamageable properties
         this.Health = 3;

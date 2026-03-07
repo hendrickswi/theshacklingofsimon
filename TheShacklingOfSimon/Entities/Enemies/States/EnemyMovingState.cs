@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Factory;
-using TheShacklingOfSimon.Weapons;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TheShacklingOfSimon.Entities.Enemies.States;
 
@@ -9,6 +9,7 @@ public class EnemyMovingState : IEnemyState
 {
     private IEnemy _enemy;
     private string _currentAnimation;
+    private SpriteEffects _effects = SpriteEffects.None;
     private Vector2 _direction;
 
     public EnemyMovingState(IEnemy enemy, Vector2 lastDirection)
@@ -58,29 +59,31 @@ public class EnemyMovingState : IEnemyState
 
     private void UpdateSprite()
     {
-        string newAnimationName = "EnemyWalkRight";
+        string newAnimationName = _enemy.Name + "_EnemyWalkRight";
+        _effects = SpriteEffects.None;
         
         /*
          * Walking animation is horizontally biased.
          * e.g., If walking northeast (both up and right),
          * the horizontal walk animation is played.
          */
-        if (_enemy.Velocity.X > 0)
+        /*
+        * Walking animation is horizontally biased.
+        * If moving left, we flip the right-walk animation.
+        */
+        if (_enemy.Velocity.X < 0)
         {
-            newAnimationName = "EnemyWalkRight";
-        }
-        else if (_enemy.Velocity.X < 0)
-        {
-            newAnimationName = "EnemyWalkLeft";
+            newAnimationName = _enemy.Name + "_EnemyWalkRight";
+            _effects = SpriteEffects.FlipHorizontally;
         }
         /* for testing
         else if (_enemy.Velocity.Y < 0)
         {
-            newAnimationName = "EnemyWalkUp";
+            newAnimationName = _enemy.Name + "_EnemyWalkUp";
         }
         else if (_enemy.Velocity.Y > 0)
         {
-            newAnimationName = "EnemyWalkDown";
+            newAnimationName = _enemy.Name + "_EnemyWalkDown";
         }
         */
 

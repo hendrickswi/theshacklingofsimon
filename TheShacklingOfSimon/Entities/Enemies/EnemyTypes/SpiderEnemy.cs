@@ -18,6 +18,7 @@ namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 public class SpiderEnemy : DamageableEntity, IEnemy
 {    
 
+    public string Name => "SpiderEnemy";
     public bool MarkedForRemoval { get; private set; }
 
     public IEnemyState CurrentState { get; private set; }

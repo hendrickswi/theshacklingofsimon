@@ -32,6 +32,8 @@ public interface IEnemy : IDamageable
      * from IDamageable
      */
     
+    string Name { get; }
+
     // For the manager
     bool MarkedForRemoval { get; }
 
