@@ -247,15 +247,6 @@ public class Game1 : Game
         _keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.Down), new PrimaryAttackDownCommand(_player));
         _keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.Right), new PrimaryAttackRightCommand(_player));
 
-        // Room Manager Controls (Sprint 3)
-        _keyboardController.RegisterCommand(
-            new KeyboardInput(InputState.JustPressed, KeyboardButton.Y),
-            new NextRoomCommand(_roomManager));
-
-        _keyboardController.RegisterCommand(
-            new KeyboardInput(InputState.JustPressed, KeyboardButton.T),
-            new PreviousRoomCommand(_roomManager));
-
         // Item Manager Controls
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.I),
@@ -280,7 +271,7 @@ public class Game1 : Game
             )
         );
 
-        // Mouse controls
+        // Mouse controls sprint3
         _mouseController.RegisterCommand(
             new MouseInput(
                 new MouseInputRegion(0, 0, screenDimensions.Width, screenDimensions.Height),
