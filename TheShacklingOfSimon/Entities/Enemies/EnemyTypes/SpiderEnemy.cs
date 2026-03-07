@@ -178,8 +178,8 @@ public class SpiderEnemy : DamageableEntity, IEnemy
 
     public override void OnCollision(IPlayer player)
     {
-        // Optional: damage player on touch, or delegate to state logic later.
-        // No-op for now.
+        player.TakeDamage(1);
+        // TODO: Should change state here
     }
 
     public override void OnCollision(IEnemy enemy)
@@ -191,6 +191,7 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     {
         // No-op for now if projectiles should damage enemies,
         // implement damage in projectile or here consistently across the codebase.
+        TakeDamage(projectile.Stats.Damage);
     }
 
     public override void OnCollision(ITile tile)
