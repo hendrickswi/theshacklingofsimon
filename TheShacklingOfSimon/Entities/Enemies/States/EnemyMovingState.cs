@@ -9,7 +9,6 @@ public class EnemyMovingState : IEnemyState
 {
     private IEnemy _enemy;
     private string _currentAnimation;
-    private SpriteEffects _effects = SpriteEffects.None;
     private Vector2 _direction;
 
     public EnemyMovingState(IEnemy enemy, Vector2 lastDirection)
@@ -60,7 +59,6 @@ public class EnemyMovingState : IEnemyState
     private void UpdateSprite()
     {
         string newAnimationName = _enemy.Name + "_EnemyWalkRight";
-        _effects = SpriteEffects.None;
         
         /*
          * Walking animation is horizontally biased.
@@ -74,7 +72,6 @@ public class EnemyMovingState : IEnemyState
         if (_enemy.Velocity.X < 0)
         {
             newAnimationName = _enemy.Name + "_EnemyWalkRight";
-            _effects = SpriteEffects.FlipHorizontally;
         }
         /* for testing
         else if (_enemy.Velocity.Y < 0)
