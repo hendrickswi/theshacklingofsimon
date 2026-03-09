@@ -8,4 +8,6 @@ public interface IController<T>
 {
     void Update();
     void RegisterCommand(T input, Commands.ICommand command);
+    void UnregisterCommand(T input);
+    void ClearCommands();
 }

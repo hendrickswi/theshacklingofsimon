@@ -12,9 +12,9 @@ public class MouseController : IController<MouseInput>
      * Any dependencies are in a custom service class.
      */
     private readonly IMouseService _mouseService;
-    private Dictionary<MouseButton, InputState> _prevStates;
+    private readonly Dictionary<MouseInput, Commands.ICommand> _map;
+    private readonly Dictionary<MouseButton, InputState> _prevStates;
     
-    private Dictionary<MouseInput, Commands.ICommand> _map;
     public MouseController(IMouseService service)
     {
         _mouseService = service;
@@ -32,9 +32,24 @@ public class MouseController : IController<MouseInput>
         bool success = _map.TryAdd(input, cmd);
         if (success)
         {
-           // _prevStates.Add(input.Button, InputState.Released);
+           _prevStates.Add(input.Button, InputState.Released);
         }
     }
+
+    public void UnregisterCommand(MouseInput input)
+    {
+        bool success = _map.Remove(input);
+        if (success)
+        {
+            _prevStates.Remove(input.Button);
+        }
+    }
+
+    public void ClearCommands()
+    {
+        _map.Clear();
+    }
+    
     public void Update()
     {
         Vector2 pos = _mouseService.GetPosition();

@@ -8,8 +8,8 @@ namespace TheShacklingOfSimon.Controllers.Gamepad;
 public class GamepadController : IController<GamepadButtonInput>, IController<GamepadJoystickInput>
 {
     private readonly IGamepadService _gamepadService;
-    private Dictionary<GamepadButtonInput, Commands.ICommand> _buttonMap;
-    private Dictionary<GamepadJoystickInput, Commands.ICommand> _joystickMap;
+    private readonly Dictionary<GamepadButtonInput, Commands.ICommand> _buttonMap;
+    private readonly Dictionary<GamepadJoystickInput, Commands.ICommand> _joystickMap;
 
     private Dictionary<GamepadButton, InputState> _previousButtonStates;
 
@@ -33,6 +33,27 @@ public class GamepadController : IController<GamepadButtonInput>, IController<Ga
     public void RegisterCommand(GamepadJoystickInput input, Commands.ICommand cmd)
     { 
         _joystickMap.TryAdd(input, cmd);
+    }
+
+    public void UnregisterCommand(GamepadButtonInput input)
+    {
+        bool success = _buttonMap.Remove(input);
+        if (success)
+        {
+            _previousButtonStates.Remove(input.Button);
+        }
+    }
+
+    public void UnregisterCommand(GamepadJoystickInput input)
+    {
+        _joystickMap.Remove(input);
+    }
+
+    public void ClearCommands()
+    {
+        _buttonMap.Clear();
+        _joystickMap.Clear();
+        _previousButtonStates.Clear();
     }
 
     public void Update()
