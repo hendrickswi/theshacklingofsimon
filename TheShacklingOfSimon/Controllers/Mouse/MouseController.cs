@@ -29,20 +29,14 @@ public class MouseController : IController<MouseInput>
 
     public void RegisterCommand(MouseInput input, Commands.ICommand cmd)
     {
-        bool success = _map.TryAdd(input, cmd);
-        if (success)
-        {
-           _prevStates.Add(input.Button, InputState.Released);
-        }
+        _map.TryAdd(input, cmd);
+        // _prevStates already handled by constructor
     }
 
     public void UnregisterCommand(MouseInput input)
     {
         bool success = _map.Remove(input);
-        if (success)
-        {
-            _prevStates.Remove(input.Button);
-        }
+        // _prevStates already handled by constructor
     }
 
     public void ClearCommands()
