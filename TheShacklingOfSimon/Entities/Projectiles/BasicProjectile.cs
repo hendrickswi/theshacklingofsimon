@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
@@ -102,15 +103,24 @@ public class BasicProjectile : IProjectile
     }
     
     public void OnCollision(IEnemy enemy)
-    {
-	    enemy.TakeDamage(this.Stats.Damage);
-	    Discontinue();
+    {	
+		if(OwnerType==ProjectileOwner.Player)
+		{
+            enemy.TakeDamage(this.Stats.Damage);
+            Discontinue();
+        }
+	    
+	    
     }
 
     public void OnCollision(IPlayer player)
-    {	
-		player.TakeDamage(this.Stats.Damage);   
-		Discontinue();
+    {
+        if (OwnerType == ProjectileOwner.Player)
+        {
+            player.TakeDamage(this.Stats.Damage);
+            Discontinue();
+        }
+        
     }
 
     public void OnCollision(IProjectile projectile)
