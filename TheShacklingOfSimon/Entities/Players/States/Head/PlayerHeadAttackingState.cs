@@ -48,7 +48,7 @@ public class PlayerHeadAttackingState : IPlayerHeadState
             projectileStartPos,
             _direction, 
             new ProjectileStats(_player.DamageMultiplierStat, 200.0f * _player.ProjectileSpeedMultiplierStat)
-            ,ProjectileOwner.Player);
+            );
 
         string spriteAnimationName = _player.GetSkin("Head");
         if (_direction.X > float.Epsilon)

@@ -3,24 +3,44 @@
   "WorkspaceRootPath": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\projectiles\\basicprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\projectiles\\basicprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\projectiles\\bombprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\projectiles\\bombprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\weapons\\iweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:weapons\\iweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\weapons\\bombweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:weapons\\bombweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\projectiles\\projectileowner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\projectiles\\projectileowner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\players\\states\\head\\playerheadattackingstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\players\\states\\head\\playerheadattackingstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\commands\\tile commands and temporary manager\\tilemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:commands\\tile commands and temporary manager\\tilemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\players\\playerwithtwosprites.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\players\\playerwithtwosprites.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\players\\iplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\players\\iplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\players\\states\\head\\iplayerheadstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\players\\states\\head\\iplayerheadstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\sprites\\factory\\data\\spritedataroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:sprites\\factory\\data\\spritedataroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\sprites\\factory\\data\\framedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:sprites\\factory\\data\\framedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,59 +54,56 @@
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TileManager.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Commands\\Tile Commands and temporary Manager\\TileManager.cs",
+              "RelativeDocumentMoniker": "Commands\\Tile Commands and temporary Manager\\TileManager.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Commands\\Tile Commands and temporary Manager\\TileManager.cs",
+              "RelativeToolTip": "Commands\\Tile Commands and temporary Manager\\TileManager.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T23:58:47.08Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "BombWeapon.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Weapons\\BombWeapon.cs",
+              "RelativeDocumentMoniker": "Weapons\\BombWeapon.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Weapons\\BombWeapon.cs",
+              "RelativeToolTip": "Weapons\\BombWeapon.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAYwBgAAABiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T23:14:22.683Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "BombProjectile.cs",
               "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\BombProjectile.cs",
               "RelativeDocumentMoniker": "Entities\\Projectiles\\BombProjectile.cs",
               "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\BombProjectile.cs",
               "RelativeToolTip": "Entities\\Projectiles\\BombProjectile.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAA9wAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADgAAAAAAAAAAAD4v04AAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T01:28:54.316Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IWeapon.cs",
-              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Weapons\\IWeapon.cs",
-              "RelativeDocumentMoniker": "Weapons\\IWeapon.cs",
-              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Weapons\\IWeapon.cs",
-              "RelativeToolTip": "Weapons\\IWeapon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T01:28:39.888Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "BasicProjectile.cs",
-              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\BasicProjectile.cs",
-              "RelativeDocumentMoniker": "Entities\\Projectiles\\BasicProjectile.cs",
-              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\BasicProjectile.cs",
-              "RelativeToolTip": "Entities\\Projectiles\\BasicProjectile.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAcwGcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T01:25:18.707Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ProjectileOwner.cs",
-              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\ProjectileOwner.cs",
-              "RelativeDocumentMoniker": "Entities\\Projectiles\\ProjectileOwner.cs",
-              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\ProjectileOwner.cs",
-              "RelativeToolTip": "Entities\\Projectiles\\ProjectileOwner.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T01:24:01.794Z",
+              "WhenOpened": "2026-02-21T23:23:25.273Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "PlayerWithTwoSprites.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\PlayerWithTwoSprites.cs",
+              "RelativeDocumentMoniker": "Entities\\Players\\PlayerWithTwoSprites.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\PlayerWithTwoSprites.cs",
+              "RelativeToolTip": "Entities\\Players\\PlayerWithTwoSprites.cs",
+              "ViewState": "AgIAAP0AAAAAAAAAAAAswAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T23:18:40.629Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "IPlayer.cs",
               "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\IPlayer.cs",
               "RelativeDocumentMoniker": "Entities\\Players\\IPlayer.cs",
@@ -95,6 +112,66 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-21T23:18:32.943Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Game1.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Game1.cs",
+              "RelativeDocumentMoniker": "Game1.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Game1.cs",
+              "RelativeToolTip": "Game1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T23:05:03.742Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FrameData.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Sprites\\Factory\\Data\\FrameData.cs",
+              "RelativeDocumentMoniker": "Sprites\\Factory\\Data\\FrameData.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Sprites\\Factory\\Data\\FrameData.cs",
+              "RelativeToolTip": "Sprites\\Factory\\Data\\FrameData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T18:03:22.783Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "SpriteDataRoot.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Sprites\\Factory\\Data\\SpriteDataRoot.cs",
+              "RelativeDocumentMoniker": "Sprites\\Factory\\Data\\SpriteDataRoot.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Sprites\\Factory\\Data\\SpriteDataRoot.cs",
+              "RelativeToolTip": "Sprites\\Factory\\Data\\SpriteDataRoot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T18:03:21.759Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PlayerHeadAttackingState.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\States\\Head\\PlayerHeadAttackingState.cs",
+              "RelativeDocumentMoniker": "Entities\\Players\\States\\Head\\PlayerHeadAttackingState.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\States\\Head\\PlayerHeadAttackingState.cs",
+              "RelativeToolTip": "Entities\\Players\\States\\Head\\PlayerHeadAttackingState.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAYwBwAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T17:49:17.105Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IPlayerHeadState.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\States\\Head\\IPlayerHeadState.cs",
+              "RelativeDocumentMoniker": "Entities\\Players\\States\\Head\\IPlayerHeadState.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\States\\Head\\IPlayerHeadState.cs",
+              "RelativeToolTip": "Entities\\Players\\States\\Head\\IPlayerHeadState.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T23:19:20.572Z"
             }
           ]
         }
