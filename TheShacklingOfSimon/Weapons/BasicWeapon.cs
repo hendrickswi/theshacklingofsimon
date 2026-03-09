@@ -19,9 +19,9 @@ public class BasicWeapon : IWeapon
 		Description = "Fires a simple projectile.";
 	}
 
-	public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats)
+	public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats,ProjectileOwner owner)
 	{
-		var projectile = new BasicProjectile(pos, direction, stats);
+		var projectile = new BasicProjectile(pos, direction, stats,owner);
 		_projectileManager.AddProjectile(projectile);
 		OnProjectileFired?.Invoke(projectile);
 	}
