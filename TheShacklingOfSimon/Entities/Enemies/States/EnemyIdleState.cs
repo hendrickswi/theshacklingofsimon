@@ -54,7 +54,7 @@ public class EnemyIdleState : IEnemyState
 
     private void UpdateSprite()
     {
-        string newAnimationName = "EnemyIdleDown";
+        string newAnimationName = _enemy.Name + "_EnemyIdleDown";
         /* for testing
         Vector2 cardinal = GetCardinalDirection(_direction);
         
