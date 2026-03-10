@@ -1,0 +1,11 @@
+bin/
+obj/
+.idea/
+.vscode/
+*.user
+*.suo
+Content/bin/
+Content/obj/
+.DS_Store
+Thumbs.db
+/.vs

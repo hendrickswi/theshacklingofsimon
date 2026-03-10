@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
@@ -16,24 +17,29 @@ public class BasicProjectile : IProjectile
 	public bool IsActive { get; private set; }
 	public Rectangle Hitbox { get; private set; }
 	public ISprite Sprite { get; set; }
-
-	public ProjectileStats Stats { get; private set; }
+    public ProjectileStats Stats { get; private set; }
 
 	private float timeActive;
 	private Texture2D debugTexture;
-	public BasicProjectile(Vector2 startPos, Vector2 direction, ProjectileStats stats)
+	public BasicProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
-		Position = startPos;
+        Position = startPos;
 		Stats = stats;
 		IsActive = true;
 
-		direction.Normalize();
-		Velocity = direction * stats.Speed;
+		if (direction.LengthSquared() > 0.0001f)
+		{
+			direction.Normalize();
+		}
+		else
+		{
+			direction = new Vector2(0, 1);
+		}
 		
-		Sprite = SpriteFactory.Instance.CreateAnimatedSprite("BasicProjectile", 0.2f);
+		Velocity = direction * stats.Speed;
 
+		Sprite = sprite;
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
-       
     }
 
 	public void Update(GameTime gameTime)
@@ -50,14 +56,15 @@ public class BasicProjectile : IProjectile
 
 	public void Draw(SpriteBatch spriteBatch)
 	{
-
-
         debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
 		debugTexture.SetData(new[] { Color.White });
         
         spriteBatch.Draw(debugTexture, Hitbox, Color.Red);
+	}
 
-        
+	public IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
+	{
+		return new BasicProjectile(startPos, direction, sprite, stats);
 	}
 
 	private void ShouldDestroy()
@@ -99,15 +106,22 @@ public class BasicProjectile : IProjectile
     }
     
     public void OnCollision(IEnemy enemy)
-    {
-	    enemy.TakeDamage(this.Stats.Damage);
-	    Discontinue();
+    {	
+		if (Stats.OwnerType != ProjectileOwner.Enemy)
+		{
+            enemy.TakeDamage(this.Stats.Damage);
+            Discontinue();
+        }
     }
 
     public void OnCollision(IPlayer player)
-    {	
-		player.TakeDamage(this.Stats.Damage);   
-		Discontinue();
+    {
+        if (Stats.OwnerType != ProjectileOwner.Player)
+        {
+            player.TakeDamage(this.Stats.Damage);
+            Discontinue();
+        }
+        
     }
 
     public void OnCollision(IProjectile projectile)

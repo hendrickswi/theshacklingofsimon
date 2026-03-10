@@ -9,7 +9,8 @@ public class NoneWeapon : IWeapon
     public string Name { get; set; }
     public string Description { get; set; }
 
-    public void Fire(Vector2 position, Vector2 direction, ProjectileStats stats)
+    
+    public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats)
     {
         // No-op
     }

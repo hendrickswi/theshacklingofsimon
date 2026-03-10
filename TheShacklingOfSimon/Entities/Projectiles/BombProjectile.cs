@@ -37,8 +37,12 @@ public class BombProjectile : IProjectile
         Stats = stats;
         Sprite = bombSprite;
         IsActive = true;
-
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 16, 16);
+    }
+
+    public IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
+    {
+        return new BombProjectile(startPos, sprite, stats);
     }
 
     public void Update(GameTime gameTime)
