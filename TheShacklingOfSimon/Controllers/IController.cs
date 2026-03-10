@@ -1,13 +1,20 @@
 ﻿namespace TheShacklingOfSimon.Controllers;
 
 /*
- * Generic interface to allow client class to link
- * inputs and commands easily.
+ * Base interface for methods with no parameters
+ * (avoids ambiguity compiler issue).
  */
-public interface IController<T>
+public interface IController
 {
     void Update();
-    void RegisterCommand(T input, Commands.ICommand command);
-    void UnregisterCommand(T input);
     void ClearCommands();
 }
+
+/*
+  * Generic interface for methods that use a generic parameter.
+  */
+ public interface IController<T> : IController
+ {
+     void RegisterCommand(T input, Commands.ICommand command);
+     void UnregisterCommand(T input);
+ }

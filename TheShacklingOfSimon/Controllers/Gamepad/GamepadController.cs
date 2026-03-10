@@ -5,29 +5,30 @@ using TheShacklingOfSimon.Input.Gamepad;
 
 namespace TheShacklingOfSimon.Controllers.Gamepad;
 
-public class GamepadController : IController<GamepadButtonInput>, IController<GamepadJoystickInput>
+public class GamepadController : IGamepadController
 {
     private readonly IGamepadService _gamepadService;
     private readonly Dictionary<GamepadButtonInput, Commands.ICommand> _buttonMap;
     private readonly Dictionary<GamepadJoystickInput, Commands.ICommand> _joystickMap;
 
-    private Dictionary<GamepadButton, InputState> _previousButtonStates;
+    private readonly Dictionary<GamepadButton, InputState> _previousButtonStates;
 
     public GamepadController(IGamepadService gamepadService)
     {
         _gamepadService = gamepadService;
         _buttonMap = new Dictionary<GamepadButtonInput, Commands.ICommand>();
         _joystickMap = new Dictionary<GamepadJoystickInput, Commands.ICommand>();
+        
         _previousButtonStates = new Dictionary<GamepadButton, InputState>();
+        foreach (GamepadButton btn in System.Enum.GetValues(typeof(GamepadButton)))
+        {
+            _previousButtonStates.Add(btn, InputState.Released);
+        }
     }
 
     public void RegisterCommand(GamepadButtonInput input, Commands.ICommand cmd)
-    {
-        bool success = _buttonMap.TryAdd(input, cmd);
-        if (success)
-        {
-            _previousButtonStates.Add(input.Button, InputState.Released);
-        }
+    { 
+        _buttonMap.TryAdd(input, cmd);
     }
 
     public void RegisterCommand(GamepadJoystickInput input, Commands.ICommand cmd)
@@ -38,10 +39,6 @@ public class GamepadController : IController<GamepadButtonInput>, IController<Ga
     public void UnregisterCommand(GamepadButtonInput input)
     {
         bool success = _buttonMap.Remove(input);
-        if (success)
-        {
-            _previousButtonStates.Remove(input.Button);
-        }
     }
 
     public void UnregisterCommand(GamepadJoystickInput input)
@@ -53,7 +50,6 @@ public class GamepadController : IController<GamepadButtonInput>, IController<Ga
     {
         _buttonMap.Clear();
         _joystickMap.Clear();
-        _previousButtonStates.Clear();
     }
 
     public void Update()
@@ -100,8 +96,11 @@ public class GamepadController : IController<GamepadButtonInput>, IController<Ga
                     break;
                 }
             }
-            
-            // TODO
+
+            if (input.Region.Contains(rawInput))
+            {
+                _joystickMap[input].Execute();
+            }
         }
     }
 }

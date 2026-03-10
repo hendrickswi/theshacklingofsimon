@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
 using TheShacklingOfSimon.Controllers;
+using TheShacklingOfSimon.Controllers.Gamepad;
 using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Entities;
@@ -28,6 +29,7 @@ public class Game1 : Game
     
     private IController<KeyboardInput> _keyboardController;
     private IController<MouseInput> _mouseController;
+    private IGamepadController _gamepadController;
 
     private RoomManager _roomManager; //room manager for sprint 3
     private ItemManager _itemManager; //Temporary item switching for sprint 2
@@ -53,6 +55,7 @@ public class Game1 : Game
     {
         _keyboardController = new KeyboardController(new MonoGameKeyboardService());
         _mouseController = new MouseController(new MonoGameMouseService());
+        _gamepadController = new GamepadController(new MonoGameGamepadService(PlayerIndex.One));
         base.Initialize();
     }
 
@@ -134,6 +137,7 @@ public class Game1 : Game
         _inputManager = new InputManager(
             _keyboardController,
             _mouseController,
+            _gamepadController,
             _player, 
             this, 
             _roomManager, 

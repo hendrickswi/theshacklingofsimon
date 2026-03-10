@@ -8,6 +8,7 @@ using TheShacklingOfSimon.Commands.PlayerMovement;
 using TheShacklingOfSimon.Commands.Room_Commands;
 using TheShacklingOfSimon.Commands.Temporary_Commands;
 using TheShacklingOfSimon.Controllers;
+using TheShacklingOfSimon.Controllers.Gamepad;
 using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Entities.Collisions;
@@ -22,7 +23,7 @@ public class InputManager
 {
     private readonly IController<KeyboardInput> _keyboardController;
     private readonly IController<MouseInput> _mouseController;
-    // TODO: Add gamepad controller here
+    private readonly IGamepadController _gamepadController;
     
     /*
      * Dependencies for creating commands
@@ -40,6 +41,7 @@ public class InputManager
     public InputManager(
         IController<KeyboardInput> keyboardController, 
         IController<MouseInput> mouseController,
+        IGamepadController gamepadController,
         IPlayer player, 
         Game1 game, 
         RoomManager roomManager,
@@ -49,6 +51,7 @@ public class InputManager
     {
         _keyboardController = keyboardController;
         _mouseController = mouseController;
+        _gamepadController = gamepadController;
         _player = player;
         _game = game;
         _roomManager = roomManager;
@@ -62,6 +65,7 @@ public class InputManager
         
         _keyboardController.ClearCommands();
         _mouseController.ClearCommands();
+        _gamepadController.ClearCommands();
         
         // Movement controls
         _keyboardController.RegisterCommand(new KeyboardInput(InputState.Pressed, KeyboardButton.W), new MoveUpCommand(_player));
@@ -115,10 +119,12 @@ public class InputManager
 
         _keyboardController.RegisterCommand(new KeyboardInput(InputState.JustPressed, KeyboardButton.Escape), new ExitCommand(_game));
         _keyboardController.RegisterCommand(new KeyboardInput(InputState.JustPressed, KeyboardButton.Q), new ExitCommand(_game));
+        
+        // TODO: Add gamepad controls
     }
 
     public void RebindKey(KeyboardButton oldKey, KeyboardButton newKey, InputState state, ICommand cmd)
     {
-        // TODO
+        // TODO: Implement this method
     }
 }
