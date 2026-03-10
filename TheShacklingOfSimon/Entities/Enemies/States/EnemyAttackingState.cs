@@ -25,7 +25,7 @@ public class EnemyAttackingState : IEnemyState
     {
         _timer = 0f;
         // _direction is already "cardinalized" from PlayerHeadIdleState consider changing to match movement direction
-        _weapon.Fire(_enemy.Position, _direction, new ProjectileStats(1, 200.0f),ProjectileOwner.Enemy);
+        _weapon.Fire(_enemy.Position, _direction, new ProjectileStats(1, 200.0f, ProjectileOwner.Enemy));
 
         //string spriteAnimationName = "EnemyAttack";
 

@@ -10,9 +10,9 @@ public class NoneWeapon : IWeapon
     public string Description { get; set; }
 
     
-    public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats, ProjectileOwner owner)
+    public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats)
     {
-       
+        // No-op
     }
 
     public event Action<IProjectile> OnProjectileFired;

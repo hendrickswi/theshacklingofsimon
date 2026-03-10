@@ -18,15 +18,12 @@ public class BasicProjectile : IProjectile
 	public bool IsActive { get; private set; }
 	public Rectangle Hitbox { get; private set; }
 	public ISprite Sprite { get; set; }
-    public ProjectileOwner OwnerType { get; private set; }
-
     public ProjectileStats Stats { get; private set; }
 
 	private float timeActive;
 	private Texture2D debugTexture;
-	public BasicProjectile(Vector2 startPos, Vector2 direction, ProjectileStats stats,ProjectileOwner owner)
+	public BasicProjectile(Vector2 startPos, Vector2 direction, ProjectileStats stats)
 	{
-        OwnerType = owner;
         Position = startPos;
 		Stats = stats;
 		IsActive = true;
@@ -35,9 +32,7 @@ public class BasicProjectile : IProjectile
 		Velocity = direction * stats.Speed;
 		
 		Sprite = SpriteFactory.Instance.CreateAnimatedSprite("BasicProjectile", 0.2f);
-
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
-       
     }
 
 	public void Update(GameTime gameTime)
@@ -54,14 +49,10 @@ public class BasicProjectile : IProjectile
 
 	public void Draw(SpriteBatch spriteBatch)
 	{
-
-
         debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
 		debugTexture.SetData(new[] { Color.White });
         
         spriteBatch.Draw(debugTexture, Hitbox, Color.Red);
-
-        
 	}
 
 	private void ShouldDestroy()
@@ -104,18 +95,16 @@ public class BasicProjectile : IProjectile
     
     public void OnCollision(IEnemy enemy)
     {	
-		if(OwnerType==ProjectileOwner.Player)
+		if (Stats.OwnerType != ProjectileOwner.Enemy)
 		{
             enemy.TakeDamage(this.Stats.Damage);
             Discontinue();
         }
-	    
-	    
     }
 
     public void OnCollision(IPlayer player)
     {
-        if (OwnerType == ProjectileOwner.Player)
+        if (Stats.OwnerType != ProjectileOwner.Player)
         {
             player.TakeDamage(this.Stats.Damage);
             Discontinue();

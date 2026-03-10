@@ -26,29 +26,29 @@ public class PlayerHeadAttackingState : IPlayerHeadState
     public void Enter()
     {
         // _direction is already "cardinalized" from PlayerHeadIdleState
-        Vector2 projectileStartPos;
-        if (_direction == Vector2.UnitX)
-        {
-            projectileStartPos = new Vector2(_player.Position.X + _player.Hitbox.Width + _extraProjectileOffset, _player.Position.Y);
-        }
-        else if (_direction == -Vector2.UnitX)
-        {
-            projectileStartPos = new Vector2(_player.Position.X - _extraProjectileOffset, _player.Position.Y);
-        }
-        else if (_direction == Vector2.UnitY)
-        {
-            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y + _player.Hitbox.Height + _extraProjectileOffset);
-        }
-        else
-        {
-            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y - _extraProjectileOffset);
-        }
+        
+        // Vector2 projectileStartPos;
+        // if (_direction == Vector2.UnitX)
+        // {
+        //     projectileStartPos = new Vector2(_player.Position.X + _player.Hitbox.Width + _extraProjectileOffset, _player.Position.Y);
+        // }
+        // else if (_direction == -Vector2.UnitX)
+        // {
+        //     projectileStartPos = new Vector2(_player.Position.X - _extraProjectileOffset, _player.Position.Y);
+        // }
+        // else if (_direction == Vector2.UnitY)
+        // {
+        //     projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y + _player.Hitbox.Height + _extraProjectileOffset);
+        // }
+        // else
+        // {
+        //     projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y - _extraProjectileOffset);
+        // }
         
         _weapon.Fire(
-            projectileStartPos,
+            _player.Position,
             _direction, 
-            new ProjectileStats(_player.DamageMultiplierStat, 200.0f * _player.ProjectileSpeedMultiplierStat)
-            ,ProjectileOwner.Player
+            new ProjectileStats(_player.DamageMultiplierStat, 200.0f * _player.ProjectileSpeedMultiplierStat, ProjectileOwner.Player)
             );
 
         string spriteAnimationName = _player.GetSkin("Head");

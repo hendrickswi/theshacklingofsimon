@@ -22,7 +22,7 @@ public class BombWeapon : IWeapon
 
     
 
-    public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats, ProjectileOwner owner)
+    public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats)
     {
         var bombSprite = SpriteFactory.Instance.CreateAnimatedSprite("PlayerHeadShootingDown", 0.1f);
 
