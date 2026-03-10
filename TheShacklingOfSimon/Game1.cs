@@ -84,6 +84,12 @@ public class Game1 : Game
         var roomReader = new JsonRoomReader(Content);
         var indexReader = new RoomIndexReader(Content);
         var roomFactory = new RoomFactory();
+        
+        // TEMPORARY until weapons for enemies can be directly loaded from JSON
+        _collisionManager = new CollisionManager();
+        roomFactory.OnProjectileCreated += _collisionManager.AddDynamicEntity;
+        roomFactory.OnProjectileCreated += _projectileManager.AddProjectile;
+        
         _roomManager = new RoomManager(roomReader, indexReader, roomFactory, GraphicsDevice, preserveRoomState: true);
 
         // Create entities now that the sprite factory has textures
@@ -135,8 +141,6 @@ public class Game1 : Game
             Reset
         );
         _inputManager.LoadDefaultControls();
-
-        _collisionManager = new CollisionManager();
 
         // Persistent dynamic colliders (demo setup)
         _persistentDynamicEntities.Clear();

@@ -191,9 +191,7 @@ public class SpiderEnemy : DamageableEntity, IEnemy
 
     public override void OnCollision(IProjectile projectile)
     {
-        // No-op for now if projectiles should damage enemies,
-        // implement damage in projectile or here consistently across the codebase.
-        TakeDamage(projectile.Stats.Damage);
+        // No-op, let the projectile deal with the interaction.
     }
 
     public override void OnCollision(ITile tile)

@@ -28,7 +28,15 @@ public class BasicProjectile : IProjectile
 		Stats = stats;
 		IsActive = true;
 
-		direction.Normalize();
+		if (direction.LengthSquared() > 0.0001f)
+		{
+			direction.Normalize();
+		}
+		else
+		{
+			direction = new Vector2(0, 1);
+		}
+		
 		Velocity = direction * stats.Speed;
 
 		Sprite = sprite;

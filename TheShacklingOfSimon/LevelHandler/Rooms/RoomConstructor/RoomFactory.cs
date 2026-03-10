@@ -8,11 +8,16 @@ using TheShacklingOfSimon.LevelHandler.Tiles.TileConstructor;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Weapons;
 
 namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
 {
     public sealed class RoomFactory
     {
+        // TEMPORARY
+        public Action<IProjectile> OnProjectileCreated { get; set; }
+        
         // Builds a Room from JSON data (FULL GRID coords) + border walls/doors on the edges.
         public Room Create(RoomFileData data, int viewportWidth, int viewportHeight)
         {
@@ -98,7 +103,7 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
             }
         }
 
-        private static void PlaceDoors(TileMap tileMap, SpriteFactory spriteFactory, List<DoorData> doors)
+        private void PlaceDoors(TileMap tileMap, SpriteFactory spriteFactory, List<DoorData> doors)
         {
             if (doors == null) return;
 
@@ -147,7 +152,8 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
         }
 
         // DoorData must specify a BORDER cell in FULL grid coords.
-        private static (Point borderPos, DoorSide side) DoorToBorderCell(DoorData d)
+        // TODO: change this back to static once enemy weapon JSON loading is implemented
+        private (Point borderPos, DoorSide side) DoorToBorderCell(DoorData d)
         {
             int maxX = RoomConstants.GridWidth - 1;
             int maxY = RoomConstants.GridHeight - 1;
@@ -163,7 +169,7 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
             return (new Point(maxX, d.Y), DoorSide.East);
         }
 
-        private static void PlaceEnemies(TileMap tileMap, IList<IEntity> entities, List<EnemyData> enemies)
+        private void PlaceEnemies(TileMap tileMap, IList<IEntity> entities, List<EnemyData> enemies)
         {
             if (enemies == null) return;
 
@@ -177,7 +183,26 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
                     EnemyTypeList.BlackMaw => new BlackMaw(worldPos),
                     _ => throw new InvalidOperationException($"Unknown enemy type: {e.Type}")
                 };
+                
+                // TODO: Allow weapon data for enemies in JSON loading
+                // This is temporary to avoid null reference exceptions
+                enemy.SetWeapon(
+                    new BasicWeapon(
+                        new BasicProjectile(
+                            new Vector2(0, 0), 
+                            new Vector2(0, 1), 
+                            SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"), 
+                            new ProjectileStats(1, 200.0f, ProjectileOwner.Enemy)
+                            )
+                        )
+                    );
 
+                // TEMPORARY
+                if (OnProjectileCreated != null)
+                {
+                    enemy.Weapon.OnProjectileFired += proj => OnProjectileCreated?.Invoke(proj);
+                }
+                
                 entities.Add(enemy);
             }
         }
