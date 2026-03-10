@@ -10,18 +10,20 @@ public class BombWeapon : IWeapon
     public string Name { get; }
     public string Description { get; }
 
-    public BombWeapon(ProjectileManager manager)
+    private IProjectile _prototype;
+
+    public BombWeapon(IProjectile prototype)
     {
         Name = "Bomb";
         Description = "Drops a bomb that explodes.";
+
+        _prototype = prototype;
     }
 
     public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats)
     {
-        var bombSprite = SpriteFactory.Instance.CreateAnimatedSprite("PlayerHeadShootingDown", 0.1f);
-        var bomb = new BombProjectile(pos, bombSprite, stats);
-        
-        OnProjectileFired?.Invoke(bomb);
+        var firedProjectile = _prototype.Clone(pos, direction, _prototype.Sprite, stats);
+        OnProjectileFired?.Invoke(firedProjectile);
     }
 
     public event Action<IProjectile> OnProjectileFired;

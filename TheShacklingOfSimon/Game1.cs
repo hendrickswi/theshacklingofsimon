@@ -1,31 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
-using TheShacklingOfSimon.Commands.PlayerAttack;
-using TheShacklingOfSimon.Commands.PlayerMovement;
-using TheShacklingOfSimon.Commands.Room_Commands;
-using TheShacklingOfSimon.Commands.Temporary_Commands;
 using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Collisions;
-using TheShacklingOfSimon.Entities.Enemies;
-using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Input;
-using TheShacklingOfSimon.Input.Keyboard;
-using TheShacklingOfSimon.Input.Mouse;
-using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Items.Active_Items;
-using TheShacklingOfSimon.LevelHandler.Rooms.RoomClass;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomManager;
-using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Weapons;
 using KeyboardInput = TheShacklingOfSimon.Controllers.Keyboard.KeyboardInput;
@@ -104,13 +91,26 @@ public class Game1 : Game
         _player = new PlayerWithTwoSprites(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
         _entities.Add(_player);
 
-        IWeapon basicWeapon = new BasicWeapon(_projectileManager);
-        IWeapon bombWeapon = new BombWeapon(_projectileManager);
+        IWeapon playerBasicWeapon = new BasicWeapon(
+            new BasicProjectile(
+                new Vector2(0, 0), 
+                new Vector2(0, 1), 
+                SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"), 
+                new ProjectileStats(1, 200.0f, ProjectileOwner.Player)
+                )
+            );
+        IWeapon playerBombWeapon = new BombWeapon(
+            new BombProjectile(
+                new Vector2(0, 0),
+                SpriteFactory.Instance.CreateAnimatedSprite("PlayerHeadShootingDown", 0.1f),
+                new ProjectileStats(1, 0.0f, ProjectileOwner.Player)
+                )
+            );
 
-        _player.AddWeaponToInventory(basicWeapon);
+        _player.AddWeaponToInventory(playerBasicWeapon);
         _player.EquipPrimaryWeapon(0);
 
-        _player.AddWeaponToInventory(bombWeapon);
+        _player.AddWeaponToInventory(playerBombWeapon);
         _player.EquipSecondaryWeapon(1);
 
         // temporary items for demo
@@ -146,8 +146,8 @@ public class Game1 : Game
          * Subscribe the collision manager to the event of a new projectile
          * being created from basicWeapon and bombWeapon
          */
-        basicWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
-        bombWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
+        playerBasicWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
+        playerBombWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
 
         // Re-register collidables whenever the room changes
         _collisionBulkLoader = new CollisionBulkLoader(_collisionManager, _persistentDynamicEntities);
@@ -156,16 +156,8 @@ public class Game1 : Game
         // Register current room (starting room) once
         _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
         
-        basicWeapon.OnProjectileFired += _projectileManager.AddProjectile;
-        bombWeapon.OnProjectileFired += _projectileManager.AddProjectile;
-        
-        foreach (IEntity entity in _roomManager.CurrentRoom.Entities)
-        {
-            if (entity is IEnemy enemy)
-            {
-                enemy.SetProjectileManager(_projectileManager);
-            }
-        }
+        playerBasicWeapon.OnProjectileFired += _projectileManager.AddProjectile;
+        playerBombWeapon.OnProjectileFired += _projectileManager.AddProjectile;
     }
 
     protected override void Update(GameTime delta)

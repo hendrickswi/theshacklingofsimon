@@ -64,10 +64,13 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         this._movementInput = Vector2.Zero;
         this._attack = Vector2.Zero;
     }
-
-    public void SetProjectileManager(ProjectileManager projectileManager)
+    
+    public void SetWeapon(IWeapon weapon)
     {
-        this.Weapon = new BasicWeapon(projectileManager);
+        if (weapon != null)
+        {
+            Weapon = weapon;
+        }
     }
 
     public void MarkForRemoval()

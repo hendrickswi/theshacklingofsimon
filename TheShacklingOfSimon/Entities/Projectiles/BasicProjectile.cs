@@ -22,7 +22,7 @@ public class BasicProjectile : IProjectile
 
 	private float timeActive;
 	private Texture2D debugTexture;
-	public BasicProjectile(Vector2 startPos, Vector2 direction, ProjectileStats stats)
+	public BasicProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
         Position = startPos;
 		Stats = stats;
@@ -30,8 +30,8 @@ public class BasicProjectile : IProjectile
 
 		direction.Normalize();
 		Velocity = direction * stats.Speed;
-		
-		Sprite = SpriteFactory.Instance.CreateAnimatedSprite("BasicProjectile", 0.2f);
+
+		Sprite = sprite;
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
     }
 
@@ -53,6 +53,11 @@ public class BasicProjectile : IProjectile
 		debugTexture.SetData(new[] { Color.White });
         
         spriteBatch.Draw(debugTexture, Hitbox, Color.Red);
+	}
+
+	public IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
+	{
+		return new BasicProjectile(startPos, direction, sprite, stats);
 	}
 
 	private void ShouldDestroy()

@@ -46,10 +46,8 @@ public interface IEnemy : IDamageable
     float AttackRange { get; set; }
 
     IWeapon Weapon { get; }
-    void SetProjectileManager(ProjectileManager projectileManager);
 
-    // are attacks specialized to each enemy or considered weapons
-    //void Attack(Vector2 direction, float attackDamage, float attackCooldown, float attackRange);
+    void SetWeapon(IWeapon weapon);
     void MarkForRemoval();
     Vector2 FindTarget();
     void RegisterMovement(float dt, Vector2 targetPosition);

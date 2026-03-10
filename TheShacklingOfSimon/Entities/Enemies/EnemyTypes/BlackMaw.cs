@@ -69,14 +69,17 @@ public class BlackMaw : DamageableEntity, IEnemy
         this._attack = Vector2.Zero;
     }
 
-    public void SetProjectileManager(ProjectileManager projectileManager)
-    {
-        this.Weapon = new BasicWeapon(projectileManager);
-    }
-
     public void MarkForRemoval()
     {
         IsActive = false;
+    }
+
+    public void SetWeapon(IWeapon weapon)
+    {
+        if (weapon != null)
+        {
+            Weapon = weapon;
+        }
     }
 
     public Vector2 FindTarget() //this method will return (0,0) if no target found
