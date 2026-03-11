@@ -249,18 +249,12 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         {
             flip = SpriteEffects.FlipHorizontally;
         }
-
-        if (BodySprite != null)
-        {
-            Vector2 drawPos = (CurrentBodyState is PlayerBodyDamagedState) ? Position + _damagedStateOffset : Position;
-            BodySprite.Draw(spriteBatch, drawPos, Color.White, 0.0f,
-                new Vector2(0, 0), 1.0f, flip, 0.0f);
-        }
-
-        if (HeadSprite != null)
-        {
-            HeadSprite.Draw(spriteBatch, Position + _headOffset, Color.White);
-        }
+        
+        Vector2 drawPos = (CurrentBodyState is PlayerBodyDamagedState) ? Position + _damagedStateOffset : Position;
+        BodySprite?.Draw(spriteBatch, drawPos, Color.White, 0.0f,
+            new Vector2(0, 0), 1.0f, flip, 0.0f);
+        
+        HeadSprite?.Draw(spriteBatch, Position + _headOffset, Color.White);
     }
 
 
@@ -335,9 +329,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     {
         if (CurrentHeadState != newHeadState)
         {
-            CurrentHeadState.Exit();
+            CurrentHeadState?.Exit();
             CurrentHeadState = newHeadState;
-            CurrentHeadState.Enter();
+            CurrentHeadState?.Enter();
         }
     }
 
@@ -345,9 +339,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     {
         if (CurrentBodyState != newBodyState)
         {
-            CurrentBodyState.Exit();
+            CurrentBodyState?.Exit();
             CurrentBodyState = newBodyState;
-            CurrentBodyState.Enter();
+            CurrentBodyState?.Enter();
         }
     }
 
