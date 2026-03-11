@@ -15,8 +15,9 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
 {
     public sealed class RoomFactory
     {
-        // TEMPORARY
-        public Action<IProjectile> OnProjectileCreated { get; set; }
+		public RoomManager.RoomManager RoomManager { get; set; }
+		// TEMPORARY
+		public Action<IProjectile> OnProjectileCreated { get; set; }
         
         // Builds a Room from JSON data (FULL GRID coords) + border walls/doors on the edges.
         public Room Create(RoomFileData data, int viewportWidth, int viewportHeight)
@@ -140,14 +141,14 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
                 var sprite = spriteFactory.CreateStaticSprite("images/Rocks");
 
                 var door = new DoorTile(
-                    sprite,
-                    tileMap.GridToWorld(borderPos),
-                    d.To.Room,
-                    new Point(d.To.Spawn.X, d.To.Spawn.Y), // now FULL grid coords
-                    side
+	                sprite,
+	                tileMap.GridToWorld(borderPos),
+	                d.To.Room,
+	                new Point(d.To.Spawn.X, d.To.Spawn.Y),
+	                side
                 );
 
-                tileMap.PlaceTile(borderPos, door);
+				tileMap.PlaceTile(borderPos, door);
             }
         }
 

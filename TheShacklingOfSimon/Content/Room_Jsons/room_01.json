@@ -1,25 +1,94 @@
 {
-  "id": "room_01",
-  "tiles": [
-    { "x": 3, "y": 3, "type": "Rock" },
-    { "x": 7, "y": 3, "type": "Spike" },
-    { "x": 11, "y": 5, "type": "Fire" }
-  ],
-  "entities": [],
-  "enemies": [
-    { "type": "SpiderEnemy", "x": 5, "y": 5 },
-    { "type": "BlackMaw", "x": 10, "y": 3}
-  ],
-  "doors": [
-    {
-      "x": 0,
-      "y": 4,
-      "to": { "room": "room_00", "spawn": { "x": 12, "y": 4 } }
-    },
-    {
-      "x": 14,
-      "y": 4,
-      "to": { "room": "room_02", "spawn": { "x": 2, "y": 4 } }
-    }
-  ]
+    "id": "room_01",
+    "tiles": [
+        {
+            "x": 5,
+            "y": 3,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 3,
+            "type": "Rock"
+        },
+        {
+            "x": 8,
+            "y": 3,
+            "type": "Rock"
+        },
+        {
+            "x": 9,
+            "y": 3,
+            "type": "Rock"
+        },
+
+        {
+            "x": 5,
+            "y": 5,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 5,
+            "type": "Rock"
+        },
+        {
+            "x": 8,
+            "y": 5,
+            "type": "Rock"
+        },
+        {
+            "x": 9,
+            "y": 5,
+            "type": "Rock"
+        }
+    ],
+    "entities": [],
+    "enemies": [],
+    "doors": [
+        {
+            "x": 7,
+            "y": 0,
+            "to": {
+                "room": "room_00",
+                "spawn": {
+                    "x": 7,
+                    "y": 6
+                }
+            }
+        },
+        {
+            "x": 14,
+            "y": 4,
+            "to": {
+                "room": "room_02",
+                "spawn": {
+                    "x": 2,
+                    "y": 4
+                }
+            }
+        },
+        {
+            "x": 7,
+            "y": 8,
+            "to": {
+                "room": "room_03",
+                "spawn": {
+                    "x": 7,
+                    "y": 2
+                }
+            }
+        },
+        {
+            "x": 0,
+            "y": 4,
+            "to": {
+                "room": "room_04",
+                "spawn": {
+                    "x": 12,
+                    "y": 4
+                }
+            }
+        }
+    ]
 }

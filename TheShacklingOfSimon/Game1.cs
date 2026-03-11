@@ -36,7 +36,6 @@ public class Game1 : Game
     private InputManager _inputManager;
 
     private IPlayer _player;
-    private List<IEntity> _entities;
     private ProjectileManager _projectileManager; //_projectileManager = new ProjectileManager();
     private CollisionBulkLoader _collisionBulkLoader;
     private CollisionManager _collisionManager;
@@ -96,9 +95,7 @@ public class Game1 : Game
         _roomManager = new RoomManager(roomReader, indexReader, roomFactory, GraphicsDevice, preserveRoomState: true);
 
         // Create entities now that the sprite factory has textures
-        _entities = new List<IEntity>();
         _player = new PlayerWithTwoSprites(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
-        _entities.Add(_player);
 
         IWeapon playerBasicWeapon = new BasicWeapon(
             new BasicProjectile(
@@ -177,16 +174,14 @@ public class Game1 : Game
         _roomManager.Update(delta);
         _itemManager.Update(delta);
         _player.CurrentItem?.Update(delta);
+        
+        _player.Update(delta);
 
-        foreach (IEntity e in _entities)
-        {
-            e.Update(delta);
-        }
+		// Enable once all collidable entities have non-throwing OnCollision implementations
+		_collisionManager.Update(delta);
+		_roomManager.ResolvePendingRoomSwitch();
 
-        // Enable once all collidable entities have non-throwing OnCollision implementations
-        _collisionManager.Update(delta); 
-
-        base.Update(delta);
+		base.Update(delta);
     }
 
     protected override void Draw(GameTime delta)
@@ -198,11 +193,8 @@ public class Game1 : Game
         _roomManager.Draw(_spriteBatch);
         _itemManager.Draw(_spriteBatch);
         _projectileManager.Draw(_spriteBatch);
-
-        foreach (IEntity e in _entities)
-        {
-            e.Draw(_spriteBatch);
-        }
+        
+        _player.Draw(_spriteBatch);
 
         _spriteBatch.End();
         base.Draw(delta);
@@ -212,12 +204,14 @@ public class Game1 : Game
     private void Reset()
     {
         Rectangle screenDimensions = GraphicsDevice.Viewport.Bounds;
-        
-        _player.Reset(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
-        
-        // TODO: Load starting room here again
-        
-        // Now rebuild collision lists for starting room
-        _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
+
+        //Something for clearing projectiles would be needed for reset probably
+		//_projectileManager.Clear();
+
+		_player.Reset(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
+
+		_roomManager.ResetToGameStart();
+
+		_collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
     }
 }
