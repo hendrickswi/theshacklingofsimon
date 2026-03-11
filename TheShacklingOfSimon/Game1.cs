@@ -24,7 +24,6 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private Texture2D _texture;
     private SpriteFont _font;
     
     private IController<KeyboardInput> _keyboardController;
