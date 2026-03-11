@@ -15,8 +15,8 @@ namespace TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager
 
 		public void Execute()
 		{ 
-			itemManager.DropItem();
-			pickupManager.DropItem();
+			pickupManager.DropItem(itemManager.DropItem());
+			
 		}
 	}
 }

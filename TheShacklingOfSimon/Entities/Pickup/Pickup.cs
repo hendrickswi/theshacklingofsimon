@@ -45,10 +45,6 @@ public class Pickup : IPickup
             Sprite.Draw(spriteBatch, Position, Color.White);
         }
     }
-    public void Drop()
-    {
-        //AddPickup(this);
-    }
     public void Discontinue()
     {
         IsActive = false;
@@ -62,7 +58,7 @@ public class Pickup : IPickup
     public void OnCollision(IPlayer player)
     {
         player.AddItemToInventory(Item);
-        Discontinue();
+        //Discontinue();
     }
     
     public void OnCollision(IEnemy enemy)

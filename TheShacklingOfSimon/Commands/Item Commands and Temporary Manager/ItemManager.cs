@@ -84,15 +84,14 @@ public class ItemManager
         _player.EquipItem(_currentIndex);
     }
 
-    public void DropItem()
+    public IItem DropItem()
     {
         int count = _player.Inventory.Items.Count;
-        if (count == 0) return;
+        if (count == 0) return null;
 
         _currentIndex %= count;
         IItem item = _player.RemoveItemFromInventory(_currentIndex);
-        Pickup itemPickup = new Pickup(_player.Position, item, _icons[_currentIndex].Sprite);
-        itemPickup.Drop();
+        return item;
     }
 
     public void UseCurrent()

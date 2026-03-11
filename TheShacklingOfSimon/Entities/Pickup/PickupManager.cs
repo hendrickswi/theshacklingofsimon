@@ -8,13 +8,13 @@ using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Entities.Pickup;
 
-public class pickupManager
+public class PickupManager
 {
     private List<IPickup> _pickups;
     private Room _room;
     ISprite temp;
 
-    public void PickupManager(Room room, SpriteFactory spriteFactory)
+    public PickupManager(Room room, SpriteFactory spriteFactory)
     {
         temp = spriteFactory.CreateStaticSprite("images/8Ball");
         _room = room;
