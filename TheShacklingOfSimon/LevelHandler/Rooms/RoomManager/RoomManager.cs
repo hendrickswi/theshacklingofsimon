@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomClass;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor;
+using TheShacklingOfSimon.LevelHandler.Tiles.Border;
 
 namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomManager
 {
@@ -20,11 +22,15 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomManager
         private readonly Dictionary<string, Room> roomCache = new();
 
         private readonly bool preserveRoomState;
+        private DoorTile pendingDoor;
+        private IPlayer pendingPlayer;
 
-        private readonly List<string> roomIds = new();
+		private readonly List<string> roomIds = new();
         private int currentIndex;
+        private string startingRoomId;
 
-        public Room CurrentRoom { get; private set; }
+
+		public Room CurrentRoom { get; private set; }
         public IReadOnlyList<string> RoomIds => roomIds;
 
         /// Fired whenever CurrentRoom is changed through GoTo/NextRoom/PrevRoom.
@@ -64,7 +70,31 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomManager
             RaiseRoomChanged();
         }
 
-        public void NextRoom()
+		public void RequestRoomSwitch(DoorTile door, IPlayer player)
+		{
+			if (door == null || player == null)
+				return;
+
+			if (pendingDoor != null)
+				return;
+
+			pendingDoor = door;
+			pendingPlayer = player;
+		}
+
+		public void ResolvePendingRoomSwitch()
+		{
+			if (pendingDoor == null || pendingPlayer == null)
+				return;
+
+			GoTo(pendingDoor.ToRoom);
+			pendingPlayer.SetPosition(CurrentRoom.TileMap.GridToWorld(pendingDoor.SpawnGrid));
+
+			pendingDoor = null;
+			pendingPlayer = null;
+		}
+
+		public void NextRoom()
         {
             if (roomIds.Count == 0) return;
 
@@ -99,33 +129,61 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomManager
             roomIds.Clear();
             roomIds.AddRange(idx.Rooms);
 
-            string start = string.IsNullOrWhiteSpace(idx.StartingRoom) ? roomIds[0] : idx.StartingRoom;
-            currentIndex = Math.Max(0, roomIds.IndexOf(start));
-            CurrentRoom = Load(roomIds[currentIndex]);
+			startingRoomId = string.IsNullOrWhiteSpace(idx.StartingRoom) ? roomIds[0] : idx.StartingRoom;
+			currentIndex = Math.Max(0, roomIds.IndexOf(startingRoomId));
+			CurrentRoom = Load(roomIds[currentIndex]);
 
-            // we do NOT raise RoomChanged here to avoid surprising side-effects during construction.
-            // Game1 should call RegisterRoomCollidables(CurrentRoom) once after subscribing
-        }
+			// we do NOT raise RoomChanged here to avoid surprising side-effects during construction.
+			// Game1 should call RegisterRoomCollidables(CurrentRoom) once after subscribing
+		}
 
-        private Room Load(string roomId)
+		private Room Load(string roomId)
+		{
+			if (preserveRoomState && roomCache.TryGetValue(roomId, out var existing))
+				return existing;
+
+			if (!dataCache.TryGetValue(roomId, out var data))
+			{
+				data = roomReader.Read(roomId);
+				dataCache[roomId] = data;
+			}
+
+			var vp = graphicsDevice.Viewport;
+			var room = factory.Create(data, vp.Width, vp.Height);
+
+			foreach (var tile in room.TileMap.PlacedTiles)
+			{
+				if (tile is DoorTile door)
+				{
+					door.BindRoomManager(this);
+				}
+			}
+
+			if (preserveRoomState)
+				roomCache[roomId] = room;
+
+			return room;
+		}
+
+		public void ResetToGameStart()
         {
-            if (preserveRoomState && roomCache.TryGetValue(roomId, out var existing))
-                return existing;
+	        dataCache.Clear();
+	        roomCache.Clear();
 
-            if (!dataCache.TryGetValue(roomId, out var data))
-            {
-                data = roomReader.Read(roomId);
-                dataCache[roomId] = data;
-            }
+	        RoomIndexData idx = indexReader.ReadIndex();
 
-            // pass viewport size so the factory can compute a centered origin
-            var vp = graphicsDevice.Viewport;
-            var room = factory.Create(data, vp.Width, vp.Height);
+	        if (idx.Rooms == null || idx.Rooms.Count == 0)
+		        throw new InvalidOperationException("room_index.json has no rooms.");
 
-            if (preserveRoomState)
-                roomCache[roomId] = room;
+	        roomIds.Clear();
+	        roomIds.AddRange(idx.Rooms);
 
-            return room;
+	        startingRoomId = string.IsNullOrWhiteSpace(idx.StartingRoom) ? roomIds[0] : idx.StartingRoom;
+	        currentIndex = Math.Max(0, roomIds.IndexOf(startingRoomId));
+
+	        CurrentRoom = Load(roomIds[currentIndex]);
+
+	        RaiseRoomChanged();
         }
-    }
+	}
 }

@@ -16,10 +16,10 @@ namespace TheShacklingOfSimon.LevelHandler.Tiles.Border
 
         public WallTile(ISprite sprite, Vector2 position) : base(sprite, position) { }
 
-        // Invisible: don't draw anything
+        // Invisible, don't draw anything
         public override void Draw(SpriteBatch spriteBatch) { }
 
-        // No animation needed; avoid updating sprite work
+        // No animation needed, avoid updating sprite work
         public override void Update(GameTime delta) { }
         public override void OnCollision(IPlayer player)
         {

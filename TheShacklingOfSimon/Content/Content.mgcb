@@ -149,6 +149,9 @@
 #begin Room_Jsons/room_03.json
 /copy:Room_Jsons/room_03.json
 
+#begin Room_Jsons/room_04.json
+/copy:Room_Jsons/room_04.json
+
 #begin Room_Jsons/room_index.json
 /copy:Room_Jsons/room_index.json
 
