@@ -175,8 +175,7 @@ public class Game1 : Game
         _player.CurrentItem?.Update(delta);
         
         _player.Update(delta);
-
-		// Enable once all collidable entities have non-throwing OnCollision implementations
+        
 		_collisionManager.Update(delta);
 		_roomManager.ResolvePendingRoomSwitch();
 
@@ -203,9 +202,6 @@ public class Game1 : Game
     private void Reset()
     {
         Rectangle screenDimensions = GraphicsDevice.Viewport.Bounds;
-
-        //Something for clearing projectiles would be needed for reset probably
-		//_projectileManager.Clear();
 
 		_player.Reset(new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f));
         _projectileManager.ClearAllProjectiles();
