@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Items.Active_Items;
 using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.LevelHandler.Tiles.Obstacles;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.LevelHandler.Rooms.RoomClass;
 
 namespace TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
 
@@ -80,6 +82,17 @@ public class ItemManager
 
         _currentIndex = (_currentIndex - 1 + count) % count;
         _player.EquipItem(_currentIndex);
+    }
+
+    public IPickup DropItem()
+    {
+        int count = _player.Inventory.Items.Count;
+        if (count == 0) return null;
+
+        _currentIndex %= count;
+        IItem item = _player.RemoveItemFromInventory(_currentIndex);
+        IPickup toDrop = new Pickup(_player.Position, item, _icons[_currentIndex].Sprite);
+        return toDrop;
     }
 
     public void UseCurrent()

@@ -8,6 +8,7 @@ using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Collisions;
+using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Input;
@@ -32,6 +33,7 @@ public class Game1 : Game
 
     private RoomManager _roomManager; //room manager for sprint 3
     private ItemManager _itemManager; //Temporary item switching for sprint 2
+    private PickupManager _pickupManager;
     private InputManager _inputManager;
 
     private IPlayer _player;
@@ -128,6 +130,7 @@ public class Game1 : Game
         SpriteFactory.Instance.LoadTexture(Content, "images/Red_Heart.json", "images/Red_Heart");
 
         _itemManager = new ItemManager(_player, SpriteFactory.Instance);
+        _pickupManager = new PickupManager(_roomManager.CurrentRoom, SpriteFactory.Instance);
 
         // Register controls now that the player exists
         _inputManager = new InputManager(
@@ -138,6 +141,7 @@ public class Game1 : Game
             this, 
             _roomManager, 
             _itemManager,
+            _pickupManager,
             Reset
         );
         _inputManager.LoadDefaultControls();
@@ -190,6 +194,7 @@ public class Game1 : Game
 
         _roomManager.Draw(_spriteBatch);
         _itemManager.Draw(_spriteBatch);
+        _pickupManager.Draw(_spriteBatch);
         _projectileManager.Draw(_spriteBatch);
         
         _player.Draw(_spriteBatch);

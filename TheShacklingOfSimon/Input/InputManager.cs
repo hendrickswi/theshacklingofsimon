@@ -12,6 +12,7 @@ using TheShacklingOfSimon.Controllers.Gamepad;
 using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Entities.Collisions;
+using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Mouse;
@@ -32,6 +33,7 @@ public class InputManager
     private readonly Game1 _game;
     private readonly RoomManager _roomManager;
     private readonly ItemManager _itemManager;
+    private readonly PickupManager _pickupManager;
     
     /*
      * Reset action
@@ -46,6 +48,7 @@ public class InputManager
         Game1 game, 
         RoomManager roomManager,
         ItemManager itemManager,
+        PickupManager pickupManager,
         Action onResetRequest
         )
     {
@@ -56,6 +59,7 @@ public class InputManager
         _game = game;
         _roomManager = roomManager;
         _itemManager = itemManager;
+        _pickupManager = pickupManager;
         _onResetRequest = onResetRequest;
     }
 
@@ -94,6 +98,10 @@ public class InputManager
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.Space),
             new UseItemCommand(_player));
+
+        _keyboardController.RegisterCommand(
+            new KeyboardInput(InputState.JustPressed, KeyboardButton.F),
+            new DropItemCommand(_itemManager, _pickupManager));
         
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.R),

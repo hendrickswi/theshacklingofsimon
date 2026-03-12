@@ -22,5 +22,4 @@ public interface IPickup : IEntity
 
     IItem Item { get; set; }
     // if we are to allow weapon pickups, I suggest adding items that give weapons or having iweapon extend item
-    
 }

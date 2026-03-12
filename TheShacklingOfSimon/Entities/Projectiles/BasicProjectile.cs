@@ -7,7 +7,6 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
-using static TheShacklingOfSimon.Entities.Projectiles.ProjectileOwner;
 
 namespace TheShacklingOfSimon.Entities.Projectiles;
 

@@ -1,0 +1,124 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\projectiles\\bombprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\projectiles\\bombprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\weapons\\bombweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:weapons\\bombweapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\players\\states\\head\\playerheadattackingstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\players\\states\\head\\playerheadattackingstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\commands\\tile commands and temporary manager\\tilemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:commands\\tile commands and temporary manager\\tilemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\players\\playerwithtwosprites.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\players\\playerwithtwosprites.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\projectiles\\bombprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\projectiles\\bombprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\sprites\\factory\\data\\spritedataroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:sprites\\factory\\data\\spritedataroot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\projectiles\\projectileowner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\projectiles\\projectileowner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|d:\\theshacklingofsimon\\theshacklingofsimon\\entities\\players\\iplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1242FE6C-1E3D-D08C-20FB-35E5111E8F00}|TheShacklingOfSimon.csproj|solutionrelative:entities\\players\\iplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BombProjectile.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\BombProjectile.cs",
+              "RelativeDocumentMoniker": "Entities\\Projectiles\\BombProjectile.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\BombProjectile.cs",
+              "RelativeToolTip": "Entities\\Projectiles\\BombProjectile.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAAD4v04AAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T01:28:54.316Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IWeapon.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Weapons\\IWeapon.cs",
+              "RelativeDocumentMoniker": "Weapons\\IWeapon.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Weapons\\IWeapon.cs",
+              "RelativeToolTip": "Weapons\\IWeapon.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T01:28:39.888Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BasicProjectile.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\BasicProjectile.cs",
+              "RelativeDocumentMoniker": "Entities\\Projectiles\\BasicProjectile.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\BasicProjectile.cs",
+              "RelativeToolTip": "Entities\\Projectiles\\BasicProjectile.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAcwGcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T01:25:18.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProjectileOwner.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\ProjectileOwner.cs",
+              "RelativeDocumentMoniker": "Entities\\Projectiles\\ProjectileOwner.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Projectiles\\ProjectileOwner.cs",
+              "RelativeToolTip": "Entities\\Projectiles\\ProjectileOwner.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T01:24:01.794Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IPlayer.cs",
+              "DocumentMoniker": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\IPlayer.cs",
+              "RelativeDocumentMoniker": "Entities\\Players\\IPlayer.cs",
+              "ToolTip": "D:\\theshacklingofsimon\\TheShacklingOfSimon\\Entities\\Players\\IPlayer.cs",
+              "RelativeToolTip": "Entities\\Players\\IPlayer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T23:18:32.943Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
