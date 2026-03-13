@@ -1,70 +1,57 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TheShacklingOfSimon.Items;
-using TheShacklingOfSimon.LevelHandler.Rooms.RoomClass;
-using TheShacklingOfSimon.Sprites.Factory;
-using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Entities.Pickup;
 
 public class PickupManager
 {
-    private List<IPickup> _pickups = new List<IPickup>();
-    private Room _room;
-    ISprite temp;
+    private readonly List<IPickup> _pickups;
 
-    public PickupManager(Room room, SpriteFactory spriteFactory)
+    public PickupManager()
     {
-        temp = spriteFactory.CreateStaticSprite("images/8Ball");
-        _room = room;
+        _pickups = new List<IPickup>();
     }
+    
     public void AddPickup(IPickup pickup)
+    {
+        if (pickup != null && !_pickups.Contains(pickup))
         {
-            if (pickup != null && !_pickups.Contains(pickup))
-            {
-                _pickups.Add(pickup);
-            }
+            _pickups.Add(pickup);
+            OnPickupAdded?.Invoke(pickup);
         }
+    }
 
-        public void RemovePickup(IPickup pickup)
+    public void RemovePickup(IPickup pickup)
+    {
+        if (pickup != null)
         {
-            if (pickup != null)
-            {
-                _pickups.Remove(pickup);
-            }
+            _pickups.Remove(pickup);
         }
+    }
 
-        public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
+    {
+        foreach (IPickup pickup in _pickups)
         {
-            for (int i = _pickups.Count - 1; i >= 0; i--)
-            {
-                IPickup pickup = _pickups[i];
-                pickup.Update(gameTime);
-
-                if (pickup.IsActive == false)
-                {
-                    _pickups.RemoveAt(i);
-                }
-            }
+            pickup.Update(gameTime);
         }
+        _pickups.RemoveAll(p => !p.IsActive);
+    }
 
-        public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        foreach (IPickup pickup in _pickups)
         {
-            foreach (IPickup pickup in _pickups)
-            {
-                pickup.Draw(spriteBatch);
-            }
+            pickup?.Draw(spriteBatch);
         }
+    }
 
-        public void DropItem(IPickup toDrop)
-        {
-            if(toDrop is NoneItem) return;
-            AddPickup(toDrop);
-        }
+    public void ClearAllPickups()
+    {
+        _pickups.Clear();
+    }
 
-        public void ClearAllPickups()
-        {
-            _pickups.Clear();
-        }
+    public event Action<IPickup> OnPickupAdded;
 }

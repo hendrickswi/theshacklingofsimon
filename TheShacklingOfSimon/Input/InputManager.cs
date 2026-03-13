@@ -16,7 +16,9 @@ using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Mouse;
+using TheShacklingOfSimon.Items.Passive_Items;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomManager;
+using TheShacklingOfSimon.Sprites.Factory;
 
 namespace TheShacklingOfSimon.Input;
 
@@ -99,9 +101,18 @@ public class InputManager
             new KeyboardInput(InputState.JustPressed, KeyboardButton.Space),
             new UseItemCommand(_player));
 
+        // Temporary for sprint 3
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.F),
-            new DropItemCommand(_itemManager, _pickupManager));
+            new SpawnPickupCommand(
+                () => new Pickup(
+                    new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f),
+                    new SpeedItem(_player),
+                    SpriteFactory.Instance.CreateStaticSprite("images/8Ball")
+                ),
+                _pickupManager
+            )
+        );
         
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.R),

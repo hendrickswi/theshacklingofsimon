@@ -123,14 +123,13 @@ public class Game1 : Game
         // temporary items for demo
         _player.AddItemToInventory(new TeleportItem(_player, pos => true));
         _player.AddItemToInventory(new AdrenalineItem(_player));
-
-
+        
         //load Item Sprites and manager
         SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");
         SpriteFactory.Instance.LoadTexture(Content, "images/Red_Heart.json", "images/Red_Heart");
 
         _itemManager = new ItemManager(_player, SpriteFactory.Instance);
-        _pickupManager = new PickupManager(_roomManager.CurrentRoom, SpriteFactory.Instance);
+        _pickupManager = new PickupManager();
 
         // Register controls now that the player exists
         _inputManager = new InputManager(
@@ -166,6 +165,8 @@ public class Game1 : Game
         
         playerBasicWeapon.OnProjectileFired += _projectileManager.AddProjectile;
         playerBombWeapon.OnProjectileFired += _projectileManager.AddProjectile;
+
+        _pickupManager.OnPickupAdded += _collisionManager.AddStaticEntity;
     }
 
     protected override void Update(GameTime delta)
@@ -176,6 +177,7 @@ public class Game1 : Game
         _projectileManager.Update(delta);
         _roomManager.Update(delta);
         _itemManager.Update(delta);
+        _pickupManager.Update(delta);
         _player.CurrentItem?.Update(delta);
         
         _player.Update(delta);

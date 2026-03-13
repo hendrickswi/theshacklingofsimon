@@ -29,21 +29,18 @@ public class Pickup : IPickup
         Position = position;
         Velocity = Vector2.Zero;
         IsActive = true;
-        Hitbox = new Rectangle((int)position.X, (int)position.Y, 32, 32);
+        Hitbox = new Rectangle((int)position.X, (int)position.Y, 16, 16);
         Sprite = sprite;
     }
 
     public void Update(GameTime delta)
     {
-        Sprite.Update(delta);
+        Sprite?.Update(delta);
     }
     
     public void Draw(SpriteBatch spriteBatch)
     {
-        if (Sprite != null)
-        {
-            Sprite.Draw(spriteBatch, Position, Color.White);
-        }
+        Sprite?.Draw(spriteBatch, Position, Color.White);
     }
     public void Discontinue()
     {
@@ -72,6 +69,7 @@ public class Pickup : IPickup
     {
         // No-op
     }
+    
     public void OnCollision(IProjectile projectile)
     {
         // No-op

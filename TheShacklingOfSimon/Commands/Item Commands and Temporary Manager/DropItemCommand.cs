@@ -1,27 +1,26 @@
-using System.Numerics;
+using System;
+using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Items;
+using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager
 {
-	public class DropItemCommand : ICommand
+	public class SpawnPickupCommand : ICommand
 	{
-		private ItemManager itemManager;
-		private PickupManager pickupManager;
+		private readonly Func<IPickup> _pickupFactory;
+		private readonly PickupManager _pickupManager;
 
-		public DropItemCommand(ItemManager itemManager, PickupManager pickupManager)
+		public SpawnPickupCommand(Func<IPickup> factory, PickupManager pickupManager)
 		{
-			this.itemManager = itemManager;
-			this.pickupManager = pickupManager;
+			_pickupFactory = factory;
+			_pickupManager = pickupManager;
 		}
 
 		public void Execute()
 		{
-			Vector2 pos = Vector2.Zero;
-			IPickup toDrop = itemManager.DropItem();
-			if (toDrop != null)
-			pickupManager.DropItem(toDrop);
-			
+			IPickup pickup = _pickupFactory.Invoke();
+			_pickupManager.AddPickup(pickup);
 		}
 	}
 }
