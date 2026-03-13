@@ -58,10 +58,8 @@ public interface IPlayer : IDamageable
     void RegisterMoveInput(Vector2 direction);
     void RegisterPrimaryAttackInput(Vector2 direction);
     void RegisterSecondaryAttackInput(Vector2 direction);
-
-    void SetPosition(Vector2 worldPosition);
+    
     void Reset(Vector2 startPosition);
-
     void SetSkin(string category, string skinPrefix);
     string GetSkin(string category);
     
