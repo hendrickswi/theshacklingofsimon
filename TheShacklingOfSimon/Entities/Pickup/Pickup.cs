@@ -61,7 +61,10 @@ public class Pickup : IPickup
 
     public void OnCollision(IPlayer player)
     {
-        player.AddItemToInventory(Item);
+        if (player.Inventory.Items.Contains(Item))
+        {
+            player.AddItemToInventory(Item);   
+        }
         Discontinue();
     }
     
