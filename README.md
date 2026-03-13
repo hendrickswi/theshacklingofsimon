@@ -20,6 +20,8 @@ Projectiles carry over to the next room when the player moves to the next room<b
 A lot of textures use placeholders, including doors (which are functional).<br>
 Enemies die almost instantly from damaging tiles<br>
 Player head sprite is slightly off center sometimes<br>
-There is jittering when any dynamic entity continuously moves into a blocking tile<br>
+There is jittering when any dynamic entity continuously moves into a blocking tile<br><br>
+
+These will be fixed in Sprint 4.
 
 
