@@ -173,13 +173,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         }
     }
 
-    public void SetPosition(Vector2 worldPosition)
-    {
-        Position = worldPosition;
-        Velocity = Vector2.Zero; // stop sliding after teleport
-        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
-    }
-
     public override void TakeDamage(int damage)
     {
         // No-op if the player is already in the damaged state
