@@ -5,15 +5,25 @@ File(s) being reviewed: ChaseEnemy.cs, ProjectileEnemy.cs
 Author of file: Ethan Chitturi (CoolestToDoIt)
 
 Comments: 
-  1) Memory leak in SetWeapon(IWeapon weapon). You subscribe to the OnProjectileFired event for a weapon, but if the weapon ever changes during runtime, you never unsubscribe from the old weapon's OnProjectileFired event.
+  1) Memory leak in SetWeapon(IWeapon weapon). You subscribe to the 
+    OnProjectileFired event for a weapon, but if the weapon ever changes
+    during runtime, you never unsubscribe from the old weapon's 
+    OnProjectileFired event.
 
-  2) Violation of DRY (Don't repeat yourself) principle. The ChaseEnemy.cs and ProjectileEnemy.cs files are very similar (e.g., the properties, Update(), Draw(), RegisterMovement(), OnCollision() methods).
+  2) Violation of DRY (Don't repeat yourself) principle. The ChaseEnemy.cs
+    and ProjectileEnemy.cs files are very similar (e.g., the properties,
+    Update(), Draw(), RegisterMovement(), OnCollision() methods).
 
   3) You never actually use RegisterAttack(). 
 
-  4) The overloaded OnCollision(IPlayer player) in ProjectileEnemy.cs is hardcoded to do one (1) damage to the player.
+  4) The overloaded OnCollision(IPlayer player) in ProjectileEnemy.cs is
+    hardcoded to do one (1) damage to the player.
 
-  Overall, the refactored enemy states are more reusable than ever. We will be able to spawn enemies with the same behavior but different sprites, and so forth. However, It also is quite a step up in functionality from Sprint 2. It also has quite loose coupling with its use of mostly primitive properties. 
+  Overall, the refactored enemy states are more reusable than ever. 
+  We will be able to spawn enemies with the same behavior but different 
+  sprites, and so forth. However, It also is quite a step up in 
+  functionality from Sprint 2. It also has quite loose coupling with its
+  use of mostly primitive properties. 
 
 Suggested Changes: 
   1) Could handle it by doing something like this: 
@@ -36,8 +46,17 @@ Suggested Changes:
           OnProjectileCreated?.Invoke(proj);
       }
 
-  2) Extract most logic into an EnemyBase abstract class and override methods as needed. This will also allow you to implement new enemy behaviors (e.g., FlyingEnemy, etc.) way easier. I did something similar with BaseWeapon.cs and BaseProjectile.cs, if you're interested.
+  2) Extract most logic into an EnemyBase abstract class and override 
+    methods as needed. This will also allow you to implement new enemy 
+    behaviors (e.g., FlyingEnemy, etc.) way easier. I did something 
+    similar with BaseWeapon.cs and BaseProjectile.cs, if you're 
+    interested.
 
-  3) You could have the OnCollision(IPlayer player) method call RegisterAttack(), then RegisterAttack() would call CurrentState.HandleAttack() and transition the enemy into the attack state if in a valid state to do so (i.e., idle, moving).
+  3) You could have the OnCollision(IPlayer player) method call 
+    RegisterAttack(), then RegisterAttack() would call 
+    CurrentState.HandleAttack() and transition the enemy into the 
+    attack state if in a valid state to do so (i.e., idle, moving).
 
-  4) You actually already have a ContactDamage property in this file. You can just do player.TakeDamage((int)ContactDamage). You can fix this alongside suggested change 2). 
+  4) You actually already have a ContactDamage property in this file. 
+    You can just do player.TakeDamage((int)ContactDamage). You can 
+    fix this alongside suggested change 2). 
