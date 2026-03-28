@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomClass;
+using TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor;
 
-namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
+namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomManager
 {
     // I split room creation/loading out of RoomManager so RoomManager can focus on navigation/state.
     public sealed class RoomLoader

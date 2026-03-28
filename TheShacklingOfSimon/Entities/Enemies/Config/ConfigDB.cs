@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using TheShacklingOfSimon.Weapons;
 
-namespace TheShacklingOfSimon.Entities.Enemies;
+namespace TheShacklingOfSimon.Entities.Enemies.Config;
 public static class ConfigDB
 {
     public static readonly Dictionary<string, EnemyConfig> Configs = new()

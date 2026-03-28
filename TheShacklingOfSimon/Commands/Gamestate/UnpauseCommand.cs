@@ -1,7 +1,6 @@
-﻿using TheShacklingOfSimon.Commands;
-using TheShacklingOfSimon.GameStates;
+﻿using TheShacklingOfSimon.GameStates;
 
-namespace TheShacklingOfSimon.Commands.GameStateCommands;
+namespace TheShacklingOfSimon.Commands.Gamestate;
 
 public class UnpauseCommand : ICommand
 {

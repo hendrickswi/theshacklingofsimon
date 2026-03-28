@@ -1,4 +1,4 @@
-namespace TheShacklingOfSimon.Weapons.WeaponTypeList
+namespace TheShacklingOfSimon.Weapons
 {
     // Type-safe identifiers for enemies that can appear in room files.
     public enum WeaponTypeList

@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Weapons;
-using TheShacklingOfSimon.Weapons.WeaponTypeList;
 using TheShacklingOfSimon.Sprites.Factory;
 
 namespace TheShacklingOfSimon.Entities.Enemies.Managers;

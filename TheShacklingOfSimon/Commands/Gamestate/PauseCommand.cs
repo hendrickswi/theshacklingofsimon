@@ -1,8 +1,7 @@
 ﻿using System;
-using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.GameStates;
 
-namespace TheShacklingOfSimon.Commands.GameStateCommands;
+namespace TheShacklingOfSimon.Commands.Gamestate;
 
 public class PauseCommand : ICommand
 {

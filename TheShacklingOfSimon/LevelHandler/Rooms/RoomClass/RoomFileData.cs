@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.LevelHandler.Tiles.TileConstructor;
-using TheShacklingOfSimon.Weapons.WeaponTypeList;
+using TheShacklingOfSimon.Weapons;
 
 namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomClass
 {

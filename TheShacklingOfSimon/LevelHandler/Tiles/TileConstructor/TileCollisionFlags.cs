@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TheShacklingOfSimon.LevelHandler.Tiles
+namespace TheShacklingOfSimon.LevelHandler.Tiles.TileConstructor
 {
     // I group the tile blocking rules together so each tile does not repeat 3 separate properties.
     [Flags]

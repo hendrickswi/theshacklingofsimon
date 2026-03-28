@@ -1,6 +1,6 @@
 using TheShacklingOfSimon.Weapons;
 
-namespace TheShacklingOfSimon.Entities.Enemies;
+namespace TheShacklingOfSimon.Entities.Enemies.Config;
 public class EnemyConfig
 {
     public float MoveSpeed { get; set; }

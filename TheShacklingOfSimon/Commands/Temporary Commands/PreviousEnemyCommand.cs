@@ -1,4 +1,5 @@
 using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Enemies.Managers;
 
 namespace TheShacklingOfSimon.Commands.Temporary_Commands;
 

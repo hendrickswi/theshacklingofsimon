@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace TheShacklingOfSimon.Entities.Enemies
+namespace TheShacklingOfSimon.Entities.Enemies.Managers
 {
     public class EnemyMovementManager
     {

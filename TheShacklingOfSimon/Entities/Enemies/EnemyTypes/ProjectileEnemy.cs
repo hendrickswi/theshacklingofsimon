@@ -2,6 +2,8 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Collisions;
+using TheShacklingOfSimon.Entities.Enemies.Config;
+using TheShacklingOfSimon.Entities.Enemies.Managers;
 using TheShacklingOfSimon.Entities.Enemies.States;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
