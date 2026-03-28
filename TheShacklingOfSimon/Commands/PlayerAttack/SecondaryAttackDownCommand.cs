@@ -14,6 +14,6 @@ public class SecondaryAttackDownCommand : ICommand
 
     public void Execute()
     {
-        _player.RegisterSecondaryAttackInput(new Vector2(0, 1));
+        _player.InputBuffer.AddSecondaryAttack(new Vector2(0, 1));
     }
 }

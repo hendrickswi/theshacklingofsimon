@@ -9,13 +9,10 @@ public interface IPlayer : IDamageable
 {
     PlayerInventory Inventory { get; }
     PlayerStats Stats { get; }
+    PlayerInputBuffer InputBuffer { get; }
     
     // IPlayer-implementing classes will act as the context for the State pattern
     IPlayerState CurrentState { get; }
-    
-    void RegisterMoveInput(Vector2 direction);
-    void RegisterPrimaryAttackInput(Vector2 direction);
-    void RegisterSecondaryAttackInput(Vector2 direction);
     
     void Reset(Vector2 startPosition);
     void SetSkin(string category, string skinPrefix);

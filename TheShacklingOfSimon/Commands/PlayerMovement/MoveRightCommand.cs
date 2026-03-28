@@ -14,6 +14,6 @@ public class MoveRightCommand : ICommand
 
     public void Execute()
     {
-        _player.RegisterMoveInput(new Vector2(1, 0));
+        _player.InputBuffer.AddMovement(new Vector2(1, 0));
     }
 }

@@ -23,7 +23,7 @@ public class SecondaryAttackDynamicMouseCommand : ICommand
         if (mouseDelta.LengthSquared() > 0.0001f)
         {
             mouseDelta.Normalize();
-            _player.RegisterSecondaryAttackInput(mouseDelta);
+            _player.InputBuffer.AddSecondaryAttack(mouseDelta);
         }
     }
 }

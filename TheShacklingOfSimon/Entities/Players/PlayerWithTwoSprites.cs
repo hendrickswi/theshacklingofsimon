@@ -43,14 +43,10 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
 
     // The miscellaneous stats
     public PlayerStats Stats { get; private set; }
+    public PlayerInputBuffer InputBuffer { get; private set; }
     
     private readonly Vector2 _headOffset = new Vector2(-4.75f, -16);
     private readonly Vector2 _damagedStateOffset = new Vector2(0, -5);
-
-    // Vectors for handling player controls
-    private Vector2 _movementInput;
-    private Vector2 _primaryAttackInput;
-    private Vector2 _secondaryAttackInput;
     
     private Dictionary<string, string> _skins;
     
@@ -58,33 +54,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     public PlayerWithTwoSprites(Vector2 startPosition)
     {
         Initialize(startPosition);
-    }
-
-    public void RegisterMoveInput(Vector2 direction)
-    {
-        /*
-         * Allow diagonal movement
-         *
-         * Also catches edge cases where the player
-         * presses three movement keys
-         */
-        _movementInput += direction;
-    }
-
-    public void RegisterPrimaryAttackInput(Vector2 direction)
-    {
-        if (Inventory.CurrentPrimaryWeapon != null)
-        {
-            _primaryAttackInput += direction;
-        }
-    }
-
-    public void RegisterSecondaryAttackInput(Vector2 direction)
-    {
-        if (Inventory.CurrentSecondaryWeapon != null)
-        {
-            _secondaryAttackInput += direction;
-        }
     }
 
     public override void TakeDamage(int damage)
@@ -118,28 +87,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
 
     public override void Update(GameTime delta)
     {
-        // Movement logic
-        if (_movementInput.LengthSquared() > 0.0001f)
-        {
-            _movementInput.Normalize();
-        }
-
-        CurrentBodyState.HandleMovement(_movementInput, Stats.MovementFrameDuration);
-        _movementInput = Vector2.Zero;
-
-        // Attack logic
-        if (_primaryAttackInput.LengthSquared() > 0.0001f)
-        {
-            CurrentHeadState.HandlePrimaryAttack(_primaryAttackInput, Stats.PrimaryAttackCooldown);
-        }
-
-        if (_secondaryAttackInput.LengthSquared() > 0.0001f)
-        {
-            CurrentHeadState.HandleSecondaryAttack(_secondaryAttackInput, Stats.SecondaryAttackCooldown);
-        }
-
-        _primaryAttackInput = Vector2.Zero;
-        _secondaryAttackInput = Vector2.Zero;
+        CurrentBodyState.HandleMovement(InputBuffer.ConsumeMovement(), Stats.MovementFrameDuration);
+        CurrentHeadState.HandlePrimaryAttack(InputBuffer.ConsumePrimaryAttack(), Stats.PrimaryAttackCooldown);
+        CurrentHeadState.HandleSecondaryAttack(InputBuffer.ConsumeSecondaryAttack(), Stats.SecondaryAttackCooldown);
 
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
@@ -256,6 +206,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         Health = 6;
         MaxHealth = 6;
         Stats = new PlayerStats();
+        InputBuffer = new PlayerInputBuffer();
         
         Inventory = new PlayerInventory(this);
         
@@ -273,8 +224,5 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         CurrentBodyState = new PlayerBodyIdleState(this);
         CurrentHeadState.Enter();
         CurrentBodyState.Enter();
-        _movementInput = Vector2.Zero;
-        _primaryAttackInput = Vector2.Zero;
-        _secondaryAttackInput = Vector2.Zero;
     }
 }

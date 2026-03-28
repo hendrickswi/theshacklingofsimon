@@ -14,6 +14,6 @@ public class MoveDownCommand : ICommand
 
     public void Execute()
     {
-        _player.RegisterMoveInput(new Vector2(0, 1));
+        _player.InputBuffer.AddMovement(new Vector2(0, 1));
     }
 }

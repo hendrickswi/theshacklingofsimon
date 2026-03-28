@@ -25,4 +25,5 @@ public class PlayerStats
     }
     
     // TODO: Add buff/debuff methods here
+    // TODO: (and) remove items manually modifying the player stats
 }
