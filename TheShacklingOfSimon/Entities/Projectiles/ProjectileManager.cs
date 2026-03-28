@@ -29,7 +29,12 @@ public class ProjectileManager
 		_projectiles.RemoveAll(p => !p.IsActive);
 	}
 
-	public void Draw(SpriteBatch spriteBatch)
+    public void ClearAllProjectiles()
+    {
+        _projectiles.Clear();
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
 	{
 		foreach (var p in _projectiles)
 		{

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Collisions;
+using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.LevelHandler.Tiles.TileConstructor;
 using TheShacklingOfSimon.Sprites.Products;
@@ -25,12 +26,22 @@ namespace TheShacklingOfSimon.LevelHandler.Tiles.Obstacles
         {
             if (player == null || !IsActive) return;
 
-            if (player is not IEntity entity) return;
+            Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(player.Hitbox, this.Hitbox);
+            if (mtv.LengthSquared() < 0.0001f) return;
 
-            Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(entity.Hitbox, this.Hitbox);
-            if (mtv == Vector2.Zero) return;
+            // Handles position, velocity, and hitbox
+            player.SetPosition(player.Position + mtv);
+        }
+        
+        public override void OnCollision(IEnemy enemy)
+        {
+            if (enemy == null || !IsActive) return;
 
-            player.SetPosition(entity.Position + mtv);
+            Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(enemy.Hitbox, this.Hitbox);
+            if (mtv.LengthSquared() < 0.0001f) return;
+            
+            // Handles position, velocity, and hitbox
+            enemy.SetPosition(enemy.Position + mtv);
         }
     }
 }

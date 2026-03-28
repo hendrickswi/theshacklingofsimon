@@ -1,0 +1,24 @@
+Author: Ethan Chitturi
+Date: 3/13/2026
+Sprint 3 File(s) being reviewed: PlayerWithTwoSprites.cs, relevant Player__State classes
+Author of files: William Hendricks
+Comments:
+PlayerWithTwoSprites:
+    1) There is a bug in RemoveItemFromInventory where it removes the PrimaryWeapon
+        instead of the current item.
+    2) When resetting the weapon to NoneWeapon in the remove method. It might be a
+        little cleaner to have an already initialized NoneWeapon called NoWeapon
+        that you can just assign to that slot. That way multiple objects aren't
+        created everytime something is removed from the primary or secondary slot.
+
+IPlayerHeadIdleState:
+    1) The null check in Update is redundant as the ? already checks for null.
+
+General State Class Idea:
+    1) One idea I had for refactoring the enemy classes was creating a base active and
+        passive state class which would be inherited by any further state classes that
+        are to be implemented. This would allow for further interactability with items
+        such as poison or boss types. For example the damaged enemy and dead enemy
+        state would be related to the passive state. In a similar vein, I think the
+        player states could also benefit from this, as it would allow that extra ease of
+        customizability without worrying about duplicate code.

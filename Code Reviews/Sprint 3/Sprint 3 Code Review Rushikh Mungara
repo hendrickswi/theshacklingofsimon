@@ -1,0 +1,23 @@
+Author: Rushikh Mungara
+Date: 2/21/2026
+Sprint 2 File(s) being reviewed: RoomManager.cs, TileFactory.cs
+Author of files: Akrem Ramadan
+Comments:
+Robust Transitions: The pendingDoor/Player system in RoomManager is excellent; it safely defers room changes to avoid mid-update crashes.
+
+Circular Coupling: BindRoomManager creates a loop where the Manager, Room, and Tile are all dependent on each other, which hinders unit testing.
+
+Heavy Dependencies: RoomManager shouldn't need the whole GraphicsDevice just for viewport size. This ties the logic too closely to the hardware.
+
+Factory Pattern: The Dictionary<TileType, Func<...>> in TileFactory is a clean, professional way to handle extensibility.
+
+Over-Coupling: TileFactory shouldn't require a TileMap reference; it only needs a position to place a tile.
+
+Suggested Changes:
+Decouple Doors: Use an Action event on DoorTile (e.g., OnTriggered). Have the Manager subscribe to it rather than the tile holding a reference to the Manager.
+
+Pass Bounds, Not Device: Replace the GraphicsDevice dependency in RoomManager with a simple Rectangle or Vector2 representing screen dimensions.
+
+Simplify Factory: Update TileFactory.Create to accept a Vector2 worldPos. Let the caller handle the grid-to-world conversion.
+
+Pre-Cache Doors: Have the Room class store a specific List<DoorTile> during loading to avoid scanning every tile in the TileMap during room transitions.

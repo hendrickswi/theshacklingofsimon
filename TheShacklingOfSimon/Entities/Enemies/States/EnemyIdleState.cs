@@ -48,29 +48,12 @@ public class EnemyIdleState : IEnemyState
         if (direction != Vector2.Zero)
         {
             _enemy.ChangeState(new EnemyAttackingState(_enemy, cardinal, stateDuration));
-
         }
     }
 
     private void UpdateSprite()
     {
-        string newAnimationName = "EnemyIdleDown";
-        /* for testing
-        Vector2 cardinal = GetCardinalDirection(_direction);
-        
-        if (cardinal == Vector2.UnitX)
-        {
-            newAnimationName = "EnemyIdleRight";
-        }
-        else if (cardinal == -Vector2.UnitX)
-        {
-            newAnimationName = "EnemyIdleLeft";
-        }
-        else if (cardinal == -Vector2.UnitY)
-        {
-            newAnimationName = "EnemyIdleUp";
-        }
-        */
+        string newAnimationName = _enemy.Name + "_EnemyIdleDown";
         if (newAnimationName != _currentAnimation)
         {
             _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(newAnimationName);

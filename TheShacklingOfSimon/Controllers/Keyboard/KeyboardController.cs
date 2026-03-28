@@ -7,8 +7,8 @@ namespace TheShacklingOfSimon.Controllers.Keyboard;
 public class KeyboardController : IController<KeyboardInput>
 {
     private readonly IKeyboardService _keyboardService;
-    private Dictionary<KeyboardInput, Commands.ICommand> _map;
-    private Dictionary<KeyboardButton, InputState> _previousStates;
+    private readonly Dictionary<KeyboardInput, Commands.ICommand> _map;
+    private readonly Dictionary<KeyboardButton, InputState> _previousStates;
 
 	public KeyboardController(IKeyboardService service)
     {
@@ -20,13 +20,26 @@ public class KeyboardController : IController<KeyboardInput>
 	public void RegisterCommand(KeyboardInput k, Commands.ICommand cmd)
 	{
 		bool success = _map.TryAdd(k, cmd);
-
 		if (success)
 		{
 			_previousStates.Add(k.Button, InputState.Released);
 		}
 	}
 
+	public void UnregisterCommand(KeyboardInput input)
+	{
+		bool success = _map.Remove(input);
+		if (success)
+		{
+			_previousStates.Remove(input.Button);
+		}
+	}
+
+	public void ClearCommands()
+	{
+		_map.Clear();
+		_previousStates.Clear();
+	}
 
 	public void Update()
 	{

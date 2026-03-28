@@ -1,0 +1,40 @@
+Author: [Your Name]
+
+IPickup interface
+Item { get; set; } may allow pickups to change what item they hold after creation, which could be unintended. 
+If pickups should always represent one fixed item, making this property get-only would be safer.
+
+Pickup
+The class is structured clearly, but it has some cleanup issues like the unused _pickups field and several unused using statements. 
+
+PickupManager
+PickupManager is simple and easy to follow, and its responsibilities are separated well from the Pickup class. 
+One thing to consider is that AddPickup() triggers an event, but RemovePickup() does not, which makes the event behavior a little inconsistent.
+
+IItem interface
+The interface is straightforward, but Effect() is a fairly vague name and something like Use() or Apply() may communicate intent more clearly. 
+Also, requiring every item to expose a Player property creates tighter coupling than necessary.
+
+ItemEffects
+Using public mutable fields makes accidental changes easier and hurts maintainability. 
+This would be stronger as immutable properties or a readonly record struct, especially since it is meant to represent shared effect data.
+
+ActiveItem
+This class looks incomplete because Effects is never initialized, so Effect() and ClearEffect() likely do nothing right now. 
+It also has settable Name and Description properties that are never assigned, which makes the item feel unfinished.
+
+AdrenalineItem
+This is one of the stronger classes here because the cooldown and buff timing logic is easy to read and self-contained. 
+The only concern is that directly multiplying and dividing player stats can become fragile if multiple buffs stack or if the effect is applied more than once by mistake.
+
+TeleportItem
+TeleportItem is well organized and the “walk back” logic for invalid positions is a nice touch. One design issue is that teleport direction depends on velocity, 
+so the player cannot blink while standing still even if they are facing a direction. It also does not account for exiting the walls of the game bounds.
+
+NoneItem
+This is a good use of the null-object pattern because it gives the system a safe fallback item with a no-op effect. 
+It would still be better to initialize Name and Description to something like "None" so the item is clearer in debugging or UI contexts.
+
+Overall
+The overall design is solid and shows a good attempt at separating pickups, managers, and item behaviors into different classes. 
+The main things to fix are the reversed collision logic in Pickup, the incomplete ActiveItem implementation, and general cleanup around unused code and tighter interface design.

@@ -1,18 +1,72 @@
 {
-  "id": "room_03",
-  "tiles": [
-    { "x": 1, "y": 1, "type": "Fire" },
-    { "x": 3, "y": 6, "type": "Spike" },
-    { "x": 4, "y": 6, "type": "Spike" },
-    { "x": 5, "y": 6, "type": "Spike" },
-    { "x": 9, "y": 3, "type": "Fire" }
-  ],
-  "entities": [],
-  "doors": [
-    {
-      "x": 0,
-      "y": 4,
-      "to": { "room": "room_02", "spawn": { "x": 12, "y": 4 } }
-    }
-  ]
+    "id": "room_03",
+    "tiles": [
+        {
+            "x": 4,
+            "y": 3,
+            "type": "Spike"
+        },
+        {
+            "x": 5,
+            "y": 3,
+            "type": "Spike"
+        },
+        {
+            "x": 6,
+            "y": 3,
+            "type": "Spike"
+        },
+
+        {
+            "x": 8,
+            "y": 3,
+            "type": "Spike"
+        },
+        {
+            "x": 9,
+            "y": 3,
+            "type": "Spike"
+        },
+        {
+            "x": 10,
+            "y": 3,
+            "type": "Spike"
+        },
+
+        {
+            "x": 7,
+            "y": 6,
+            "type": "Rock"
+        }
+    ],
+    "entities": [],
+    "enemies": [
+        {
+            "type": "ProjectileEnemy",
+            "x": 5,
+            "y": 6,
+            "name": "SpiderEnemy",
+            "weapon": "BasicWeapon"
+        },
+        {
+            "type": "ProjectileEnemy",
+            "x": 9,
+            "y": 6,
+            "name": "SpiderEnemy",
+            "weapon": "BasicWeapon"
+        }
+    ],
+    "doors": [
+        {
+            "x": 7,
+            "y": 0,
+            "to": {
+                "room": "room_01",
+                "spawn": {
+                    "x": 7,
+                    "y": 6
+                }
+            }
+        }
+    ]
 }

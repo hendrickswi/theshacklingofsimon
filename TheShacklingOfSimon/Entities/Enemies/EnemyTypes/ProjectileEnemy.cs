@@ -14,10 +14,10 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
-public class BlackMaw : DamageableEntity, IEnemy
+public class ProjectileEnemy : DamageableEntity, IEnemy
 {    
 
-    public string Name => "BlackMaw";
+    public string Name { get; }
     public bool MarkedForRemoval { get; private set; }
 
     public IEnemyState CurrentState { get; private set; }
@@ -27,31 +27,33 @@ public class BlackMaw : DamageableEntity, IEnemy
     public float AttackCooldown { get; set; }
     private float _attackTimer;
     public float AttackRange { get; set; }
-    //Needs a damage value for collision
-    public float ContactDamage { get; }
+    public float ContactDamage { get; set; }
 
     private EnemyMovementManager _movement;
     private Vector2 _movementInput;
     private Vector2 _attack;
+    public event Action<IProjectile> OnProjectileCreated;
 
-    //should take out the projectile manager and weapon, will do once tested
-    public BlackMaw(Vector2 startPosition)
+    public ProjectileEnemy(Vector2 startPosition, IWeapon weapon, string name = "SpiderEnemy")
     {   
+        this.Name = name;
+        var config = ConfigDB.Configs[name];
+        
         // IDamageable properties
-        this.Health = 3;
-        this.MaxHealth = 3;
+        this.MaxHealth = config.MaxHealth;
+        this.Health = MaxHealth;
         
         // Movement class properties
         _movement = new EnemyMovementManager();
         
         // These can all be overriden with public set method
-        this.MoveSpeedStat = 17.0f;
-        this.AttackCooldown = 3.0f;
+        this.MoveSpeedStat = config.MoveSpeed;
+        this.AttackCooldown = config.AttackCooldown;
+        this.ContactDamage = config.ContactDamage;
+        this.AttackRange = config.AttackRange;
         _attackTimer = 0f;
-        this.AttackRange = 10.0f;
-        this.ContactDamage = 1.0f;
 
-        this.Sprite = SpriteFactory.Instance.CreateStaticSprite("EnemyIdleDown");
+        SetWeapon(weapon);
         
         Reset(startPosition);
     }
@@ -68,10 +70,13 @@ public class BlackMaw : DamageableEntity, IEnemy
         this._movementInput = Vector2.Zero;
         this._attack = Vector2.Zero;
     }
-
-    public void SetProjectileManager(ProjectileManager projectileManager)
+    
+    public void SetWeapon(IWeapon weapon)
     {
-        this.Weapon = new BasicWeapon(projectileManager);
+        if (weapon == null) return;
+
+        Weapon = weapon;
+        Weapon.OnProjectileFired += proj => OnProjectileCreated?.Invoke(proj);
     }
 
     public void MarkForRemoval()
@@ -149,8 +154,7 @@ public class BlackMaw : DamageableEntity, IEnemy
         // Find target
         Vector2 targetDirection = FindTarget();
         RegisterMovement(dt, targetDirection); // No specific target for now, just wander
-        //This enemy is only colliding, so no projectile attacks needed
-        //RegisterAttack(dt, targetDirection); // Attack in the direction of movement for testing
+        RegisterAttack(dt, targetDirection); // Attack in the direction of movement for testing
         
         Position += Velocity * dt;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);
@@ -182,10 +186,8 @@ public class BlackMaw : DamageableEntity, IEnemy
 
     public override void OnCollision(IPlayer player)
     {
-        if (player == null || !IsActive) return;
-
-        // Deal 1 damage on contact
-        player.TakeDamage((int)ContactDamage);
+        player.TakeDamage(1);
+        // TODO: Should change state here
     }
 
     public override void OnCollision(IEnemy enemy)
@@ -195,8 +197,7 @@ public class BlackMaw : DamageableEntity, IEnemy
 
     public override void OnCollision(IProjectile projectile)
     {
-        // No-op for now if projectiles should damage enemies,
-        // implement damage in projectile or here consistently across the codebase.
+        // No-op, let the projectile deal with the interaction.
     }
 
     public override void OnCollision(ITile tile)

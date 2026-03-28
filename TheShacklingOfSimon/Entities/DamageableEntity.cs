@@ -26,13 +26,25 @@ public abstract class DamageableEntity : IDamageable
     public abstract void Update(GameTime delta);
 
     public abstract void Draw(SpriteBatch spriteBatch);
+    
+    public virtual void Discontinue()
+    {
+        IsActive = false;
+    }
+    
+    public virtual void SetPosition(Vector2 position)
+    {
+        Position = position;
+        Hitbox = new Rectangle((int)position.X, (int)position.Y, Hitbox.Width, Hitbox.Height);
+        Velocity = Vector2.Zero;
+    }
 
+    public abstract void OnCollision(IEntity other);
     public abstract void OnCollision(IPlayer player);
     public abstract void OnCollision(IEnemy enemy);
     public abstract void OnCollision(IProjectile projectile);
     public abstract void OnCollision(ITile tile);
     public abstract void OnCollision(IPickup pickup);
-    public abstract void OnCollision(IEntity other);
     
     // Methods from IDamageable
     public virtual void TakeDamage(int amt)
@@ -54,10 +66,5 @@ public abstract class DamageableEntity : IDamageable
         {
             Health = MaxHealth;
         }
-    }
-    
-    public virtual void Discontinue()
-    {
-        IsActive = false;
     }
 }

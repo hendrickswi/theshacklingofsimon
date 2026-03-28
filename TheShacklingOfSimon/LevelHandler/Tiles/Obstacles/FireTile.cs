@@ -37,12 +37,12 @@ namespace TheShacklingOfSimon.LevelHandler.Tiles.Obstacles
 
         public override void OnCollision(IPlayer player)
         {
-                player.TakeDamage(1);
+            player.TakeDamage(1);
         }
 
         public override void OnCollision(IEnemy enemy)
         {
-                enemy.TakeDamage(1);
+            enemy.TakeDamage(1);
         }
     }
 }

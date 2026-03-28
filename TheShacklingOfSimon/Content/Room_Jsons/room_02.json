@@ -1,25 +1,64 @@
 {
-  "id": "room_02",
-  "tiles": [
-    { "x": 7, "y": 1, "type": "Rock" },
-    { "x": 7, "y": 2, "type": "Rock" },
-    { "x": 7, "y": 3, "type": "Rock" },
-    { "x": 7, "y": 4, "type": "Rock" },
-    { "x": 7, "y": 5, "type": "Rock" },
-    { "x": 7, "y": 6, "type": "Rock" },
-    { "x": 7, "y": 7, "type": "Rock" }
-  ],
-  "entities": [],
-  "doors": [
-    {
-      "x": 0,
-      "y": 4,
-      "to": { "room": "room_01", "spawn": { "x": 12, "y": 4 } }
-    },
-    {
-      "x": 14,
-      "y": 4,
-      "to": { "room": "room_03", "spawn": { "x": 2, "y": 4 } }
-    }
-  ]
+    "id": "room_02",
+    "tiles": [
+        {
+            "x": 6,
+            "y": 1,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 2,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 3,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 5,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 6,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 7,
+            "type": "Rock"
+        },
+
+        {
+            "x": 10,
+            "y": 4,
+            "type": "Fire"
+        }
+    ],
+    "entities": [],
+    "enemies": [
+        {
+            "type": "ChaseEnemy",
+            "x": 9,
+            "y": 4,
+            "name": "BlackMaw",
+            "weapon": "NoneWeapon"
+        }
+    ],
+    "doors": [
+        {
+            "x": 0,
+            "y": 4,
+            "to": {
+                "room": "room_01",
+                "spawn": {
+                    "x": 12,
+                    "y": 4
+                }
+            }
+        }
+    ]
 }

@@ -5,34 +5,58 @@ using TheShacklingOfSimon.Input.Gamepad;
 
 namespace TheShacklingOfSimon.Controllers.Gamepad;
 
-public class GamepadController : IController<GamepadButtonInput>, IController<GamepadJoystickInput>
+public class GamepadController : IGamepadController
 {
     private readonly IGamepadService _gamepadService;
-    private Dictionary<GamepadButtonInput, Commands.ICommand> _buttonMap;
-    private Dictionary<GamepadJoystickInput, Commands.ICommand> _joystickMap;
+    private readonly Dictionary<GamepadButtonInput, Commands.ICommand> _buttonMap;
+    private readonly Dictionary<GamepadJoystickInput, Commands.ICommand> _joystickMap;
 
-    private Dictionary<GamepadButton, InputState> _previousButtonStates;
+    private readonly Dictionary<GamepadButton, InputState> _previousButtonStates;
+    private readonly Dictionary<GamepadJoystickInput, bool> _previousJoystickStates;
 
     public GamepadController(IGamepadService gamepadService)
     {
         _gamepadService = gamepadService;
         _buttonMap = new Dictionary<GamepadButtonInput, Commands.ICommand>();
         _joystickMap = new Dictionary<GamepadJoystickInput, Commands.ICommand>();
+        
         _previousButtonStates = new Dictionary<GamepadButton, InputState>();
+        foreach (GamepadButton btn in System.Enum.GetValues(typeof(GamepadButton)))
+        {
+            _previousButtonStates.Add(btn, InputState.Released);
+        }
+
+        _previousJoystickStates = new Dictionary<GamepadJoystickInput, bool>();
     }
 
     public void RegisterCommand(GamepadButtonInput input, Commands.ICommand cmd)
-    {
-        bool success = _buttonMap.TryAdd(input, cmd);
-        if (success)
-        {
-            _previousButtonStates.Add(input.Button, InputState.Released);
-        }
+    { 
+        _buttonMap.TryAdd(input, cmd);
     }
 
     public void RegisterCommand(GamepadJoystickInput input, Commands.ICommand cmd)
     { 
-        _joystickMap.TryAdd(input, cmd);
+        bool success = _joystickMap.TryAdd(input, cmd);
+        if (success)
+        {
+            _previousJoystickStates.Add(input, false);
+        }
+    }
+
+    public void UnregisterCommand(GamepadButtonInput input)
+    {
+        _buttonMap.Remove(input);
+    }
+
+    public void UnregisterCommand(GamepadJoystickInput input)
+    {
+        _joystickMap.Remove(input);
+    }
+
+    public void ClearCommands()
+    {
+        _buttonMap.Clear();
+        _joystickMap.Clear();
     }
 
     public void Update()
@@ -79,8 +103,20 @@ public class GamepadController : IController<GamepadButtonInput>, IController<Ga
                     break;
                 }
             }
+
+            bool isInRegion = input.Region.Contains(rawInput);
+            bool wasInRegion = _previousJoystickStates[input];
+            bool isJustPressed = isInRegion && !wasInRegion;
+            bool isJustReleased = !isInRegion && wasInRegion;
+
+            if ((input.State == InputState.Pressed && isInRegion) ||
+                (input.State == InputState.Released && isJustReleased) ||
+                (input.State == InputState.JustPressed && isJustPressed))
+            {
+                _joystickMap[input].Execute();
+            }
             
-            // TODO
+            _previousJoystickStates[input] = isInRegion;
         }
     }
 }

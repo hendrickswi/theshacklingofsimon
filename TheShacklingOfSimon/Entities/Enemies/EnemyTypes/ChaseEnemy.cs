@@ -14,10 +14,10 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
-public class SpiderEnemy : DamageableEntity, IEnemy
+public class ChaseEnemy : DamageableEntity, IEnemy
 {    
 
-    public string Name => "SpiderEnemy";
+    public string Name { get; }
     public bool MarkedForRemoval { get; private set; }
 
     public IEnemyState CurrentState { get; private set; }
@@ -27,33 +27,41 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     public float AttackCooldown { get; set; }
     private float _attackTimer;
     public float AttackRange { get; set; }
+    public float ContactDamage { get; set; }
 
     private EnemyMovementManager _movement;
     private Vector2 _movementInput;
     private Vector2 _attack;
+    public event Action<IProjectile> OnProjectileCreated;
 
-    public SpiderEnemy(Vector2 startPosition)
-    {   
+    //should take out the projectile manager and weapon, will do once tested
+    public ChaseEnemy(Vector2 startPosition, IWeapon weapon, string name = "BlackMaw")
+    {
+        this.Name = name;
+        var config = ConfigDB.Configs[name];
+    
         // IDamageable properties
-        this.Health = 3;
-        this.MaxHealth = 3;
+        this.MaxHealth = config.MaxHealth;
+        this.Health = MaxHealth;
         
         // Movement class properties
         _movement = new EnemyMovementManager();
         
         // These can all be overriden with public set method
-        this.MoveSpeedStat = 17.0f;
-        this.AttackCooldown = 3.0f;
+        this.MoveSpeedStat = config.MoveSpeed;
+        this.AttackCooldown = config.AttackCooldown;
+        this.ContactDamage = config.ContactDamage;
+        this.AttackRange = config.AttackRange;
         _attackTimer = 0f;
-        this.AttackRange = 10.0f;
 
-        this.Sprite = SpriteFactory.Instance.CreateStaticSprite("EnemyIdleDown");
+        SetWeapon(weapon);
         
         Reset(startPosition);
     }
 
     public void Reset(Vector2 startPosition)
     {
+        //this.Sprite = SpriteFactory.Instance.CreateStaticSprite(this.Name + "_EnemyIdleDown");
         Position = startPosition;
         Velocity = Vector2.Zero;
         IsActive = true;
@@ -65,14 +73,17 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         this._attack = Vector2.Zero;
     }
 
-    public void SetProjectileManager(ProjectileManager projectileManager)
-    {
-        this.Weapon = new BasicWeapon(projectileManager);
-    }
-
     public void MarkForRemoval()
     {
         IsActive = false;
+    }
+
+    public void SetWeapon(IWeapon weapon)
+    {
+        if (weapon == null) return;
+
+        Weapon = weapon;
+        Weapon.OnProjectileFired += proj => OnProjectileCreated?.Invoke(proj);
     }
 
     public Vector2 FindTarget() //this method will return (0,0) if no target found
@@ -145,7 +156,8 @@ public class SpiderEnemy : DamageableEntity, IEnemy
         // Find target
         Vector2 targetDirection = FindTarget();
         RegisterMovement(dt, targetDirection); // No specific target for now, just wander
-        RegisterAttack(dt, targetDirection); // Attack in the direction of movement for testing
+        //This enemy is only colliding, so no projectile attacks needed
+        //RegisterAttack(dt, targetDirection); // Attack in the direction of movement for testing
         
         Position += Velocity * dt;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);
@@ -177,8 +189,10 @@ public class SpiderEnemy : DamageableEntity, IEnemy
 
     public override void OnCollision(IPlayer player)
     {
-        player.TakeDamage(1);
-        // TODO: Should change state here
+        if (player == null || !IsActive) return;
+
+        // Deal 1 damage on contact
+        player.TakeDamage((int)ContactDamage);
     }
 
     public override void OnCollision(IEnemy enemy)
@@ -190,7 +204,6 @@ public class SpiderEnemy : DamageableEntity, IEnemy
     {
         // No-op for now if projectiles should damage enemies,
         // implement damage in projectile or here consistently across the codebase.
-        TakeDamage(projectile.Stats.Damage);
     }
 
     public override void OnCollision(ITile tile)

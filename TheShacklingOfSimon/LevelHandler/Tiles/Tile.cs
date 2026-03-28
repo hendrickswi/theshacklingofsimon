@@ -54,6 +54,12 @@ namespace TheShacklingOfSimon.LevelHandler.Tiles
         {
             IsActive = false;
         }
+        
+        public void SetPosition(Vector2 position)
+        {
+            Position = position;
+            Velocity = Vector2.Zero;
+        }
 
         public virtual void OnCollision(IEntity other)
         {

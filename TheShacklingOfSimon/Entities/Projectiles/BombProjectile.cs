@@ -10,15 +10,8 @@ using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Entities.Projectiles;
 
-public class BombProjectile : IProjectile
+public class BombProjectile : ProjectileBase
 {
-    public Vector2 Position { get; private set; }
-    public Vector2 Velocity { get; set; } = Vector2.Zero;
-    public bool IsActive { get; private set; }
-    public Rectangle Hitbox { get; private set; }
-    public ISprite Sprite { get; set; }
-    public ProjectileStats Stats { get; private set; }
-
     private float fuseTimer = 0f;
     private float fuseDuration = 2.0f;
 
@@ -37,11 +30,15 @@ public class BombProjectile : IProjectile
         Stats = stats;
         Sprite = bombSprite;
         IsActive = true;
-
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 16, 16);
     }
 
-    public void Update(GameTime gameTime)
+    public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
+    {
+        return new BombProjectile(startPos, sprite, stats);
+    }
+
+    public override void Update(GameTime gameTime)
     {
         float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -62,20 +59,7 @@ public class BombProjectile : IProjectile
         }
     }
 
-    private void Explode()
-    {
-        hasExploded = true;
-
-        // Expand hitbox for explosion damage
-        Hitbox = new Rectangle(
-            (int)(Position.X - explosionSize / 2),
-            (int)(Position.Y - explosionSize / 2),
-            (int)explosionSize,
-            (int)explosionSize
-        );
-    }
-
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
         if (!IsActive)
             return;
@@ -98,18 +82,7 @@ public class BombProjectile : IProjectile
         }
     }
 
-    public void Discontinue()
-    {
-        IsActive = false;
-    }
-
-    public void OnCollision(IEntity other)
-    {
-        if (other == null || !IsActive) return;
-        other.OnCollision(this);
-    }
-
-    public void OnCollision(ITile tile)
+    public override void OnCollision(ITile tile)
     {
         if (!IsActive || tile == null) return;
 
@@ -122,7 +95,7 @@ public class BombProjectile : IProjectile
         }
     }
 
-    public void OnCollision(IEnemy enemy)
+    public override void OnCollision(IEnemy enemy)
     {
         if (hasExploded)
         {
@@ -130,7 +103,7 @@ public class BombProjectile : IProjectile
         }
     }
 
-    public void OnCollision(IPlayer player)
+    public override void OnCollision(IPlayer player)
     {
         if (hasExploded)
         {
@@ -138,18 +111,16 @@ public class BombProjectile : IProjectile
         }
     }
 
-    public void OnCollision(IProjectile projectile)
+    private void Explode()
     {
-        /*
-         * No-op for now
-         * Could easily make projectiles cancel themselves out
-         * by calling Discontinue() here.
-         */
-    }
+        hasExploded = true;
 
-    public void OnCollision(IPickup pickup)
-    {
-        // No-op
+        // Expand hitbox for explosion damage
+        Hitbox = new Rectangle(
+            (int)(Position.X - explosionSize / 2),
+            (int)(Position.Y - explosionSize / 2),
+            (int)explosionSize,
+            (int)explosionSize
+        );
     }
-
 }

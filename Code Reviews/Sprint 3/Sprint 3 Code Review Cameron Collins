@@ -1,0 +1,13 @@
+Author: Cameron Collins
+Date: 3/13/2026
+Files to review: ProjectileManager.cs, ProjectileOwner.cs, ProjectileBase.cs
+Author of files: Rishi Mungara
+Comments:
+
+    1. A fairly lightweight manager class. Of course, the majority of functionality will be coming from individual
+       projectile type classes, but still.
+
+    2. I appreciate the foresight to include projectile owners, keeping the player from running into their own projectiles.
+       The functionality probably could've been replicated in ProjectileManager, but you do you.
+
+    3. Collisions work well in testing. Hitboxes are a little off, but that can be fixed easily.

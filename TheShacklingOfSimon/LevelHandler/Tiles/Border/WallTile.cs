@@ -16,21 +16,19 @@ namespace TheShacklingOfSimon.LevelHandler.Tiles.Border
 
         public WallTile(ISprite sprite, Vector2 position) : base(sprite, position) { }
 
-        // Invisible: don't draw anything
+        // Invisible, don't draw anything
         public override void Draw(SpriteBatch spriteBatch) { }
 
-        // No animation needed; avoid updating sprite work
+        // No animation needed, avoid updating sprite work
         public override void Update(GameTime delta) { }
         public override void OnCollision(IPlayer player)
         {
             if (player == null || !IsActive) return;
 
-            if (player is not IEntity entity) return;
-
-            Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(entity.Hitbox, this.Hitbox);
+            Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(player.Hitbox, this.Hitbox);
             if (mtv == Vector2.Zero) return;
 
-            player.SetPosition(entity.Position + mtv);
+            player.SetPosition(player.Position + mtv);
         }
     }
 }

@@ -22,6 +22,7 @@ public interface IEntity
     void Update(GameTime delta);
     void Draw(SpriteBatch spriteBatch);
     void Discontinue();
+    void SetPosition(Vector2 position);
     void OnCollision(IEntity other);
     void OnCollision(IPlayer player);
     void OnCollision(IEnemy enemy);

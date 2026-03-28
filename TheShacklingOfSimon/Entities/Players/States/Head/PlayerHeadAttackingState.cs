@@ -12,7 +12,6 @@ public class PlayerHeadAttackingState : IPlayerHeadState
     private readonly Vector2 _direction;
     private float _timer;
     private readonly float _stateDuration;
-    private readonly float _extraProjectileOffset = 10.0f;
 
     public PlayerHeadAttackingState(PlayerWithTwoSprites player, IWeapon weapon, Vector2 direction, float stateDuration)
     {
@@ -25,29 +24,13 @@ public class PlayerHeadAttackingState : IPlayerHeadState
 
     public void Enter()
     {
-        // _direction is already "cardinalized" from PlayerHeadIdleState
-        Vector2 projectileStartPos;
-        if (_direction == Vector2.UnitX)
-        {
-            projectileStartPos = new Vector2(_player.Position.X + _player.Hitbox.Width + _extraProjectileOffset, _player.Position.Y);
-        }
-        else if (_direction == -Vector2.UnitX)
-        {
-            projectileStartPos = new Vector2(_player.Position.X - _extraProjectileOffset, _player.Position.Y);
-        }
-        else if (_direction == Vector2.UnitY)
-        {
-            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y + _player.Hitbox.Height + _extraProjectileOffset);
-        }
-        else
-        {
-            projectileStartPos = new Vector2(_player.Position.X, _player.Position.Y - _extraProjectileOffset);
-        }
+        float projectilePositionX = _player.Hitbox.X + _player.Hitbox.Width / 2.0f;
+        float projectilePositionY = _player.Hitbox.Y;
         
         _weapon.Fire(
-            projectileStartPos,
+            new Vector2(projectilePositionX, projectilePositionY),
             _direction, 
-            new ProjectileStats(_player.DamageMultiplierStat, 200.0f * _player.ProjectileSpeedMultiplierStat)
+            new ProjectileStats(_player.DamageMultiplierStat, 200.0f * _player.ProjectileSpeedMultiplierStat, ProjectileOwner.Player)
             );
 
         string spriteAnimationName = _player.GetSkin("Head");

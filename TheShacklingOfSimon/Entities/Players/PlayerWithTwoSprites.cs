@@ -173,13 +173,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         }
     }
 
-    public void SetPosition(Vector2 worldPosition)
-    {
-        Position = worldPosition;
-        Velocity = Vector2.Zero; // stop sliding after teleport
-        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
-    }
-
     public override void TakeDamage(int damage)
     {
         // No-op if the player is already in the damaged state
@@ -249,18 +242,12 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
         {
             flip = SpriteEffects.FlipHorizontally;
         }
-
-        if (BodySprite != null)
-        {
-            Vector2 drawPos = (CurrentBodyState is PlayerBodyDamagedState) ? Position + _damagedStateOffset : Position;
-            BodySprite.Draw(spriteBatch, drawPos, Color.White, 0.0f,
-                new Vector2(0, 0), 1.0f, flip, 0.0f);
-        }
-
-        if (HeadSprite != null)
-        {
-            HeadSprite.Draw(spriteBatch, Position + _headOffset, Color.White);
-        }
+        
+        Vector2 drawPos = (CurrentBodyState is PlayerBodyDamagedState) ? Position + _damagedStateOffset : Position;
+        BodySprite?.Draw(spriteBatch, drawPos, Color.White, 0.0f,
+            new Vector2(0, 0), 1.0f, flip, 0.0f);
+        
+        HeadSprite?.Draw(spriteBatch, Position + _headOffset, Color.White);
     }
 
 
@@ -335,9 +322,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     {
         if (CurrentHeadState != newHeadState)
         {
-            CurrentHeadState.Exit();
+            CurrentHeadState?.Exit();
             CurrentHeadState = newHeadState;
-            CurrentHeadState.Enter();
+            CurrentHeadState?.Enter();
         }
     }
 
@@ -345,9 +332,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer
     {
         if (CurrentBodyState != newBodyState)
         {
-            CurrentBodyState.Exit();
+            CurrentBodyState?.Exit();
             CurrentBodyState = newBodyState;
-            CurrentBodyState.Enter();
+            CurrentBodyState?.Enter();
         }
     }
 

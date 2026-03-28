@@ -1,4 +1,4 @@
-Here lies a Binding of Isaac ripoff being made for a school project. WIP<br>
+Here lies a Binding of Isaac ripoff being made for a school project. Kill enemies by shooting them with projectiles and explore the rooms to gain items to grow stronger and kill the boss. (WIP)<br>
 Controls are temporary for sprint 3.<br><br>
 
 Controls (Keyboard):<br>
@@ -12,5 +12,16 @@ SPACE to use the currently selected item<br>
 R to reset player
 
 Controls (Mouse):<br>
-Left click for next room
-Right click for previous room
+Left click for next room<br>
+Right click for previous room<br><br>
+
+KNOWN ISSUES:<br>
+Projectiles carry over to the next room when the player moves to the next room<br>
+A lot of textures use placeholders, including doors (which are functional).<br>
+Enemies die almost instantly from damaging tiles<br>
+Player head sprite is slightly off center sometimes<br>
+There is jittering when any dynamic entity continuously moves into a blocking tile<br><br>
+
+These will be fixed in Sprint 4.
+
+

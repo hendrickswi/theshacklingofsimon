@@ -8,11 +8,18 @@ using TheShacklingOfSimon.LevelHandler.Tiles.TileConstructor;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Enemies.Managers;
+using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Weapons;
 
 namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
 {
     public sealed class RoomFactory
     {
+		public RoomManager.RoomManager RoomManager { get; set; }
+		// TEMPORARY
+		public Action<IProjectile> OnProjectileCreated { get; set; }
+        
         // Builds a Room from JSON data (FULL GRID coords) + border walls/doors on the edges.
         public Room Create(RoomFileData data, int viewportWidth, int viewportHeight)
         {
@@ -98,7 +105,7 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
             }
         }
 
-        private static void PlaceDoors(TileMap tileMap, SpriteFactory spriteFactory, List<DoorData> doors)
+        private void PlaceDoors(TileMap tileMap, SpriteFactory spriteFactory, List<DoorData> doors)
         {
             if (doors == null) return;
 
@@ -135,19 +142,20 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
                 var sprite = spriteFactory.CreateStaticSprite("images/Rocks");
 
                 var door = new DoorTile(
-                    sprite,
-                    tileMap.GridToWorld(borderPos),
-                    d.To.Room,
-                    new Point(d.To.Spawn.X, d.To.Spawn.Y), // now FULL grid coords
-                    side
+	                sprite,
+	                tileMap.GridToWorld(borderPos),
+	                d.To.Room,
+	                new Point(d.To.Spawn.X, d.To.Spawn.Y),
+	                side
                 );
 
-                tileMap.PlaceTile(borderPos, door);
+				tileMap.PlaceTile(borderPos, door);
             }
         }
 
         // DoorData must specify a BORDER cell in FULL grid coords.
-        private static (Point borderPos, DoorSide side) DoorToBorderCell(DoorData d)
+        // TODO: change this back to static once enemy weapon JSON loading is implemented
+        private (Point borderPos, DoorSide side) DoorToBorderCell(DoorData d)
         {
             int maxX = RoomConstants.GridWidth - 1;
             int maxY = RoomConstants.GridHeight - 1;
@@ -163,7 +171,7 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
             return (new Point(maxX, d.Y), DoorSide.East);
         }
 
-        private static void PlaceEnemies(TileMap tileMap, IList<IEntity> entities, List<EnemyData> enemies)
+        private void PlaceEnemies(TileMap tileMap, IList<IEntity> entities, List<EnemyData> enemies)
         {
             if (enemies == null) return;
 
@@ -171,13 +179,17 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
             {
                 Vector2 worldPos = tileMap.GridToWorld(new Point(e.X, e.Y));
 
+                IWeapon weapon = EnemyWeaponFactory.CreateWeapon(e.Weapon);
+
                 IEnemy enemy = e.Type switch
                 {
-                    EnemyTypeList.SpiderEnemy => new SpiderEnemy(worldPos),
-                    EnemyTypeList.BlackMaw => new BlackMaw(worldPos),
+                    EnemyTypeList.ProjectileEnemy => new ProjectileEnemy(worldPos, weapon, e.Name),
+                    EnemyTypeList.ChaseEnemy => new ChaseEnemy(worldPos, weapon, e.Name),
                     _ => throw new InvalidOperationException($"Unknown enemy type: {e.Type}")
                 };
 
+                enemy.OnProjectileCreated += proj => OnProjectileCreated?.Invoke(proj);
+                
                 entities.Add(enemy);
             }
         }
