@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Factory;
 
@@ -42,7 +42,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
         Vector2 cardinal = GetCardinalDirection(direction);
         if (cardinal != Vector2.Zero)
         {
-            _player.ChangeHeadState(new PlayerHeadAttackingState(_player, _player.CurrentPrimaryWeapon, cardinal, stateDuration));
+            _player.ChangeHeadState(new PlayerHeadAttackingState(_player, _player.Inventory.CurrentPrimaryWeapon, cardinal, stateDuration));
         }
     }
 
@@ -51,7 +51,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
         Vector2 cardinal = GetCardinalDirection(direction);
         if (cardinal != Vector2.Zero)
         {
-            _player.ChangeHeadState(new PlayerHeadAttackingState(_player, _player.CurrentSecondaryWeapon, cardinal, stateDuration));
+            _player.ChangeHeadState(new PlayerHeadAttackingState(_player, _player.Inventory.CurrentSecondaryWeapon, cardinal, stateDuration));
         }
     }
     
