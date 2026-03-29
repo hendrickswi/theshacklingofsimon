@@ -185,6 +185,90 @@
 #begin Room_Jsons/room_index.json
 /copy:Room_Jsons/room_index.json
 
+#begin sounds/enemy/goodeath0.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/enemy/goodeath0.mp3
+
+#begin sounds/enemy/Meaty_Deaths_0.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/enemy/Meaty_Deaths_0.mp3
+
+#begin sounds/enemy/TearImpacts0.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/enemy/TearImpacts0.mp3
+
+#begin sounds/isaac/1up.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/isaac/1up.mp3
+
+#begin sounds/isaac/Isaac_Hurt_Grunt0.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/isaac/Isaac_Hurt_Grunt0.mp3
+
+#begin sounds/isaac/isaacdies.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/isaac/isaacdies.mp3
+
+#begin sounds/items/itemrecharge.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/itemrecharge.mp3
+
+#begin sounds/items/plop.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/plop.mp3
+
+#begin sounds/items/Powerup2.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/Powerup2.mp3
+
+#begin sounds/other/Coin_Slot.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/other/Coin_Slot.mp3
+
+#begin sounds/other/Fart.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/other/Fart.mp3
+
+#begin sounds/other/Rock_crumble 0.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/other/Rock_crumble 0.mp3
+
+#begin sounds/projectiles/splatter00.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/projectiles/splatter00.mp3
+
+#begin sounds/projectiles/stoneshoot2.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/projectiles/stoneshoot2.mp3
+
 #begin SpiderEnemy.png
 /importer:TextureImporter
 /processor:TextureProcessor
