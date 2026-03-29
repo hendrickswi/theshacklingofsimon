@@ -8,5 +8,8 @@ public enum StatType
     DamageMultiplier,
     PrimaryCooldown,
     SecondaryCooldown,
-    ContactDamage
+    
+    // Enemy stuff
+    ContactDamage,
+    AttackRange
 }
