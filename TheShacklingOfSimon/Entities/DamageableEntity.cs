@@ -11,19 +11,29 @@ namespace TheShacklingOfSimon.Entities;
 
 public abstract class DamageableEntity : IDamageable
 {
-    // Properties from IEntity
+    protected float InvulnerabilityTimer;
+    
     public Vector2 Position { get; protected set; }
     public Vector2 Velocity { get; set; }
     public bool IsActive { get; protected set; }
     public Rectangle Hitbox { get; protected set; }
     public ISprite Sprite { get; set; }
     
-    // Properties from IDamageable
     public int Health { get; protected set; }
     public int MaxHealth { get; set; }
-
-    // Methods from IEntity
-    public abstract void Update(GameTime delta);
+    
+    /*
+     * IEntity methods
+     */
+    public virtual void Update(GameTime delta)
+    {
+        // Simply handles i-frames, and nothing else
+        // Extending classes should do base.Update(delta);
+        if (InvulnerabilityTimer > 0)
+        {
+            InvulnerabilityTimer -= (float) delta.ElapsedGameTime.TotalSeconds;
+        }
+    }
 
     public abstract void Draw(SpriteBatch spriteBatch);
     
@@ -39,16 +49,28 @@ public abstract class DamageableEntity : IDamageable
         Velocity = Vector2.Zero;
     }
 
-    public abstract void OnCollision(IEntity other);
+    public virtual void OnCollision(IEntity other)
+    {
+        if (other == null || !IsActive) return;
+        other.OnCollision(this);
+    }
+    
     public abstract void OnCollision(IPlayer player);
     public abstract void OnCollision(IEnemy enemy);
     public abstract void OnCollision(IProjectile projectile);
     public abstract void OnCollision(ITile tile);
     public abstract void OnCollision(IPickup pickup);
     
-    // Methods from IDamageable
+    /*
+     * IDamageable methods
+     */
     public virtual void TakeDamage(int amt)
     {
+        if (InvulnerabilityTimer > 0) return;
+
+        // Default amount that will likely be overriden by extending classes
+        InvulnerabilityTimer = 0.25f;
+        
         Health -= amt;
         if (Health <= 0)
         {

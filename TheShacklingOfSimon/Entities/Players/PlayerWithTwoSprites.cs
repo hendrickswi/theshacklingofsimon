@@ -58,14 +58,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
 
     public override void TakeDamage(int damage)
     {
-        // No-op if the player is already in the damaged state
-        if (CurrentBodyState is PlayerBodyDamagedState)
-        {
-            return;
-        }
-
         base.TakeDamage(damage);
-
+        InvulnerabilityTimer = Stats.InvulnerabilityDuration;
+        
         // Case for player dying
         if (Health <= 0)
         {
@@ -76,7 +71,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         else
         {
             ChangeHeadState(new PlayerHeadDamagedState(this));
-            ChangeBodyState(new PlayerBodyDamagedState(this, Stats.InvulnerabilityDuration));
+            ChangeBodyState(new PlayerBodyDamagedState(this, Stats.HurtFrameDuration));
         }
     }
 
@@ -87,6 +82,8 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
 
     public override void Update(GameTime delta)
     {
+        base.Update(delta);
+        
         CurrentBodyState.HandleMovement(InputBuffer.ConsumeMovement(), Stats.MovementFrameDuration);
         CurrentHeadState.HandlePrimaryAttack(InputBuffer.ConsumePrimaryAttack(), Stats.PrimaryAttackCooldown);
         CurrentHeadState.HandleSecondaryAttack(InputBuffer.ConsumeSecondaryAttack(), Stats.SecondaryAttackCooldown);
@@ -112,13 +109,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
             new Vector2(0, 0), 1.0f, flip, 0.0f);
         
         HeadSprite?.Draw(spriteBatch, Position + _headOffset, Color.White);
-    }
-
-
-    public override void OnCollision(IEntity other)
-    {
-        if (other == null || !IsActive) return;
-        other.OnCollision(this);
     }
 
     public override void OnCollision(IPlayer otherPlayer) { }
@@ -208,14 +198,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         MaxHealth = 6;
         Stats = new PlayerStats();
         InputBuffer = new PlayerInputBuffer();
-        
         Inventory = new PlayerInventory(this);
-        
-        /*
-         * Other properties such as CurrentPrimaryWeapon set by public methods
-         * after instantiation
-         */
-        
         _skins = new Dictionary<string, string>
         {
             {"Head", "PlayerHead"},

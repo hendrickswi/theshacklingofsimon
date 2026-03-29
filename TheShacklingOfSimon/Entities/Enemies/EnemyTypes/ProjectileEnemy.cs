@@ -152,6 +152,8 @@ public class ProjectileEnemy : DamageableEntity, IEnemy
 
     public override void Update(GameTime delta)
     {
+        base.Update(delta);
+        
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         // Find target
         Vector2 targetDirection = FindTarget();
@@ -178,12 +180,6 @@ public class ProjectileEnemy : DamageableEntity, IEnemy
                         new Vector2(0, 0), 1.0f, flip, 0.0f);
         }
         
-    }
-
-    public override void OnCollision(IEntity other)
-    {
-        if (other == null || !IsActive) return;
-        other.OnCollision(this);
     }
 
     public override void OnCollision(IPlayer player)

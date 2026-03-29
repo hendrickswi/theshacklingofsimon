@@ -10,6 +10,7 @@ public class PlayerStats
     public float MovementFrameDuration { get; set; }
     public float DeathFrameDuration { get; set; }
     public float InvulnerabilityDuration { get; set; }
+    public float HurtFrameDuration { get; set; }
 
     public PlayerStats()
     {
@@ -22,6 +23,7 @@ public class PlayerStats
         MovementFrameDuration = 0.05f;
         DeathFrameDuration = 1.0f;
         InvulnerabilityDuration = 0.333334f;
+        HurtFrameDuration = 0.1f;
     }
     
     // TODO: Add buff/debuff methods here
