@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace TheShacklingOfSimon.Entities.Players.Config;
 
@@ -20,6 +21,13 @@ public static class ConfigDBPlayer
             MovementFrameDuration = 0.05f,
             DeathFrameDuration = 1f,
             HurtFrameDuration = 0.1f,
+            HeadOffset = new Vector2(-4.75f, -16),
+            DamagedStateOffset = new Vector2(0, -5),
+            SkinsDictionary = new Dictionary<string, string>
+            {
+                {"Head", "PlayerHead"},
+                {"Body", "PlayerBody"},
+            }
         }
     };
 }

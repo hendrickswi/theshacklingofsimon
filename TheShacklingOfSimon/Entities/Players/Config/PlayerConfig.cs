@@ -1,4 +1,7 @@
-﻿namespace TheShacklingOfSimon.Entities.Players.Config;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+
+namespace TheShacklingOfSimon.Entities.Players.Config;
 
 public class PlayerConfig
 {
@@ -16,4 +19,9 @@ public class PlayerConfig
     public float MovementFrameDuration { get; set; }
     public float DeathFrameDuration { get; set; }
     public float HurtFrameDuration { get; set; }
+    
+    // Sprite drawing data
+    public Vector2 HeadOffset { get; set; }
+    public Vector2 DamagedStateOffset { get; set; }
+    public Dictionary<string, string> SkinsDictionary { get; set; }
 }

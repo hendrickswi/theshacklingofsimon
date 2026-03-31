@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using TheShacklingOfSimon.Entities;
 
 namespace TheShacklingOfSimon.StatusEffects;
 
 public class StatusEffectManager
 {
     private readonly Dictionary<Type, IStatusEffect> _activeEffects;
-    private readonly DamageableEntity _owner;
 
-    public StatusEffectManager(DamageableEntity owner)
+    public StatusEffectManager()
     {
         _activeEffects = new Dictionary<Type, IStatusEffect>();
-        _owner = owner;
     }
 
+    /// <summary>
+    /// Adds a status effect to the active effects list. If an effect of the same
+    /// type already exists in the list, the existing effect is merged with the
+    /// provided effect. If no effect of the same type exists, the provided effect
+    /// is added as a new entry and reapplied.
+    /// </summary>
+    /// <param name="effect">The status effect to be added or merged into the active effects list.</param>
     public void AddEffect(IStatusEffect effect)
     {
         Type type = effect.GetType();
@@ -24,13 +27,15 @@ public class StatusEffectManager
         {
             // Delegate merge logic to the concrete implementation
             _activeEffects[type].Merge(effect);
+            effect.OnRemove();
         }
         else
         {
             // New status effect can simply be added
             _activeEffects.Add(type, effect);
-            effect.OnApply();
         }
+        
+        effect.OnApply();
     }
 
     public void Update(GameTime delta)
@@ -55,11 +60,32 @@ public class StatusEffectManager
         }
     }
 
-    public void ClearAll()
+    /// <summary>
+    /// Clears the specified status effect from the active effects list if it exists.
+    /// Supports removing "infinite" duration status effects (i.e., effects caused
+    /// by equipping an item).
+    /// 
+    /// </summary>
+    /// <param name="effect">The status effect to be cleared.</param>
+    public void ClearEffect(IStatusEffect effect)
     {
-        foreach (var effect in _activeEffects)
+        if (_activeEffects.ContainsValue(effect))
         {
-            effect.Value.OnRemove();
+            _activeEffects.Remove(effect.GetType());
+        }
+    }
+
+    /// <summary>
+    /// Removes all status effects from the active effects list. This action clears the
+    /// entire collection of effects, regardless of their type, duration, or source.
+    /// Performs any necessary cleanup by calling the appropriate removal logic for
+    /// each effect.
+    /// </summary>
+    public void ClearAllEffects()
+    {
+        foreach (var pair in _activeEffects)
+        {
+            pair.Value.OnRemove();
         }
         _activeEffects.Clear();
     }

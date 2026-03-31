@@ -10,7 +10,7 @@ public enum StatType
     PrimaryCooldown,
     SecondaryCooldown,
     
-    // Enemy stuff
+    // Enemy specific stuff
     ContactDamage,
     AttackRange
 }
