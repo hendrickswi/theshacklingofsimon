@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
 using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Gamepad;
 using TheShacklingOfSimon.Controllers.Keyboard;
@@ -44,7 +43,7 @@ public class Game1 : Game
     private IGamepadController _gamepadController;
 
     private RoomManager _roomManager;
-    private ItemManager _itemManager;
+    // private ItemManager _itemManager;
     private PickupManager _pickupManager;
     private InputManager _inputManager;
 
@@ -208,7 +207,7 @@ public class Game1 : Game
 
     private void CreateItemAndPickupManagers()
     {
-        _itemManager = new ItemManager(_player, SpriteFactory.Instance);
+        // _itemManager = new ItemManager(_player, SpriteFactory.Instance);
         _pickupManager = new PickupManager();
     }
 
@@ -221,7 +220,7 @@ public class Game1 : Game
             _player,
             this,
             _roomManager,
-            _itemManager,
+            // _itemManager,
             _pickupManager,
             Reset);
     }
@@ -249,7 +248,7 @@ public class Game1 : Game
                 GraphicsDevice,
                 this,
                 _roomManager,
-                _itemManager,
+                // _itemManager,
                 _pickupManager,
                 _player,
                 _projectileManager,

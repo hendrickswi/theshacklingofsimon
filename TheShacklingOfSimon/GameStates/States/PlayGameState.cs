@@ -2,7 +2,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
 using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
@@ -23,7 +22,7 @@ public class PlayGameState : IGameState
     private readonly Game1 _game;
 
     private readonly RoomManager _roomManager;
-    private readonly ItemManager _itemManager;
+    // private readonly ItemManager _itemManager;
     private readonly PickupManager _pickupManager;
     private readonly IPlayer _player;
     private readonly ProjectileManager _projectileManager;
@@ -36,7 +35,7 @@ public class PlayGameState : IGameState
         GraphicsDevice graphicsDevice,
         Game1 game,
         RoomManager roomManager,
-        ItemManager itemManager,
+        // ItemManager itemManager,
         PickupManager pickupManager,
         IPlayer player,
         ProjectileManager projectileManager,
@@ -48,7 +47,7 @@ public class PlayGameState : IGameState
         _graphicsDevice = graphicsDevice;
         _game = game;
         _roomManager = roomManager;
-        _itemManager = itemManager;
+        // _itemManager = itemManager;
         _pickupManager = pickupManager;
         _player = player;
         _projectileManager = projectileManager;
@@ -69,7 +68,7 @@ public class PlayGameState : IGameState
     {
         _projectileManager.Update(delta);
         _roomManager.Update(delta);
-        _itemManager.Update(delta);
+        // _itemManager.Update(delta);
         _pickupManager.Update(delta);
         _player.Update(delta);
 
@@ -80,7 +79,7 @@ public class PlayGameState : IGameState
     public void Draw(SpriteBatch spriteBatch)
     {
         _roomManager.Draw(spriteBatch);
-        _itemManager.Draw(spriteBatch);
+        // _itemManager.Draw(spriteBatch);
         _pickupManager.Draw(spriteBatch);
         _projectileManager.Draw(spriteBatch);
         _player.Draw(spriteBatch);

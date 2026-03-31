@@ -3,8 +3,8 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Commands;
-using TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager;
 using TheShacklingOfSimon.Commands.PlayerAttack;
+using TheShacklingOfSimon.Commands.PlayerItem;
 using TheShacklingOfSimon.Commands.PlayerMovement;
 using TheShacklingOfSimon.Commands.Room_Commands;
 using TheShacklingOfSimon.Controllers;
@@ -36,7 +36,7 @@ public class InputManager
     private readonly IPlayer _player;
     private readonly Game1 _game;
     private readonly RoomManager _roomManager;
-    private readonly ItemManager _itemManager;
+    // private readonly ItemManager _itemManager;
     private readonly PickupManager _pickupManager;
 
     /*
@@ -51,7 +51,7 @@ public class InputManager
         IPlayer player,
         Game1 game,
         RoomManager roomManager,
-        ItemManager itemManager,
+        // ItemManager itemManager,
         PickupManager pickupManager,
         Action onResetRequest)
     {
@@ -61,7 +61,7 @@ public class InputManager
         _player = player;
         _game = game;
         _roomManager = roomManager;
-        _itemManager = itemManager;
+        // _itemManager = itemManager;
         _pickupManager = pickupManager;
         _onResetRequest = onResetRequest;
     }
@@ -120,11 +120,11 @@ public class InputManager
         // Item Manager Controls
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.I),
-            new NextItemCommand(_itemManager));
+            new NextActiveItemCommand(_player));
 
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.U),
-            new PreviousItemCommand(_itemManager));
+            new PreviousActiveItemCommand(_player));
 
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.Space),

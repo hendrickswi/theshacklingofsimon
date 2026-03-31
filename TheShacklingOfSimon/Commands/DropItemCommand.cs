@@ -5,7 +5,7 @@ using TheShacklingOfSimon.Entities.Pickup;
 
 #endregion
 
-namespace TheShacklingOfSimon.Commands.Item_Commands_and_Temporary_Manager
+namespace TheShacklingOfSimon.Commands
 {
 	public class SpawnPickupCommand : ICommand
 	{
