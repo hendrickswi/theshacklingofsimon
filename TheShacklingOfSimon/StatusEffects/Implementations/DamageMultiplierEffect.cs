@@ -4,23 +4,23 @@ using TheShacklingOfSimon.Entities;
 
 namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
-public class ChilledEffect : IStatusEffect
+public class DamageMultiplierEffect : IStatusEffect
 {
     /*
      * Keep track of how much speed was taken away by *this*
      * so it can be restored once *this* is removed.
      */
-    private float _speedSubtracted;
+    private int _damageAmount;
     private float _timer;
-    private float Strength { get; set; }
+    private int Strength { get; set; }
     private float Duration { get; set; }
     
     public bool IsFinished { get; private set; }
-    public DamageableEntity Owner { get; private set; }
+    public IDamageable Owner { get; private set; }
     
-    public ChilledEffect(DamageableEntity owner, float strength, float duration)
+    public DamageMultiplierEffect(IDamageable owner, int strength, float duration)
     {
-        _speedSubtracted = 0.0f;
+        _damageAmount = 0;
         Strength = strength;
         Duration = duration;
         IsFinished = false;
@@ -30,17 +30,17 @@ public class ChilledEffect : IStatusEffect
     public void OnApply()
     {
         _timer = 0.0f;
-        float currentSpeed = Owner.GetStat(StatType.MoveSpeed);
-        float newSpeed = Math.Max(1f, currentSpeed * Strength);
+        int currentMultiplier = (int) Owner.GetStat(StatType.DamageMultiplier);
+        int newMultiplier = Math.Max(1, currentMultiplier * Strength);
 
-        _speedSubtracted = currentSpeed - newSpeed;
-        Owner.SetStat(StatType.MoveSpeed, newSpeed);
+        _damageAmount = currentMultiplier - newMultiplier;
+        Owner.SetStat(StatType.DamageMultiplier, newMultiplier);
     }
 
     public void OnRemove()
     {
-        float currentSpeed = Owner.GetStat(StatType.MoveSpeed);
-        Owner.SetStat(StatType.MoveSpeed, currentSpeed + _speedSubtracted);
+        int currentMultiplier = (int) Owner.GetStat(StatType.DamageMultiplier);
+        Owner.SetStat(StatType.DamageMultiplier, currentMultiplier + _damageAmount);
     }
 
     public void Update(GameTime delta)
@@ -54,17 +54,11 @@ public class ChilledEffect : IStatusEffect
     
     public void Merge(IStatusEffect other)
     {
-        /*
-         * Double dispatch/vistor pattern here doesn't make much sense
-         *      Would cause lots of bloating in IStatusEffect
-         *      The manager already ensures Merge() is only called with the same GetType() result
-         * 
-         */
-        if (other is not ChilledEffect castedOther) return; 
+        if (other is not DamageMultiplierEffect castedOther) return; 
         
         // For now just "add" the multipliers
         // and make the duration the average of the two
-        Strength = 1.0f - Strength - castedOther.Strength;
+        Strength = Strength + castedOther.Strength;
         Duration = (Duration + castedOther.Duration) / 2;
     }
 }

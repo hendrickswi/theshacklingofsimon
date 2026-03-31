@@ -55,18 +55,6 @@ public class StatusEffectManager
         }
     }
 
-    public void Clear(DamageableEntity entity)
-    {
-        foreach (var effect in _activeEffects)
-        {
-            if (effect.Value.Owner == entity)
-            {
-                effect.Value.OnRemove();
-                _activeEffects.Remove(effect.Key);
-            }
-        }
-    }
-
     public void ClearAll()
     {
         foreach (var effect in _activeEffects)

@@ -6,6 +6,7 @@ public enum StatType
     InvulnerabilityDuration,
     MoveSpeed,
     DamageMultiplier,
+    ProjectileSpeedMultiplier,
     PrimaryCooldown,
     SecondaryCooldown,
     

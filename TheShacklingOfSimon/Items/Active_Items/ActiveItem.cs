@@ -1,6 +1,7 @@
 #region
 
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.StatusEffects;
 
 #endregion
 
@@ -20,10 +21,10 @@ public class ActiveItem : IItem
     
     public void Effect()
     {
-        Player.Stats.DamageMultiplierStat += Effects.Attack;
+        Player.SetStat(StatType.DamageMultiplier, Player.GetStat(StatType.DamageMultiplier) + Effects.Attack);
         Player.Heal(Effects.Health);
         Player.MaxHealth += Effects.MaxHealth;
-        Player.Stats.MoveSpeedStat += Effects.Speed;
+        Player.SetStat(StatType.MoveSpeed, Player.GetStat(StatType.MoveSpeed) + Effects.Speed);
         if (Effects.OneTime)
         {
             // I doubt we need to worry about this rn
@@ -31,8 +32,8 @@ public class ActiveItem : IItem
     }
     public void ClearEffect()
     {
-        Player.Stats.DamageMultiplierStat -= Effects.Attack;
+        Player.SetStat(StatType.DamageMultiplier, Player.GetStat(StatType.DamageMultiplier - Effects.Attack));
         Player.MaxHealth -= Effects.MaxHealth;
-        Player.Stats.MoveSpeedStat -= Effects.Speed;
+        Player.SetStat(StatType.MoveSpeed, Player.GetStat(StatType.MoveSpeed) - Effects.Speed);
     }
 }

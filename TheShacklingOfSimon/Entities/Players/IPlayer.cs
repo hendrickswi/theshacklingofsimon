@@ -10,7 +10,6 @@ namespace TheShacklingOfSimon.Entities.Players;
 public interface IPlayer : IDamageable
 {
     PlayerInventory Inventory { get; }
-    PlayerStats Stats { get; }
     PlayerInputBuffer InputBuffer { get; }
     
     // IPlayer-implementing classes will act as the context for the State pattern

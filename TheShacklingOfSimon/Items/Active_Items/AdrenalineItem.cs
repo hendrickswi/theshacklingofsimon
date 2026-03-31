@@ -2,6 +2,8 @@
 
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.StatusEffects;
+using TheShacklingOfSimon.StatusEffects.Implementations;
 
 #endregion
 
@@ -21,6 +23,12 @@ public class AdrenalineItem : IItem
     private readonly float _fireRateMultiplier;  // < 1 => faster firing (lower cooldowns)
     private readonly float _projSpeedMultiplier; // faster projectiles
 
+    // Buffs
+    private readonly IStatusEffect _speedBuff;
+    private readonly IStatusEffect _primaryCooldownBuff;
+    private readonly IStatusEffect _secondaryCooldownBuff;
+    private readonly IStatusEffect _projectileSpeedBuff;
+    
     // Timers/state
     private float _cooldownTimer;
     private float _buffTimer;
@@ -41,6 +49,11 @@ public class AdrenalineItem : IItem
         _moveSpeedMultiplier = moveSpeedMultiplier;
         _fireRateMultiplier = fireRateMultiplier;
         _projSpeedMultiplier = projSpeedMultiplier;
+        
+        _speedBuff = new MoveSpeedEffect(Player, _moveSpeedMultiplier, _durationSeconds);
+        _primaryCooldownBuff = new PrimaryCooldownEffect(Player, _fireRateMultiplier, _durationSeconds);
+        _secondaryCooldownBuff = new SecondaryCooldownEffect(Player, _fireRateMultiplier, _durationSeconds);
+        _projectileSpeedBuff = new ProjectileSpeedEffect(Player, _projSpeedMultiplier, _durationSeconds);
 
         Name = "Adrenaline";
         Description = "Massive speed, fire-rate, and projectile speed boost for a short time.";
@@ -57,8 +70,6 @@ public class AdrenalineItem : IItem
             _buffTimer -= dt;
             if (_buffTimer <= 0f)
             {
-                EndBuff();
-
                 // Cooldown starts after the effect finishes
                 _cooldownTimer = _cooldownSeconds;
             }
@@ -89,30 +100,10 @@ public class AdrenalineItem : IItem
     private void StartBuff()
     {
         _buffActive = true;
-
-        Player.Stats.MoveSpeedStat *= _moveSpeedMultiplier;
-
-        // Faster firing by reducing cooldown numbers
-        Player.Stats.PrimaryAttackCooldown *= _fireRateMultiplier;
-        Player.Stats.SecondaryAttackCooldown *= _fireRateMultiplier;
-
-        // Faster projectiles
-        Player.Stats.ProjectileSpeedMultiplierStat *= _projSpeedMultiplier;
-
-        // Safety clamp so you can't hit 0 cooldown by stacking bugs
-        if (Player.Stats.PrimaryAttackCooldown < 0.05f) Player.Stats.PrimaryAttackCooldown = 0.05f;
-        if (Player.Stats.SecondaryAttackCooldown < 0.05f) Player.Stats.SecondaryAttackCooldown = 0.05f;
-    }
-
-    private void EndBuff()
-    {
-        _buffActive = false;
-
-        Player.Stats.MoveSpeedStat /= _moveSpeedMultiplier;
-
-        Player.Stats.PrimaryAttackCooldown /= _fireRateMultiplier;
-        Player.Stats.SecondaryAttackCooldown /= _fireRateMultiplier;
-
-        Player.Stats.ProjectileSpeedMultiplierStat /= _projSpeedMultiplier;
+        
+        Player.EffectManager.AddEffect(_speedBuff);
+        Player.EffectManager.AddEffect(_primaryCooldownBuff);
+        Player.EffectManager.AddEffect(_secondaryCooldownBuff);
+        Player.EffectManager.AddEffect(_projectileSpeedBuff);
     }
 }

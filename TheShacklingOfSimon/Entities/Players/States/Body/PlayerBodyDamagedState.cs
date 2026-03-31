@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players.States.Head;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.StatusEffects;
 
 #endregion
 
@@ -55,7 +56,7 @@ public class PlayerBodyDamagedState : IPlayerBodyState
         }
         else
         {
-            _player.Velocity = direction * _player.Stats.MoveSpeedStat;
+            _player.Velocity = direction * _player.GetStat(StatType.MoveSpeed);
         }
     }
 }

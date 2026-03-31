@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
 
 #endregion
@@ -34,7 +35,10 @@ public class PlayerHeadAttackingState : IPlayerHeadState
         _weapon.Fire(
             new Vector2(projectilePositionX, projectilePositionY),
             _direction, 
-            new ProjectileStats(_player.Stats.DamageMultiplierStat, 200.0f * _player.Stats.ProjectileSpeedMultiplierStat, ProjectileOwner.Player)
+            new ProjectileStats(
+                (int)_player.GetStat(StatType.DamageMultiplier), 
+                200.0f * _player.GetStat(StatType.ProjectileSpeedMultiplier), 
+                ProjectileOwner.Player)
             );
 
         string spriteAnimationName = _player.GetSkin("Head");

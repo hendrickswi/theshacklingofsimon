@@ -6,12 +6,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Pickup;
+using TheShacklingOfSimon.Entities.Players.Config;
 using TheShacklingOfSimon.Entities.Players.States;
 using TheShacklingOfSimon.Entities.Players.States.Body;
 using TheShacklingOfSimon.Entities.Players.States.Head;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.Sprites.Products;
+using TheShacklingOfSimon.StatusEffects;
 
 #endregion
 
@@ -36,21 +38,23 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
      */
     public ISprite HeadSprite { get; set; }
     public ISprite BodySprite { get; set; }
-
-    // Use explicit interface implementation 
+    
+    // Renaming for clarity
     [Obsolete("PlayerWithTwoSprites does not use Sprite property. Use BodySprite or HeadSprite instead.", true)]
     public new ISprite Sprite
     {
         get => BodySprite;
         set => BodySprite = value;
     }
-
-    // The miscellaneous stats
-    public PlayerStats Stats { get; private set; }
+    
     public PlayerInputBuffer InputBuffer { get; private set; }
     
+    // Sprite drawing stuff
     private readonly Vector2 _headOffset = new Vector2(-4.75f, -16);
     private readonly Vector2 _damagedStateOffset = new Vector2(0, -5);
+    private readonly float _deathFrameDuration = ConfigDBPlayer.Configs["PlayerWithTwoSprites"].DeathFrameDuration;
+    private readonly float _hurtFrameDuration = ConfigDBPlayer.Configs["PlayerWithTwoSprites"].HurtFrameDuration;
+    private readonly float _movementFrameDuration = ConfigDBPlayer.Configs["PlayerWithTwoSprites"].MovementFrameDuration;
     
     private Dictionary<string, string> _skins;
     
@@ -63,19 +67,19 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
-        InvulnerabilityTimer = Stats.InvulnerabilityDuration;
+        InvulnerabilityTimer = EffectStats[StatType.InvulnerabilityDuration];
         
         // Case for player dying
         if (Health <= 0)
         {
             ChangeHeadState(new PlayerHeadDeadState(this));
-            ChangeBodyState(new PlayerBodyDeadState(this, Stats.DeathFrameDuration, Stats.DeathFrameDuration));
+            ChangeBodyState(new PlayerBodyDeadState(this, _deathFrameDuration, _deathFrameDuration));
         }
         // If not dead, then damaged
         else
         {
             ChangeHeadState(new PlayerHeadDamagedState(this));
-            ChangeBodyState(new PlayerBodyDamagedState(this, Stats.HurtFrameDuration));
+            ChangeBodyState(new PlayerBodyDamagedState(this, _hurtFrameDuration));
         }
     }
 
@@ -88,9 +92,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     {
         base.Update(delta);
         
-        CurrentBodyState.HandleMovement(InputBuffer.ConsumeMovement(), Stats.MovementFrameDuration);
-        CurrentHeadState.HandlePrimaryAttack(InputBuffer.ConsumePrimaryAttack(), Stats.PrimaryAttackCooldown);
-        CurrentHeadState.HandleSecondaryAttack(InputBuffer.ConsumeSecondaryAttack(), Stats.SecondaryAttackCooldown);
+        CurrentBodyState.HandleMovement(InputBuffer.ConsumeMovement(), _movementFrameDuration);
+        CurrentHeadState.HandlePrimaryAttack(InputBuffer.ConsumePrimaryAttack(), EffectStats[StatType.PrimaryCooldown]);
+        CurrentHeadState.HandleSecondaryAttack(InputBuffer.ConsumeSecondaryAttack(), EffectStats[StatType.SecondaryCooldown]);
 
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
@@ -193,14 +197,24 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
          * Constructor logic moved here so Reset() can invoke
          * constructor logic without duplicating code
          */
+        var config = ConfigDBPlayer.Configs["PlayerWithTwoSprites"];
         
         Position = startPosition;
         Velocity = Vector2.Zero;
         IsActive = true;
-        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 20, 20);
-        Health = 6;
-        MaxHealth = 6;
-        Stats = new PlayerStats();
+        Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, config.HitboxWidth, config.HitboxHeight);
+        Health = config.MaxHealth;
+        MaxHealth = config.MaxHealth;
+        
+        EffectStats.Clear();
+        EffectStats.Add(StatType.MaxHealth, config.MaxHealth);
+        EffectStats.Add(StatType.InvulnerabilityDuration, config.InvulnerabilityDuration);
+        EffectStats.Add(StatType.MoveSpeed, config.MoveSpeed);
+        EffectStats.Add(StatType.DamageMultiplier, config.DamageMultiplier);
+        EffectStats.Add(StatType.ProjectileSpeedMultiplier, config.ProjectileSpeedMultiplier);
+        EffectStats.Add(StatType.PrimaryCooldown, config.PrimaryCooldown);
+        EffectStats.Add(StatType.SecondaryCooldown, config.SecondaryCooldown);
+        
         InputBuffer = new PlayerInputBuffer();
         Inventory = new PlayerInventory(this);
         _skins = new Dictionary<string, string>

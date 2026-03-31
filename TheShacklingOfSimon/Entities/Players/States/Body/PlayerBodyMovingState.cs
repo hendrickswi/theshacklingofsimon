@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.StatusEffects;
 
 #endregion
 
@@ -47,7 +48,7 @@ public class PlayerBodyMovingState : IPlayerBodyState
         }
         else
         {
-            _player.Velocity = direction * _player.Stats.MoveSpeedStat;
+            _player.Velocity = direction * _player.GetStat(StatType.MoveSpeed);
             UpdateSprite();
         }
     }

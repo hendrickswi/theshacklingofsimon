@@ -18,7 +18,7 @@ namespace TheShacklingOfSimon.Entities;
 public abstract class DamageableEntity : IDamageable
 {
     protected float InvulnerabilityTimer;
-    protected readonly Dictionary<StatType, float> Stats = new();
+    protected readonly Dictionary<StatType, float> EffectStats = new();
     
     public Vector2 Position { get; protected set; }
     public Vector2 Velocity { get; set; }
@@ -102,14 +102,13 @@ public abstract class DamageableEntity : IDamageable
         }
     }
     
-    // Accessor and mutator helper methods for concrete effect implementations
     public float GetStat(StatType stat)
     {
-        return Stats.TryGetValue(stat, out var value) ? value : 0f;
+        return EffectStats.TryGetValue(stat, out var value) ? value : 0f;
     }
 
     public void SetStat(StatType type, float value)
     {
-        Stats[type] = value;
+        EffectStats[type] = value;
     }
 }
