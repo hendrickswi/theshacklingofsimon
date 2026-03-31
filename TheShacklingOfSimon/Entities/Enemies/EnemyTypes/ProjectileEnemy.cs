@@ -184,7 +184,13 @@ public class ProjectileEnemy : DamageableEntity, IEnemy
         }
         
     }
-
+    
+    public override void OnCollision(IEntity other)
+    {
+        if (other == null || !IsActive) return;
+        other.OnCollision(this);
+    }
+    
     public override void OnCollision(IPlayer player)
     {
         player.TakeDamage(1);

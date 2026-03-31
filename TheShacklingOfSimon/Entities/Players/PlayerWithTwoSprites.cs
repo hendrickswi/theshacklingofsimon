@@ -103,6 +103,12 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         HeadSprite?.Draw(spriteBatch, Position + _drawManager.HeadOffset, Color.White);
     }
 
+    public override void OnCollision(IEntity other)
+    {
+        if (other == null || !IsActive) return;
+        other.OnCollision(this);
+    }
+    
     public override void OnCollision(IPlayer otherPlayer) { }
     public override void OnCollision(IEnemy enemy) { }
     public override void OnCollision(IProjectile projectile) { }

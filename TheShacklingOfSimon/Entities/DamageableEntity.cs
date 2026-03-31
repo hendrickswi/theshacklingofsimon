@@ -63,21 +63,17 @@ public abstract class DamageableEntity : IDamageableEntity
         Velocity = Vector2.Zero;
     }
 
-    public virtual void OnCollision(IEntity other)
-    {
-        if (other == null || !IsActive) return;
-        other.OnCollision(this);
-    }
-    
+    // Cannot provide a implementation here;
+    // Doing other.OnCollision(this) will result in *this*
+    // being a DamageableEntity, instead of IPlayer or IEnemy.
+    // This completely breaks the double-dispatch design.
+    public abstract void OnCollision(IEntity other);
     public abstract void OnCollision(IPlayer player);
     public abstract void OnCollision(IEnemy enemy);
     public abstract void OnCollision(IProjectile projectile);
     public abstract void OnCollision(ITile tile);
     public abstract void OnCollision(IPickup pickup);
     
-    /*
-     * IDamageable methods
-     */
     public virtual void TakeDamage(int amt)
     {
         if (InvulnerabilityTimer > 0) return;

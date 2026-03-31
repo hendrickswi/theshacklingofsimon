@@ -267,5 +267,7 @@ public class Game1 : Game
         _projectileManager.ClearAllProjectiles();
         _roomManager.ResetToGameStart();
         _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
+        CreatePlayerWeapons();
+        CreatePlayerItems();
     }
 }

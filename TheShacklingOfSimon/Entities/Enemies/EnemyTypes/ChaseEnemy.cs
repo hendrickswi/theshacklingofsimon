@@ -188,6 +188,12 @@ public class ChaseEnemy : DamageableEntity, IEnemy
         
     }
 
+    public override void OnCollision(IEntity other)
+    {
+        if (other == null || !IsActive) return;
+        other.OnCollision(this);
+    }
+    
     public override void OnCollision(IPlayer player)
     {
         if (player == null || !IsActive) return;
