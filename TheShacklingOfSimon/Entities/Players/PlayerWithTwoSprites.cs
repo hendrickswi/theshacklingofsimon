@@ -41,7 +41,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     
     public PlayerInputBuffer InputBuffer { get; private set; }
 
-    private readonly PlayerWithTwoSpritesDrawManager _drawManager;
+    private PlayerWithTwoSpritesDrawManager _drawManager;
 
     public PlayerWithTwoSprites(Vector2 startPosition)
     {
@@ -195,7 +195,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         EffectStats.Add(StatType.SecondaryCooldown, config.SecondaryCooldown);
         
         InputBuffer = new PlayerInputBuffer();
-        Inventory = new PlayerInventory(this);
+        _drawManager = new PlayerWithTwoSpritesDrawManager();
+        
+        Inventory = new PlayerInventory();
         CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
         CurrentBodyState = new PlayerBodyIdleState(this);
         CurrentHeadState.Enter();

@@ -15,7 +15,7 @@ using TheShacklingOfSimon.StatusEffects;
 
 namespace TheShacklingOfSimon.Entities;
 
-public abstract class DamageableEntity : IDamageable
+public abstract class DamageableEntity : IDamageableEntity
 {
     protected float InvulnerabilityTimer;
     protected readonly Dictionary<StatType, float> EffectStats = new();
@@ -30,10 +30,12 @@ public abstract class DamageableEntity : IDamageable
     public int MaxHealth { get; set; }
     
     public StatusEffectManager EffectManager { get; protected set; }
+
+    public DamageableEntity()
+    {
+        EffectManager = new StatusEffectManager();
+    }
     
-    /*
-     * IEntity methods
-     */
     public virtual void Update(GameTime delta)
     {
         // Simply handles i-frames, and nothing else

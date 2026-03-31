@@ -6,7 +6,7 @@ namespace TheShacklingOfSimon.StatusEffects;
 public interface IStatusEffect
 {
     bool IsFinished { get; }
-    IDamageable Owner { get; }
+    IDamageableEntity Owner { get; }
     
     void OnApply();
     void OnRemove();

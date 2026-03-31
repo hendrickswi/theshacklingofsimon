@@ -16,9 +16,9 @@ public class DamageMultiplierEffect : IStatusEffect
     private float Duration { get; set; }
     
     public bool IsFinished { get; private set; }
-    public IDamageable Owner { get; private set; }
+    public IDamageableEntity Owner { get; private set; }
     
-    public DamageMultiplierEffect(IDamageable owner, int strength, float duration)
+    public DamageMultiplierEffect(IDamageableEntity owner, int strength, float duration)
     {
         _damageAmount = 0;
         Strength = strength;

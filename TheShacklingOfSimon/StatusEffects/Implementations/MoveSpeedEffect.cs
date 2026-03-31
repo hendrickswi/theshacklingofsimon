@@ -16,9 +16,9 @@ public class MoveSpeedEffect : IStatusEffect
     private float Duration { get; set; }
     
     public bool IsFinished { get; private set; }
-    public IDamageable Owner { get; private set; }
+    public IDamageableEntity Owner { get; private set; }
     
-    public MoveSpeedEffect(IDamageable owner, float strength, float duration)
+    public MoveSpeedEffect(IDamageableEntity owner, float strength, float duration)
     {
         _speedAmount = 0.0f;
         Strength = strength;

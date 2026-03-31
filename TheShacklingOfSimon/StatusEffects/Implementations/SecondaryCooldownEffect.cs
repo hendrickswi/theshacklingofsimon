@@ -8,9 +8,9 @@ public class SecondaryCooldownEffect : IStatusEffect
     // TODO: Implement instance variables
     
     public bool IsFinished { get; private set; }
-    public IDamageable Owner { get; private set; }
+    public IDamageableEntity Owner { get; private set; }
 
-    public SecondaryCooldownEffect(IDamageable owner, float strength, float duration)
+    public SecondaryCooldownEffect(IDamageableEntity owner, float strength, float duration)
     {
         IsFinished = false;
         Owner = owner;

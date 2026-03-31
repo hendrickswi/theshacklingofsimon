@@ -10,7 +10,7 @@ using TheShacklingOfSimon.Weapons;
 
 namespace TheShacklingOfSimon.Entities.Enemies;
 
-public interface IEnemy : IDamageable
+public interface IEnemy : IDamageableEntity
 {
     string Name { get; }
 

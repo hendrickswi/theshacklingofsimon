@@ -32,7 +32,7 @@ public class PlayerInventory : Inventory
                     nameof(value));
             }
             
-            if (_currentPrimaryWeapon == value)
+            if (_currentPrimaryWeapon != null && _currentPrimaryWeapon == value)
             {
                 return;
             }
@@ -58,7 +58,7 @@ public class PlayerInventory : Inventory
                     nameof(value));
             }
 
-            if (_currentSecondaryWeapon == value)
+            if (_currentSecondaryWeapon != null && _currentSecondaryWeapon == value)
             {
                 return;
             }
@@ -84,7 +84,7 @@ public class PlayerInventory : Inventory
                     nameof(value));
             }
 
-            if (_currentActiveItem == value)
+            if (_currentActiveItem != null && _currentActiveItem == value)
             {
                 return;
             }
@@ -112,12 +112,5 @@ public class PlayerInventory : Inventory
             _numCoins = value;
             NotifyInventoryChanged();
         }
-    }
-    
-    public PlayerInventory(IPlayer player) : base()
-    {
-        CurrentPrimaryWeapon = new NoneWeapon();
-        CurrentSecondaryWeapon = new NoneWeapon();
-        CurrentActiveItem = new NoneItem(player);
     }
 }

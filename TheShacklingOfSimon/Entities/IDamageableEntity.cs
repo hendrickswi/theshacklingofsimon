@@ -2,7 +2,7 @@
 
 namespace TheShacklingOfSimon.Entities;
 
-public interface IDamageable : IEntity
+public interface IDamageableEntity : IEntity
 {
     int Health { get; }
     int MaxHealth { get; set; }

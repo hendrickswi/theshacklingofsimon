@@ -8,9 +8,9 @@ public class ProjectileSpeedEffect : IStatusEffect
     // TODO: Implement instance variables
     
     public bool IsFinished { get; private set; }
-    public IDamageable Owner { get; private set; }
+    public IDamageableEntity Owner { get; private set; }
 
-    public ProjectileSpeedEffect(IDamageable owner, float strength, float duration)
+    public ProjectileSpeedEffect(IDamageableEntity owner, float strength, float duration)
     {
         IsFinished = false;
         Owner = owner;

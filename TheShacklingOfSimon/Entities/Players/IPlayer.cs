@@ -7,7 +7,7 @@ using TheShacklingOfSimon.Entities.Players.States;
 
 namespace TheShacklingOfSimon.Entities.Players;
 
-public interface IPlayer : IDamageable
+public interface IPlayer : IDamageableEntity
 {
     PlayerInventory Inventory { get; }
     PlayerInputBuffer InputBuffer { get; }
