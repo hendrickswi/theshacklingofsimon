@@ -16,13 +16,45 @@
         <None Remove="Icon.bmp" />
 
         <Content Include="Content\PlayerDefaultSprite.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory> </Content>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </Content>
 
         <Content Include="Content\SpiderEnemy.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory> </Content>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </Content>
 
         <Content Include="Content\BlackMaw.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory> </Content>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </Content>
+
+        <None Update="Content\images\8Ball.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\DoorLockedUp.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\Fire.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\DoorUnlockedUp.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\Red_Heart.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\Rocks.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\RoomBackground.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\Spikes.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Icon.ico">
@@ -44,5 +76,10 @@
       <None Update="Content\Room_Jsons\room_index.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Sprites\Factory\SpriteFactory.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Compile>
     </ItemGroup>
 </Project>

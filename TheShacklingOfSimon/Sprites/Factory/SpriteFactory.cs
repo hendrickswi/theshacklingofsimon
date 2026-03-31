@@ -48,7 +48,12 @@ public class SpriteFactory
         }
         _textureStorage.Add(spriteName, texture);
         
-        string jsonPath = Path.Combine(content.RootDirectory, jsonPathName);
+        // Replace all slashes from input with the correct OS-specific separators
+        string normalizedPath = jsonPathName
+            .Replace('/', Path.DirectorySeparatorChar)
+            .Replace('\\', Path.DirectorySeparatorChar);
+        
+        string jsonPath = Path.Combine(content.RootDirectory, normalizedPath);
         if (!File.Exists(jsonPath))
         {
             // Prevent "ghost" instances
