@@ -1,12 +1,12 @@
 #region
 
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players.Config;
+using TheShacklingOfSimon.Entities.Players.Drawing;
 using TheShacklingOfSimon.Entities.Players.States;
 using TheShacklingOfSimon.Entities.Players.States.Body;
 using TheShacklingOfSimon.Entities.Players.States.Head;
@@ -41,7 +41,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     
     public PlayerInputBuffer InputBuffer { get; private set; }
 
-    private readonly PlayerDrawManager _drawManager;
+    private readonly PlayerWithTwoSpritesDrawManager _drawManager;
 
     public PlayerWithTwoSprites(Vector2 startPosition)
     {

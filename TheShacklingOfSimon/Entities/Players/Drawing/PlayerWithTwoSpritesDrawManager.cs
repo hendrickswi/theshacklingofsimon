@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players.Config;
 
-namespace TheShacklingOfSimon.Entities.Players;
+namespace TheShacklingOfSimon.Entities.Players.Drawing;
 
-public class PlayerDrawManager
+public class PlayerWithTwoSpritesDrawManager
 {
     private Dictionary<string, string> _skins;
     public Vector2 HeadOffset { get; private set; }
@@ -13,7 +13,7 @@ public class PlayerDrawManager
     public float HurtFrameDuration { get; private set; }
     public float MovementFrameDuration { get; private set; }
 
-    public PlayerDrawManager()
+    public PlayerWithTwoSpritesDrawManager()
     {
         _skins = ConfigDBPlayer.Configs["PlayerWithTwoSprites"].SkinsDictionary;
         HeadOffset = ConfigDBPlayer.Configs["PlayerWithTwoSprites"].HeadOffset;
