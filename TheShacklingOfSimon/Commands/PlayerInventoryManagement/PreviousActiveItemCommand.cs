@@ -21,7 +21,7 @@ namespace TheShacklingOfSimon.Commands.PlayerItem
 
 			IItem current = _player.Inventory.CurrentActiveItem;
 			int currentIndex = items.IndexOf(current);
-			int nextIndex = (currentIndex + 1) % items.Count;
+			int nextIndex = (currentIndex - 1 + items.Count) % items.Count;
 
 			_player.Inventory.CurrentActiveItem = items[nextIndex];
 		}
