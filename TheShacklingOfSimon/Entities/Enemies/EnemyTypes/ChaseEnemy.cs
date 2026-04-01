@@ -18,6 +18,7 @@ public class ChaseEnemy : BaseEnemy
         : base(startPosition, weapon, name)
     {
         _attackBehavior = new NoAttackBehaviour();
+        _movementBehavior = new WanderMovementBehavior();
     }
 
     public override void RegisterAttack(float dt, Vector2 targetDirection)

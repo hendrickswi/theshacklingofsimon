@@ -18,6 +18,8 @@ public class ProjectileEnemy : BaseEnemy
         : base(startPosition, weapon, name)
     {
         _attackBehavior = new ProjectileAttackBehaviour();
+
+        _movementBehavior = new WanderMovementBehavior();
     }
 
     public override void RegisterAttack(float dt, Vector2 targetDirection)

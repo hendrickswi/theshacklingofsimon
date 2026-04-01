@@ -13,6 +13,7 @@ using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours;
 
 #endregion
 
@@ -33,8 +34,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     public float AttackRange { get; set; }
     public float ContactDamage { get; set; }
 
-    protected EnemyMovementManager Movement;
-    protected Vector2 MovementInput;
+    protected IMovementBehavior _movementBehavior;
 
     public event Action<IProjectile> OnProjectileCreated;
 
@@ -43,17 +43,20 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         Name = name;
         var config = ConfigDB.Configs[name];
 
+        // IDamageable properties
         MaxHealth = config.MaxHealth;
         Health = MaxHealth;
 
-        Movement = new EnemyMovementManager();
-
+        // These can all be overriden with public set method
         MoveSpeedStat = config.MoveSpeed;
         AttackCooldown = config.AttackCooldown;
         ContactDamage = config.ContactDamage;
         AttackRange = config.AttackRange;
 
         AttackTimer = 0f;
+
+        //movement default
+        _movementBehavior = new NoMovementBehaviour();
 
         SetWeapon(weapon);
         Reset(startPosition);
@@ -70,8 +73,6 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
         CurrentState = new EnemyIdleState(this, Velocity);
         CurrentState.Enter();
-
-        MovementInput = Vector2.Zero;
     }
 
     public void SetWeapon(IWeapon weapon)
@@ -84,24 +85,20 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
     public virtual Vector2 FindTarget()
     {
+        // Placeholder for target finding logic, e.g., find the player or other entities
         Vector2 targetPosition = Position + new Vector2(25, 0);
         return targetPosition - Position;
     }
 
     public virtual void RegisterMovement(float dt, Vector2 targetDirection)
     {
-        MovementInput = Vector2.Zero;
+        Vector2 movementInput = _movementBehavior.GetMovement(this, dt, targetDirection);
 
-        if (targetDirection.LengthSquared() > AttackRange)
-            MovementInput = Movement.Wander(dt);
-        else
-            MovementInput = Movement.Pathfind(targetDirection);
+        if (movementInput.LengthSquared() > 0.0001f)
+            movementInput.Normalize();
 
-        if (MovementInput.LengthSquared() > 0.0001f)
-            MovementInput.Normalize();
-
-        Velocity = MovementInput * MoveSpeedStat;
-        CurrentState.HandleMovement(MovementInput);
+        Velocity = movementInput * MoveSpeedStat;
+        CurrentState.HandleMovement(movementInput);
     }
 
     public abstract void RegisterAttack(float dt, Vector2 targetDirection);
