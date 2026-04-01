@@ -5,6 +5,8 @@ namespace TheShacklingOfSimon.Weapons
     {
         NoneWeapon,
         BasicWeapon,
-        BombWeapon
+        BombWeapon,
+        FireballWeapon
+
     }
 }

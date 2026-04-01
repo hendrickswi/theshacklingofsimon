@@ -185,8 +185,14 @@ public class Game1 : Game
                 SpriteFactory.Instance.CreateAnimatedSprite("PlayerHeadShootingDown", 0.1f),
                 new ProjectileStats(1, 0.0f, ProjectileOwner.Player)));
 
-        _player.Inventory.Add(playerBasicWeapon);
-        _player.Inventory.CurrentPrimaryWeapon = playerBasicWeapon;
+        IWeapon playerFireballWeapon = new FireballWeapon(
+            new FireballProjectile(
+                Vector2.Zero,
+                new Vector2(0, 1),
+                SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"),
+                new ProjectileStats(2, 100.0f, ProjectileOwner.Player)));
+        _player.Inventory.Add(playerFireballWeapon);
+        _player.Inventory.CurrentPrimaryWeapon = playerFireballWeapon;
 
         _player.Inventory.Add(playerBombWeapon);
         _player.Inventory.CurrentSecondaryWeapon = playerBombWeapon;
@@ -197,6 +203,9 @@ public class Game1 : Game
 
         playerBasicWeapon.OnProjectileFired += _projectileManager.AddProjectile;
         playerBombWeapon.OnProjectileFired += _projectileManager.AddProjectile;
+
+        playerFireballWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
+        playerFireballWeapon.OnProjectileFired += _projectileManager.AddProjectile;
     }
 
     private void CreatePlayerItems()

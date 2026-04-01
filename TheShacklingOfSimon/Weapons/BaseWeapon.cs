@@ -14,7 +14,7 @@ public class BaseWeapon : IWeapon
     public string Description { get; protected set; }
 
     protected IProjectile Prototype;
-    
+     
     public virtual void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats)
     {
         var firedProjectile = Prototype.Clone(pos, direction, Prototype.Sprite, stats);
