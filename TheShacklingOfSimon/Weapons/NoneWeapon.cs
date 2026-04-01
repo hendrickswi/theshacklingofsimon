@@ -8,16 +8,18 @@ using TheShacklingOfSimon.Entities.Projectiles;
 
 namespace TheShacklingOfSimon.Weapons;
 
-public class NoneWeapon : IWeapon
+public class NoneWeapon : BaseWeapon, IPrimaryWeapon
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public NoneWeapon()
+    {
+        Name = "NoneWeapon";
+        Description = "Placeholder weapon";
+        Prototype = null;
+    }
 
     
-    public void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats)
+    public override void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats)
     {
         // No-op
     }
-
-    public event Action<IProjectile> OnProjectileFired;
 }

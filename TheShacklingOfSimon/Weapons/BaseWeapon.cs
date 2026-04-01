@@ -8,7 +8,7 @@ using TheShacklingOfSimon.Entities.Projectiles;
 
 namespace TheShacklingOfSimon.Weapons;
 
-public class BaseWeapon : IWeapon
+public abstract class BaseWeapon : IWeapon
 {
     public string Name { get; protected set; }
     public string Description { get; protected set; }
@@ -21,7 +21,7 @@ public class BaseWeapon : IWeapon
         OnProjectileFired?.Invoke(firedProjectile);
     }
 
-    public void SetPrototype(IProjectile newPrototype)
+    public virtual void SetPrototype(IProjectile newPrototype)
     {
         if (newPrototype == null)
         {

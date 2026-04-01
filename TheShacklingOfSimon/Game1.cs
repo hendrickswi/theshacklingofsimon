@@ -172,30 +172,32 @@ public class Game1 : Game
 
     private void CreatePlayerWeapons()
     {
-        IWeapon playerBasicWeapon = new BasicWeapon(
+        IPrimaryWeapon playerBasicWeapon = new BasicWeapon(
             new BasicProjectile(
                 Vector2.Zero,
                 new Vector2(0, 1),
                 SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"),
                 new ProjectileStats(1, 200.0f, ProjectileOwner.Player)));
 
-        IWeapon playerBombWeapon = new BombWeapon(
+        ISecondaryWeapon playerBombWeapon = new BombWeapon(
             new BombProjectile(
                 Vector2.Zero,
                 SpriteFactory.Instance.CreateAnimatedSprite("PlayerHeadShootingDown", 0.1f),
                 new ProjectileStats(1, 0.0f, ProjectileOwner.Player)));
 
-        IWeapon playerFireballWeapon = new FireballWeapon(
+        ISecondaryWeapon playerFireballWeapon = new FireballWeapon(
             new FireballProjectile(
                 Vector2.Zero,
                 new Vector2(0, 1),
                 SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"),
                 new ProjectileStats(2, 100.0f, ProjectileOwner.Player)));
-        _player.Inventory.Add(playerFireballWeapon);
-        _player.Inventory.CurrentPrimaryWeapon = playerFireballWeapon;
+        _player.Inventory.Add(playerBasicWeapon);
+        _player.Inventory.CurrentPrimaryWeapon = playerBasicWeapon;
 
         _player.Inventory.Add(playerBombWeapon);
         _player.Inventory.CurrentSecondaryWeapon = playerBombWeapon;
+
+        _player.Inventory.Add(playerFireballWeapon);
 
         // I hook these here so player-fired projectiles go to both collision and rendering.
         playerBasicWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;

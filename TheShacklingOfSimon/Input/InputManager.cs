@@ -79,56 +79,79 @@ public class InputManager
 
         ClearAllControls();
 
-        // Movement controls
+        // Movement controls (keyboard)
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.W),
-            new MoveUpCommand(_player));
+            new MoveUpCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.A),
-            new MoveLeftCommand(_player));
+            new MoveLeftCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.S),
-            new MoveDownCommand(_player));
+            new MoveDownCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.D),
-            new MoveRightCommand(_player));
+            new MoveRightCommand(_player)
+            );
 
-        // Attacking controls
+        // Attacking controls (keyboard)
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.LeftShift),
-            new SecondaryAttackDownCommand(_player));
+            new SecondaryAttackDownCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.RightShift),
-            new SecondaryAttackDownCommand(_player));
+            new SecondaryAttackDownCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.E),
-            new SecondaryAttackDownCommand(_player));
-
+            new SecondaryAttackDownCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.Up),
-            new PrimaryAttackUpCommand(_player));
+            new PrimaryAttackUpCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.Left),
-            new PrimaryAttackLeftCommand(_player));
+            new PrimaryAttackLeftCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.Down),
-            new PrimaryAttackDownCommand(_player));
+            new PrimaryAttackDownCommand(_player)
+            );
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.Right),
-            new PrimaryAttackRightCommand(_player));
+            new PrimaryAttackRightCommand(_player)
+            );
 
-        // Item Manager Controls
+        // Quick weapon controls (keyboard)
+        _keyboardController.RegisterCommand(
+            new KeyboardInput(InputState.JustPressed, KeyboardButton.J),
+            new NextPrimaryWeaponCommand(_player)
+            );
+        _keyboardController.RegisterCommand(
+            new KeyboardInput(InputState.JustPressed, KeyboardButton.K),
+            new NextSecondaryWeaponCommand(_player)
+            );
+        
+        // Quick item controls (keyboard)
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.I),
-            new NextActiveItemCommand(_player));
+            new NextActiveItemCommand(_player)
+            );
 
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.U),
-            new PreviousActiveItemCommand(_player));
+            new PreviousActiveItemCommand(_player)
+            );
 
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.Space),
-            new UseItemCommand(_player));
+            new UseItemCommand(_player)
+            );
 
         // Temporary for sprint 3
         _keyboardController.RegisterCommand(
@@ -168,7 +191,8 @@ public class InputManager
         // we only let Escape pause during gameplay for now.
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.Escape),
-            new GenericActionCommand(onPauseRequested));
+            new GenericActionCommand(onPauseRequested)
+            );
 
         // TODO: Add gamepad controls
     }
@@ -185,6 +209,8 @@ public class InputManager
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.JustPressed, KeyboardButton.Q),
             new GenericActionCommand(onQuitRequested));
+        
+        // TODO: Add mouse controls with custom dimensions for clickable GUI elements
     }
 
     public void RebindKey(KeyboardButton oldKey, KeyboardButton newKey, InputState state, ICommand cmd)

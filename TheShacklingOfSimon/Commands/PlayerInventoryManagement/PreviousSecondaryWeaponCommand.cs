@@ -16,10 +16,10 @@ public class PreviousSecondaryWeaponCommand : ICommand
 
     public void Execute()
     {
-        List<IWeapon> weapons = _player.Inventory.Weapons.ToList();
+        List<ISecondaryWeapon> weapons = _player.Inventory.Weapons.OfType<ISecondaryWeapon>().ToList();
         if (weapons.Count <= 1) return;
 
-        IWeapon current = _player.Inventory.CurrentSecondaryWeapon;
+        ISecondaryWeapon current = _player.Inventory.CurrentSecondaryWeapon;
         int currentIndex = weapons.IndexOf(current);
         int nextIndex = (currentIndex - 1 + weapons.Count ) % weapons.Count;
 

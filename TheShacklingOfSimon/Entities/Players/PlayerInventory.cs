@@ -10,13 +10,13 @@ namespace TheShacklingOfSimon.Entities.Players;
 
 public class PlayerInventory : Inventory
 {
-    private IWeapon _currentPrimaryWeapon;
-    private IWeapon _currentSecondaryWeapon;
+    private IPrimaryWeapon _currentPrimaryWeapon;
+    private ISecondaryWeapon _currentSecondaryWeapon;
     private IItem _currentActiveItem;
     private int _numKeys;
     private int _numCoins;
 
-    public IWeapon CurrentPrimaryWeapon
+    public IPrimaryWeapon CurrentPrimaryWeapon
     {
         get { return _currentPrimaryWeapon; }
         set
@@ -42,7 +42,7 @@ public class PlayerInventory : Inventory
         }
     }
 
-    public IWeapon CurrentSecondaryWeapon
+    public ISecondaryWeapon CurrentSecondaryWeapon
     {
         get { return _currentSecondaryWeapon;  }
         set

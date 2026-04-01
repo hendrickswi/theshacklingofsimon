@@ -6,7 +6,7 @@ using TheShacklingOfSimon.Entities.Projectiles;
 
 namespace TheShacklingOfSimon.Weapons;
 
-public class FireballWeapon : BaseWeapon
+public class FireballWeapon : BaseWeapon, ISecondaryWeapon
 {
 	public FireballWeapon(IProjectile prototype)
 	{
