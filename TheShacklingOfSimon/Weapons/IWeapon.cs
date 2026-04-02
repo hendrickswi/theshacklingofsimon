@@ -12,7 +12,9 @@ public interface IWeapon
 {
     string Name { get; }
     string Description { get; }
-    
+
+    IProjectile GetPrototype();
+    void SetPrototype(IProjectile newPrototype);
     void Fire(Vector2 pos, Vector2 direction, ProjectileStats stats);
     event Action<IProjectile> OnProjectileFired;
 }

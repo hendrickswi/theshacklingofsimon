@@ -7,6 +7,8 @@ public class PrimaryCooldownEffect : IStatusEffect
 {
     // TODO: Implement instance variables
     
+    private float Strength { get; set; }
+    private float Duration { get; set; }
     public bool IsFinished { get; private set; }
     public IDamageableEntity Owner { get; private set; }
 

@@ -177,7 +177,7 @@ public class Game1 : Game
                 Vector2.Zero,
                 new Vector2(0, 1),
                 SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"),
-                new ProjectileStats(1, 200.0f, ProjectileOwner.Player)));
+                new ProjectileStats(1, 200f, ProjectileOwner.Player)));
 
         ISecondaryWeapon playerBombWeapon = new BombWeapon(
             new BombProjectile(

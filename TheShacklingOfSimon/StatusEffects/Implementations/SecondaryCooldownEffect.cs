@@ -5,15 +5,18 @@ namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
 public class SecondaryCooldownEffect : IStatusEffect
 {
-    // TODO: Implement instance variables
-    
     public bool IsFinished { get; private set; }
     public IDamageableEntity Owner { get; private set; }
+    
+    private float Strength { get; set; }
+    private float Duration { get; set; }
 
     public SecondaryCooldownEffect(IDamageableEntity owner, float strength, float duration)
     {
         IsFinished = false;
         Owner = owner;
+        Strength = strength;
+        Duration = duration;
     }
     
     public void OnApply()

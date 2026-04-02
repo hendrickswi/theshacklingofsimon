@@ -54,12 +54,7 @@ public class MoveSpeedEffect : IStatusEffect
     
     public void Merge(IStatusEffect other)
     {
-        /*
-         * Double dispatch/vistor pattern here doesn't make much sense
-         *      Would cause lots of bloating in IStatusEffect
-         *      The manager already ensures Merge() is only called with the same GetType() result
-         * 
-         */
+ 
         if (other is not MoveSpeedEffect castedOther) return; 
         
         // For now just "add" the multipliers

@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Sprites.Factory;
@@ -31,13 +32,14 @@ public class PlayerHeadAttackingState : IPlayerHeadState
     {
         float projectilePositionX = _player.Hitbox.X + _player.Hitbox.Width / 2.0f;
         float projectilePositionY = _player.Hitbox.Y;
-        
+
+        IProjectile projectile = _weapon.GetPrototype();
         _weapon.Fire(
             new Vector2(projectilePositionX, projectilePositionY),
             _direction, 
             new ProjectileStats(
-                (int)_player.GetStat(StatType.DamageMultiplier), 
-                200.0f * _player.GetStat(StatType.ProjectileSpeedMultiplier), 
+                projectile.Stats.Damage * (int) Math.Ceiling(_player.GetStat(StatType.DamageMultiplier)), 
+                projectile.Stats.Speed * _player.GetStat(StatType.ProjectileSpeedMultiplier), 
                 ProjectileOwner.Player)
             );
 

@@ -21,6 +21,11 @@ public abstract class BaseWeapon : IWeapon
         OnProjectileFired?.Invoke(firedProjectile);
     }
 
+    public virtual IProjectile GetPrototype()
+    {
+        return Prototype;
+    }
+    
     public virtual void SetPrototype(IProjectile newPrototype)
     {
         if (newPrototype == null)
