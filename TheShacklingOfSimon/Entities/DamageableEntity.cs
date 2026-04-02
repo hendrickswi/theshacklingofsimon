@@ -38,14 +38,13 @@ public abstract class DamageableEntity : IDamageableEntity
     
     public virtual void Update(GameTime delta)
     {
-        // Simply handles i-frames, and nothing else
+        // Simply handles i-frames and status effect manager
         // Extending classes should do base.Update(delta);
+        
         if (InvulnerabilityTimer > 0)
         {
             InvulnerabilityTimer -= (float) delta.ElapsedGameTime.TotalSeconds;
         }
-        
-        // Also handles status effect manager
         EffectManager.Update(delta);
     }
 
@@ -63,8 +62,8 @@ public abstract class DamageableEntity : IDamageableEntity
         Velocity = Vector2.Zero;
     }
 
-    // Cannot provide a implementation here;
-    // Doing other.OnCollision(this) will result in *this*
+    // Cannot provide an implementation of OnCollision(IEntity other) here;
+    // Doing other.OnCollision(this) in this base class will result in *this*
     // being a DamageableEntity, instead of IPlayer or IEnemy.
     // This completely breaks the double-dispatch design.
     public abstract void OnCollision(IEntity other);
