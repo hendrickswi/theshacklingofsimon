@@ -43,7 +43,7 @@ public class PlayerHeadAttackingState : IPlayerHeadState
                 ProjectileOwner.Player)
             );
 
-        string spriteAnimationName = _player.GetSkin("Head");
+        string spriteAnimationName = _player.SpritesManager.GetSkin("Head");
         if (_direction.X > float.Epsilon)
         {
             spriteAnimationName += "ShootingRight";

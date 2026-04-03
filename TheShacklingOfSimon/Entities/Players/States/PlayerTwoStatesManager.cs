@@ -1,7 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿#region
+
+using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players.Drawing;
 using TheShacklingOfSimon.Entities.Players.States.Body;
 using TheShacklingOfSimon.Entities.Players.States.Head;
+
+#endregion
 
 namespace TheShacklingOfSimon.Entities.Players.States;
 

@@ -3,7 +3,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Factory;
-using TheShacklingOfSimon.StatusEffects;
 
 #endregion
 
@@ -58,7 +57,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
     
     private void UpdateSprite()
     {
-        string newAnimationName = _player.GetSkin("Head");
+        string newAnimationName = _player.SpritesManager.GetSkin("Head");
         Vector2 cardinal = GetCardinalDirection(_lookingDirection);
         if (cardinal == Vector2.UnitX)
         {

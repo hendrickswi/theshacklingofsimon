@@ -54,7 +54,7 @@ public class PlayerBodyMovingState : IPlayerBodyState
 
     private void UpdateSprite()
     { 
-        string newAnimationName = _player.GetSkin("Body");
+        string newAnimationName = _player.SpritesManager.GetSkin("Body");
         
         /*
          * Walking animation is horizontally biased.

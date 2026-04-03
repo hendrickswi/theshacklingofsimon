@@ -20,7 +20,7 @@ public class PlayerBodyIdleState : IPlayerBodyState
     {
         _player.Velocity = Vector2.Zero;
 
-        string spritePrefix = _player.GetSkin("Body");
+        string spritePrefix = _player.SpritesManager.GetSkin("Body");
         _player.SpritesManager.Body = SpriteFactory.Instance.CreateStaticSprite(spritePrefix + "Idle");
     }
 

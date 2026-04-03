@@ -24,7 +24,7 @@ public class PlayerBodyDeadState : IPlayerBodyState
     
     public void Enter()
     {
-        string spritePrefix = _player.GetSkin("Body");
+        string spritePrefix = _player.SpritesManager.GetSkin("Body");
         _player.SpritesManager.Body = SpriteFactory.Instance.CreateAnimatedSprite(spritePrefix + "DeadAnimation", _frameDuration);
     }
 
@@ -45,7 +45,7 @@ public class PlayerBodyDeadState : IPlayerBodyState
          */
         if (!_switched && _timer >= _spriteSwitchTime)
         {
-            string spritePrefix = _player.GetSkin("Body");
+            string spritePrefix = _player.SpritesManager.GetSkin("Body");
             _player.SpritesManager.Body = SpriteFactory.Instance.CreateStaticSprite(spritePrefix + "DeadFinal");
             _switched = true;
         }

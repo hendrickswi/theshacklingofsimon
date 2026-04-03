@@ -97,15 +97,16 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         return Position;
     }
     
+    // Passthrough for potential skin modification by IItem-implementing classes
     public string GetSkin(string category)
     {
-        // Passthrough
+        
         return SpritesManager.GetSkin(category);
     }
     
+    // Passthrough for potential skin modification by IItem-implementing classes
     public void SetSkin(string category, string skinPrefix)
     {
-        // Passthrough
         SpritesManager.SetSkin(category, skinPrefix);
     }
 

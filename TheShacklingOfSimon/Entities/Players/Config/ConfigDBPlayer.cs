@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+
+#endregion
 
 namespace TheShacklingOfSimon.Entities.Players.Config;
 

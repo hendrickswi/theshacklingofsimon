@@ -1,9 +1,8 @@
 #region
 
+using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours;
-using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
 #endregion
 

@@ -1,5 +1,9 @@
-using Vector2 = Microsoft.Xna.Framework.Vector2;
+#region
+
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
+
+#endregion
 
 namespace TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours;
 

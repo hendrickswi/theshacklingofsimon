@@ -23,7 +23,7 @@ public class PlayerBodyDamagedState : IPlayerBodyState
     
     public void Enter()
     {
-        string spritePrefix = _player.GetSkin("Body");
+        string spritePrefix = _player.SpritesManager.GetSkin("Body");
         _player.SpritesManager.Body = SpriteFactory.Instance.CreateStaticSprite(spritePrefix + "Hurt");
     }
 

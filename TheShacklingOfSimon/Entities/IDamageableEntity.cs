@@ -1,4 +1,8 @@
-﻿using TheShacklingOfSimon.StatusEffects;
+﻿#region
+
+using TheShacklingOfSimon.StatusEffects;
+
+#endregion
 
 namespace TheShacklingOfSimon.Entities;
 

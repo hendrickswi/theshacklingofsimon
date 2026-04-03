@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Enemies.Config;
-using TheShacklingOfSimon.StatusEffects;
+using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours;
 using TheShacklingOfSimon.Entities.Enemies.States;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
@@ -13,7 +13,6 @@ using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours;
 
 #endregion
 
