@@ -44,7 +44,7 @@ public class PlayerBodyMovingState : IPlayerBodyState
         if (direction.LengthSquared() < 0.0001f)
         {
             _player.Velocity = Vector2.Zero;
-            _player.ChangeBodyState(new PlayerBodyIdleState(_player));
+            _player.StateManager.ChangeBodyState(new PlayerBodyIdleState(_player));
         }
         else
         {

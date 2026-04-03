@@ -47,7 +47,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
         Vector2 cardinal = GetCardinalDirection(direction);
         if (cardinal != Vector2.Zero)
         {
-            _player.ChangeHeadState(new PlayerHeadAttackingState(_player, _player.Inventory.CurrentPrimaryWeapon, cardinal, stateDuration));
+            _player.StateManager.ChangeHeadState(new PlayerHeadAttackingState(_player, _player.Inventory.CurrentPrimaryWeapon, cardinal, stateDuration));
         }
     }
 
@@ -56,7 +56,7 @@ public class PlayerHeadIdleState : IPlayerHeadState
         Vector2 cardinal = GetCardinalDirection(direction);
         if (cardinal != Vector2.Zero)
         {
-            _player.ChangeHeadState(new PlayerHeadAttackingState(_player, _player.Inventory.CurrentSecondaryWeapon, cardinal, stateDuration));
+            _player.StateManager.ChangeHeadState(new PlayerHeadAttackingState(_player, _player.Inventory.CurrentSecondaryWeapon, cardinal, stateDuration));
         }
     }
     

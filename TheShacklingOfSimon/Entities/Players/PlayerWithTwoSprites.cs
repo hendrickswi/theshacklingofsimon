@@ -22,11 +22,10 @@ namespace TheShacklingOfSimon.Entities.Players;
 public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
 {
     public PlayerInventory Inventory { get; private set; }
-    private IPlayerHeadState CurrentHeadState { get; set; }
-    private IPlayerBodyState CurrentBodyState { get; set; }
+    public PlayerTwoStateManager StateManager { get; set; }
 
     // Renaming for clarity
-    IPlayerState IPlayer.CurrentState => CurrentBodyState;
+    IPlayerState IPlayer.CurrentState => StateManager.Body;
     
     public ISprite HeadSprite { get; set; }
     public ISprite BodySprite { get; set; }
@@ -53,18 +52,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         base.TakeDamage(damage);
         InvulnerabilityTimer = EffectStats[StatType.InvulnerabilityDuration];
         
-        // Case for player dying
-        if (Health <= 0)
-        {
-            ChangeHeadState(new PlayerHeadDeadState(this));
-            ChangeBodyState(new PlayerBodyDeadState(this, _drawManager.DeathFrameDuration, _drawManager.DeathFrameDuration));
-        }
-        // If not dead, then damaged
-        else
-        {
-            ChangeHeadState(new PlayerHeadDamagedState(this));
-            ChangeBodyState(new PlayerBodyDamagedState(this, _drawManager.HurtFrameDuration));
-        }
+        StateManager.HandleDamageInterrupt(Health <= 0);
     }
 
     public void Reset(Vector2 startPosition)
@@ -76,16 +64,15 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     {
         base.Update(delta);
         
-        CurrentBodyState.HandleMovement(InputBuffer.ConsumeMovement(), _drawManager.MovementFrameDuration);
-        CurrentHeadState.HandlePrimaryAttack(InputBuffer.ConsumePrimaryAttack(), EffectStats[StatType.PrimaryCooldown]);
-        CurrentHeadState.HandleSecondaryAttack(InputBuffer.ConsumeSecondaryAttack(), EffectStats[StatType.SecondaryCooldown]);
+        StateManager.Body.HandleMovement(InputBuffer.ConsumeMovement(), _drawManager.MovementFrameDuration);
+        StateManager.Head.HandlePrimaryAttack(InputBuffer.ConsumePrimaryAttack(), EffectStats[StatType.PrimaryCooldown]);
+        StateManager.Head.HandleSecondaryAttack(InputBuffer.ConsumeSecondaryAttack(), EffectStats[StatType.SecondaryCooldown]);
 
         float dt = (float)delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
 
-        CurrentHeadState.Update(delta);
-        CurrentBodyState.Update(delta);
+        StateManager.Update(delta);
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -96,7 +83,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
             flip = SpriteEffects.FlipHorizontally;
         }
         
-        Vector2 drawPos = (CurrentBodyState is PlayerBodyDamagedState) ? Position + _drawManager.DamagedStateOffset : Position;
+        Vector2 drawPos = (StateManager.Body is PlayerBodyDamagedState) ? Position + _drawManager.DamagedStateOffset : Position;
         BodySprite?.Draw(spriteBatch, drawPos, Color.White, 0.0f,
             new Vector2(0, 0), 1.0f, flip, 0.0f);
         
@@ -114,27 +101,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     public override void OnCollision(IProjectile projectile) { }
     public override void OnCollision(ITile tile) { }
     public override void OnCollision(IPickup pickup) { }
-
-    public void ChangeHeadState(IPlayerHeadState newHeadState)
-    {
-        if (CurrentHeadState != newHeadState)
-        {
-            CurrentHeadState?.Exit();
-            CurrentHeadState = newHeadState;
-            CurrentHeadState?.Enter();
-        }
-    }
-
-    public void ChangeBodyState(IPlayerBodyState newBodyState)
-    {
-        if (CurrentBodyState != newBodyState)
-        {
-            CurrentBodyState?.Exit();
-            CurrentBodyState = newBodyState;
-            CurrentBodyState?.Enter();
-        }
-    }
-
+    
     // For ITargetProvider
     public Vector2 GetPosition()
     {
@@ -160,13 +127,13 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         {
             case IPlayerHeadState:
             {
-                ChangeHeadState((IPlayerHeadState)newState);
+                StateManager.ChangeHeadState((IPlayerHeadState)newState);
                 break;
             }
 
             case IPlayerBodyState:
             {
-                ChangeBodyState((IPlayerBodyState)newState);
+                StateManager.ChangeBodyState((IPlayerBodyState)newState);
                 break;
             }
             default:
@@ -202,11 +169,7 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         
         InputBuffer = new PlayerInputBuffer();
         _drawManager = new PlayerWithTwoSpritesDrawManager();
-        
         Inventory = new PlayerInventory();
-        CurrentHeadState = new PlayerHeadIdleState(this, Velocity);
-        CurrentBodyState = new PlayerBodyIdleState(this);
-        CurrentHeadState.Enter();
-        CurrentBodyState.Enter();
+        StateManager = new PlayerTwoStateManager(this, _drawManager);
     }
 }

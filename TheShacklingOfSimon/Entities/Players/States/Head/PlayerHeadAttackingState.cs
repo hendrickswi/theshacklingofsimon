@@ -77,7 +77,7 @@ public class PlayerHeadAttackingState : IPlayerHeadState
         _timer += (float)delta.ElapsedGameTime.TotalSeconds;
         if (_timer >= _stateDuration)
         {
-            _player.ChangeHeadState(new PlayerHeadIdleState(_player, new Vector2(0, 1)));
+            _player.StateManager.ChangeHeadState(new PlayerHeadIdleState(_player, new Vector2(0, 1)));
         }
         else
         {
