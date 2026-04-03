@@ -1,18 +1,35 @@
 {
   "sprites": [
     {
-      "name": "SpiderEnemy_EnemyIdleDown",
+      "name": "SpiderEnemy_EnemyIdle",
       "frames": [
         { "X": 9,   "Y": 6,   "W": 36, "H": 42 }
       ]
     },
     {
-      "name": "SpiderEnemy_EnemyWalkRight",
+      "name": "SpiderEnemy_EnemyWalk",
       "frames": [
         { "X": 57,  "Y": 7,   "W": 36, "H": 41 },
         { "X": 100, "Y": 4,   "W": 45, "H": 44 },
         { "X": 57,  "Y": 55,  "W": 36, "H": 41 },
         { "X": 101, "Y": 52,  "W": 45, "H": 44 }
+      ]
+    },
+    {
+      "name": "SpiderEnemy_EnemyHurt",
+      "frames": [
+        { "X": 10,  "Y": 101,   "W": 34, "H": 44 },
+        { "X": 102,  "Y": 115,   "W": 42, "H": 30 }
+      ]
+    },
+    {
+      "name": "SpiderEnemy_EnemyDeath",
+      "frames": [
+        { "X": 10,  "Y": 101,   "W": 34, "H": 44 },
+        { "X": 102,  "Y": 115,   "W": 42, "H": 30 },
+        { "X": 52,  "Y": 118,  "W": 46, "H": 27 },
+        { "X": 102,  "Y": 115,   "W": 42, "H": 30 },
+        { "X": 52,  "Y": 118,  "W": 46, "H": 27 }
       ]
     }
   ]

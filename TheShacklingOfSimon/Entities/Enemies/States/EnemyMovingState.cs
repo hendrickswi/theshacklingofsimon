@@ -61,37 +61,10 @@ public class EnemyMovingState : IEnemyState
 
     private void UpdateSprite()
     {
-        string newAnimationName = _enemy.Name + "_EnemyWalkRight";
-        
-        /*
-         * Walking animation is horizontally biased.
-         * e.g., If walking northeast (both up and right),
-         * the horizontal walk animation is played.
-         */
-        /*
-        * Walking animation is horizontally biased.
-        * If moving left, we flip the right-walk animation.
-        */
-        if (_enemy.Velocity.X < 0)
-        {
-            newAnimationName = _enemy.Name + "_EnemyWalkRight";
-        }
-        /* for testing
-        else if (_enemy.Velocity.Y < 0)
-        {
-            newAnimationName = _enemy.Name + "_EnemyWalkUp";
-        }
-        else if (_enemy.Velocity.Y > 0)
-        {
-            newAnimationName = _enemy.Name + "_EnemyWalkDown";
-        }
-        */
+        string newAnimationName = _enemy.Name + "_EnemyWalk";
 
-        if (newAnimationName != _currentAnimation)
-        {
-            _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
-            _currentAnimation = newAnimationName;
-        }
+        _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
+        _currentAnimation = newAnimationName;
     }
 
     private Vector2 GetCardinalDirection(Vector2 input)

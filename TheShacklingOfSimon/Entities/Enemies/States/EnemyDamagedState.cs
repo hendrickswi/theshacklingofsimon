@@ -7,13 +7,13 @@ using TheShacklingOfSimon.Sprites.Factory;
 
 namespace TheShacklingOfSimon.Entities.Enemies.States;
 
-public class EnemyDeadState : IEnemyState
+public class EnemyDamagedState : IEnemyState
 {
-    private readonly IEnemy _enemy;
+    private IEnemy _enemy;
     private float _timer;
     private readonly float _stateDuration;
 
-    public EnemyDeadState(IEnemy enemy, float stateDuration)
+    public EnemyDamagedState(IEnemy enemy, float stateDuration)
     {
         _enemy = enemy;
         _stateDuration = stateDuration;
@@ -22,45 +22,40 @@ public class EnemyDeadState : IEnemyState
 
     public void Enter()
     {
-        // Reset timer
-        _timer = 0f;
+        // Set hurt sprite
+        string spriteName = _enemy.Name + "_EnemyHurt";
+        _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(spriteName);
 
-        // Stop all movement
+        // Optional: stop movement when hit
         _enemy.Velocity = Vector2.Zero;
-
-        // Set death animation
-        string spriteName = _enemy.Name + "_EnemyDeath";
-        _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(spriteName, 0.2f);
     }
 
     public void Exit()
     {
-        // Nothing to clean up for now
+        // Nothing for now
     }
 
     public void Update(GameTime delta)
     {
         _timer += (float)delta.ElapsedGameTime.TotalSeconds;
 
+        _enemy.Sprite?.Update(delta);
+
         if (_timer >= _stateDuration)
         {
-            //drop items
-            _enemy.MarkForRemoval();
-        }
-        else
-        {
-            _enemy.Sprite?.Update(delta);
+            // Return to idle after damage
+            _enemy.ChangeState(new EnemyIdleState(_enemy, new Vector2(0, 1)));
         }
     }
 
     public void HandleMovement(Vector2 movementInput)
     {
-        //disable movement
+        //disable movement while damaged
         _enemy.Velocity = Vector2.Zero;
     }
 
     public void HandleAttack(Vector2 direction, float stateDuration)
     {
-        // No attacking when dead
+        // no op
     }
 }

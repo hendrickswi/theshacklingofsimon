@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Enemies.Config;
-using TheShacklingOfSimon.Entities.Enemies.Managers;
+using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Entities.Enemies.States;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
@@ -154,6 +154,41 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         
     }
 
+    public override void TakeDamage(int damage)
+    {
+        if (InvulnerabilityTimer > 0f){
+            return;
+        }
+
+        base.TakeDamage(damage);
+        InvulnerabilityTimer = 0.25f; // Example invulnerability duration after taking damage
+        
+        // Case for enemy dying
+        if (Health <= 0)
+        {
+            ChangeState(new EnemyDeadState(this, 2.5f)); // Example duration for death state
+        }
+        // If not dead, then damaged
+        else
+        {
+            ChangeState(new EnemyDamagedState(this, 0.2f)); // Example duration for damaged state
+        }
+    }
+
+    public void ChangeState(IEnemyState newState)
+    {
+        if (CurrentState != newState)
+        {
+            CurrentState?.Exit();
+            CurrentState = newState;
+            CurrentState?.Enter();
+        }
+    }
+
+    public void MarkForRemoval() => IsActive = false;
+
+    // Collision handling
+
     public override void OnCollision(IEntity other)
     {
         if (other == null || !IsActive) return;
@@ -207,16 +242,4 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     {
         // No-op
     }
-
-    public void ChangeState(IEnemyState newState)
-    {
-        if (CurrentState != newState)
-        {
-            CurrentState?.Exit();
-            CurrentState = newState;
-            CurrentState?.Enter();
-        }
-    }
-
-    public void MarkForRemoval() => IsActive = false;
 }

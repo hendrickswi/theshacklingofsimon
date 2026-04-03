@@ -57,12 +57,10 @@ public class EnemyIdleState : IEnemyState
 
     private void UpdateSprite()
     {
-        string newAnimationName = _enemy.Name + "_EnemyIdleDown";
-        if (newAnimationName != _currentAnimation)
-        {
-            _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(newAnimationName);
-            _currentAnimation = newAnimationName;
-        }
+        string newAnimationName = _enemy.Name + "_EnemyIdle";
+        
+        _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(newAnimationName);
+        _currentAnimation = newAnimationName;
     }
 
     private Vector2 GetCardinalDirection(Vector2 input)
