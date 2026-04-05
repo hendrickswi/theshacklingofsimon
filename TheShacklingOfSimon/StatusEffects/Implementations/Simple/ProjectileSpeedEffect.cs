@@ -7,7 +7,7 @@ using TheShacklingOfSimon.Entities;
 
 namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
-public class ProjectileSpeedEffect : StatusEffect
+public class ProjectileSpeedEffect : SimpleStatusEffect
 {
     public ProjectileSpeedEffect(IDamageableEntity owner, float strength, float duration) 
         : base(owner, strength, duration)

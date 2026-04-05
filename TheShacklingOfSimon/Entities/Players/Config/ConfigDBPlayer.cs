@@ -16,7 +16,7 @@ public static class ConfigDBPlayer
             MaxHealth = 6,
             HitboxWidth = 20,
             HitboxHeight = 20,
-            InvulnerabilityDuration = 0.333334f,
+            InvulnerabilityDuration = 0.5f,
             MoveSpeed = 100f,
             DamageMultiplier = 1,
             ProjectileSpeedMultiplier = 1f,

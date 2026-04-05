@@ -7,7 +7,7 @@ using TheShacklingOfSimon.Entities;
 
 namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
-public class MaxHealthEffect : StatusEffect
+public class MaxHealthEffect : SimpleStatusEffect
 {
     /// <summary>
     /// Represents a status effect that additively modifies the maximum health of
