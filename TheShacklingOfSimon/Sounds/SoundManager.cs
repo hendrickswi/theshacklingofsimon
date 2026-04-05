@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace TheShacklingOfSimon.Sounds;
 
-public class SoundManager // should we use this for music too? we could easily make a MusicManager but let me know
+public class SoundManager
 {
     private readonly List<SoundEffect> _soundEffects;
     public SoundManager()

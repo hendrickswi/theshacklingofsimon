@@ -31,6 +31,7 @@ public class EnemyDeadState : IEnemyState
         // Set death animation
         string spriteName = _enemy.Name + "_EnemyDeath";
         _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(spriteName, 0.2f);
+        //AddPickup(new Pickup(_enemy.Position, _enemy.EnemyDrop, /* Sprite */));
     }
 
     public void Exit()

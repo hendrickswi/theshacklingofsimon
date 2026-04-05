@@ -4,6 +4,7 @@ using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Enemies.States;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Weapons;
 
 #endregion
@@ -24,6 +25,7 @@ public interface IEnemy : IDamageableEntity
     float AttackCooldown { get; set; }
     float AttackRange { get; set; }
     float ContactDamage { get; set; }
+    IItem EnemyDrop { get; set; } // we can set this to null/noneitem if we don't want an enemy dropping something
 
     IWeapon Weapon { get; }
     public event Action<IProjectile> OnProjectileCreated;

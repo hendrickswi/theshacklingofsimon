@@ -10,6 +10,7 @@ using TheShacklingOfSimon.Entities.Enemies.States;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -32,6 +33,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     protected float AttackTimer;
     public float AttackRange { get; set; }
     public float ContactDamage { get; set; }
+    public IItem EnemyDrop { get; set; }
 
     protected IMovementBehavior _movementBehavior;
 
