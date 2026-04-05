@@ -1,0 +1,37 @@
+{
+	"Sprites": [
+		{
+			"Name": "FilledHeart",
+			"Frames": [
+				{
+					"X": 0,
+					"Y": 16,
+					"W": 16,
+					"H": 16
+				}
+			]
+		},
+		{
+			"Name": "HalfHeart",
+			"Frames": [
+				{
+					"X": 16,
+					"Y": 16,
+					"W": 16,
+					"H": 16
+				}
+			]
+		},
+		{
+			"Name": "EmptyHeart",
+			"Frames": [
+				{
+					"X": 32,
+					"Y": 0,
+					"W": 16,
+					"H": 16
+				}
+			]
+		}
+	]
+}

@@ -20,6 +20,7 @@ using TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomManager;
 using TheShacklingOfSimon.LevelHandler.Tiles.Border.Doors;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.UI;
 using TheShacklingOfSimon.Weapons;
 using KeyboardInput = TheShacklingOfSimon.Controllers.Keyboard.KeyboardInput;
 
@@ -53,6 +54,8 @@ public class Game1 : Game
     private CollisionManager _collisionManager;
     private GameStateManager _gameStateManager;
 
+    private HUD HUD;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -81,6 +84,7 @@ public class Game1 : Game
 
         _projectileManager = new ProjectileManager();
         _collisionManager = new CollisionManager();
+        
 
         RoomFactory roomFactory = CreateRoomFactory();
         CreateRoomManager(roomFactory);
@@ -101,7 +105,7 @@ public class Game1 : Game
         _gamepadController.Update();
 
         _gameStateManager.Update(delta);
-
+        //HUD.Update();
         base.Update(delta);
     }
 
@@ -111,7 +115,9 @@ public class Game1 : Game
 
         _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
         _gameStateManager.Draw(_spriteBatch);
+        HUD.Draw(_spriteBatch);
         _spriteBatch.End();
+       
 
         base.Draw(delta);
     }
@@ -133,6 +139,7 @@ public class Game1 : Game
         // These are the upright door sprites. The door tile rotates them by side.
         SpriteFactory.Instance.LoadTexture(Content, "images/DoorLockedUp.json", "images/DoorLockedUp");
         SpriteFactory.Instance.LoadTexture(Content, "images/DoorUnlockedUp.json", "images/DoorUnlockedUp");
+        SpriteFactory.Instance.LoadTexture(Content, "images/HeartsUI.json", "images/HeartsUI");
     }
 
     private RoomFactory CreateRoomFactory()
@@ -168,6 +175,7 @@ public class Game1 : Game
     private void CreatePlayer()
     {
         _player = new PlayerWithTwoSprites(GetScreenCenter());
+        HUD = new HUD(_player);
     }
 
     private void CreatePlayerWeapons()

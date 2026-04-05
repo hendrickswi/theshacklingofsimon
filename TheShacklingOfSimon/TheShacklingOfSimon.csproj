@@ -40,6 +40,10 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
+        <None Update="Content\images\HeartsUI.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
         <None Update="Content\images\Red_Heart.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
