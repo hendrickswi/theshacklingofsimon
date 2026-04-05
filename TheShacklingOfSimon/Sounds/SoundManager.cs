@@ -29,4 +29,9 @@ public class SoundManager
             _soundEffects.Remove(sfx);
         }
     }
+
+    public void PlaySFX(SoundEffect sfx)
+    {
+        sfx.Play();
+    }
 }
