@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Enemies;
@@ -170,6 +171,8 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
                     unlockCondition
                 );
 
+                //Debug.WriteLine(
+                //    $"CREATE DOOR in room build at ({borderPos.X},{borderPos.Y}) side={side} -> {d.To.Room} spawn=({d.To.Spawn.X},{d.To.Spawn.Y})");
                 tileMap.PlaceTile(borderPos, door);
             }
         }

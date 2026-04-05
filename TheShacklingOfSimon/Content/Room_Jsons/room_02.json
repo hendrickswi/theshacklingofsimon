@@ -17,33 +17,49 @@
             "type": "Rock"
         },
         {
-            "x": 6,
+            "x": 8,
             "y": 5,
             "type": "Rock"
         },
         {
-            "x": 6,
+            "x": 8,
             "y": 6,
             "type": "Rock"
         },
         {
-            "x": 6,
+            "x": 8,
             "y": 7,
             "type": "Rock"
         },
-
+        {
+            "x": 4,
+            "y": 4,
+            "type": "Spike"
+        },
         {
             "x": 10,
             "y": 4,
-            "type": "Fire"
+            "type": "Spike"
+        },
+        {
+            "x": 7,
+            "y": 4,
+            "type": "Rock"
         }
     ],
     "entities": [],
     "enemies": [
         {
             "type": "ChaseEnemy",
-            "x": 9,
-            "y": 4,
+            "x": 3,
+            "y": 2,
+            "name": "BlackMaw",
+            "weapon": "NoneWeapon"
+        },
+        {
+            "type": "ChaseEnemy",
+            "x": 11,
+            "y": 6,
             "name": "BlackMaw",
             "weapon": "NoneWeapon"
         }
@@ -58,7 +74,32 @@
                     "x": 12,
                     "y": 4
                 }
-            }
+            },
+            "unlockType": "ClearEnemies"
+        },
+        {
+            "x": 14,
+            "y": 4,
+            "to": {
+                "room": "room_05",
+                "spawn": {
+                    "x": 2,
+                    "y": 4
+                }
+            },
+            "unlockType": "ClearEnemies"
+        },
+        {
+            "x": 7,
+            "y": 0,
+            "to": {
+                "room": "room_06",
+                "spawn": {
+                    "x": 7,
+                    "y": 6
+                }
+            },
+            "unlockType": "ClearEnemies"
         }
     ]
 }

@@ -1,5 +1,6 @@
 ﻿#region
-
+using System.Diagnostics;
+using System.Linq;
 using System;
 using System.IO;
 using System.Text.Json;
@@ -38,11 +39,19 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
         {
             string relativePath = Path.Combine(RoomFolder, $"{roomId}.json");
             string fullPath = Path.Combine(content.RootDirectory, relativePath);
+            string absolutePath = Path.GetFullPath(fullPath);
+
+            //Debug.WriteLine($"READ ROOM ID: {roomId}");
+            //Debug.WriteLine($"READ ROOM PATH: {absolutePath}");
 
             if (!File.Exists(fullPath))
                 throw new FileNotFoundException($"Room file not found at {fullPath}");
 
             string json = File.ReadAllText(fullPath);
+
+            //Debug.WriteLine("RAW JSON START");
+            //Debug.WriteLine(json);
+            //Debug.WriteLine("RAW JSON END");
 
             RoomFileData data = JsonSerializer.Deserialize<RoomFileData>(json, options)
                                 ?? throw new InvalidOperationException($"Failed to deserialize room file {fullPath}");

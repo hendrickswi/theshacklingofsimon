@@ -1,4 +1,14 @@
 {
     "startingRoom": "room_01",
-    "rooms": [ "room_00", "room_01", "room_02", "room_03", "room_04" ]
+    "rooms": [
+        "room_00",
+        "room_01",
+        "room_02",
+        "room_03",
+        "room_04",
+        "room_05",
+        "room_06",
+        "room_07",
+        "room_08"
+    ]
 }

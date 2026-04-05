@@ -7,45 +7,66 @@
             "type": "Fire"
         },
         {
-            "x": 4,
-            "y": 3,
+            "x": 5,
+            "y": 2,
             "type": "Fire"
         },
         {
-            "x": 4,
-            "y": 5,
+            "x": 9,
+            "y": 2,
             "type": "Fire"
+        },
+        {
+            "x": 10,
+            "y": 2,
+            "type": "Fire"
+        },
+        {
+            "x": 6,
+            "y": 4,
+            "type": "Rock"
+        },
+        {
+            "x": 8,
+            "y": 4,
+            "type": "Rock"
         },
         {
             "x": 4,
             "y": 6,
             "type": "Fire"
         },
-
+        {
+            "x": 5,
+            "y": 6,
+            "type": "Fire"
+        },
         {
             "x": 9,
-            "y": 4,
-            "type": "Rock"
+            "y": 6,
+            "type": "Fire"
         },
         {
             "x": 10,
-            "y": 4,
-            "type": "Rock"
-        },
-        {
-            "x": 11,
-            "y": 4,
-            "type": "Rock"
+            "y": 6,
+            "type": "Fire"
         }
     ],
     "entities": [],
     "enemies": [
         {
             "type": "ChaseEnemy",
-            "x": 7,
+            "x": 6,
             "y": 2,
             "name": "BlackMaw",
             "weapon": "NoneWeapon"
+        },
+        {
+            "type": "ProjectileEnemy",
+            "x": 11,
+            "y": 4,
+            "name": "SpiderEnemy",
+            "weapon": "BasicWeapon"
         }
     ],
     "doors": [
@@ -58,7 +79,20 @@
                     "x": 2,
                     "y": 4
                 }
-            }
+            },
+            "unlockType": "ClearEnemies"
+        },
+        {
+            "x": 7,
+            "y": 8,
+            "to": {
+                "room": "room_08",
+                "spawn": {
+                    "x": 7,
+                    "y": 2
+                }
+            },
+            "unlockType": "ClearEnemies"
         }
     ]
 }

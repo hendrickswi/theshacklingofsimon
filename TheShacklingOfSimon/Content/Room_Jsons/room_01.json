@@ -2,44 +2,53 @@
     "id": "room_01",
     "tiles": [
         {
-            "x": 5,
-            "y": 3,
+            "x": 3,
+            "y": 2,
             "type": "Rock"
         },
         {
-            "x": 6,
-            "y": 3,
+            "x": 4,
+            "y": 2,
             "type": "Rock"
         },
         {
-            "x": 8,
-            "y": 3,
+            "x": 10,
+            "y": 2,
             "type": "Rock"
         },
         {
-            "x": 9,
-            "y": 3,
-            "type": "Rock"
-        },
-
-        {
-            "x": 5,
-            "y": 5,
+            "x": 11,
+            "y": 2,
             "type": "Rock"
         },
         {
-            "x": 6,
-            "y": 5,
+            "x": 3,
+            "y": 6,
             "type": "Rock"
         },
         {
-            "x": 8,
-            "y": 5,
+            "x": 4,
+            "y": 6,
             "type": "Rock"
         },
         {
-            "x": 9,
-            "y": 5,
+            "x": 10,
+            "y": 6,
+            "type": "Rock"
+        },
+        {
+            "x": 11,
+            "y": 6,
+            "type": "Rock"
+        },
+        {
+            "x": 7,
+            "y": 2,
+            "type": "Rock"
+        },
+        {
+            "x": 7,
+            "y": 6,
             "type": "Rock"
         }
     ],
@@ -55,7 +64,8 @@
                     "x": 7,
                     "y": 6
                 }
-            }
+            },
+            "unlockType": "ClearEnemies"
         },
         {
             "x": 14,
@@ -66,7 +76,8 @@
                     "x": 2,
                     "y": 4
                 }
-            }
+            },
+            "unlockType": "ClearEnemies"
         },
         {
             "x": 7,
@@ -77,7 +88,8 @@
                     "x": 7,
                     "y": 2
                 }
-            }
+            },
+            "unlockType": "ClearEnemies"
         },
         {
             "x": 0,
@@ -88,7 +100,8 @@
                     "x": 12,
                     "y": 4
                 }
-            }
+            },
+            "unlockType": "ClearEnemies"
         }
     ]
 }

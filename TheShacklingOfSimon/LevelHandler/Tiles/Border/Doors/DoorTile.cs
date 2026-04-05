@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Collisions;
@@ -121,6 +122,8 @@ namespace TheShacklingOfSimon.LevelHandler.Tiles.Border.Doors
                 return;
             }
 
+            //Debug.WriteLine(
+            //    $"TOUCH DOOR side={Side} -> {ToRoom} spawn={SpawnGrid} locked={IsLocked}");
             roomNavigator.RequestRoomSwitch(ToRoom, SpawnGrid, player);
         }
 

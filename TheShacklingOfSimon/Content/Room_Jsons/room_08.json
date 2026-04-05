@@ -1,5 +1,5 @@
 {
-    "id": "room_03",
+    "id": "room_08",
     "tiles": [
         {
             "x": 3,
@@ -14,45 +14,35 @@
         {
             "x": 4,
             "y": 3,
-            "type": "Spike"
-        },
-        {
-            "x": 6,
-            "y": 3,
-            "type": "Spike"
-        },
-        {
-            "x": 8,
-            "y": 3,
-            "type": "Spike"
+            "type": "Rock"
         },
         {
             "x": 10,
             "y": 3,
-            "type": "Spike"
+            "type": "Rock"
         },
         {
             "x": 5,
-            "y": 5,
-            "type": "Spike"
+            "y": 4,
+            "type": "Fire"
         },
         {
-            "x": 7,
-            "y": 5,
-            "type": "Rock"
+            "x": 6,
+            "y": 4,
+            "type": "Fire"
+        },
+        {
+            "x": 8,
+            "y": 4,
+            "type": "Fire"
         },
         {
             "x": 9,
-            "y": 5,
-            "type": "Spike"
+            "y": 4,
+            "type": "Fire"
         },
         {
-            "x": 3,
-            "y": 6,
-            "type": "Rock"
-        },
-        {
-            "x": 11,
+            "x": 7,
             "y": 6,
             "type": "Rock"
         }
@@ -60,15 +50,15 @@
     "entities": [],
     "enemies": [
         {
-            "type": "ProjectileEnemy",
-            "x": 2,
+            "type": "ChaseEnemy",
+            "x": 3,
             "y": 6,
-            "name": "SpiderEnemy",
-            "weapon": "BasicWeapon"
+            "name": "BlackMaw",
+            "weapon": "NoneWeapon"
         },
         {
             "type": "ProjectileEnemy",
-            "x": 12,
+            "x": 11,
             "y": 6,
             "name": "SpiderEnemy",
             "weapon": "BasicWeapon"
@@ -79,22 +69,10 @@
             "x": 7,
             "y": 0,
             "to": {
-                "room": "room_01",
+                "room": "room_04",
                 "spawn": {
                     "x": 7,
                     "y": 6
-                }
-            },
-            "unlockType": "ClearEnemies"
-        },
-        {
-            "x": 7,
-            "y": 8,
-            "to": {
-                "room": "room_07",
-                "spawn": {
-                    "x": 7,
-                    "y": 2
                 }
             },
             "unlockType": "ClearEnemies"

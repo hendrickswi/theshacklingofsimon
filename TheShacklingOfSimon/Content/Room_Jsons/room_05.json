@@ -1,0 +1,66 @@
+{
+    "id": "room_05",
+    "tiles": [
+        {
+            "x": 5,
+            "y": 2,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 2,
+            "type": "Rock"
+        },
+        {
+            "x": 7,
+            "y": 2,
+            "type": "Rock"
+        },
+        {
+            "x": 8,
+            "y": 2,
+            "type": "Rock"
+        },
+        {
+            "x": 9,
+            "y": 2,
+            "type": "Rock"
+        },
+        {
+            "x": 5,
+            "y": 6,
+            "type": "Rock"
+        },
+        {
+            "x": 9,
+            "y": 6,
+            "type": "Rock"
+        },
+        {
+            "x": 6,
+            "y": 5,
+            "type": "Rock"
+        },
+        {
+            "x": 8,
+            "y": 5,
+            "type": "Rock"
+        }
+    ],
+    "entities": [],
+    "enemies": [],
+    "doors": [
+        {
+            "x": 0,
+            "y": 4,
+            "to": {
+                "room": "room_02",
+                "spawn": {
+                    "x": 12,
+                    "y": 4
+                }
+            },
+            "unlockType": "ClearEnemies"
+        }
+    ]
+}

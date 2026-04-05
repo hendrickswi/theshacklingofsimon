@@ -1,9 +1,10 @@
 ﻿#region
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomClass;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor;
@@ -99,6 +100,7 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomManager
 
             PendingRoomSwitch request = pendingSwitch.Value;
 
+            //Debug.WriteLine($"SWITCH TO {request.RoomId} spawn={request.SpawnGrid}");
             GoTo(request.RoomId);
             request.Player.SetPosition(CurrentRoom.TileMap.GridToWorld(request.SpawnGrid));
 
@@ -168,6 +170,8 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomManager
                 if (tile is DoorTile door)
                 {
                     door.BindNavigator(this);
+                    //Debug.WriteLine(
+                    //    $"BOUND DOOR in {roomId}: side={door.Side} -> {door.ToRoom} spawn={door.SpawnGrid}");
                 }
             }
 
@@ -176,6 +180,7 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomManager
                 roomCache[roomId] = room;
             }
 
+            //Debug.WriteLine($"LOAD ROOM {roomId}");
             return room;
         }
 

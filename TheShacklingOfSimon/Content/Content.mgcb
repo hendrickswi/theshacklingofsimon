@@ -194,6 +194,18 @@
 #begin Room_Jsons/room_04.json
 /copy:Room_Jsons/room_04.json
 
+#begin Room_Jsons/room_05.json
+/copy:Room_Jsons/room_05.json
+
+#begin Room_Jsons/room_06.json
+/copy:Room_Jsons/room_06.json
+
+#begin Room_Jsons/room_07.json
+/copy:Room_Jsons/room_07.json
+
+#begin Room_Jsons/room_08.json
+/copy:Room_Jsons/room_08.json
+
 #begin Room_Jsons/room_index.json
 /copy:Room_Jsons/room_index.json
 
