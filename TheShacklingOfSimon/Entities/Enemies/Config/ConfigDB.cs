@@ -15,7 +15,8 @@ public static class ConfigDB
             AttackCooldown = 3f,
             AttackRange = 10f,
             ContactDamage = 1f,
-            MaxHealth = 3
+            MaxHealth = 3,
+            InvulnerabilityDuration = 0.25f
         },
 
         ["SpiderEnemy"] = new EnemyConfig
@@ -24,7 +25,8 @@ public static class ConfigDB
             AttackCooldown = 1.5f,
             AttackRange = 8f,
             ContactDamage = 1f,
-            MaxHealth = 2
+            MaxHealth = 2,
+            InvulnerabilityDuration = 0.25f
         }
     };
 }

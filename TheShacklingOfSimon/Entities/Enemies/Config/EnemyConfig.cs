@@ -13,4 +13,6 @@ public class EnemyConfig
     public float ContactDamage { get; set; }
     public int MaxHealth { get; set; }
     public IWeapon Weapon { get; set; }
+    
+    public float InvulnerabilityDuration { get; set; }
 }

@@ -73,18 +73,19 @@ public abstract class DamageableEntity : IDamageableEntity
     public abstract void OnCollision(ITile tile);
     public abstract void OnCollision(IPickup pickup);
     
-    public virtual void TakeDamage(int amt)
+    public virtual bool TakeDamage(int amt)
     {
-        if (InvulnerabilityTimer > 0) return;
-
-        // Default amount that will likely be overriden by extending classes
-        InvulnerabilityTimer = 0.25f;
+        if (InvulnerabilityTimer > 0) return false;
+        
+        InvulnerabilityTimer = EffectStats[StatType.InvulnerabilityDuration];
         
         Health -= amt;
         if (Health <= 0)
         {
             Discontinue();
         }
+
+        return true;
     }
 
     public virtual void Heal(int amt)
