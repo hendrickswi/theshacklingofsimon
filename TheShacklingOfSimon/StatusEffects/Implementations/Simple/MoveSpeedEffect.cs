@@ -7,7 +7,7 @@ using TheShacklingOfSimon.Entities;
 
 namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
-public class MoveSpeedEffect : StatusEffect
+public class MoveSpeedEffect : SimpleStatusEffect
 {
 
     /// <summary>

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.LevelHandler.Tiles.TileConstructor;
+using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
@@ -14,8 +15,9 @@ public class BasicProjectile : ProjectileBase
 {
 	private float timeActive;
 	private Texture2D debugTexture;
-	
-	public BasicProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
+    private ISprite fireBall;
+
+    public BasicProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
         Position = startPos;
 		Stats = stats;
@@ -34,9 +36,12 @@ public class BasicProjectile : ProjectileBase
 
 		Sprite = sprite;
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
+
+        fireBall = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
+
     }
 
-	public override void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
 	{
 		float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 		timeActive +=dt;
@@ -50,11 +55,12 @@ public class BasicProjectile : ProjectileBase
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-        debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-		debugTexture.SetData(new[] { Color.White });
-        
-        spriteBatch.Draw(debugTexture, Hitbox, Color.Red);
-	}
+		//       debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+		//	debugTexture.SetData(new[] { Color.White });
+
+		//       spriteBatch.Draw(debugTexture, Hitbox, Color.Red);
+		fireBall.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+    }
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{

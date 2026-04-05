@@ -7,9 +7,9 @@ using TheShacklingOfSimon.Entities;
 
 namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
-public class PrimaryCooldownEffect : StatusEffect
+public class SecondaryCooldownEffect : SimpleStatusEffect
 {
-    public PrimaryCooldownEffect(IDamageableEntity owner, float strength, float duration) 
+    public SecondaryCooldownEffect(IDamageableEntity owner, float strength, float duration) 
         : base(owner, strength, duration)
     {
     }
@@ -17,21 +17,21 @@ public class PrimaryCooldownEffect : StatusEffect
     public override void OnApply()
     {
         Timer = 0.0f;
-        float currentCooldown = Owner.GetStat(StatType.PrimaryCooldown);
+        float currentCooldown = Owner.GetStat(StatType.SecondaryCooldown);
         float newCooldown = currentCooldown + Strength;
         
         Difference = currentCooldown - newCooldown;
-        Owner.SetStat(StatType.PrimaryCooldown, newCooldown);
+        Owner.SetStat(StatType.SecondaryCooldown, newCooldown);
     }
 
     public override void OnRemove()
     {
-        Owner.SetStat(StatType.PrimaryCooldown, Owner.GetStat(StatType.PrimaryCooldown) + Difference);
+        Owner.SetStat(StatType.SecondaryCooldown, Owner.GetStat(StatType.SecondaryCooldown) + Difference);
     }
 
     public override void Merge(IStatusEffect other)
     {
-        if (other is not PrimaryCooldownEffect otherCasted) return;
+        if (other is not SecondaryCooldownEffect otherCasted) return;
 
         Strength += otherCasted.Strength;
         Duration = Math.Max(Duration, otherCasted.Duration);

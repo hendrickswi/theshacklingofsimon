@@ -7,7 +7,7 @@ using TheShacklingOfSimon.Entities;
 
 namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
-public class DamageMultiplierEffect : StatusEffect
+public class DamageMultiplierEffect : SimpleStatusEffect
 {
     /// <summary>
     /// Represents a status effect that additively modifies the damage multiplier of an object of

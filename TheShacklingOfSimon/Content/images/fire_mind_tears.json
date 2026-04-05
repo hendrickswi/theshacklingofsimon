@@ -1,0 +1,17 @@
+{
+	"Sprites": [
+		{
+			"Name": "FireballProjectile",
+			"Frames": [
+				{
+					"X": 3,
+					"Y": 38,
+					"W": 25,
+					"H": 20
+				}
+			]
+			
+
+		}
+	]
+}

@@ -42,13 +42,15 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         Initialize(startPosition);
     }
 
-    public override void TakeDamage(int damage)
+    public override bool TakeDamage(int damage)
     {
-        base.TakeDamage(damage);
+        if (!base.TakeDamage(damage)) return false;
         InvulnerabilityTimer = EffectStats[StatType.InvulnerabilityDuration];
       
 
         StatesManager.HandleDamageInterrupt(Health <= 0);
+
+        return true;
     }
 
     public void Reset(Vector2 startPosition)

@@ -5,7 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.LevelHandler.Tiles.TileConstructor;
+using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
+using static System.Formats.Asn1.AsnWriter;
 
 #endregion
 
@@ -16,7 +18,9 @@ public class FireballProjectile : ProjectileBase
 	private float timeActive;
 	private Texture2D debugTexture;
 	
-	public FireballProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
+    private ISprite fireBall;
+
+    public FireballProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
         
         Position = startPos;
@@ -35,7 +39,10 @@ public class FireballProjectile : ProjectileBase
 		Velocity = direction * stats.Speed;
 
 		Sprite = sprite;
-		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
+		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
+		
+		fireBall = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
+
     }
 
 	public override void Update(GameTime gameTime)
@@ -44,7 +51,7 @@ public class FireballProjectile : ProjectileBase
 		timeActive +=dt;
 		Position += Velocity * dt;
 
-		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
+		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
 		ShouldDestroy();
 
 		Sprite?.Update(gameTime);
@@ -52,11 +59,13 @@ public class FireballProjectile : ProjectileBase
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-        debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-		debugTexture.SetData(new[] { Color.White });
-        
-        spriteBatch.Draw(debugTexture, Hitbox, Color.Blue);
-	}
+        //      debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+        //debugTexture.SetData(new[] { Color.White });
+
+        //spriteBatch.Draw(debugTexture, Hitbox, Color.Blue);
+        fireBall.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+
+    }
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{

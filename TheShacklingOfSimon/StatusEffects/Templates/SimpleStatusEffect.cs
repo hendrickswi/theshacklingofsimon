@@ -7,7 +7,7 @@ using TheShacklingOfSimon.Entities;
 
 namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
-public abstract class StatusEffect : IStatusEffect
+public abstract class SimpleStatusEffect : IStatusEffect
 {
     public bool IsFinished { get; private set; }
     public IDamageableEntity Owner { get; private set; }
@@ -17,7 +17,7 @@ public abstract class StatusEffect : IStatusEffect
     protected float Timer;
     protected float Difference;
 
-    protected StatusEffect(IDamageableEntity owner, float strength, float duration)
+    protected SimpleStatusEffect(IDamageableEntity owner, float strength, float duration)
     {
         IsFinished = false;
         Owner = owner;

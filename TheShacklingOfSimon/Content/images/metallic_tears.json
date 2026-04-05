@@ -1,0 +1,15 @@
+{
+	"Sprites": [
+		{
+			"Name": "BasicProjectile",
+			"Frames": [
+				{
+					"X": 232,
+					"Y": 8,
+					"W": 15,
+					"H": 15
+				}
+			]
+		}
+	]
+}

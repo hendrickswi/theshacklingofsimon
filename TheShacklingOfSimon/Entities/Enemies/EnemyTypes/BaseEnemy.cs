@@ -12,6 +12,7 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.LevelHandler.Tiles;
+using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -53,6 +54,9 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         AttackCooldown = config.AttackCooldown;
         ContactDamage = config.ContactDamage;
         AttackRange = config.AttackRange;
+        
+        // TODO: do all stats like this to allow for status effects on enemies
+        EffectStats.Add(StatType.InvulnerabilityDuration, config.InvulnerabilityDuration);
 
         AttackTimer = 0f;
 
@@ -155,14 +159,9 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         
     }
 
-    public override void TakeDamage(int damage)
+    public override bool TakeDamage(int damage)
     {
-        if (InvulnerabilityTimer > 0f){
-            return;
-        }
-
-        base.TakeDamage(damage);
-        InvulnerabilityTimer = 0.25f; // Example invulnerability duration after taking damage
+        if (!base.TakeDamage(damage)) return false;
         
         // Case for enemy dying
         if (Health <= 0)
@@ -174,6 +173,8 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         {
             ChangeState(new EnemyDamagedState(this, 0.2f)); // Example duration for damaged state
         }
+
+        return true;
     }
 
     public void ChangeState(IEnemyState newState)
