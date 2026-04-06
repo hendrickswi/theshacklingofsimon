@@ -1,24 +1,32 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 namespace TheShacklingOfSimon.StatusEffects.Implementations;
 
 public class DeltaHealthEffect : RecurringStatusEffect
 {
-    public DeltaHealthEffect(string name, IDamageableEntity owner, float tickStrength, float duration, float numTicks) 
-        : base(name, owner, tickStrength, duration, numTicks)
+    public DeltaHealthEffect(string name, EffectType type, IDamageableEntity owner, float tickStrength, float duration, float numTicks) 
+        : base(name, type, owner, tickStrength, duration, numTicks)
     {
     }
 
     public override void Update(GameTime delta)
     {
         base.Update(delta);
+        if (PreviousApplicationTime < TickDuration) return;
 
-        if (PreviousApplicationTime >= TickDuration)
+        if (Strength >= 0)
+        {
+            Owner.Heal((int)Strength);
+        }
+        else
         {
             Owner.TakeDamage((int)Strength);
+                    
         }
+        PreviousApplicationTime -= TickDuration;
     }
 
     public override void Merge(IStatusEffect other)

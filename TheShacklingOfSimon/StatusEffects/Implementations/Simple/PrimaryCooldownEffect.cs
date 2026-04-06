@@ -2,6 +2,7 @@
 
 using System;
 using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 #endregion
 
@@ -19,11 +20,12 @@ public class PrimaryCooldownEffect : SimpleStatusEffect
     /// It simply adjusts the underlying stat of <c>owner</c>.
     /// </remarks>
     /// <param name="name">The name of the effect.</param>
+    /// <param name="type">The matching <c>EffectType</c> of the effect.</param>
     /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is applied.</param>
     /// <param name="strength">The amount of cooldown reduction to be added or removed.</param>
     /// <param name="duration">The duration of the effect in seconds.</param>
-    public PrimaryCooldownEffect(string name, IDamageableEntity owner, float strength, float duration)
-        : base(name, owner, strength, duration)
+    public PrimaryCooldownEffect(string name, EffectType type, IDamageableEntity owner, float strength, float duration)
+        : base(name, type, owner, strength, duration)
     {
     }
 

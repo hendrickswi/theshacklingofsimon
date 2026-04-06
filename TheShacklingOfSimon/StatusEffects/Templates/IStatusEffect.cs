@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 #endregion
 
@@ -10,6 +11,7 @@ namespace TheShacklingOfSimon.StatusEffects;
 public interface IStatusEffect
 {
     string Name { get; }
+    EffectType Type { get; }
     bool IsFinished { get; }
     IDamageableEntity Owner { get; }
     

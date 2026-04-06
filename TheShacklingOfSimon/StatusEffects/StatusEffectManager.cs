@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 #endregion
 
@@ -10,11 +11,11 @@ namespace TheShacklingOfSimon.StatusEffects;
 
 public class StatusEffectManager
 {
-    private readonly Dictionary<Type, IStatusEffect> _activeEffects;
+    private readonly Dictionary<EffectType, IStatusEffect> _activeEffects;
 
     public StatusEffectManager()
     {
-        _activeEffects = new Dictionary<Type, IStatusEffect>();
+        _activeEffects = new Dictionary<EffectType, IStatusEffect>();
     }
 
     /// <summary>
@@ -26,7 +27,7 @@ public class StatusEffectManager
     /// <param name="effect">The status effect to be added or merged into the active effects list.</param>
     public void AddEffect(IStatusEffect effect)
     {
-        Type type = effect.GetType();
+        EffectType type = effect.Type;
         if (_activeEffects.ContainsKey(type))
         {
             // Delegate merge logic to the concrete implementation
@@ -46,7 +47,7 @@ public class StatusEffectManager
     {
         if (_activeEffects.Count <= 0) return;
 
-        List<Type> markedForRemoval = new List<Type>();
+        List<EffectType> markedForRemoval = new List<EffectType>();
         foreach (var pair in _activeEffects)
         {
             IStatusEffect effect = pair.Value;
@@ -57,7 +58,7 @@ public class StatusEffectManager
             }
         }
 
-        foreach (Type type in markedForRemoval)
+        foreach (var type in markedForRemoval)
         {
             _activeEffects[type].OnRemove();
             _activeEffects.Remove(type);
@@ -75,7 +76,7 @@ public class StatusEffectManager
     {
         if (_activeEffects.ContainsValue(effect))
         {
-            _activeEffects.Remove(effect.GetType());
+            _activeEffects.Remove(effect.Type);
         }
     }
 

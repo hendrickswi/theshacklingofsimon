@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Implementations;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 #endregion
 
@@ -50,10 +51,10 @@ public class AdrenalineItem : IItem
         _fireRateMultiplier = fireRateMultiplier;
         _projSpeedMultiplier = projSpeedMultiplier;
         
-        _speedBuff = new MoveSpeedEffect("Speed up", Player, _moveSpeedMultiplier, _durationSeconds);
-        _primaryCooldownBuff = new PrimaryCooldownEffect("Primary attack speed up", Player, _fireRateMultiplier, _durationSeconds);
-        _secondaryCooldownBuff = new SecondaryCooldownEffect("Secondary attack speed up", Player, _fireRateMultiplier, _durationSeconds);
-        _projectileSpeedBuff = new ProjectileSpeedEffect("Projectile speed up", Player, _projSpeedMultiplier, _durationSeconds);
+        _speedBuff = new MoveSpeedEffect("Speed up", EffectType.MoveSpeed, Player, _moveSpeedMultiplier, _durationSeconds);
+        _primaryCooldownBuff = new PrimaryCooldownEffect("Primary attack speed up", EffectType.PrimaryCooldown, Player, _fireRateMultiplier, _durationSeconds);
+        _secondaryCooldownBuff = new SecondaryCooldownEffect("Secondary attack speed up", EffectType.SecondaryCooldown, Player, _fireRateMultiplier, _durationSeconds);
+        _projectileSpeedBuff = new ProjectileSpeedEffect("Projectile speed up", EffectType.ProjectileSpeedMultiplier, Player, _projSpeedMultiplier, _durationSeconds);
 
         Name = "Adrenaline";
         Description = "Massive speed, fire-rate, and projectile speed boost for a short time.";
