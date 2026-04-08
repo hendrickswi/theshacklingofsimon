@@ -29,7 +29,7 @@ public class EnemyDeadState : IEnemyState
         _enemy.Velocity = Vector2.Zero;
 
         // Set death animation
-        string spriteName = _enemy.Name + "_EnemyDeath";
+        string spriteName = _enemy.Name + "_Death";
         _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(spriteName, 0.2f);
         //AddPickup(new Pickup(_enemy.Position, _enemy.EnemyDrop, /* Sprite */));
     }
@@ -63,5 +63,10 @@ public class EnemyDeadState : IEnemyState
     public void HandleAttack(Vector2 direction, float stateDuration)
     {
         // No attacking when dead
+    }
+
+    public void HandleDamage(int damage)
+    {
+        // already dead
     }
 }

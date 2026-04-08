@@ -59,9 +59,21 @@ public class EnemyMovingState : IEnemyState
         }
     }
 
+    public void HandleDamage(int damage)
+    {
+        if (_enemy.Health <= 0)
+        {
+            _enemy.ChangeState(new EnemyDeadState(_enemy, 2.5f));
+        }
+        else
+        {
+            _enemy.ChangeState(new EnemyDamagedState(_enemy, 0.2f));
+        }
+    }
+
     private void UpdateSprite()
     {
-        string newAnimationName = _enemy.Name + "_EnemyWalk";
+        string newAnimationName = _enemy.Name + "_Walk";
 
         _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
         _currentAnimation = newAnimationName;

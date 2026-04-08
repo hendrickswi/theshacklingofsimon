@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Weapons;
+using TheShacklingOfSimon.Sprites.Factory;
 
 #endregion
 
@@ -30,9 +31,9 @@ public class EnemyAttackingState : IEnemyState
         // _direction is already "cardinalized" from PlayerHeadIdleState consider changing to match movement direction
         _weapon.Fire(_enemy.Position, _direction, new ProjectileStats(1, 200.0f, ProjectileOwner.Enemy));
 
-        //string spriteAnimationName = "EnemyAttack";
+        string newAnimationName = _enemy.Name + "_Attack";
 
-        //_enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(spriteAnimationName, 0.2f);
+        _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
     }
     
     public void Exit()
@@ -43,27 +44,33 @@ public class EnemyAttackingState : IEnemyState
     public void Update(GameTime delta)
     {
         _timer += (float)delta.ElapsedGameTime.TotalSeconds;
+
+        _enemy.Sprite?.Update(delta);
+
         if (_timer >= _stateDuration)
         {
-            _enemy.ChangeState(new EnemyIdleState(_enemy, Vector2.Zero));
-            return;
-        }
-        else
-        {
-            _enemy.Sprite?.Update(delta);
+            // Return to idle after attack finishes
+            _enemy.ChangeState(new EnemyIdleState(_enemy, _direction));
         }
     }
 
     public void HandleMovement(Vector2 direction)
     {
-        if (direction.LengthSquared() > 0.0001f && _timer >= _stateDuration)
-        {
-            _enemy.ChangeState(new EnemyMovingState(_enemy, direction));
-        }
+        //disable movement while attacking
+        _enemy.Velocity = Vector2.Zero;
     }
 
     public void HandleAttack(Vector2 direction, float stateDuration)
     {
         // no-op
+    }
+
+    public void HandleDamage(int damage)
+    {
+        if (_enemy.Health <= 0)
+        {
+            _enemy.ChangeState(new EnemyDeadState(_enemy, 2.5f));
+        }
+        // else ignore damage reaction
     }
 }

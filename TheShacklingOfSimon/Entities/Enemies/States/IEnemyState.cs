@@ -13,4 +13,5 @@ public interface IEnemyState
     void Update(GameTime delta);
     void HandleMovement(Vector2 movementInput);
     void HandleAttack(Vector2 direction, float stateDuration);
+    void HandleDamage(int damage);
 }

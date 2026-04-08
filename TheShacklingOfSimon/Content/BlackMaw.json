@@ -1,13 +1,13 @@
 {
   "sprites": [
     {
-      "name": "BlackMaw_EnemyIdle",
+      "name": "BlackMaw_Idle",
       "frames": [
         { "X": 3,   "Y": 102,   "W": 51, "H": 36 }
       ]
     },
     {
-      "name": "BlackMaw_EnemyWalk",
+      "name": "BlackMaw_Walk",
       "frames": [
         { "X": 2,  "Y": 6,   "W": 53, "H": 35 },
         { "X": 67, "Y": 6,   "W": 52, "H": 35 },
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "name": "BlackMaw_EnemyHurt",
+      "name": "BlackMaw_Attack",
       "frames": [
         { "X": 65,  "Y": 51,   "W": 59, "H": 41 },
         { "X": 3,  "Y": 102,   "W": 51, "H": 36 },
@@ -25,7 +25,17 @@
       ]
     },
     {
-      "name": "BlackMaw_EnemyDeath",
+      "name": "BlackMaw_Hurt",
+      "frames": [
+        { "X": 65,  "Y": 51,   "W": 59, "H": 41 },
+        { "X": 3,  "Y": 102,   "W": 51, "H": 36 },
+        { "X": 68,   "Y": 103,   "W": 52, "H": 34 },
+        { "X": 65,  "Y": 51,   "W": 59, "H": 41 },
+        { "X": 3,  "Y": 102,   "W": 51, "H": 36 }
+      ]
+    },
+    {
+      "name": "BlackMaw_Death",
       "frames": [
         { "X": 65,  "Y": 51,   "W": 59, "H": 41 },
         { "X": 3,   "Y": 102,   "W": 51, "H": 36 },

@@ -36,7 +36,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     public float ContactDamage { get; set; }
     public IItem EnemyDrop { get; set; }
 
-    protected IMovementBehavior _movementBehavior;
+    protected IMovementBehavior _movementBehaviour;
 
     public event Action<IProjectile> OnProjectileCreated;
 
@@ -61,7 +61,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         AttackTimer = 0f;
 
         //movement default
-        _movementBehavior = new NoMovementBehaviour();
+        _movementBehaviour = new NoMovementBehaviour();
 
         SetWeapon(weapon);
         Reset(startPosition);
@@ -97,7 +97,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
     public virtual void RegisterMovement(float dt, Vector2 targetDirection)
     {
-        Vector2 movementInput = _movementBehavior.GetMovement(this, dt, targetDirection);
+        Vector2 movementInput = _movementBehaviour.GetMovement(this, dt, targetDirection);
 
         if (movementInput.LengthSquared() > 0.0001f)
             movementInput.Normalize();
@@ -162,18 +162,8 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     public override bool TakeDamage(int damage)
     {
         if (!base.TakeDamage(damage)) return false;
-        
-        // Case for enemy dying
-        if (Health <= 0)
-        {
-            ChangeState(new EnemyDeadState(this, 2.5f)); // Example duration for death state
-        }
-        // If not dead, then damaged
-        else
-        {
-            ChangeState(new EnemyDamagedState(this, 0.2f)); // Example duration for damaged state
-        }
 
+        CurrentState.HandleDamage(damage);
         return true;
     }
 

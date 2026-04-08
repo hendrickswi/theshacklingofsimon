@@ -23,7 +23,7 @@ public class EnemyDamagedState : IEnemyState
     public void Enter()
     {
         // Set hurt sprite
-        string spriteName = _enemy.Name + "_EnemyHurt";
+        string spriteName = _enemy.Name + "_Hurt";
         _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(spriteName);
 
         // Optional: stop movement when hit
@@ -57,5 +57,14 @@ public class EnemyDamagedState : IEnemyState
     public void HandleAttack(Vector2 direction, float stateDuration)
     {
         // no op
+    }
+
+    public void HandleDamage(int damage)
+    {
+        if (_enemy.Health <= 0)
+        {
+            _enemy.ChangeState(new EnemyDeadState(_enemy, 2.5f));
+        }
+        // else ignore (invulnerability window)
     }
 }

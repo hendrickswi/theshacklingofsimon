@@ -11,18 +11,18 @@ namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
 public class ProjectileEnemy : BaseEnemy
 {
-    private readonly IAttackBehaviour _attackBehavior;
+    private readonly IAttackBehaviour _attackBehaviour;
 
     public ProjectileEnemy(Vector2 startPosition, IWeapon weapon, string name = "SpiderEnemy")
         : base(startPosition, weapon, name)
     {
-        _attackBehavior = new ProjectileAttackBehaviour();
+        _attackBehaviour = new AllowedAttackBehaviour();
 
-        _movementBehavior = new WanderMovementBehavior();
+        _movementBehaviour = new WanderMovementBehavior();
     }
 
     public override void RegisterAttack(float dt, Vector2 targetDirection)
     {
-        _attackBehavior.Execute(this, dt, targetDirection);
+        _attackBehaviour.Execute(this, dt, targetDirection);
     }
 }

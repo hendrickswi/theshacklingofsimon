@@ -1,13 +1,13 @@
 {
   "sprites": [
     {
-      "name": "SpiderEnemy_EnemyIdle",
+      "name": "SpiderEnemy_Idle",
       "frames": [
         { "X": 9,   "Y": 6,   "W": 36, "H": 42 }
       ]
     },
     {
-      "name": "SpiderEnemy_EnemyWalk",
+      "name": "SpiderEnemy_Walk",
       "frames": [
         { "X": 57,  "Y": 7,   "W": 36, "H": 41 },
         { "X": 100, "Y": 4,   "W": 45, "H": 44 },
@@ -16,14 +16,26 @@
       ]
     },
     {
-      "name": "SpiderEnemy_EnemyHurt",
+      "name": "SpiderEnemy_Attack",
+      "frames": [
+        { "X": 10,  "Y": 101,   "W": 34, "H": 44 },
+        { "X": 102,  "Y": 115,   "W": 42, "H": 30 },
+        { "X": 102,  "Y": 115,   "W": 42, "H": 30 },
+        { "X": 102,  "Y": 115,   "W": 42, "H": 30 },
+        { "X": 102,  "Y": 115,   "W": 42, "H": 30 },
+        { "X": 102,  "Y": 115,   "W": 42, "H": 30 },
+        { "X": 10,  "Y": 101,   "W": 34, "H": 44 }
+      ]
+    },
+    {
+      "name": "SpiderEnemy_Hurt",
       "frames": [
         { "X": 10,  "Y": 101,   "W": 34, "H": 44 },
         { "X": 102,  "Y": 115,   "W": 42, "H": 30 }
       ]
     },
     {
-      "name": "SpiderEnemy_EnemyDeath",
+      "name": "SpiderEnemy_Death",
       "frames": [
         { "X": 10,  "Y": 101,   "W": 34, "H": 44 },
         { "X": 102,  "Y": 115,   "W": 42, "H": 30 },
