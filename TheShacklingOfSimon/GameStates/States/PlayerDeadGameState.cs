@@ -29,7 +29,6 @@ public class PlayerDeadGameState : IGameState
         {
             restartGame?.Invoke();
             _stateManager.RemoveState();
-            Console.WriteLine("Removing dead state");
         };
         _quitGame = quitGame;
     }
@@ -37,7 +36,6 @@ public class PlayerDeadGameState : IGameState
     public void Enter()
     {
         _inputManager.LoadDeadStateControls(_restartGame, _quitGame);
-        Console.WriteLine("Entering dead state");
     }
 
     public void Exit()
