@@ -17,6 +17,6 @@ public class UnpauseCommand : ICommand
 
     public void Execute()
     {
-        _stateManager.RemoveTopState();
+        _stateManager.RemoveState();
     }
 }

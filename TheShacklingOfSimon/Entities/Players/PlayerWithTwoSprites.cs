@@ -126,29 +126,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
 
     public event Action OnDeath;
 
-    // More explicit interface implementation for renaming purposes
-    void IPlayer.ChangeState(IPlayerState newState)
-    {
-        switch (newState)
-        {
-            case IPlayerHeadState:
-            {
-                StatesManager.ChangeHeadState((IPlayerHeadState)newState);
-                break;
-            }
-
-            case IPlayerBodyState:
-            {
-                StatesManager.ChangeBodyState((IPlayerBodyState)newState);
-                break;
-            }
-            default:
-            {
-                throw new ArgumentException("newState must be of type IPlayerHeadState, IPlayerBodyState.");
-            }
-        }
-    }
-
     private void Initialize(Vector2 startPosition)
     {
         /*

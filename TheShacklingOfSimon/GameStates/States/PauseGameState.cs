@@ -36,7 +36,7 @@ public class PauseGameState : IGameState
     public void Enter()
     {
         _inputManager.LoadPauseControls(
-            onResumeRequested: () => _stateManager.RemoveTopState(),
+            onResumeRequested: () => _stateManager.RemoveState(),
             onQuitRequested: _quitGame);
 
         if (_overlayTexture == null)
