@@ -9,3 +9,10 @@ public interface IController
     void ClearCommands();
     event Action<InputSchema> OnInputDetected;
 }
+
+// For the generic methods
+public interface IController<T> : IController
+{
+    void RegisterCommand(T input, ICommand command);
+    void UnregisterCommand(T input);
+}
