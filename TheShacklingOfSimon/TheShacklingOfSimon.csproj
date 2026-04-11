@@ -109,6 +109,18 @@
         <None Update="Content\1x1white.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+
+        <None Update="Content\fonts\spritefont\Upheaval16.spritefont">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\fonts\spritefont\Upheaval32.spritefont">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\fonts\ttf\Upheaval.ttf">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Icon.ico">

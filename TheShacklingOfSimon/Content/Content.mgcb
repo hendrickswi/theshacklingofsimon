@@ -82,6 +82,20 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/spritefont/Roboto.spritefont
 
+#begin fonts/spritefont/Upheaval16.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/spritefont/Upheaval16.spritefont
+
+#begin fonts/spritefont/Upheaval32.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/spritefont/Upheaval32.spritefont
+
 #begin images/8Ball.json
 /copy:images/8Ball.json
 

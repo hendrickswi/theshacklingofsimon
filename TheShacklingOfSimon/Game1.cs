@@ -79,13 +79,13 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
-        LoadFonts();
-        LoadSpriteAssets();
-        LoadSounds();
-
         _projectileManager = new ProjectileManager();
         _collisionManager = new CollisionManager();
         _soundManager = new SoundManager();
+        
+        LoadFonts();
+        LoadSpriteAssets();
+        LoadSounds();
 
         RoomFactory roomFactory = CreateRoomFactory();
         CreateRoomManager(roomFactory);
@@ -128,6 +128,8 @@ public class Game1 : Game
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Roboto", "Roboto");
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Arial", "Arial");
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/OptimusPrinceps", "OptimusPrinceps");
+        SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Upheaval16", "Upheaval16");
+        SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Upheaval32", "Upheaval32");
     }
     
     private void LoadSpriteAssets()
@@ -262,7 +264,6 @@ public class Game1 : Game
 
     private void CreateItemAndPickupManagers()
     {
-        // _itemManager = new ItemManager(_player, SpriteFactory.Instance);
         _pickupManager = new PickupManager();
     }
 
@@ -275,7 +276,6 @@ public class Game1 : Game
             _player,
             this,
             _roomManager,
-            // _itemManager,
             _pickupManager,
             Reset);
     }
@@ -303,6 +303,7 @@ public class Game1 : Game
                 this,
                 _roomManager,
                 _pickupManager,
+                _soundManager,
                 _player,
                 _projectileManager,
                 _collisionManager,
