@@ -28,12 +28,13 @@ public class EnemyAttackingState : IEnemyState
     public void Enter()
     {
         _timer = 0f;
-        // _direction is already "cardinalized" from PlayerHeadIdleState consider changing to match movement direction
-        _weapon.Fire(_enemy.Position, _direction, new ProjectileStats(1, 200.0f, ProjectileOwner.Enemy));
 
         string newAnimationName = _enemy.Name + "_Attack";
 
         _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
+
+        // _direction is already "cardinalized" from PlayerHeadIdleState consider changing to match movement direction
+        _weapon.Fire(_enemy.Position, _direction, new ProjectileStats(1, 200.0f, ProjectileOwner.Enemy));
     }
     
     public void Exit()

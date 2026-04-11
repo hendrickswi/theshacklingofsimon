@@ -72,6 +72,13 @@
             "y": 6,
             "name": "SpiderEnemy",
             "weapon": "BasicWeapon"
+        },
+        {
+            "type": "ChaseEnemy",
+            "x": 1,
+            "y": 1,
+            "name": "AngelicBaby",
+            "weapon": "NoneWeapon"
         }
     ],
     "doors": [

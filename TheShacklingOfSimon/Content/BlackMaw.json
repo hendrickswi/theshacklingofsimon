@@ -15,6 +15,14 @@
       ]
     },
     {
+      "name": "BlackMaw_EnterWalk",
+      "frames": [
+        { "X": 2,  "Y": 6,   "W": 53, "H": 35 },
+        { "X": 67, "Y": 6,   "W": 52, "H": 35 },
+        { "X": 133,  "Y": 6,  "W": 50, "H": 35 }
+      ]
+    },
+    {
       "name": "BlackMaw_Attack",
       "frames": [
         { "X": 65,  "Y": 51,   "W": 59, "H": 41 },

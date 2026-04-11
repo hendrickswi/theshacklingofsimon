@@ -17,7 +17,7 @@ public class AllowedAttackBehaviour : IAttackBehaviour
 
         if (enemy.CanAttack() && direction != Vector2.Zero)
         {
-            enemy.CurrentState.HandleAttack(direction, enemy.AttackCooldown);
+            enemy.CurrentState.HandleAttack(direction, 0.2f);
             enemy.ResetAttackTimer();
         }
     }

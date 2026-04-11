@@ -27,6 +27,16 @@ public static class ConfigDB
             ContactDamage = 1f,
             MaxHealth = 2,
             InvulnerabilityDuration = 0.25f
+        },
+
+        ["AngelicBaby"] = new EnemyConfig
+        {
+            MoveSpeed = 40f,
+            AttackCooldown = 6f,
+            AttackRange = 8f,
+            ContactDamage = 1f,
+            MaxHealth = 4,
+            InvulnerabilityDuration = 0.25f
         }
     };
 }

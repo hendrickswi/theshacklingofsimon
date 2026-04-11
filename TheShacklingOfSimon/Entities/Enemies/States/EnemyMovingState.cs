@@ -13,6 +13,8 @@ public class EnemyMovingState : IEnemyState
     private IEnemy _enemy;
     private string _currentAnimation;
     private Vector2 _direction;
+    private float _enterWalkTimer = 0.5f; // Duration to show EnterWalk
+    private bool _hasSwitchedToWalk = false;
 
     public EnemyMovingState(IEnemy enemy, Vector2 lastDirection)
     {
@@ -23,7 +25,10 @@ public class EnemyMovingState : IEnemyState
     }
     public void Enter()
     {
-        UpdateSprite();
+        string newAnimationName = _enemy.Name + "_EnterWalk";
+        _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
+        _currentAnimation = newAnimationName;
+        _hasSwitchedToWalk = false;
     }
     
     public void Exit()
@@ -34,6 +39,15 @@ public class EnemyMovingState : IEnemyState
     public void Update(GameTime delta)
     {
         _enemy.Sprite?.Update(delta);
+        if (!_hasSwitchedToWalk)
+        {
+            _enterWalkTimer -= (float)delta.ElapsedGameTime.TotalSeconds;
+            if (_enterWalkTimer <= 0)
+            {
+                UpdateSprite();
+                _hasSwitchedToWalk = true;
+            }
+        }
     }
 
     public void HandleMovement(Vector2 direction)
@@ -53,7 +67,7 @@ public class EnemyMovingState : IEnemyState
     public void HandleAttack(Vector2 direction, float stateDuration)
     {
         Vector2 cardinal = GetCardinalDirection(direction);
-        if (direction != Vector2.Zero)
+        if (direction.LengthSquared() > 0.0001f)
         {
             _enemy.ChangeState(new EnemyAttackingState(_enemy, cardinal, stateDuration));
         }
@@ -75,8 +89,11 @@ public class EnemyMovingState : IEnemyState
     {
         string newAnimationName = _enemy.Name + "_Walk";
 
-        _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
-        _currentAnimation = newAnimationName;
+        if (newAnimationName != _currentAnimation)
+        {
+            _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
+            _currentAnimation = newAnimationName;
+        }
     }
 
     private Vector2 GetCardinalDirection(Vector2 input)

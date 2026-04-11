@@ -40,7 +40,7 @@ public class EnemyIdleState : IEnemyState
 
     public void HandleMovement(Vector2 direction)
     {
-        if (direction != Vector2.Zero)
+        if (direction.LengthSquared() > 0.0001f)
         {
             _enemy.ChangeState(new EnemyMovingState(_enemy, direction));
         }
