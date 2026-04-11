@@ -8,6 +8,7 @@ using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Input;
+using TheShacklingOfSimon.Level_Handling;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomManager;
 using TheShacklingOfSimon.Sounds;
 
@@ -21,8 +22,8 @@ public class PlayGameState : IGameState
     private readonly InputManager _inputManager;
     private readonly GraphicsDevice _graphicsDevice;
     private readonly Game1 _game;
-
     private readonly RoomManager _roomManager;
+    private readonly ILevelObjectiveManager _objectiveManager;
     private readonly PickupManager _pickupManager;
     private readonly SoundManager _soundManager;
     private readonly IPlayer _player;
@@ -37,6 +38,7 @@ public class PlayGameState : IGameState
         GraphicsDevice graphicsDevice,
         Game1 game,
         RoomManager roomManager,
+        ILevelObjectiveManager objectiveManager,
         PickupManager pickupManager,
         SoundManager soundManager,
         IPlayer player,
@@ -49,6 +51,7 @@ public class PlayGameState : IGameState
         _graphicsDevice = graphicsDevice;
         _game = game;
         _roomManager = roomManager;
+        _objectiveManager = objectiveManager;
         _pickupManager = pickupManager;
         _soundManager = soundManager;
         _player = player;
@@ -60,12 +63,12 @@ public class PlayGameState : IGameState
     public void Enter()
     {
         _inputManager.LoadGameplayControls(RequestPause);
-        _player.OnDeath += AddPlayerDeadState;
+        _objectiveManager.OnTransitionRequested += HandleTransition;
     }
 
     public void Exit()
     {
-        _player.OnDeath -= AddPlayerDeadState;
+        _objectiveManager.OnTransitionRequested -= HandleTransition;
     }
 
     public void Update(GameTime delta)
@@ -77,6 +80,8 @@ public class PlayGameState : IGameState
 
         _collisionManager.Update(delta);
         _roomManager.ResolvePendingRoomSwitch();
+        
+        _objectiveManager.Update(delta);
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -97,17 +102,9 @@ public class PlayGameState : IGameState
                 _game.Exit));
     }
 
-    private void AddPlayerDeadState()
+    private void HandleTransition(IGameState newState)
     {
-        _stateManager.AddState(
-            new PlayerDeadGameState(
-                _stateManager,
-                _inputManager,
-                _graphicsDevice,
-                _player,
-                _resetGame,
-                _game.Exit
-                )
-            );
+        _stateManager.AddState(newState);
+        Console.WriteLine("Transition requested");
     }
 }

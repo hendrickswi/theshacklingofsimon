@@ -16,6 +16,7 @@ using TheShacklingOfSimon.GameStates;
 using TheShacklingOfSimon.GameStates.States;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Items.Active_Items;
+using TheShacklingOfSimon.Level_Handling.Implementations;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomManager;
 using TheShacklingOfSimon.LevelHandler.Tiles.Border.Doors;
@@ -302,6 +303,14 @@ public class Game1 : Game
                 GraphicsDevice,
                 this,
                 _roomManager,
+                new StandardLevelObjectiveManager(
+                    _gameStateManager, 
+                    _inputManager, 
+                    GraphicsDevice, 
+                    _player, 
+                    _roomManager, 
+                    Reset, 
+                    Exit), // can create functionality to start in different game modes
                 _pickupManager,
                 _soundManager,
                 _player,
