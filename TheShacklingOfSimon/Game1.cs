@@ -19,6 +19,7 @@ using TheShacklingOfSimon.Items.Active_Items;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomManager;
 using TheShacklingOfSimon.LevelHandler.Tiles.Border.Doors;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.UI;
 using TheShacklingOfSimon.Weapons;
@@ -45,6 +46,7 @@ public class Game1 : Game
     private RoomManager _roomManager;
     private PickupManager _pickupManager;
     private InputManager _inputManager;
+    private SoundManager _soundManager;
 
     private IPlayer _player;
     private ProjectileManager _projectileManager;
@@ -79,9 +81,11 @@ public class Game1 : Game
         
         LoadFonts();
         LoadSpriteAssets();
+        LoadSounds();
 
         _projectileManager = new ProjectileManager();
         _collisionManager = new CollisionManager();
+        _soundManager = new SoundManager();
 
         RoomFactory roomFactory = CreateRoomFactory();
         CreateRoomManager(roomFactory);
@@ -150,6 +154,29 @@ public class Game1 : Game
         
         // 1x1 white pixel used for background stuff
         SpriteFactory.Instance.LoadTexture(Content, "1x1white.json", "1x1white");
+    }
+
+    private void LoadSounds()
+    {
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/goodeath0"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/Meaty_Deaths_0"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/TearImpacts0"));
+
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/1up"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/Isaac_Hurt_Grunt0"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/isaacdies"));
+
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/items/itemrecharge"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/items/plop"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/items/Powerup2"));
+
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/other/Coin_Slot"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/other/dark-souls-you-died-sound-effect_hm5sYFG"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/other/Fart"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/other/Rock_crumble 0"));
+
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/splatter00"));
+        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/stoneshoot2"));
     }
 
     private RoomFactory CreateRoomFactory()

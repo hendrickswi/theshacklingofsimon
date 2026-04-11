@@ -9,6 +9,7 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomManager;
+using TheShacklingOfSimon.Sounds;
 
 #endregion
 
@@ -23,6 +24,7 @@ public class PlayGameState : IGameState
 
     private readonly RoomManager _roomManager;
     private readonly PickupManager _pickupManager;
+    private readonly SoundManager _soundManager;
     private readonly IPlayer _player;
     private readonly ProjectileManager _projectileManager;
     private readonly CollisionManager _collisionManager;
@@ -36,6 +38,7 @@ public class PlayGameState : IGameState
         Game1 game,
         RoomManager roomManager,
         PickupManager pickupManager,
+        SoundManager soundManager,
         IPlayer player,
         ProjectileManager projectileManager,
         CollisionManager collisionManager,
@@ -47,6 +50,7 @@ public class PlayGameState : IGameState
         _game = game;
         _roomManager = roomManager;
         _pickupManager = pickupManager;
+        _soundManager = soundManager;
         _player = player;
         _projectileManager = projectileManager;
         _collisionManager = collisionManager;

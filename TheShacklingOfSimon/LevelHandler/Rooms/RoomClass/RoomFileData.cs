@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
+using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.LevelHandler.Tiles.TileConstructor;
 using TheShacklingOfSimon.Weapons;
 
@@ -16,6 +17,7 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomClass
         public List<EntityData> Entities { get; set; } = new();
         public List<DoorData> Doors { get; set; } = new();
         public List<EnemyData> Enemies { get; set; } = new();
+        public List<PickupData> Pickups { get; set; } = new();
     }
 
     // Tile coordinates are full room grid coords.
@@ -66,5 +68,12 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomClass
         public int Y { get; set; }
         public string Name { get; set; } = "";
         public WeaponTypeList Weapon { get; set; }
+    }
+
+    public sealed class PickupData
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public IItem Item { get; set; }
     }
 }

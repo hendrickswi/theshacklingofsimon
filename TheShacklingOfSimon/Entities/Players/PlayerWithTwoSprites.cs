@@ -14,6 +14,8 @@ using TheShacklingOfSimon.LevelHandler.Tiles;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Templates;
+using TheShacklingOfSimon.Sounds;
+using Microsoft.Xna.Framework.Audio;
 
 #endregion
 

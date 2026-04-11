@@ -7,6 +7,7 @@ using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Entities.Enemies.Managers;
+using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.LevelHandler.Rooms.RoomClass;
 using TheShacklingOfSimon.LevelHandler.Tiles.Border.Doors;
@@ -227,6 +228,18 @@ namespace TheShacklingOfSimon.LevelHandler.Rooms.RoomConstructor
                 enemy.OnProjectileCreated += proj => OnProjectileCreated?.Invoke(proj);
 
                 entities.Add(enemy);
+            }
+        }
+
+        private void PlacePickups(TileMap tileMap, IList<IEntity> entities, List<PickupData> pickups)
+        {
+            if (pickups == null) return;
+
+            foreach (var p in pickups)
+            {
+                Vector2 worldPos = tileMap.GridToWorld(new Point(p.X, p.Y));
+                //IPickup pickup = new Pickup(worldPos, p.Item, p.Item.sprite);
+                //entities.Add(pickup);
             }
         }
     }
