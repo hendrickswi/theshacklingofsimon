@@ -363,6 +363,12 @@
 /processorParam:Quality=Best
 /build:sounds/items/Powerup2.mp3
 
+#begin sounds/items/warp.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/warp.wav
+
 #begin sounds/other/Coin_Slot.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor

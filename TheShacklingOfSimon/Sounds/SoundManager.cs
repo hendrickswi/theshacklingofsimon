@@ -15,10 +15,6 @@ public class SoundManager
         _soundEffects = new List<SoundEffect>();
     }
 
-    public void Update(GameTime gameTime)
-        {
-
-        }
     public void AddSFX(SoundEffect sfx)
     {
         if (sfx != null && !_soundEffects.Contains(sfx))

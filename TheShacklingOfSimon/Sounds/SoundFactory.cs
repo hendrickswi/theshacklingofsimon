@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using System.Net.Http.Headers;
+using System.ComponentModel;
 
 #endregion
 
@@ -40,10 +41,6 @@ public class SoundFactory
     /// The object of type <c>ContentManager</c> used to load the
     /// sound effect.
     /// </param>
-    /// <param name="jsonPathName">
-    /// The relative path, starting at the Content folder root, to the
-    /// JSON file containing the sfx JSON metadata. 
-    /// </param>
     /// <param name="soundName">
     /// The unique identifier or name to be associated with the sound effect.
     /// </param>
@@ -51,10 +48,7 @@ public class SoundFactory
     /// Thrown if a sound with the given sound name already exists
     /// in the sound storage.
     /// </exception>
-    /// <exception cref="FileNotFoundException">
-    /// Thrown if the specified JSON file does not exist at the resolved path.
-    /// </exception>
-    public SoundEffect LoadSFX(ContentManager content, string soundName)
+    public void LoadSFX(ContentManager content, string soundName)
     {
         SoundEffect sfx = content.Load<SoundEffect>(soundName);
         if (_sfxStorage.ContainsKey(soundName))
@@ -62,7 +56,6 @@ public class SoundFactory
             throw new ArgumentException("Key-value pair already exists for key " + soundName + ".");
         }
         _sfxStorage.Add(soundName, sfx);
-        return sfx;
     }
 
     /// Loads a song into the sound factory and associates it with
@@ -83,34 +76,25 @@ public class SoundFactory
     /// Thrown if a song with the given song name already exists
     /// in the song storage.
     /// </exception>
-    public Song LoadSong(ContentManager content, string songName)
+    public void LoadSong(ContentManager content, string songName)
     {
         Song song = content.Load<Song>(SanitizeFilePath(songName));
         _songStorage.Add(songName, song);
-        return song;
     }
 
-    /// Retrieves a font from the font storage by the specified font name.
-    /// <param name="fontName">
-    /// The unique identifier or name of the font to retrieve from the font storage.
-    /// </param>
-    /// <remarks>
-    /// The requested font must have previously been loaded into <c>this</c>
-    /// using <c>LoadFont(...)</c>.
-    /// </remarks>
+    /// Retrieves all sounds from loaded sound storage.
     /// <returns>
-    /// The <c>SpriteFont</c> object associated with the specified font name,
-    /// or <c>null</c> if no font with the given name exists in the font storage.
+    /// A <c>List<SoundEffect></c> object containing all
+    /// <c>SoundEffect</c> objects in sound storage
     /// </returns>
-    public SoundEffect GetSFX(string soundName)
+    public List<SoundEffect> GetAllSFX()
     {
-        SoundEffect sfx = null;
-        _sfxStorage.TryGetValue(soundName, out sfx);
-        if (sfx == null)
+        List<SoundEffect> sounds = null;
+        foreach(KeyValuePair<string, SoundEffect> x in _sfxStorage)
         {
-            Console.WriteLine("WARNING: SoundFactory could not find font " + soundName + "in SoundFactory.Instance.GetSFX(string soundName)");
+            sounds.Add(x.Value);
         }
-        return sfx;
+        return sounds;
     }
     
     private string SanitizeFilePath(string filePath)
