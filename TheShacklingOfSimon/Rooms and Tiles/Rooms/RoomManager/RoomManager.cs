@@ -56,6 +56,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager
         public IReadOnlyList<string> RoomIds => roomIds;
         public string CurrentRoomId => CurrentRoom?.Id ?? string.Empty;
         public string StartingRoomId => startingRoomId;
+        public bool HasPendingRoomSwitch => pendingSwitch.HasValue;
 
         /// Fired whenever CurrentRoom is changed through GoTo/NextRoom/PrevRoom.
         /// RoomManager does not handle collision, it only announces room transitions.

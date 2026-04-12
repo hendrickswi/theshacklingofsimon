@@ -71,7 +71,7 @@
             "to": {
                 "room": "room_01",
                 "spawn": {
-                    "x": 12,
+                    "x": 13,
                     "y": 4
                 }
             },
@@ -83,7 +83,7 @@
             "to": {
                 "room": "room_05",
                 "spawn": {
-                    "x": 2,
+                    "x": 1,
                     "y": 4
                 }
             },
@@ -96,7 +96,7 @@
                 "room": "room_06",
                 "spawn": {
                     "x": 7,
-                    "y": 6
+                    "y": 7
                 }
             },
             "unlockType": "ClearEnemies"
