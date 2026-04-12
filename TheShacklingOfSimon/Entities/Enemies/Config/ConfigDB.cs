@@ -26,7 +26,8 @@ public static class ConfigDB
             AttackRange = 8f,
             ContactDamage = 1f,
             MaxHealth = 2,
-            InvulnerabilityDuration = 0.25f
+            InvulnerabilityDuration = 0.25f,
+            DropItemType = EnemyDropType.Adrenaline
         },
 
         ["AngelicBaby"] = new EnemyConfig
@@ -36,7 +37,8 @@ public static class ConfigDB
             AttackRange = 8f,
             ContactDamage = 1f,
             MaxHealth = 4,
-            InvulnerabilityDuration = 0.25f
+            InvulnerabilityDuration = 0.25f,
+            DropItemType = EnemyDropType.None
         },
 
         ["AdultLeech"] = new EnemyConfig
@@ -46,7 +48,8 @@ public static class ConfigDB
             AttackRange = 10f,
             ContactDamage = 2f,
             MaxHealth = 4,
-            InvulnerabilityDuration = 0.25f
+            InvulnerabilityDuration = 0.25f,
+            DropItemType = EnemyDropType.None
         }
     };
 }

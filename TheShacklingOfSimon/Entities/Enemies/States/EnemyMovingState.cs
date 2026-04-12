@@ -3,7 +3,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Factory;
-using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
 

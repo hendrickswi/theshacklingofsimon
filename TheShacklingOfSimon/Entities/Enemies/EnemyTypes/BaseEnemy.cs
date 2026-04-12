@@ -39,6 +39,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     protected IMovementBehavior _movementBehaviour;
 
     public event Action<IProjectile> OnProjectileCreated;
+    public event Action<IItem, Vector2> OnPickupCreated;
 
     protected BaseEnemy(Vector2 startPosition, IWeapon weapon, string name)
     {
@@ -178,6 +179,11 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     }
 
     public void MarkForRemoval() => IsActive = false;
+
+    public void SpawnPickup(IItem item, Vector2 position)
+    {
+        OnPickupCreated?.Invoke(item, position);
+    }
 
     // Collision handling
 
