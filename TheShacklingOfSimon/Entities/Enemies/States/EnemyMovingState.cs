@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
 
@@ -13,7 +14,7 @@ public class EnemyMovingState : IEnemyState
     private IEnemy _enemy;
     private string _currentAnimation;
     private Vector2 _direction;
-    private float _enterWalkTimer = 0.5f; // Duration to show EnterWalk
+    private float _enterWalkTimer;
     private bool _hasSwitchedToWalk = false;
 
     public EnemyMovingState(IEnemy enemy, Vector2 lastDirection)
@@ -26,9 +27,13 @@ public class EnemyMovingState : IEnemyState
     public void Enter()
     {
         string newAnimationName = _enemy.Name + "_EnterWalk";
-        _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
+        _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 6f);
         _currentAnimation = newAnimationName;
         _hasSwitchedToWalk = false;
+        if (_enemy.Sprite is AnimatedSprite animatedSprite)
+        {
+            _enterWalkTimer = animatedSprite.GetFrameCount() * 0.5f;
+        }
     }
     
     public void Exit()
@@ -91,7 +96,7 @@ public class EnemyMovingState : IEnemyState
 
         if (newAnimationName != _currentAnimation)
         {
-            _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.2f);
+            _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.5f);
             _currentAnimation = newAnimationName;
         }
     }

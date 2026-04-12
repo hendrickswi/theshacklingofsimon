@@ -37,6 +37,16 @@ public static class ConfigDB
             ContactDamage = 1f,
             MaxHealth = 4,
             InvulnerabilityDuration = 0.25f
+        },
+
+        ["AdultLeech"] = new EnemyConfig
+        {
+            MoveSpeed = 10f,
+            AttackCooldown = 4f,
+            AttackRange = 10f,
+            ContactDamage = 2f,
+            MaxHealth = 4,
+            InvulnerabilityDuration = 0.25f
         }
     };
 }
