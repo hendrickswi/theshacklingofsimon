@@ -25,6 +25,8 @@ public interface IEnemy : IDamageableEntity
     float AttackCooldown { get; set; }
     float AttackRange { get; set; }
     float ContactDamage { get; set; }
+    string HurtSFX { get; set; }
+    string DieSFX { get; set; }
     IItem EnemyDrop { get; set; } // we can set this to null/noneitem if we don't want an enemy dropping something
 
     IWeapon Weapon { get; }

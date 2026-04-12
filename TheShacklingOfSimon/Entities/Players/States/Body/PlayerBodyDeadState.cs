@@ -1,6 +1,8 @@
 ﻿#region
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 
 #endregion
@@ -26,6 +28,8 @@ public class PlayerBodyDeadState : IPlayerBodyState
     {
         string spritePrefix = _player.SpritesManager.GetSkin("Body");
         _player.SpritesManager.Body = SpriteFactory.Instance.CreateAnimatedSprite(spritePrefix + "DeadAnimation", _frameDuration);
+        SoundManager.Instance.PlaySFX(_player.DieSFX);
+        MediaPlayer.Stop();
     }
 
     public void Exit()

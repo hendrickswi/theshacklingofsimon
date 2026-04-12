@@ -363,6 +363,12 @@
 /processorParam:Quality=Best
 /build:sounds/items/Powerup2.mp3
 
+#begin sounds/items/rocketexplode04.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/rocketexplode04.wav
+
 #begin sounds/items/warp.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
