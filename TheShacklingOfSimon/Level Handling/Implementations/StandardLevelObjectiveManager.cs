@@ -15,7 +15,7 @@ public class StandardLevelObjectiveManager : ILevelObjectiveManager
     private readonly InputManager _inputManager;
     private readonly GraphicsDevice _graphicsDevice;
     private readonly IPlayer _player;
-    private readonly RoomManager _roomManager; // For checking if final boss is defeated?
+    private readonly RoomManager _roomManager;
     
     private readonly Action _resetGame;
     private readonly Action _quitGame;
@@ -73,6 +73,11 @@ public class StandardLevelObjectiveManager : ILevelObjectiveManager
         //         _quitGame
         //     )
         // );
+    }
+
+    public void Reset()
+    {
+        _gameOverTriggered = false;
     }
 
     public event Action<IGameState> OnTransitionRequested;

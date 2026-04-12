@@ -76,6 +76,7 @@ public class PlayGameState : IGameState
     public void Enter()
     {
         _inputManager.LoadGameplayControls(RequestPause);
+        _objectiveManager.Reset();
         _objectiveManager.OnTransitionRequested += HandleTransition;
 
         if (_fadeTexture == null)

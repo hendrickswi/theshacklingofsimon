@@ -20,6 +20,16 @@ public interface ILevelObjectiveManager
     void Update(GameTime delta);
 
     /// <summary>
+    /// Resets the internal state of the level objective manager.
+    /// </summary>
+    ///
+    /// <remarks>This method should be called after the game is
+    /// reset after a win/loss state has been pushed. Otherwise,
+    /// pushing win/loss game states will not work.
+    /// </remarks>
+    void Reset();
+
+    /// <summary>
     /// An event that is triggered when a new game state should
     /// be transitioned to.
     /// </summary>

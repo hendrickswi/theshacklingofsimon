@@ -13,8 +13,6 @@ using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Templates;
-using TheShacklingOfSimon.Sounds;
-using Microsoft.Xna.Framework.Audio;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 
 #endregion
@@ -52,11 +50,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         InvulnerabilityTimer = EffectStats[StatType.InvulnerabilityDuration];
         
         StatesManager.HandleDamageInterrupt(Health <= 0);
-
-        if (!IsActive)
-        {
-            OnDeath?.Invoke();
-        }
         
         return true;
     }
@@ -124,8 +117,6 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     {
         return EffectManager.ActiveEffects;
     }
-
-    public event Action OnDeath;
 
     private void Initialize(Vector2 startPosition)
     {
