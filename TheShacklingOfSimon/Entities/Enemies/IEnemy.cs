@@ -31,9 +31,11 @@ public interface IEnemy : IDamageableEntity
 
     IWeapon Weapon { get; }
     public event Action<IProjectile> OnProjectileCreated;
+    public event Action<IItem, Vector2> OnPickupCreated;
 
     void SetWeapon(IWeapon weapon);
     void MarkForRemoval();
+    void SpawnPickup(IItem item, Vector2 position);
     Vector2 FindTarget();
     void RegisterMovement(float dt, Vector2 targetPosition);
     void RegisterAttack(float dt, Vector2 targetDirection);
