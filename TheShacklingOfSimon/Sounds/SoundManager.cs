@@ -9,27 +9,23 @@ namespace TheShacklingOfSimon.Sounds;
 
 public class SoundManager
 {
-    private readonly List<SoundEffect> _soundEffects;
+    private readonly Dictionary<string, SoundEffect> _soundEffects;
     public SoundManager()
     {
-        _soundEffects = new List<SoundEffect>();
+        _soundEffects = new Dictionary<string, SoundEffect>();
     }
 
-    public void Update(GameTime gameTime)
-        {
-
-        }
-    public void AddSFX(SoundEffect sfx)
+    public void AddSFX(string sfxName, SoundEffect sfx)
     {
-        if (sfx != null && !_soundEffects.Contains(sfx))
+        if (sfx != null && !_soundEffects.ContainsKey(sfxName))
         {
-            _soundEffects.Add(sfx);
+            _soundEffects.Add(sfxName, sfx);
         }
     }
 
-    public void RemoveSFX(SoundEffect sfx)
+    public void RemoveSFX(string sfx)
     {
-        if (sfx != null)
+        if (sfx != null && _soundEffects.ContainsKey(sfx))
         {
             _soundEffects.Remove(sfx);
         }

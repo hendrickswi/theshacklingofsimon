@@ -2,7 +2,9 @@
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Gamepad;
 using TheShacklingOfSimon.Controllers.Keyboard;
@@ -87,6 +89,8 @@ public class Game1 : Game
         LoadFonts();
         LoadSpriteAssets();
         LoadSounds();
+        LoadMusic();
+        PlayMusic("sounds/music/basement");
 
         RoomFactory roomFactory = CreateRoomFactory();
         CreateRoomManager(roomFactory);
@@ -95,6 +99,7 @@ public class Game1 : Game
         CreatePlayerItems();
         CreateItemAndPickupManagers();
         CreateInputManager();
+        CreateSoundManager();
         ConfigureCollisionAndProjectileHooks();
         CreateGameStates();
     }
@@ -163,25 +168,37 @@ public class Game1 : Game
 
     private void LoadSounds()
     {
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/goodeath0"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/Meaty_Deaths_0"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/TearImpacts0"));
+        SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/goodeath0");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/Meaty_Deaths_0");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/TearImpacts0");
 
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/1up"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/Isaac_Hurt_Grunt0"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/isaacdies"));
+        SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/1up");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/Isaac_Hurt_Grunt0");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/isaacdies");
 
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/items/itemrecharge"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/items/plop"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/items/Powerup2"));
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/itemrecharge");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/plop");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/Powerup2");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/warp");
 
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/other/Coin_Slot"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/other/dark-souls-you-died-sound-effect_hm5sYFG"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/other/Fart"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/other/Rock_crumble 0"));
+        SoundFactory.Instance.LoadSFX(Content, "sounds/other/Coin_Slot");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/other/dark-souls-you-died-sound-effect_hm5sYFG");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/other/Fart");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/other/Rock_crumble 0");
 
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/splatter00"));
-        _soundManager.AddSFX(SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/stoneshoot2"));
+        SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/splatter00");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/stoneshoot2");
+    }
+
+    private void LoadMusic()
+    {
+        SoundFactory.Instance.LoadSong(Content, "sounds/music/basement");
+    }
+
+    private void PlayMusic(string songName)
+    {
+        Song song = SoundFactory.Instance.GetSong(songName);
+        MediaPlayer.Play(song);
     }
 
     private RoomFactory CreateRoomFactory()
@@ -281,6 +298,15 @@ public class Game1 : Game
             _roomManager,
             _pickupManager,
             Reset);
+    }
+
+    private void CreateSoundManager()
+    {
+        Dictionary<string, SoundEffect> sounds = SoundFactory.Instance.GetAllSFX();
+        foreach(KeyValuePair<string, SoundEffect> x in sounds)
+        {
+            _soundManager.AddSFX(x.Key, x.Value);
+        }
     }
 
     private void ConfigureCollisionAndProjectileHooks()

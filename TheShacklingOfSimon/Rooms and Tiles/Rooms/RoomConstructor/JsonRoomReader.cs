@@ -48,12 +48,16 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
 
             string json = File.ReadAllText(fullPath);
 
-            //Debug.WriteLine("RAW JSON START");
-            //Debug.WriteLine(json);
-            //Debug.WriteLine("RAW JSON END");
+            // Console.WriteLine("RAW JSON START");
+            // Console.WriteLine(json);
+            // Console.WriteLine("RAW JSON END");
 
             RoomFileData data = JsonSerializer.Deserialize<RoomFileData>(json, options)
                                 ?? throw new InvalidOperationException($"Failed to deserialize room file {fullPath}");
+            
+            // Console.WriteLine("DESERIALIZED JSON START"); // debug
+            // Console.WriteLine("Room id: " + data.Id + ", IsBossRoom: " + data.IsBossRoom); // debug
+            // Console.WriteLine("DESERIALIZED JSON END");
 
             if (string.IsNullOrWhiteSpace(data.Id))
                 data.Id = roomId;

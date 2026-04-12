@@ -5,6 +5,7 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.GameStates;
 using TheShacklingOfSimon.GameStates.States;
 using TheShacklingOfSimon.Input;
+using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
 
 namespace TheShacklingOfSimon.Level_Handling.Implementations;
@@ -15,7 +16,7 @@ public class StandardLevelObjectiveManager : ILevelObjectiveManager
     private readonly InputManager _inputManager;
     private readonly GraphicsDevice _graphicsDevice;
     private readonly IPlayer _player;
-    private readonly RoomManager _roomManager; // For checking if final boss is defeated?
+    private readonly RoomManager _roomManager;
     
     private readonly Action _resetGame;
     private readonly Action _quitGame;
@@ -45,7 +46,7 @@ public class StandardLevelObjectiveManager : ILevelObjectiveManager
     {
         if (_gameOverTriggered) return;
 
-        // Player loses
+        // Player loss condition
         if (_player.Health <= 0 || !_player.IsActive)
         {
             _gameOverTriggered = true;
@@ -61,18 +62,24 @@ public class StandardLevelObjectiveManager : ILevelObjectiveManager
             );
         }
         
-        // Player wins
-        // TODO: Check win condition here and push win state
-        // OnTransitionRequested?.Invoke(
-        //     new WinGameState(
-        //         _stateManager, 
-        //         _inputManager, 
-        //         _graphicsDevice, 
-        //         _player, 
-        //         _resetGame, 
-        //         _quitGame
-        //     )
-        // );
+        // Player win condition
+        Room currentRoom = _roomManager.CurrentRoom;
+        if (currentRoom != null && currentRoom.IsBossRoom && !currentRoom.HasActiveEnemies())
+        OnTransitionRequested?.Invoke(
+            new WinGameState(
+                _stateManager, 
+                _inputManager, 
+                _graphicsDevice, 
+                _player, 
+                _resetGame, 
+                _quitGame
+            )
+        );
+    }
+
+    public void Reset()
+    {
+        _gameOverTriggered = false;
     }
 
     public event Action<IGameState> OnTransitionRequested;

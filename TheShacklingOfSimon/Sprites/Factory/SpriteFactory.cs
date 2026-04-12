@@ -227,7 +227,7 @@ public class SpriteFactory
         }
         else
         {
-            Console.WriteLine("WARNING: SpriteFactory could not find font " + fontName + "in SpriteFactory.Instance.CreateTextSprite(string fontFileName, string text)");
+            Console.WriteLine("WARNING: SpriteFactory could not find font " + fontName + " in SpriteFactory.Instance.CreateTextSprite(string fontFileName, string text)");
         }
 
         return sprite;

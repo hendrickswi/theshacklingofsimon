@@ -1,9 +1,49 @@
 Author: William Hendricks (hendrickswi)
 Date: 04/12/26
 Sprint 4
-File(s) being reviewed: 
+File(s) being reviewed: BaseEnemy.cs, ChaseEnemy.cs, ProjectileEnemy.cs, 
+  AllowedAttackBehaviour.cs, NoAttackBehaviour.cs, IAttackBehaviour.cs
 Author of file(s): Ethan Chitturi (CoolestToDoIt)
 
-Comments: 
+Comments: Overall, your enemy design is very modular and is a major
+improvement from last sprint!! I especially love the use of composition
+for enemy movement and attack behaviors! I also love how you have the
+FindTarget() method, which will work great for tracking the player or
+other IEntities with our ITargetProvider and IPathfindingService interfaces,
+once they are implemented in Sprint 5. 
+
+However, there are few things that could be improved:
+
+  1) Bug in AllowedAttackBehaviour.cs: You are using the enemy's velocity 
+property to determine attack direction. The "direction != Vector2.Zero" check
+means that if the enemy stops moving, it cannot attack. 
+
+  2) Bug in AllowedAttackBehaviour.cs: You are doing "enemy.UpdateAttackTimer(dt)" 
+in the Execute() method. If an enemy ever has two attack behaviors, which you do 
+have the framework for, the attack timer will be updated twice per frame. This will 
+effectively cut the attack cooldown in half.
+
+  3) Bug in ChaseEnemy.cs: You are invoking player.TakeDamage() in 
+OnCollision(IPlayer player) regardless of if the attack was actually executed, 
+circumventing cooldowns.
+
+  4) As it stands right now, enemies do not add their relevant (StatType, float)
+pairs to the inherited EffectStats dictionary. Therefore, they will not be able
+to have status effects inflicted on themselves.
 
 Suggested Changes:
+
+  1) Use the targetDirection parameter instead.
+
+  2) Move this update statement into BaseEnemy.Update(). Though, you should 
+keep the enemy.ResetAttackTimer() call in AllowedAttackBehaviour.cs.
+
+  3) One potential way to fix this: change IAttackBehaviour.Execute() to return a
+bool, indicating whether the attack was actually executed. Then, simply check
+if the attack was executed; if it was, invoke player.TakeDamage(); if not, do nothing.
+
+  4) Follow the TODO message in the constructor, and then use the corresponding
+EffectStats pairs to actually influence enemy behavior. For example,
+EnemyMovingState.HandleMovement() should do 
+"_enemy.Velocity = direction * _enemy.GetStat(StatType.MoveSpeed);" when
+appropriate.

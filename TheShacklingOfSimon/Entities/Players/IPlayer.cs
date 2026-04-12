@@ -44,6 +44,4 @@ public interface IPlayer : IDamageableEntity
     /// </summary>
     /// <returns>An object of type <c>IEnumerable</c> collection of objects of type <c>IStatusEffect</c></returns>
     IEnumerable<IStatusEffect> GetActiveEffects();
-
-    event Action OnDeath;
 }

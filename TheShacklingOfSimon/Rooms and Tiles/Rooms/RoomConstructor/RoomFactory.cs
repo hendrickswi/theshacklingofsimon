@@ -60,7 +60,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
             PlaceEnemies(tileMap, entities, data.Enemies);
 
             IEnumerable<IEntity> exposedEntities = entities;
-            return new Room(data.Id, tileMap, exposedEntities, data.Doors, background);
+            return new Room(data.Id, data.IsBossRoom, tileMap, exposedEntities, data.Doors, background);
         }
 
         private static void BuildBorderWalls(TileMap tileMap, TileFactory tileFactory)

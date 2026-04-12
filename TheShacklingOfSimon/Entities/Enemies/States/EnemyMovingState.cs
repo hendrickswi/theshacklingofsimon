@@ -30,10 +30,6 @@ public class EnemyMovingState : IEnemyState
         _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 6f);
         _currentAnimation = newAnimationName;
         _hasSwitchedToWalk = false;
-        if (_enemy.Sprite is AnimatedSprite animatedSprite)
-        {
-            _enterWalkTimer = animatedSprite.GetFrameCount() * 0.5f;
-        }
     }
     
     public void Exit()
