@@ -16,6 +16,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass
     public sealed class Room : IDoorContext
     {
         public string Id { get; }
+        public bool IsBossRoom { get; private set; }
         public TileMap TileMap { get; }
 
         private readonly List<IEntity> entities;
@@ -28,12 +29,14 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass
 
         public Room(
             string id,
+            bool isBossRoom,
             TileMap tileMap,
             IEnumerable<IEntity> initialEntities,
             IEnumerable<DoorData> doors,
             ISprite backgroundPlayable)
         {
             Id = id;
+            IsBossRoom = isBossRoom;
             TileMap = tileMap;
 
             entities = new List<IEntity>(initialEntities ?? Enumerable.Empty<IEntity>());

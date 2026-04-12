@@ -13,6 +13,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass
     public sealed class RoomFileData
     {
         public string Id { get; set; } = "";
+        public bool IsBossRoom { get; set; }
         public List<TileData> Tiles { get; set; } = new();
         public List<EntityData> Entities { get; set; } = new();
         public List<DoorData> Doors { get; set; } = new();

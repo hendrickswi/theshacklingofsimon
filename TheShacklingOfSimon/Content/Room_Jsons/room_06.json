@@ -1,5 +1,6 @@
 {
     "id": "room_06",
+    "isBossRoom": false,
     "tiles": [
         {
             "x": 3,

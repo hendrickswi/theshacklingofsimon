@@ -17,7 +17,6 @@ public class AnimatedSprite : ISprite
     // Animation variables
     private float _timer;
     private readonly float _speed;
-    private readonly int _frameCount;
     
     public AnimatedSprite(Texture2D texture, Rectangle[] sourceRectangle, float animationSpeed)
     {
@@ -26,7 +25,6 @@ public class AnimatedSprite : ISprite
         this._currentFrame = 0;
         this._timer = 0;
         this._speed = animationSpeed;
-        this._frameCount = sourceRectangle.Length;
     }
 
     public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
@@ -61,10 +59,5 @@ public class AnimatedSprite : ISprite
     public Vector2 GetDimensions()
     {
         return new Vector2(_sourceRectangle[_currentFrame].Width, _sourceRectangle[_currentFrame].Height);
-    }
-
-    public int GetFrameCount()
-    {
-        return _frameCount;
     }
 }

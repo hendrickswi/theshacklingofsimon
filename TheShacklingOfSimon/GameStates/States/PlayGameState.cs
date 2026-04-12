@@ -190,6 +190,6 @@ public class PlayGameState : IGameState
     private void HandleTransition(IGameState newState)
     {
         _stateManager.AddState(newState);
-        Console.WriteLine("Transition requested");
+        // Console.WriteLine("Transition requested"); // debug
     }
 }
