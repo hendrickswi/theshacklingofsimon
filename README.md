@@ -14,10 +14,6 @@ K to equip the next secondary weapon<br>
 
 R to reset player
 
-Controls (Mouse):<br>
-Left click for next room<br>
-Right click for previous room<br><br>
-
 KNOWN ISSUES:<br>
 Projectiles carry over to the next room when the player moves to the next room<br>
 A lot of textures use placeholders.<br>

@@ -13,6 +13,28 @@ using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Border.Doors;
 
 namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager
 {
+    public enum MapDirection
+    {
+        North,
+        South,
+        West,
+        East
+    }
+
+    // Simple read-only map edge so UI can ask for room adjacency
+    // without depending on full room file details.
+    public readonly struct RoomConnection
+    {
+        public string ToRoomId { get; }
+        public MapDirection Direction { get; }
+
+        public RoomConnection(string toRoomId, MapDirection direction)
+        {
+            ToRoomId = toRoomId;
+            Direction = direction;
+        }
+    }
+
     public sealed class RoomManager : IRoomNavigator
     {
         private readonly RoomIndexReader indexReader;
@@ -32,6 +54,9 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager
 
         public Room CurrentRoom { get; private set; }
         public IReadOnlyList<string> RoomIds => roomIds;
+        public string CurrentRoomId => CurrentRoom?.Id ?? string.Empty;
+        public string StartingRoomId => startingRoomId;
+        public bool HasPendingRoomSwitch => pendingSwitch.HasValue;
 
         /// Fired whenever CurrentRoom is changed through GoTo/NextRoom/PrevRoom.
         /// RoomManager does not handle collision, it only announces room transitions.
@@ -58,6 +83,37 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager
         public void Update(GameTime gameTime) => CurrentRoom.Update(gameTime);
 
         public void Draw(SpriteBatch spriteBatch) => CurrentRoom.Draw(spriteBatch);
+
+        public IReadOnlyList<RoomConnection> GetConnections(string roomId)
+        {
+            if (string.IsNullOrWhiteSpace(roomId))
+            {
+                return Array.Empty<RoomConnection>();
+            }
+
+            RoomFileData data = GetOrReadRoomData(roomId);
+
+            if (data.Doors == null || data.Doors.Count == 0)
+            {
+                return Array.Empty<RoomConnection>();
+            }
+
+            var connections = new List<RoomConnection>(data.Doors.Count);
+
+            foreach (DoorData door in data.Doors)
+            {
+                if (door?.To == null || string.IsNullOrWhiteSpace(door.To.Room))
+                {
+                    continue;
+                }
+
+                connections.Add(new RoomConnection(
+                    door.To.Room,
+                    GetDirectionFromDoorPosition(door.X, door.Y)));
+            }
+
+            return connections;
+        }
 
         public void GoTo(string roomId)
         {
@@ -181,6 +237,35 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager
 
             //Debug.WriteLine($"LOAD ROOM {roomId}");
             return room;
+        }
+
+        // I keep this helper here so clients like the minimap can ask RoomManager
+        // for connectivity without needing to know how room files are cached/read.
+        private RoomFileData GetOrReadRoomData(string roomId)
+        {
+            if (!dataCache.TryGetValue(roomId, out RoomFileData data))
+            {
+                data = roomLoader.ReadData(roomId);
+                dataCache[roomId] = data;
+            }
+
+            return data;
+        }
+
+        // Door positions are stored on the room border, so I derive map direction
+        // directly from the border cell instead of duplicating direction data in JSON.
+        private static MapDirection GetDirectionFromDoorPosition(int x, int y)
+        {
+            int maxX = RoomConstants.GridWidth - 1;
+            int maxY = RoomConstants.GridHeight - 1;
+
+            if (y == 0) return MapDirection.North;
+            if (y == maxY) return MapDirection.South;
+            if (x == 0) return MapDirection.West;
+            if (x == maxX) return MapDirection.East;
+
+            throw new InvalidOperationException(
+                $"Door at ({x},{y}) is not on the room border.");
         }
 
         public void ResetToGameStart()

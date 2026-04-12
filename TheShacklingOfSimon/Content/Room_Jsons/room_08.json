@@ -72,7 +72,7 @@
                 "room": "room_04",
                 "spawn": {
                     "x": 7,
-                    "y": 6
+                    "y": 7
                 }
             },
             "unlockType": "ClearEnemies"

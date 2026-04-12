@@ -136,6 +136,7 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Entities\Enemies\" />
+      <Folder Include="Rooms and Tiles\Rooms\RoomManager\MapHandling\" />
     </ItemGroup>
     <ItemGroup>
       <None Update="Content\Room_Jsons\room_00.json">

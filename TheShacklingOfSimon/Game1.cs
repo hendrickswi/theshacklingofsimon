@@ -220,7 +220,7 @@ public class Game1 : Game
     private void CreatePlayer()
     {
         _player = new PlayerWithTwoSprites(GetScreenCenter());
-        HUD = new HUD(_player);
+        HUD = new HUD(_player, _roomManager, GraphicsDevice);
     }
 
     private void CreatePlayerWeapons()
@@ -346,6 +346,7 @@ public class Game1 : Game
         _player.Reset(GetScreenCenter());
         _projectileManager.ClearAllProjectiles();
         _roomManager.ResetToGameStart();
+        HUD.Reset();
         _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
         CreatePlayerWeapons();
         CreatePlayerItems();
