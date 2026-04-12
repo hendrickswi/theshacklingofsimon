@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
 using TheShacklingOfSimon.StatusEffects.Templates;
+using TheShacklingOfSimon.Sounds;
 
 #endregion
 
@@ -15,6 +16,7 @@ public class AdrenalineItem : IItem
     public string Description { get; }
     public IPlayer Player { get; }
     public ItemEffects Effects { get; } // unused
+    public string SFX { get; }
 
     // Tunables
     private readonly float _durationSeconds;     // how long buff lasts
@@ -58,6 +60,8 @@ public class AdrenalineItem : IItem
         Name = "Adrenaline";
         Description = "Massive speed, fire-rate, and projectile speed boost for a short time.";
         Effects = new ItemEffects(0, 0, 0, 0, false);
+        SFX = SoundManager.Instance.NameSFX("items","Powerup2");
+        SoundManager.Instance.AddSFX(SFX);
     }
 
     public void Update(GameTime gameTime)
@@ -94,6 +98,7 @@ public class AdrenalineItem : IItem
         }
 
         StartBuff();
+        SoundManager.Instance.PlaySFX(SFX);
         _buffTimer = _durationSeconds;
     }
 

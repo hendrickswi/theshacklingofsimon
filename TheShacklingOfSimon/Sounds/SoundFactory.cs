@@ -78,33 +78,26 @@ public class SoundFactory
     /// </exception>
     public void LoadSong(ContentManager content, string songName)
     {
-        Song song = content.Load<Song>(SanitizeFilePath(songName));
+        Song song = content.Load<Song>(songName);
         _songStorage.Add(songName, song);
     }
 
-    /// Retrieves all sounds from loaded sound storage.
-    /// <returns>
-    /// A <c>Disctionary<string, SoundEffect></c> object
-    /// containing all <c>string</c> and <c>SoundEffect</c>
-    /// key/value objects in sound storage
-    /// </returns>
-    public Dictionary<string, SoundEffect> GetAllSFX()
+    public SoundEffect GetSFX(string sfxName)
     {
-        Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-        foreach(KeyValuePair<string, SoundEffect> x in _sfxStorage)
+        SoundEffect sfx = _sfxStorage.GetValueOrDefault(sfxName);
+        if (sfx == null)
         {
-            sounds.Add(x.Key, x.Value);
+            Console.WriteLine("WARNING: SoundFactory could not find sfx " + sfxName + "in SoundFactory.Instance.GetSFX(string sfxName)");
         }
-        return sounds;
+        return sfx;
     }
 
     public Song GetSong(string Key)
     {
-        Song song = null;
-        _songStorage.TryGetValue(Key, out song);
+        Song song = _songStorage.GetValueOrDefault(Key);
         if (song == null)
         {
-            Console.WriteLine("WARNING: SoundFactory could not find font " + Key + "in SoundFactory.Instance.GetSong(string Key)");
+            Console.WriteLine("WARNING: SoundFactory could not find song " + Key + "in SoundFactory.Instance.GetSong(string Key)");
         }
         return song;
     }

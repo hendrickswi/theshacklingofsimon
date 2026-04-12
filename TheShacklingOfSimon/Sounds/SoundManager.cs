@@ -1,4 +1,5 @@
 #region
+using System.IO;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
@@ -7,19 +8,28 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace TheShacklingOfSimon.Sounds;
 
-public class SoundManager
+public sealed class SoundManager
 {
+    private static SoundManager _instance = new SoundManager();
+    public static SoundManager Instance => _instance;
+
     private readonly Dictionary<string, SoundEffect> _soundEffects;
     public SoundManager()
     {
         _soundEffects = new Dictionary<string, SoundEffect>();
     }
 
-    public void AddSFX(string sfxName, SoundEffect sfx)
+    public string NameSFX(string callType, string sfxName)
     {
-        if (sfx != null && !_soundEffects.ContainsKey(sfxName))
+        return "sounds/" + callType + "/" + sfxName;
+    }
+
+    public void AddSFX(string fullName)
+    {
+        SoundEffect toAdd = SoundFactory.Instance.GetSFX(fullName);
+        if (toAdd != null && !_soundEffects.ContainsKey(fullName))
         {
-            _soundEffects.Add(sfxName, sfx);
+            _soundEffects.Add(fullName, toAdd);
         }
     }
 
@@ -31,8 +41,9 @@ public class SoundManager
         }
     }
 
-    public void PlaySFX(SoundEffect sfx)
+    public void PlaySFX(string sfx)
     {
-        sfx.Play();
+        _soundEffects.GetValueOrDefault(sfx).Play();
+        
     }
 }

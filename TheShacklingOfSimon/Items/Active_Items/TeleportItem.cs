@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Sounds;
 
 #endregion
 
@@ -14,6 +15,7 @@ public class TeleportItem : IItem
     public string Description { get; }
     public IPlayer Player { get; }
     public ItemEffects Effects { get; } // unused for teleport, but required by the interface
+    public string SFX { get; }
 
     private readonly Func<Vector2, bool> _isValidPosition;
 
@@ -40,6 +42,9 @@ public class TeleportItem : IItem
         Name = "Blink";
         Description = "Teleports you a short distance forward.";
         Effects = new ItemEffects(0, 0, 0, 0, false);
+
+        SFX = SoundManager.Instance.NameSFX("items","warp");
+        SoundManager.Instance.AddSFX(SFX);
     }
 
     // Call this once per frame from wherever we update items / player
@@ -78,6 +83,7 @@ public class TeleportItem : IItem
 
                 Player.SetPosition(candidate);
                 _cooldownTimer = _cooldownSeconds;
+                SoundManager.Instance.PlaySFX(SFX);
                 return;
             }
 

@@ -1,6 +1,7 @@
 #region
 
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
 
 #endregion
@@ -10,6 +11,7 @@ public class ActiveItem : IItem
 {
     public string Name { get; set; }
     public string Description { get; set; }
+    public string SFX { get; set; }
     public IPlayer Player { get; }
     public ItemEffects Effects { get; }
 
@@ -26,6 +28,7 @@ public class ActiveItem : IItem
         Player.Heal(Effects.Health);
         Player.MaxHealth += Effects.MaxHealth;
         Player.SetStat(StatType.MoveSpeed, Player.GetStat(StatType.MoveSpeed) + Effects.Speed);
+        SoundManager.Instance.PlaySFX(SFX);
         if (Effects.OneTime)
         {
             // I doubt we need to worry about this rn

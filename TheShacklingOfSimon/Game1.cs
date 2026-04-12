@@ -99,7 +99,6 @@ public class Game1 : Game
         CreatePlayerItems();
         CreateItemAndPickupManagers();
         CreateInputManager();
-        CreateSoundManager();
         ConfigureCollisionAndProjectileHooks();
         CreateGameStates();
     }
@@ -298,15 +297,6 @@ public class Game1 : Game
             _roomManager,
             _pickupManager,
             Reset);
-    }
-
-    private void CreateSoundManager()
-    {
-        Dictionary<string, SoundEffect> sounds = SoundFactory.Instance.GetAllSFX();
-        foreach(KeyValuePair<string, SoundEffect> x in sounds)
-        {
-            _soundManager.AddSFX(x.Key, x.Value);
-        }
     }
 
     private void ConfigureCollisionAndProjectileHooks()
