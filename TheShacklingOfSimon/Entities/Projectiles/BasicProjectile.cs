@@ -93,8 +93,8 @@ public class BasicProjectile : ProjectileBase
 
         if (tile.BlocksProjectiles)
         {
+			SoundManager.Instance.PlaySFX(SFX);
             Discontinue();
         }
-		SoundManager.Instance.PlaySFX(SFX);
     }
 }
