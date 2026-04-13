@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Sounds;
 
@@ -13,7 +14,7 @@ public class TeleportItem : IItem
 {
     public string Name { get; }
     public string Description { get; }
-    public IPlayer Player { get; }
+    public IDamageableEntity Entity { get; }
     public ItemEffects Effects { get; } // unused for teleport, but required by the interface
     public string SFX { get; }
 
@@ -32,7 +33,7 @@ public class TeleportItem : IItem
         float cooldownSeconds = 2.0f,
         float step = 8f)
     {
-        Player = player;
+        Entity = player;
         _isValidPosition = isValidPosition;
 
         _blinkDistance = blinkDistance;
@@ -55,11 +56,11 @@ public class TeleportItem : IItem
     }
 
     // Trigger this when the player uses the active item
-    public void Effect()
+    public void ApplyEffect()
     {
         if (_cooldownTimer > 0f) return;
 
-        Vector2 dir = Player.Velocity;
+        Vector2 dir = Entity.Velocity;
 
         // If player isn't moving, don't blink and don't consume cooldown
         if (dir.LengthSquared() < 0.0001f)
@@ -67,7 +68,7 @@ public class TeleportItem : IItem
 
         dir.Normalize();
 
-        Vector2 start = Player.Position;
+        Vector2 start = Entity.Position;
         Vector2 target = start + dir * _blinkDistance;
 
         Vector2 candidate = target;
@@ -81,7 +82,7 @@ public class TeleportItem : IItem
                 if ((candidate - start).LengthSquared() < 0.0001f)
                     return;
 
-                Player.SetPosition(candidate);
+                Entity.SetPosition(candidate);
                 _cooldownTimer = _cooldownSeconds;
                 SoundManager.Instance.PlaySFX(SFX);
                 return;

@@ -1,37 +1,24 @@
 #region
 
+using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.StatusEffects;
 
 #endregion
 
 namespace TheShacklingOfSimon.Items.Passive_Items;
-public class PassiveItem : IItem
+public abstract class PassiveItem : IItem
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public IPlayer Player { get; }
-    public ItemEffects Effects { get; }
+    public string Name { get; protected set; }
+    public string Description { get; protected set; }
+    
+    protected IDamageableEntity Entity;
+    
+    protected PassiveItem(IDamageableEntity entity)
+    {
+        Entity = entity;
+    }
 
-    
-    public PassiveItem(IPlayer player)
-    {
-        Player = player;
-    }
-    
-    public void Effect()
-    {
-        // TODO: use the StatusEffectManager instead of directly manipulating player stats
-        Player.SetStat(StatType.DamageMultiplier, Player.GetStat(StatType.DamageMultiplier) + Effects.Attack);
-        Player.Heal(Effects.Health);
-        Player.MaxHealth += Effects.MaxHealth;
-        Player.SetStat(StatType.MoveSpeed, Player.GetStat(StatType.MoveSpeed) + Effects.Speed);
-    }
-    public void ClearEffect()
-    {
-        // TODO: use the StatusEffectManager instead of directly manipulating player stats
-        Player.SetStat(StatType.DamageMultiplier, Player.GetStat(StatType.DamageMultiplier - Effects.Attack));
-        Player.MaxHealth -= Effects.MaxHealth;
-        Player.SetStat(StatType.MoveSpeed, Player.GetStat(StatType.MoveSpeed) - Effects.Speed);
-    }
+    public abstract void ApplyEffect();
 }

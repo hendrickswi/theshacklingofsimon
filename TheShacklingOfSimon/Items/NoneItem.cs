@@ -1,5 +1,6 @@
 ﻿#region
 
+using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
 
 #endregion
@@ -10,15 +11,15 @@ public class NoneItem : IItem
 {
     public string Name { get; set; }
     public string Description { get; set; }
-    public IPlayer Player { get; }
+    public IDamageableEntity Entity { get; }
     public ItemEffects Effects { get; }
 
     public NoneItem(IPlayer player)
     {
-        Player = player;
+        Entity = player;
     }
 
-    public void Effect()
+    public void ApplyEffect()
     {
         // No-op
     }

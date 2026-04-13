@@ -1,19 +1,9 @@
-#region
-
-using Microsoft.Xna.Framework;
-using TheShacklingOfSimon.Entities.Players;
-
-#endregion
-
 namespace TheShacklingOfSimon.Items;
 
 public interface IItem
 {
     string Name { get; }
     string Description { get; }
-    IPlayer Player { get; }
-    ItemEffects Effects { get; }
-    void Effect();
-
-    void Update(GameTime gameTime) { }
+    
+    void ApplyEffect();
 }

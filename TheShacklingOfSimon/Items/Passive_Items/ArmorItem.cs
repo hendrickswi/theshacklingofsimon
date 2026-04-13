@@ -1,28 +1,53 @@
 #region
 
+using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.StatusEffects;
+using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 #endregion
 
 namespace TheShacklingOfSimon.Items.Passive_Items;
 
-public class ArmorItem : IItem
+public class ArmorItem : PassiveItem
 {
-    public string Name { get; }
-    public string Description { get; }
-    public IPlayer Player { get; }
-    public ItemEffects Effects { get; set; }
-
-
-    public ArmorItem(IPlayer player)
+    private readonly float _amtHealth;
+    private readonly float _amtInvul;
+    private readonly float _duration;
+    
+    public ArmorItem(
+        IDamageableEntity entity, 
+        string name = "Trusty Armor", 
+        string description = "Allows you to take more hits", 
+        float amt = 0.25f,
+        float duration = float.MaxValue) 
+        : base(entity)
     {
-        Player = player;
-        Name = "Trusty Armor";
-        Description = "Allows you to take more hits.";
-        Effects = new ItemEffects(0, 0, 2, 0, false);
+        Name = name;
+        Description = description;
+        _amtHealth = amt * Entity.GetStat(StatType.MaxHealth);
+        _amtInvul = amt * Entity.GetStat(StatType.InvulnerabilityDuration);
+        _duration = duration;
     }
-    public void Effect()
+    public override void ApplyEffect()
     {
+        IStatusEffect maxHealthEffect = new MaxHealthEffect(
+            Name, 
+            EffectType.MaxHealth, 
+            Entity, 
+            _amtHealth, 
+            _duration
+        );
+        IStatusEffect invulnerabilityDurationEffect = new InvulnerabilityDurationEffect(
+            Name, 
+            EffectType.InvulnerabilityDuration, 
+            Entity, 
+            _amtInvul, 
+            _duration
+        );
         
+        Entity.EffectManager.AddEffect(maxHealthEffect);
+        Entity.EffectManager.AddEffect(invulnerabilityDurationEffect);
     }
 }

@@ -1,44 +1,25 @@
 #region
 
-using TheShacklingOfSimon.Entities.Players;
-using TheShacklingOfSimon.Sounds;
-using TheShacklingOfSimon.StatusEffects;
+using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Entities;
 
 #endregion
 
 namespace TheShacklingOfSimon.Items.Active_Items;
-public class ActiveItem : IItem
+public abstract class ActiveItem : IActiveItem
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string SFX { get; set; }
-    public IPlayer Player { get; }
-    public ItemEffects Effects { get; }
+    public string Name { get; protected set; }
+    public string Description { get; protected set; }
+    
+    protected IDamageableEntity Entity;
+    
+    public ActiveItem(IDamageableEntity entity)
+    {
+        Entity = entity;
+    }
+    
+    public abstract void ApplyEffect();
+    public abstract void ClearEffect();
+    public abstract void Update(GameTime delta);
 
-    
-    public ActiveItem(IPlayer player)
-    {
-        Player = player;
-    }
-    
-    public void Effect()
-    {
-        // TODO: use the StatusEffectManager instead of directly manipulating player stats
-        Player.SetStat(StatType.DamageMultiplier, Player.GetStat(StatType.DamageMultiplier) + Effects.Attack);
-        Player.Heal(Effects.Health);
-        Player.MaxHealth += Effects.MaxHealth;
-        Player.SetStat(StatType.MoveSpeed, Player.GetStat(StatType.MoveSpeed) + Effects.Speed);
-        SoundManager.Instance.PlaySFX(SFX);
-        if (Effects.OneTime)
-        {
-            // I doubt we need to worry about this rn
-        }
-    }
-    public void ClearEffect()
-    {
-        // TODO: use the StatusEffectManager instead of directly manipulating player stats
-        Player.SetStat(StatType.DamageMultiplier, Player.GetStat(StatType.DamageMultiplier - Effects.Attack));
-        Player.MaxHealth -= Effects.MaxHealth;
-        Player.SetStat(StatType.MoveSpeed, Player.GetStat(StatType.MoveSpeed) - Effects.Speed);
-    }
 }
