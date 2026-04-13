@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 
 #endregion
@@ -32,6 +33,7 @@ public class EnemyDeadState : IEnemyState
         // Set death animation
         string spriteName = _enemy.Name + "_Death";
         _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(spriteName, 0.5f);
+        SoundManager.Instance.PlaySFX(_enemy.DieSFX);
     }
 
     public void Exit()
