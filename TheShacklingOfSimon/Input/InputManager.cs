@@ -293,6 +293,7 @@ public class InputManager
             new SecondaryAttackDownCommand(_player)
         );
         
+        // Item stuff
         _gamepadController.RegisterCommand(
             new GamepadButtonInput(
                 InputState.Pressed, GamepadButton.A
@@ -312,14 +313,44 @@ public class InputManager
             new UseItemCommand(_player)
         );
         
-        // Pausing
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.Pressed, GamepadButton.DPadUp
+            ), 
+            new NextActiveItemCommand(_player)
+        );
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.Pressed, GamepadButton.DPadDown
+            ), 
+            new PreviousActiveItemCommand(_player)
+        );
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.Pressed, GamepadButton.DPadRight
+            ), 
+            new NextSecondaryWeaponCommand(_player)
+        );
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.Pressed, GamepadButton.DPadLeft
+            ), 
+            new NextPrimaryWeaponCommand(_player)
+        );
+        
+        // Pausing and resetting
         _gamepadController.RegisterCommand(
             new GamepadButtonInput(
                 InputState.JustPressed, GamepadButton.Start
             ),
             new GenericActionCommand(onPauseRequested)
         );
-        
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.JustPressed, GamepadButton.Back
+            ),
+            new GenericActionCommand(_onResetRequest)
+        );
     }
 
     public void LoadPauseControls(Action onResumeRequested, Action onQuitRequested)
