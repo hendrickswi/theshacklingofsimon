@@ -16,6 +16,7 @@ using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using TheShacklingOfSimon.Items.Passive_Items;
 
 #endregion
 
@@ -71,6 +72,15 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
         //movement default
         _movementBehaviour = new NoMovementBehaviour();
+
+        //item drop
+        EnemyDrop = config.DropItemType switch
+        {
+            EnemyDropType.None => null,
+            EnemyDropType.Health => new HealingItem(this),
+            EnemyDropType.Speed => new SpeedItem(this),
+            _ => null
+        };
 
         SetWeapon(weapon);
         Reset(startPosition);

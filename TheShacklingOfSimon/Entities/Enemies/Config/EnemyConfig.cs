@@ -8,8 +8,7 @@ namespace TheShacklingOfSimon.Entities.Enemies.Config;
 public enum EnemyDropType
 {
     None,
-    Teleport,
-    Adrenaline,
+    Health,
     Speed
 }
 

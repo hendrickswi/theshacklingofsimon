@@ -44,7 +44,7 @@ public class EnemyDeadState : IEnemyState
 
         if (_timer >= _stateDuration)
         {
-            //TrySpawnDrop();
+            TrySpawnDrop();
             _enemy.MarkForRemoval();
         }
         else

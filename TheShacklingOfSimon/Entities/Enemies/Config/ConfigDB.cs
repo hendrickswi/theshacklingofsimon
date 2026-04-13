@@ -16,7 +16,8 @@ public static class ConfigDB
             AttackRange = 10f,
             ContactDamage = 1f,
             MaxHealth = 3,
-            InvulnerabilityDuration = 0.25f
+            InvulnerabilityDuration = 0.25f,
+            DropItemType = EnemyDropType.Speed
         },
 
         ["SpiderEnemy"] = new EnemyConfig
@@ -27,7 +28,7 @@ public static class ConfigDB
             ContactDamage = 1f,
             MaxHealth = 2,
             InvulnerabilityDuration = 0.25f,
-            DropItemType = EnemyDropType.Adrenaline
+            DropItemType = EnemyDropType.Health
         },
 
         ["AngelicBaby"] = new EnemyConfig
