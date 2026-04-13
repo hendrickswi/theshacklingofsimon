@@ -20,6 +20,7 @@ public abstract class ProjectileBase : IProjectile
     public Rectangle Hitbox { get; protected set; }
     public ISprite Sprite { get; set; }
     public ProjectileStats Stats { get; protected set; }
+    public string SFX { get; protected set; }
     
     public abstract void Update(GameTime gameTime);
     public abstract void Draw(SpriteBatch spriteBatch);

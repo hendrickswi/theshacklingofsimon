@@ -10,6 +10,7 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
@@ -22,6 +23,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles
         public Vector2 Position { get; protected set; }
         public Vector2 Velocity { get; set; } = Vector2.Zero;
         public bool IsActive { get; protected set; } = true;
+        public string SFX { get; set; }
 
         // kept the flags system so most tiles only define one thing.
         protected virtual TileCollisionFlags CollisionFlags => TileCollisionFlags.None;

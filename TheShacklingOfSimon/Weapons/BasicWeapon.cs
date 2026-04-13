@@ -1,6 +1,7 @@
 ﻿#region
 
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Sounds;
 
 #endregion
 
@@ -15,5 +16,7 @@ public class BasicWeapon : BaseWeapon, IPrimaryWeapon
 		BaseCooldown = 0.5f;
 		BaseDamage = 1;
 		Prototype = prototype;
+		SFX = SoundManager.Instance.NameSFX("items", "plop");
+        SoundManager.Instance.AddSFX(SFX);
 	}
 }

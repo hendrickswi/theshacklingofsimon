@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Input;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
@@ -61,8 +62,8 @@ public class PlayerDeadGameState : IGameState
     public void Enter()
     {
         _inputManager.LoadDeadStateControls(_restartGame, _quitGame);
-        
-        // TODO: should play the infamous Dark Souls "you died" sound effect here
+        SoundManager.Instance.AddSFX("sounds/other/dark-souls-you-died-sound-effect_hm5sYFG");
+        SoundManager.Instance.PlaySFX("sounds/other/dark-souls-you-died-sound-effect_hm5sYFG");
     }
 
     public void Exit()

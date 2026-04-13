@@ -177,6 +177,7 @@ public class Game1 : Game
 
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/itemrecharge");
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/plop");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/rocketexplode04");
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/Powerup2");
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/warp");
 
@@ -354,5 +355,6 @@ public class Game1 : Game
         _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
         CreatePlayerWeapons();
         CreatePlayerItems();
+        PlayMusic("sounds/music/basement");
     }
 }

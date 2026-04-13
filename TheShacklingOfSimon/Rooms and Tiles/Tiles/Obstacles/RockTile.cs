@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
@@ -18,10 +19,15 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Obstacles
             TileCollisionFlags.BlocksFly |
             TileCollisionFlags.BlocksProjectiles;
 
-        public RockTile(ISprite sprite, Vector2 position) : base(sprite, position) { }
+        public RockTile(ISprite sprite, Vector2 position) : base(sprite, position)
+        {
+            SFX = SoundManager.Instance.NameSFX("other","Rock_crumble 0");
+            SoundManager.Instance.AddSFX(SFX);
+        }
 
         public void OnExplode()
         {
+            SoundManager.Instance.PlaySFX(SFX);
             Discontinue();
         }
 

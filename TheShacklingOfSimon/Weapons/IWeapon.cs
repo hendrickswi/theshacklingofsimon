@@ -14,6 +14,7 @@ public interface IWeapon
     string Description { get; }
     float BaseCooldown { get; }
     int BaseDamage { get; }
+    string SFX { get; }
 
     IProjectile GetPrototype();
     void SetPrototype(IProjectile newPrototype);

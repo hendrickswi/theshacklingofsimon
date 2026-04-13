@@ -13,6 +13,7 @@ using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Templates;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 
 #endregion
@@ -27,6 +28,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     // Public but not in the interface for internal use
     public PlayerTwoStatesManager StatesManager { get; private set; }
     public PlayerTwoSpritesManager SpritesManager { get; private set; }
+    public string HurtSFX { get; private set; }
+    public string HealSFX { get; private set; }
+    public string DieSFX { get; private set; }
     
     // Renaming for clarity
     IPlayerState IPlayer.CurrentState => StatesManager.Body;
@@ -141,6 +145,13 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         EffectStats.Add(StatType.ProjectileSpeedMultiplier, config.ProjectileSpeedMultiplier);
         EffectStats.Add(StatType.PrimaryCooldown, config.PrimaryCooldown);
         EffectStats.Add(StatType.SecondaryCooldown, config.SecondaryCooldown);
+
+        HurtSFX = SoundManager.Instance.NameSFX("isaac","Isaac_Hurt_Grunt0");
+        SoundManager.Instance.AddSFX(HurtSFX);
+        HealSFX = SoundManager.Instance.NameSFX("isaac","1up");
+        SoundManager.Instance.AddSFX(HealSFX);
+        DieSFX = SoundManager.Instance.NameSFX("isaac","isaacdies");
+        SoundManager.Instance.AddSFX(DieSFX);
         
         // Only create these the first time Initialize()
         // is called (during instantiation of *this*)

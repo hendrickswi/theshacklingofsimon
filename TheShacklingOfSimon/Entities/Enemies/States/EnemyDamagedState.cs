@@ -1,6 +1,7 @@
 #region
 
 using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 
 #endregion
@@ -25,6 +26,8 @@ public class EnemyDamagedState : IEnemyState
         // Set hurt sprite
         string spriteName = _enemy.Name + "_Hurt";
         _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(spriteName);
+
+        SoundManager.Instance.PlaySFX(_enemy.HurtSFX);
 
         // Optional: stop movement when hit
         _enemy.Velocity = Vector2.Zero;

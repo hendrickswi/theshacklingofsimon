@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
@@ -39,6 +40,8 @@ public class BasicProjectile : ProjectileBase
 
         fireBall = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
 
+		SFX = SoundManager.Instance.NameSFX("projectiles", "splatter00");
+        SoundManager.Instance.AddSFX(SFX);
     }
 
     public override void Update(GameTime gameTime)
@@ -92,5 +95,6 @@ public class BasicProjectile : ProjectileBase
         {
             Discontinue();
         }
+		SoundManager.Instance.PlaySFX(SFX);
     }
 }

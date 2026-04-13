@@ -12,6 +12,7 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -34,11 +35,14 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     protected float AttackTimer;
     public float AttackRange { get; set; }
     public float ContactDamage { get; set; }
+    public string HurtSFX { get; set; }
+    public string DieSFX { get; set; }
     public IItem EnemyDrop { get; set; }
 
     protected IMovementBehavior _movementBehaviour;
 
     public event Action<IProjectile> OnProjectileCreated;
+    public event Action<IItem, Vector2> OnPickupCreated;
 
     protected BaseEnemy(Vector2 startPosition, IWeapon weapon, string name)
     {
@@ -59,6 +63,11 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         EffectStats.Add(StatType.InvulnerabilityDuration, config.InvulnerabilityDuration);
 
         AttackTimer = 0f;
+
+        HurtSFX = SoundManager.Instance.NameSFX("enemy","TearImpacts0");
+        SoundManager.Instance.AddSFX(HurtSFX);
+        DieSFX = SoundManager.Instance.NameSFX("enemy","goodeath0");
+        SoundManager.Instance.AddSFX(DieSFX);
 
         //movement default
         _movementBehaviour = new NoMovementBehaviour();
@@ -178,6 +187,11 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     }
 
     public void MarkForRemoval() => IsActive = false;
+
+    public void SpawnPickup(IItem item, Vector2 position)
+    {
+        OnPickupCreated?.Invoke(item, position);
+    }
 
     // Collision handling
 

@@ -25,13 +25,17 @@ public interface IEnemy : IDamageableEntity
     float AttackCooldown { get; set; }
     float AttackRange { get; set; }
     float ContactDamage { get; set; }
+    string HurtSFX { get; set; }
+    string DieSFX { get; set; }
     IItem EnemyDrop { get; set; } // we can set this to null/noneitem if we don't want an enemy dropping something
 
     IWeapon Weapon { get; }
     public event Action<IProjectile> OnProjectileCreated;
+    public event Action<IItem, Vector2> OnPickupCreated;
 
     void SetWeapon(IWeapon weapon);
     void MarkForRemoval();
+    void SpawnPickup(IItem item, Vector2 position);
     Vector2 FindTarget();
     void RegisterMovement(float dt, Vector2 targetPosition);
     void RegisterAttack(float dt, Vector2 targetDirection);

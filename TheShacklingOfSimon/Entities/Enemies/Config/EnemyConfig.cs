@@ -5,6 +5,14 @@ using TheShacklingOfSimon.Weapons;
 #endregion
 
 namespace TheShacklingOfSimon.Entities.Enemies.Config;
+public enum EnemyDropType
+{
+    None,
+    Teleport,
+    Adrenaline,
+    Speed
+}
+
 public class EnemyConfig
 {
     public float MoveSpeed { get; set; }
@@ -15,4 +23,5 @@ public class EnemyConfig
     public IWeapon Weapon { get; set; }
     
     public float InvulnerabilityDuration { get; set; }
+    public EnemyDropType DropItemType { get; set; } = EnemyDropType.None;
 }

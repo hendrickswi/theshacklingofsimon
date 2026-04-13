@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players.States.Head;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.StatusEffects;
 
@@ -25,6 +26,7 @@ public class PlayerBodyDamagedState : IPlayerBodyState
     {
         string spritePrefix = _player.SpritesManager.GetSkin("Body");
         _player.SpritesManager.Body = SpriteFactory.Instance.CreateStaticSprite(spritePrefix + "Hurt");
+        SoundManager.Instance.PlaySFX(_player.HurtSFX);
     }
 
     public void Exit()
