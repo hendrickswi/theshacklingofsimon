@@ -33,7 +33,7 @@ public class ProjectileManager
 		_projectiles.RemoveAll(p => !p.IsActive);
 	}
 
-    public void ClearAllProjectiles()
+    public void Clear()
     {
         _projectiles.Clear();
     }

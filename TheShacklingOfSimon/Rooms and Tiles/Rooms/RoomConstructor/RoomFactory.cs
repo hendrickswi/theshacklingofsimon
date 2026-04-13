@@ -252,6 +252,8 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
                             throw new InvalidOperationException($"Unknown item type: {item.GetType()}");
                         }
                     }
+
+                    Console.WriteLine("Pickup instantiated: " + p.GetType().Name + " at " + pos + "");
                     OnItemDropped?.Invoke(p);
                 };
                 

@@ -52,7 +52,7 @@ public class PickupManager
         }
     }
 
-    public void ClearAllPickups()
+    public void Clear()
     {
         _pickups.Clear();
     }

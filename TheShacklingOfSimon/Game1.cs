@@ -348,7 +348,8 @@ public class Game1 : Game
     private void Reset()
     {
         _player.Reset(GetScreenCenter());
-        _projectileManager.ClearAllProjectiles();
+        _projectileManager.Clear();
+        _pickupManager.Clear();
         _roomManager.ResetToGameStart();
         HUD.Reset();
         _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);

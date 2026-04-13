@@ -81,10 +81,6 @@ public abstract class DamageableEntity : IDamageableEntity
         InvulnerabilityTimer = EffectStats[StatType.InvulnerabilityDuration];
         
         Health -= amt;
-        if (Health <= 0)
-        {
-            Discontinue();
-        }
 
         return true;
     }
