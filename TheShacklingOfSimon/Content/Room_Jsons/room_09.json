@@ -1,0 +1,31 @@
+{
+    "id": "room_09",
+    "isBossRoom": true,
+    "tiles": [
+        
+    ],
+    "entities": [],
+    "enemies": [
+        {
+            "type": "ChaseEnemy",
+            "x": 3,
+            "y": 6,
+            "name": "AdultLeech",
+            "weapon": "NoneWeapon"
+        }
+    ],
+    "doors": [
+        {
+            "x": 7,
+            "y": 0,
+            "to": {
+                "room": "room_08",
+                "spawn": {
+                    "x": 7,
+                    "y": 7
+                }
+            },
+            "unlockType": "ClearEnemies"
+        }
+    ]
+}
