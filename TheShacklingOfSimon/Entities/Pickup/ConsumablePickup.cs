@@ -34,7 +34,9 @@ public class ConsumablePickup : BasePickup
         if (Item == null) return;
 
         Item.Entity = player;
-        Item.ApplyEffect();
-        Discontinue();
+        if (Item.ApplyEffect())
+        {
+            Discontinue();
+        }
     }
 }
