@@ -29,9 +29,13 @@ namespace TheShacklingOfSimon.UI
         private readonly ISprite _bombIndicator;
         private readonly ISprite _basicIndicator;
         private readonly ISprite _fireballIndicator;
+        private readonly ISprite _Coin;
+        private readonly ISprite _key;
 
         private readonly ISprite _pixelSprite;
-
+        private readonly SpriteFont _hudFont;
+        private Vector2 _coinPos = new Vector2(10, 160); 
+        private Vector2 _keyPos = new Vector2(10, 210);  
         public HUD(IPlayer player, RoomManager roomManager, GraphicsDevice graphicsDevice)
         {
             _player = player;
@@ -45,6 +49,8 @@ namespace TheShacklingOfSimon.UI
             _bombIndicator = SpriteFactory.Instance.CreateStaticSprite("BombIndicator");
             _basicIndicator = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
             _fireballIndicator = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
+            _Coin = SpriteFactory.Instance.CreateStaticSprite("Coin");
+            _key = SpriteFactory.Instance.CreateStaticSprite("key");
 
             _pixelSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white");
         }
@@ -53,6 +59,7 @@ namespace TheShacklingOfSimon.UI
         {
             DrawHearts(spriteBatch);
             DrawWeaponIndicator(spriteBatch);
+            DrawPickupIndicators(spriteBatch);
             _miniMap.Draw(spriteBatch);
             if (_roomManager.CurrentRoom.IsBossRoom)
             {
@@ -116,6 +123,20 @@ namespace TheShacklingOfSimon.UI
             _pixelSprite.Draw(spriteBatch, foregroundRectangle, Color.Red);
         }
 
+        private void DrawPickupIndicators(SpriteBatch spriteBatch)
+        {
+            
+            for (int i = 0; i < _player.Inventory.NumCoins; i++)
+            {
+                _Coin.Draw(spriteBatch, new Vector2(20+(i*42.5f), 160), Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 1f);
+            }
+            for (int i = 0; i < _player.Inventory.NumKeys; i++)
+            {
+                _key.Draw(spriteBatch, new Vector2(25+(i*32), 210), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 1f);
+            }
+           
+
+        }
         public void Reset()
         {
             _miniMap.Reset();

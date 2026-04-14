@@ -34,6 +34,14 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
+        <None Update="Content\images\Coin.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\key.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
         <None Update="Content\images\DoorLockedUp.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
