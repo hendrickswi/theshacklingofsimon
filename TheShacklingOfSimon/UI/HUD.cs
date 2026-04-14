@@ -2,6 +2,8 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
 using TheShacklingOfSimon.Sprites.Factory;
@@ -13,8 +15,13 @@ namespace TheShacklingOfSimon.UI
 {
     internal sealed class HUD
     {
+        private const int BossHealthBarWidth = 50;
+        private const int BossHealthBarHeight = 10;
+        
         private readonly IPlayer _player;
         private readonly MiniMap _miniMap;
+        private readonly RoomManager _roomManager;
+        private readonly GraphicsDevice _graphicsDevice;
 
         private readonly ISprite _heartHalfSprite;
         private readonly ISprite _heartFilledSprite;
@@ -23,10 +30,14 @@ namespace TheShacklingOfSimon.UI
         private readonly ISprite _basicIndicator;
         private readonly ISprite _fireballIndicator;
 
+        private readonly ISprite _pixelSprite;
+
         public HUD(IPlayer player, RoomManager roomManager, GraphicsDevice graphicsDevice)
         {
             _player = player;
             _miniMap = new MiniMap(roomManager, graphicsDevice);
+            _roomManager = roomManager;
+            _graphicsDevice = graphicsDevice;
 
             _heartHalfSprite = SpriteFactory.Instance.CreateStaticSprite("HalfHeart");
             _heartFilledSprite = SpriteFactory.Instance.CreateStaticSprite("FilledHeart");
@@ -34,6 +45,8 @@ namespace TheShacklingOfSimon.UI
             _bombIndicator = SpriteFactory.Instance.CreateStaticSprite("BombIndicator");
             _basicIndicator = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
             _fireballIndicator = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
+
+            _pixelSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white");
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -41,6 +54,10 @@ namespace TheShacklingOfSimon.UI
             DrawHearts(spriteBatch);
             DrawWeaponIndicator(spriteBatch);
             _miniMap.Draw(spriteBatch);
+            if (_roomManager.CurrentRoom.IsBossRoom)
+            {
+                DrawBossHealthBar(spriteBatch);
+            }
         }
 
         private void DrawHearts(SpriteBatch spriteBatch)
@@ -74,6 +91,29 @@ namespace TheShacklingOfSimon.UI
             //_fireballIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
             _basicIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
             _bombIndicator.Draw(spriteBatch, new Vector2(80, 90), Color.White, 0f, Vector2.Zero, 2.5f, SpriteEffects.None, 1f);
+        }
+
+        private void DrawBossHealthBar(SpriteBatch spriteBatch)
+        {
+            IEnemy boss = null;
+            foreach (IEntity e in _roomManager.CurrentRoom.Entities)
+            {
+                if (boss != null) break;
+                if ( e is not IEnemy enemy /*|| !enemy.IsBoss*/) continue;
+                boss = enemy;
+            }
+
+            if (boss == null) return;
+            float healthPercent = MathHelper.Clamp((float) boss.Health / boss.MaxHealth, 0f, 1f);
+
+            int x = (int) (_graphicsDevice.Viewport.Width - BossHealthBarHeight) / 2;
+            int y = 20;
+            
+            Rectangle backgroundRectangle = new Rectangle(x, y, BossHealthBarWidth, BossHealthBarHeight);
+            Rectangle foregroundRectangle = new Rectangle(x, y, (int) (BossHealthBarWidth * healthPercent), BossHealthBarWidth);
+
+            _pixelSprite.Draw(spriteBatch, backgroundRectangle, Color.Black);
+            _pixelSprite.Draw(spriteBatch, foregroundRectangle, Color.Red);
         }
 
         public void Reset()
