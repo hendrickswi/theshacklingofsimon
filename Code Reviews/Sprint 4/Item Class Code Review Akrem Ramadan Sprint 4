@@ -1,7 +1,7 @@
 Author: Akrem Ramadan
 Date: 4/13/2026
 
-Item Suite of Classes Code Review:
+Item Suite of Classes (By Cameron and Will) Code Review:
 
 A good separation of responsibilities. Item classes manage the effect of an item, whereas pickup classes deal with the world logic, 
 position, rendering, collision detection, and other aspects. It is good for cohesion in the system. BasePickup is an excellent example of 
