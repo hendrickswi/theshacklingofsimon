@@ -51,13 +51,6 @@
     "entities": [],
     "enemies": [
         {
-            "type": "ChaseEnemy",
-            "x": 3,
-            "y": 6,
-            "name": "AdultLeech",
-            "weapon": "NoneWeapon"
-        },
-        {
             "type": "ProjectileEnemy",
             "x": 11,
             "y": 6,
@@ -74,6 +67,18 @@
                 "spawn": {
                     "x": 7,
                     "y": 7
+                }
+            },
+            "unlockType": "ClearEnemies"
+        },
+        {
+            "x": 7,
+            "y": 8,
+            "to": {
+                "room": "room_09",
+                "spawn": {
+                    "x": 7,
+                    "y": 1
                 }
             },
             "unlockType": "ClearEnemies"

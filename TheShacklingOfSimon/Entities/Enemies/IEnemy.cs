@@ -15,6 +15,8 @@ public interface IEnemy : IDamageableEntity
 {
     string Name { get; }
 
+    bool IsBoss { get; }
+
     // For the manager
     bool MarkedForRemoval { get; }
 

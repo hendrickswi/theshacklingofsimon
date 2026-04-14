@@ -26,6 +26,7 @@ namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 public abstract class BaseEnemy : DamageableEntity, IEnemy
 {
     public string Name { get; }
+    public bool IsBoss { get; }
     public bool MarkedForRemoval { get; private set; }
 
     public IEnemyState CurrentState { get; private set; }
@@ -48,7 +49,10 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     protected BaseEnemy(Vector2 startPosition, IWeapon weapon, string name)
     {
         Name = name;
-        var config = ConfigDB.Configs[name];
+        var config = ConfigDBEnemy.Configs[name];
+
+        //IsBoss
+        IsBoss = config.IsBoss;
 
         // IDamageable properties
         MaxHealth = config.MaxHealth;

@@ -1,0 +1,29 @@
+Author: Rushikh Mungara
+Date: 04/13/26 
+Sprint 4 File(s) being reviewed: Room.cs, JsonRoomReader.cs, RoomFactory.cs 
+Author of file(s):Akrem
+Comments: Overall, the room generation system is very clean and follows a solid separation of concerns.
+I specifically like how you separated the JSON deserialization from the object construction; it makes the RoomFactory much easier to read. 
+The IDoorContext approach is also a clever way to handle door unlocking logic without creating tight coupling between the room and the door tiles.
+
+However, there are few things that could be improved:
+
+Bug in Room.cs: In the Update() method, you are checking "!e.IsActive" and calling "entities.RemoveAt(i)" both before and after the "e.Update(gameTime)" call. 
+If an entity is inactive at the start of the loop, it is removed, but the code continues to the second check, which could lead to an IndexOutOfRangeException or skipping the next entity in the list.
+
+Dependency Issue in RoomFactory.cs: You are using SpriteFactory.Instance directly inside the factory. 
+This creates a hidden dependency that makes it harder to swap out sprite logic for testing or special room types later on.
+
+Scalability in Room.cs: The BindRoomContext logic only runs once in the constructor. 
+If we ever decide to have "dynamic" doors that are spawned mid-game, they will never have their context bound and will fail to function.
+
+Suggested Changes:
+Refactor the Update loop in Room.cs to only remove the entity in one place. 
+Using a single check after the update is usually safer: 
+for (int i = entities.Count - 1; i >= 0; i--){ 
+entities[i].Update(gameTime); if (!entities[i].IsActive) { entities.RemoveAt(i); } 
+}
+Add a BackgroundPath string property to your RoomFileData class. Use data.BackgroundPath in RoomFactory instead of the hardcoded string so we can have different visuals for different biomes.
+Move the door-binding logic into its own method (e.g., BindDoors()) and call it both in the constructor and inside AddEntity() whenever the added entity is a DoorTile.
+Fill out the PlacePickups method. It's currently empty, so items placed in the JSON editor won't actually appear in the game yet.
+

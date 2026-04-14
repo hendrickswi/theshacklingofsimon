@@ -5,12 +5,13 @@ using System.Collections.Generic;
 #endregion
 
 namespace TheShacklingOfSimon.Entities.Enemies.Config;
-public static class ConfigDB
+public static class ConfigDBEnemy
 {
     public static readonly Dictionary<string, EnemyConfig> Configs = new()
     {
         ["BlackMaw"] = new EnemyConfig
         {
+            IsBoss = false,
             MoveSpeed = 17f,
             AttackCooldown = 3f,
             AttackRange = 10f,
@@ -22,6 +23,7 @@ public static class ConfigDB
 
         ["SpiderEnemy"] = new EnemyConfig
         {
+            IsBoss = false,
             MoveSpeed = 25f,
             AttackCooldown = 3f,
             AttackRange = 8f,
@@ -33,7 +35,8 @@ public static class ConfigDB
 
         ["AngelicBaby"] = new EnemyConfig
         {
-            MoveSpeed = 40f,
+            IsBoss = false,
+            MoveSpeed = 30f,
             AttackCooldown = 6f,
             AttackRange = 8f,
             ContactDamage = 1f,
@@ -44,11 +47,12 @@ public static class ConfigDB
 
         ["AdultLeech"] = new EnemyConfig
         {
-            MoveSpeed = 10f,
+            IsBoss = true,
+            MoveSpeed = 80f,
             AttackCooldown = 4f,
             AttackRange = 10f,
-            ContactDamage = 2f,
-            MaxHealth = 4,
+            ContactDamage = 3f,
+            MaxHealth = 10,
             InvulnerabilityDuration = 0.25f,
             DropItemType = EnemyDropType.None
         }

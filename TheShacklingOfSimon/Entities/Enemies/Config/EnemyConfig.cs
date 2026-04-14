@@ -14,6 +14,7 @@ public enum EnemyDropType
 
 public class EnemyConfig
 {
+    public bool IsBoss { get; set; }
     public float MoveSpeed { get; set; }
     public float AttackCooldown { get; set; }
     public float AttackRange { get; set; }
