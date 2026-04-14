@@ -19,8 +19,10 @@ public class HealingItem : PassiveItem, IConsumableItem
         _amt = amt;
     }
     
-    public override void ApplyEffect()
+    public override bool ApplyEffect()
     {
+        if (Entity.Health >= Entity.MaxHealth) return false;
         Entity.Heal(_amt);
+        return true;
     }
 }

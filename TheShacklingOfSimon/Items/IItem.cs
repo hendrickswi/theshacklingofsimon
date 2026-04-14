@@ -12,11 +12,14 @@ public interface IItem
     IDamageableEntity Entity { get; set; }
     
     /// <summary>
-    /// Applies the item's effect to <c>this.Entity</c>.
+    /// Attempts to apply the item's effect to <c>this.Entity</c>.
     /// </summary>
     /// <remarks>
     /// Ensure that <c>this.Entity</c> is the desired target before calling this method.
     /// Otherwise, unexpected behavior may occur.
     /// </remarks>
-    void ApplyEffect();
+    /// <returns>
+    /// True if the effect was successfully applied, false otherwise.
+    /// </returns>
+    bool ApplyEffect();
 }

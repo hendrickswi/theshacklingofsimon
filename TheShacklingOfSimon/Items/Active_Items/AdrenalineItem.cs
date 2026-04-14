@@ -57,9 +57,9 @@ public class AdrenalineItem : ActiveItem, IInventoryItem
         }
     }
 
-    public override void ApplyEffect()
+    public override bool ApplyEffect()
     {
-        if (_buffActive) return;
+        if (_buffActive) return false;
         _buffActive = true;
         _timer = _cooldownDuration;
         
@@ -98,6 +98,8 @@ public class AdrenalineItem : ActiveItem, IInventoryItem
         Entity.EffectManager.AddEffect(secondaryCooldownEffect);
         Entity.EffectManager.AddEffect(projectileSpeedEffect);
         SoundManager.Instance.PlaySFX(sfx);
+
+        return true;
     }
 
     public override void ClearEffect()

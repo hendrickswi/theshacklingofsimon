@@ -28,7 +28,7 @@ public class ArmorItem : PassiveItem, IInventoryItem
         _amt = amt;
         _duration = duration;
     }
-    public override void ApplyEffect()
+    public override bool ApplyEffect()
     {
         IStatusEffect maxHealthEffect = new MaxHealthEffect(
             Name, 
@@ -47,5 +47,6 @@ public class ArmorItem : PassiveItem, IInventoryItem
         
         Entity.EffectManager.AddEffect(maxHealthEffect);
         Entity.EffectManager.AddEffect(invulnerabilityDurationEffect);
+        return true;
     }
 }

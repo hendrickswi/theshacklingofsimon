@@ -28,7 +28,7 @@ public class DamageItem : PassiveItem, IInventoryItem
         _amt = amt;
         _duration = duration;
     }
-    public override void ApplyEffect()
+    public override bool ApplyEffect()
     {
         IStatusEffect effect = new DamageMultiplierEffect(
             Name, 
@@ -38,5 +38,6 @@ public class DamageItem : PassiveItem, IInventoryItem
             _duration
         );
         Entity.EffectManager.AddEffect(effect);
+        return true;
     }
 }

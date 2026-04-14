@@ -3,7 +3,8 @@
 namespace TheShacklingOfSimon.Items;
 
 /// <summary>
-/// Marker interface with additional functionality for active items
+/// Extended interface for active items with additional
+/// functionality for time-based logic.
 /// </summary>
 public interface IActiveItem : IItem
 {

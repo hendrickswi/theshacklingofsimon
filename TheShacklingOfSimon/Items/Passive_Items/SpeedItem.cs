@@ -29,7 +29,7 @@ public class SpeedItem : PassiveItem, IInventoryItem
         _duration = duration;
     }
     
-    public override void ApplyEffect()
+    public override bool ApplyEffect()
     {
         IStatusEffect effect = new MoveSpeedEffect(
             Name, 
@@ -39,5 +39,6 @@ public class SpeedItem : PassiveItem, IInventoryItem
             _duration
         );
         Entity.EffectManager.AddEffect(effect);
+        return true;
     }
 }

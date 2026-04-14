@@ -56,15 +56,15 @@ public class TeleportItem : IItem
     }
 
     // Trigger this when the player uses the active item
-    public void ApplyEffect()
+    public bool ApplyEffect()
     {
-        if (_cooldownTimer > 0f) return;
+        if (_cooldownTimer > 0f) return false;
 
         Vector2 dir = Entity.Velocity;
 
         // If player isn't moving, don't blink and don't consume cooldown
         if (dir.LengthSquared() < 0.0001f)
-            return;
+            return false;
 
         dir.Normalize();
 
@@ -80,12 +80,12 @@ public class TeleportItem : IItem
             {
                 // Extra safety: don't consume if we didn't actually move
                 if ((candidate - start).LengthSquared() < 0.0001f)
-                    return;
+                    return false;
 
                 Entity.SetPosition(candidate);
                 _cooldownTimer = _cooldownSeconds;
                 SoundManager.Instance.PlaySFX(SFX);
-                return;
+                return true;
             }
 
             candidate -= dir * _step;
@@ -93,5 +93,6 @@ public class TeleportItem : IItem
         }
 
         // If nowhere valid, do nothing (no cooldown spent)
+        return false;
     }
 }

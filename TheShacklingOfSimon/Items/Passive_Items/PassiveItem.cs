@@ -19,5 +19,5 @@ public abstract class PassiveItem : IPassiveItem
         Entity = entity;
     }
 
-    public abstract void ApplyEffect();
+    public abstract bool ApplyEffect();
 }

@@ -73,9 +73,12 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         StatesManager.Head.HandleSecondaryAttack(InputBuffer.ConsumeSecondaryAttack(), Inventory.CurrentSecondaryWeapon.BaseCooldown + EffectStats[StatType.SecondaryCooldown]);
         
         // Update position and velocity
-        float dt = (float)delta.ElapsedGameTime.TotalSeconds;
+        float dt = (float) delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
+        
+        // Update inventory (active items)
+        Inventory.Update(delta);
 
         // Update states and sprites
         StatesManager.Update(delta);

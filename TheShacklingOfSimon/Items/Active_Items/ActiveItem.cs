@@ -17,7 +17,7 @@ public abstract class ActiveItem : IActiveItem
         Entity = entity;
     }
     
-    public abstract void ApplyEffect();
+    public abstract bool ApplyEffect();
     public abstract void ClearEffect();
     public abstract void Update(GameTime delta);
 
