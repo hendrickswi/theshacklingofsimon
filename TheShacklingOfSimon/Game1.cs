@@ -282,8 +282,10 @@ public class Game1 : Game
 
     private void CreatePlayerItems()
     {
-        _player.Inventory.Add(new TeleportItem(_player, pos => true));
+        TeleportItem teleportItem = new TeleportItem(_player, pos => true);
+        _player.Inventory.Add(teleportItem);
         _player.Inventory.Add(new AdrenalineItem(_player));
+        _player.Inventory.CurrentActiveItem = teleportItem;
     }
 
     private void CreateInputManager()

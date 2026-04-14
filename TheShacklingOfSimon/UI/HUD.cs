@@ -99,7 +99,7 @@ namespace TheShacklingOfSimon.UI
             foreach (IEntity e in _roomManager.CurrentRoom.Entities)
             {
                 if (boss != null) break;
-                if ( e is not IEnemy enemy /*|| !enemy.IsBoss*/) continue;
+                if ( e is not IEnemy enemy || !enemy.IsBoss) continue;
                 boss = enemy;
             }
 
