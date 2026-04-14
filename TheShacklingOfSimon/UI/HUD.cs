@@ -31,11 +31,12 @@ namespace TheShacklingOfSimon.UI
         private readonly ISprite _fireballIndicator;
         private readonly ISprite _Coin;
         private readonly ISprite _key;
+   
 
         private readonly ISprite _pixelSprite;
-        private readonly SpriteFont _hudFont;
-        private Vector2 _coinPos = new Vector2(10, 160); 
-        private Vector2 _keyPos = new Vector2(10, 210);  
+        private ISprite _coinFont;
+        private ISprite _keyFont;
+       
         public HUD(IPlayer player, RoomManager roomManager, GraphicsDevice graphicsDevice)
         {
             _player = player;
@@ -51,6 +52,9 @@ namespace TheShacklingOfSimon.UI
             _fireballIndicator = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
             _Coin = SpriteFactory.Instance.CreateStaticSprite("Coin");
             _key = SpriteFactory.Instance.CreateStaticSprite("key");
+            
+
+
 
             _pixelSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white");
         }
@@ -123,19 +127,22 @@ namespace TheShacklingOfSimon.UI
             _pixelSprite.Draw(spriteBatch, foregroundRectangle, Color.Red);
         }
 
+        
         private void DrawPickupIndicators(SpriteBatch spriteBatch)
         {
-          
 
-            for (int i = 0; i < _player.Inventory.NumCoins; i++)
-            {
-                _Coin.Draw(spriteBatch, new Vector2(20+(i*42.5f), 160), Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 1f);
-            }
-            for (int i = 0; i < _player.Inventory.NumKeys; i++)
-            {
-                _key.Draw(spriteBatch, new Vector2(25+(i*32), 210), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 1f);
-            }
+
            
+            _coinFont = SpriteFactory.Instance.CreateTextSprite("Upheaval16", "x" + _player.Inventory.NumCoins.ToString());
+            _coinFont.Draw(spriteBatch, new Vector2(80, 160), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 1f);
+
+            _keyFont = SpriteFactory.Instance.CreateTextSprite("Upheaval16", "x" + _player.Inventory.NumKeys.ToString());
+            _keyFont.Draw(spriteBatch, new Vector2(80, 210), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 1f);
+
+            _Coin.Draw(spriteBatch, new Vector2(20 , 160), Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 1f);
+            _key.Draw(spriteBatch, new Vector2(25, 210), Color.White, 0f, Vector2.Zero, 2.5f, SpriteEffects.None, 1f);
+            
+
 
         }
         public void Reset()

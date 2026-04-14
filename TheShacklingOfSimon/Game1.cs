@@ -205,7 +205,7 @@ public class Game1 : Game
     private void PlayMusic(string songName)
     {
         Song song = SoundFactory.Instance.GetSong(songName);
-        MediaPlayer.Play(song);
+        //MediaPlayer.Play(song);
     }
 
     private RoomFactory CreateRoomFactory()
