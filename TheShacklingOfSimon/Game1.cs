@@ -136,7 +136,8 @@ public class Game1 : Game
     {
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Roboto", "Roboto");
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Arial", "Arial");
-        SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/OptimusPrinceps", "OptimusPrinceps");
+        SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/OptimusPrinceps16", "OptimusPrinceps16");
+        SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/OptimusPrinceps28", "OptimusPrinceps28");
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Upheaval16", "Upheaval16");
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Upheaval32", "Upheaval32");
     }

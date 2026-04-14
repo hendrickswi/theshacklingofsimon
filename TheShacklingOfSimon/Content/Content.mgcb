@@ -68,12 +68,19 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/spritefont/Arial.spritefont
 
-#begin fonts/spritefont/OptimusPrinceps.spritefont
+#begin fonts/spritefont/OptimusPrinceps28.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:fonts/spritefont/OptimusPrinceps.spritefont
+/build:fonts/spritefont/OptimusPrinceps28.spritefont
+
+#begin fonts/spritefont/OptimusPrinceps16.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/spritefont/OptimusPrinceps16.spritefont
 
 #begin fonts/spritefont/Roboto.spritefont
 /importer:FontDescriptionImporter

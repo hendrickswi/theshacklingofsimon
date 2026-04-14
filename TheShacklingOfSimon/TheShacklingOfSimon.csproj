@@ -82,7 +82,7 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
-        <None Update="Content\fonts\spritefont\OptimusPrinceps.spritefont">
+        <None Update="Content\fonts\spritefont\OptimusPrinceps28.spritefont">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
@@ -119,6 +119,10 @@
         </None>
 
         <None Update="Content\fonts\ttf\Upheaval.ttf">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\fonts\spritefont\OptimusPrinceps16.spritefont">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
