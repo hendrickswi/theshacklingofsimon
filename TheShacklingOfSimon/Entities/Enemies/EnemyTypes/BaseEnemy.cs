@@ -48,7 +48,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     protected BaseEnemy(Vector2 startPosition, IWeapon weapon, string name)
     {
         Name = name;
-        var config = ConfigDB.Configs[name];
+        var config = ConfigDBEnemy.Configs[name];
 
         // IDamageable properties
         MaxHealth = config.MaxHealth;

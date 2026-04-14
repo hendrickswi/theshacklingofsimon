@@ -5,7 +5,7 @@ using System.Collections.Generic;
 #endregion
 
 namespace TheShacklingOfSimon.Entities.Enemies.Config;
-public static class ConfigDB
+public static class ConfigDBEnemy
 {
     public static readonly Dictionary<string, EnemyConfig> Configs = new()
     {
