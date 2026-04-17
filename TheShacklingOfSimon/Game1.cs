@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Controllers;
@@ -14,6 +13,7 @@ using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Entities.Projectiles.Implementations;
 using TheShacklingOfSimon.GameStates;
 using TheShacklingOfSimon.GameStates.States;
 using TheShacklingOfSimon.Input;
@@ -85,21 +85,24 @@ public class Game1 : Game
         _projectileManager = new ProjectileManager();
         _collisionManager = new CollisionManager();
         _soundManager = new SoundManager();
+        _pickupManager = new PickupManager();
         
         LoadFonts();
         LoadSpriteAssets();
         LoadSounds();
         LoadMusic();
-        PlayMusic("sounds/music/basement");
+        PlayMusic("basement");
 
         RoomFactory roomFactory = CreateRoomFactory();
         CreateRoomManager(roomFactory);
+        
+        // _roomManager holds a reference to roomFactory, so this is safe
+        roomFactory.OnItemDropped += _pickupManager.AddPickup;
+        
         CreatePlayer();
         CreatePlayerWeapons();
         CreatePlayerItems();
-        CreateItemAndPickupManagers();
         CreateInputManager();
-        CreateSoundManager();
         ConfigureCollisionAndProjectileHooks();
         CreateGameStates();
     }
@@ -122,7 +125,7 @@ public class Game1 : Game
 
         _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
         _gameStateManager.Draw(_spriteBatch);
-        HUD.Draw(_spriteBatch);
+        //HUD.Draw(_spriteBatch);
         _spriteBatch.End();
        
 
@@ -133,14 +136,15 @@ public class Game1 : Game
     {
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Roboto", "Roboto");
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Arial", "Arial");
-        SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/OptimusPrinceps", "OptimusPrinceps");
+        SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/OptimusPrinceps16", "OptimusPrinceps16");
+        SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/OptimusPrinceps28", "OptimusPrinceps28");
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Upheaval16", "Upheaval16");
         SpriteFactory.Instance.LoadFont(Content, "fonts/spritefont/Upheaval32", "Upheaval32");
     }
     
     private void LoadSpriteAssets()
     {
-        SpriteFactory.Instance.LoadTexture(Content, "PlayerDefaultSprite.json", "player");
+        SpriteFactory.Instance.LoadTexture(Content, "PlayerDefaultSprite.json", "player-full");
         SpriteFactory.Instance.LoadTexture(Content, "SpiderEnemy.json", "SpiderEnemy");
         SpriteFactory.Instance.LoadTexture(Content, "BlackMaw.json", "BlackMaw");
         SpriteFactory.Instance.LoadTexture(Content, "AngelicBaby.json", "AngelicBaby");
@@ -153,6 +157,8 @@ public class Game1 : Game
 
         SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");
         SpriteFactory.Instance.LoadTexture(Content, "images/Red_Heart.json", "images/Red_Heart");
+        SpriteFactory.Instance.LoadTexture(Content, "images/Coin.json", "images/Coin");
+        SpriteFactory.Instance.LoadTexture(Content, "images/key.json", "images/key");
 
         // These are the upright door sprites. The door tile rotates them by side.
         SpriteFactory.Instance.LoadTexture(Content, "images/DoorLockedUp.json", "images/DoorLockedUp");
@@ -178,6 +184,7 @@ public class Game1 : Game
 
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/itemrecharge");
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/plop");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/rocketexplode04");
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/Powerup2");
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/warp");
 
@@ -197,8 +204,10 @@ public class Game1 : Game
 
     private void PlayMusic(string songName)
     {
-        Song song = SoundFactory.Instance.GetSong(songName);
+        string songStr = "sounds/music/"+songName;
+        Song song = SoundFactory.Instance.GetSong(songStr);
         MediaPlayer.Play(song);
+        MediaPlayer.IsRepeating = true;
     }
 
     private RoomFactory CreateRoomFactory()
@@ -278,13 +287,10 @@ public class Game1 : Game
 
     private void CreatePlayerItems()
     {
-        _player.Inventory.Add(new TeleportItem(_player, pos => true));
+        TeleportItem teleportItem = new TeleportItem(_player, pos => true);
+        _player.Inventory.Add(teleportItem);
         _player.Inventory.Add(new AdrenalineItem(_player));
-    }
-
-    private void CreateItemAndPickupManagers()
-    {
-        _pickupManager = new PickupManager();
+        _player.Inventory.CurrentActiveItem = teleportItem;
     }
 
     private void CreateInputManager()
@@ -300,15 +306,6 @@ public class Game1 : Game
             Reset);
     }
 
-    private void CreateSoundManager()
-    {
-        Dictionary<string, SoundEffect> sounds = SoundFactory.Instance.GetAllSFX();
-        foreach(KeyValuePair<string, SoundEffect> x in sounds)
-        {
-            _soundManager.AddSFX(x.Key, x.Value);
-        }
-    }
-
     private void ConfigureCollisionAndProjectileHooks()
     {
         _persistentDynamicEntities.Clear();
@@ -319,6 +316,9 @@ public class Game1 : Game
         _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
 
         _pickupManager.OnPickupAdded += _collisionManager.AddStaticEntity;
+        
+        _pickupManager.OnPickupAdded += pickup => _roomManager.CurrentRoom?.AddEntity(pickup);
+        _projectileManager.OnProjectileAdded += proj => _roomManager.CurrentRoom?.AddEntity(proj);
     }
 
     private void CreateGameStates()
@@ -344,6 +344,7 @@ public class Game1 : Game
                 _player,
                 _projectileManager,
                 _collisionManager,
+                HUD,
                 Reset
                 )
             );
@@ -358,11 +359,14 @@ public class Game1 : Game
     private void Reset()
     {
         _player.Reset(GetScreenCenter());
-        _projectileManager.ClearAllProjectiles();
+        _projectileManager.Clear();
+        _pickupManager.Clear();
         _roomManager.ResetToGameStart();
         HUD.Reset();
         _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
         CreatePlayerWeapons();
         CreatePlayerItems();
+        MediaPlayer.Stop();
+        PlayMusic("basement");
     }
 }

@@ -1,28 +1,43 @@
 #region
 
-using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.StatusEffects;
+using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 #endregion
 
 namespace TheShacklingOfSimon.Items.Passive_Items;
 
-public class SpeedItem : IItem
+public class SpeedItem : PassiveItem, IInventoryItem
 {
-    public string Name { get; }
-    public string Description { get; }
-    public IPlayer Player { get; }
-    public ItemEffects Effects { get; set; }
-
-
-    public SpeedItem(IPlayer player)
+    private readonly float _amt;
+    private readonly float _duration;
+    
+    public SpeedItem(
+        IDamageableEntity entity, 
+        string name = "Running Boots", 
+        string description = "Increases speed by 25%", 
+        float amt = 0.25f,
+        float duration = float.MaxValue) 
+        : base(entity)
     {
-        Player = player;
-        Name = "Running Boots";
-        Description = "";
-        Effects = new ItemEffects(0, 0, 0, 2, false);
+        Name = name;
+        Description = description;
+        _amt = amt;
+        _duration = duration;
     }
-    public void Effect()
+    
+    public override bool ApplyEffect()
     {
-        
+        IStatusEffect effect = new MoveSpeedEffect(
+            Name, 
+            EffectType.MoveSpeed, 
+            Entity, 
+            Entity.GetStat(StatType.MoveSpeed) * _amt, 
+            _duration
+        );
+        Entity.EffectManager.AddEffect(effect);
+        return true;
     }
 }

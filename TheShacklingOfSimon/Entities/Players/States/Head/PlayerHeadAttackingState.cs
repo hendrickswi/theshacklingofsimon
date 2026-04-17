@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
@@ -59,6 +60,11 @@ public class PlayerHeadAttackingState : IPlayerHeadState
         else
         {
             spriteAnimationName += "ShootingDown";
+        }
+        
+        if (_weapon.SFX != null)
+        {
+            SoundManager.Instance.PlaySFX(_weapon.SFX);   
         }
 
         _player.SpritesManager.Head = SpriteFactory.Instance.CreateAnimatedSprite(spriteAnimationName, _stateDuration * 0.51f);

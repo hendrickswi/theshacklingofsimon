@@ -2,89 +2,87 @@
 
 using System;
 using Microsoft.Xna.Framework;
-using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.Sounds;
 
 #endregion
 
 namespace TheShacklingOfSimon.Items.Active_Items;
 
-public class TeleportItem : IItem
+public class TeleportItem : ActiveItem, IInventoryItem
 {
-    public string Name { get; }
-    public string Description { get; }
-    public IPlayer Player { get; }
-    public ItemEffects Effects { get; } // unused for teleport, but required by the interface
+    private readonly string _sfx;
+    private float _timer;
+    private readonly float _cooldownDuration;
+    private bool _buffActive;
 
     private readonly Func<Vector2, bool> _isValidPosition;
-
-    private readonly float _cooldownSeconds;
-    private float _cooldownTimer;
 
     private readonly float _blinkDistance;
     private readonly float _step; // used to “walk back” if destination is invalid
 
     public TeleportItem(
-        IPlayer player,
+        IDamageableEntity entity,
         Func<Vector2, bool> isValidPosition,
         float blinkDistance = 96f,
         float cooldownSeconds = 2.0f,
-        float step = 8f)
+        float step = 8f) 
+        : base(entity)
     {
-        Player = player;
+        Entity = entity;
         _isValidPosition = isValidPosition;
 
         _blinkDistance = blinkDistance;
-        _cooldownSeconds = cooldownSeconds;
+        _cooldownDuration = cooldownSeconds;
         _step = step;
 
         Name = "Blink";
         Description = "Teleports you a short distance forward.";
-        Effects = new ItemEffects(0, 0, 0, 0, false);
+
+        SFX = SoundManager.Instance.AddSFX("items","warp");
     }
-
-    // Call this once per frame from wherever we update items / player
-    public void Update(GameTime gameTime)
+    
+    public override void Update(GameTime gameTime)
     {
-        if (_cooldownTimer > 0f)
-            _cooldownTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (!_buffActive) return;
+        _timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        if (_timer <= 0f)
+        {
+            _buffActive = false;
+        }
     }
-
-    // Trigger this when the player uses the active item
-    public void Effect()
+    
+    public override bool ApplyEffect()
     {
-        if (_cooldownTimer > 0f) return;
+        if (_timer > 0f) return false;
 
-        Vector2 dir = Player.Velocity;
-
-        // If player isn't moving, don't blink and don't consume cooldown
-        if (dir.LengthSquared() < 0.0001f)
-            return;
-
+        Vector2 dir = Entity.Velocity;
+        if (dir.LengthSquared() < 0.0001f) return false;
         dir.Normalize();
-
-        Vector2 start = Player.Position;
-        Vector2 target = start + dir * _blinkDistance;
+        
+        Vector2 target = Entity.Position + dir * _blinkDistance;
 
         Vector2 candidate = target;
         float traveledBack = 0f;
-
         while (traveledBack <= _blinkDistance)
         {
             if (_isValidPosition(candidate))
             {
-                // Extra safety: don't consume if we didn't actually move
-                if ((candidate - start).LengthSquared() < 0.0001f)
-                    return;
+                // Don't consume if the entity shouldn't move
+                if ((candidate - Entity.Position).LengthSquared() < 0.0001f) return false;
 
-                Player.SetPosition(candidate);
-                _cooldownTimer = _cooldownSeconds;
-                return;
+                Entity.SetPosition(target);
+                _buffActive = true;
+                _timer = _cooldownDuration;
+                SoundManager.Instance.PlaySFX(_sfx);
+                return true;
             }
 
+            // Move back a bit and check again
             candidate -= dir * _step;
             traveledBack += _step;
         }
-
-        // If nowhere valid, do nothing (no cooldown spent)
+        return false;
     }
 }

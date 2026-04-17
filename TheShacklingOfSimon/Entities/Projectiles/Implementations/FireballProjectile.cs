@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
 using TheShacklingOfSimon.Sprites.Factory;
@@ -9,16 +10,18 @@ using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
 
-namespace TheShacklingOfSimon.Entities.Projectiles;
+namespace TheShacklingOfSimon.Entities.Projectiles.Implementations;
 
-public class BasicProjectile : ProjectileBase
+public class FireballProjectile : ProjectileBase
 {
 	private float timeActive;
 	private Texture2D debugTexture;
+	
     private ISprite fireBall;
 
-    public BasicProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
+    public FireballProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
+        
         Position = startPos;
 		Stats = stats;
 		IsActive = true;
@@ -35,19 +38,19 @@ public class BasicProjectile : ProjectileBase
 		Velocity = direction * stats.Speed;
 
 		Sprite = sprite;
-		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
-
-        fireBall = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
+		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
+		
+		fireBall = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
 
     }
 
-    public override void Update(GameTime gameTime)
+	public override void Update(GameTime gameTime)
 	{
 		float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 		timeActive +=dt;
 		Position += Velocity * dt;
 
-		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
+		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
 		ShouldDestroy();
 
 		Sprite?.Update(gameTime);
@@ -55,21 +58,22 @@ public class BasicProjectile : ProjectileBase
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		//       debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-		//	debugTexture.SetData(new[] { Color.White });
+        //      debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+        //debugTexture.SetData(new[] { Color.White });
 
-		//       spriteBatch.Draw(debugTexture, Hitbox, Color.Red);
-		fireBall.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        //spriteBatch.Draw(debugTexture, Hitbox, Color.Blue);
+        fireBall.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+
     }
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
-		return new BasicProjectile(startPos, direction, sprite, stats);
+		return new FireballProjectile(startPos, direction, sprite, stats);
 	}
 
 	private void ShouldDestroy()
 	{
-		if (timeActive>1.5f) { 
+		if (timeActive>3f) { 
 			Discontinue();
 		}
 		if (Position.X < 0||Position.X>1920||Position.Y<0||Position.Y>1080) {
@@ -92,5 +96,11 @@ public class BasicProjectile : ProjectileBase
         {
             Discontinue();
         }
+    }
+    public override void OnCollision(IEnemy enemy)
+    {
+
+		enemy.TakeDamage(Stats.Damage);
+		Discontinue();
     }
 }

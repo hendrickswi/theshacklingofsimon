@@ -7,7 +7,9 @@ using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Entities.Enemies.Managers;
+using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Border.Doors;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
@@ -23,8 +25,9 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
         // we can set this once from Game1 after loading the two upright door textures.
         public DoorTextureSet DoorTextures { get; set; }
 
-        // TEMPORARY
+        // Events for wiring managers
         public Action<IProjectile> OnProjectileCreated { get; set; }
+        public Action<IPickup> OnItemDropped { get; set; }
 
         // I left this overridable so we can add special puzzle/boss/key door rules later
         // without rewriting DoorTile.
@@ -221,11 +224,39 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
                 {
                     EnemyTypeList.ProjectileEnemy => new ProjectileEnemy(worldPos, weapon, e.Name),
                     EnemyTypeList.ChaseEnemy => new ChaseEnemy(worldPos, weapon, e.Name),
+                    EnemyTypeList.FlyingEnemy => new FlyingEnemy(worldPos, weapon, e.Name),
                     _ => throw new InvalidOperationException($"Unknown enemy type: {e.Type}")
                 };
 
                 enemy.OnProjectileCreated += proj => OnProjectileCreated?.Invoke(proj);
+                enemy.OnItemDropped += (item, pos) =>
+                {
+                    // Temporary type-of logic and sprite until we decide on how to instantiate pickups dynamically
+                    IPickup p;
+                    switch (item)
+                    {
+                        case IInventoryItem inventoryItem:
+                        {
+                            p = new InventoryPickup(pos, SpriteFactory.Instance.CreateStaticSprite("images/8Ball"),
+                                inventoryItem);
+                            break;
+                        }
+                        case IConsumableItem consumableItem:
+                        {
+                            p = new ConsumablePickup(pos, SpriteFactory.Instance.CreateStaticSprite("images/Red_Heart"),
+                                consumableItem);
+                            break;
+                        }
+                        default:
+                        {
+                            throw new InvalidOperationException($"Unknown item type: {item.GetType()}");
+                        }
+                    }
 
+                    // Console.WriteLine("Pickup instantiated: " + p.GetType().Name + " at " + pos + ""); // debug
+                    OnItemDropped?.Invoke(p);
+                };
+                
                 entities.Add(enemy);
             }
         }

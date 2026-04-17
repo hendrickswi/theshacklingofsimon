@@ -22,6 +22,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles
         public Vector2 Position { get; protected set; }
         public Vector2 Velocity { get; set; } = Vector2.Zero;
         public bool IsActive { get; protected set; } = true;
+        public string SFX { get; set; }
 
         // kept the flags system so most tiles only define one thing.
         protected virtual TileCollisionFlags CollisionFlags => TileCollisionFlags.None;
@@ -75,11 +76,9 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles
             if (other == null || !IsActive) return;
             other.OnCollision(this);
         }
-
-        // pulled the repeated MTV push-out code here so solid tiles do not copy it everywhere.
+        
         protected void ResolveEntityCollision(IEntity entity)
         {
-
             Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(entity.Hitbox, this.Hitbox);
             if (mtv.LengthSquared() < 0.0001f) return;
 

@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Sprites.Factory;
 
@@ -42,10 +43,12 @@ public class PauseGameState : IGameState
             _overlayTexture = new Texture2D(_graphicsDevice, 1, 1);
             _overlayTexture.SetData(new[] { Color.White });
         }
+        MediaPlayer.Pause();
     }
 
     public void Exit()
     {
+        MediaPlayer.Resume();
     }
 
     public void Update(GameTime delta)

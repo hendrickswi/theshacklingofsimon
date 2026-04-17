@@ -1,28 +1,42 @@
 #region
 
-using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.StatusEffects;
+using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 #endregion
 
 namespace TheShacklingOfSimon.Items.Passive_Items;
 
-public class DamageItem : IItem
+public class DamageItem : PassiveItem, IInventoryItem
 {
-    public string Name { get; }
-    public string Description { get; }
-    public IPlayer Player { get; }
-    public ItemEffects Effects { get; set; }
-
-
-    public DamageItem(IPlayer player)
+    private readonly float _amt;
+    private readonly float _duration;
+    
+    public DamageItem(
+        IDamageableEntity entity, 
+        string name = "Brace", 
+        string description = "Allows you to channel more power into shots", 
+        float amt = 0.25f,
+        float duration = float.MaxValue) 
+        : base(entity)
     {
-        Player = player;
-        Name = "Brace";
-        Description = "Allows you to channel more power into your shots.";
-        Effects = new ItemEffects(1, 0, 0, 0, false);
+        Name = name;
+        Description = description;
+        _amt = amt;
+        _duration = duration;
     }
-    public void Effect()
+    public override bool ApplyEffect()
     {
-        
+        IStatusEffect effect = new DamageMultiplierEffect(
+            Name, 
+            EffectType.DamageMultiplier, 
+            Entity, 
+            _amt * Entity.GetStat(StatType.DamageMultiplier), 
+            _duration
+        );
+        Entity.EffectManager.AddEffect(effect);
+        return true;
     }
 }

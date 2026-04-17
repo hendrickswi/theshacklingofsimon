@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Items;
+using TheShacklingOfSimon.Items.Active_Items;
 using TheShacklingOfSimon.Weapons;
 
 #endregion
@@ -84,6 +86,15 @@ public class Inventory
     public bool Contains(IItem item)
     {
         return _items.Contains(item);
+    }
+
+    public void Update(GameTime delta)
+    {
+        foreach (IItem item in _items)
+        {
+            if (item is not IActiveItem castedItem) continue;
+            castedItem.Update(delta);
+        }
     }
 
     public void Clear()

@@ -3,7 +3,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Factory;
-using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
 
@@ -78,7 +77,7 @@ public class EnemyMovingState : IEnemyState
     {
         if (_enemy.Health <= 0)
         {
-            _enemy.ChangeState(new EnemyDeadState(_enemy, 2.5f));
+            _enemy.ChangeState(new EnemyDeadState(_enemy, 0.5f));
         }
         else
         {

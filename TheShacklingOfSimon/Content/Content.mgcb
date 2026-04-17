@@ -68,12 +68,19 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/spritefont/Arial.spritefont
 
-#begin fonts/spritefont/OptimusPrinceps.spritefont
+#begin fonts/spritefont/OptimusPrinceps16.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:fonts/spritefont/OptimusPrinceps.spritefont
+/build:fonts/spritefont/OptimusPrinceps16.spritefont
+
+#begin fonts/spritefont/OptimusPrinceps28.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/spritefont/OptimusPrinceps28.spritefont
 
 #begin fonts/spritefont/Roboto.spritefont
 /importer:FontDescriptionImporter
@@ -122,6 +129,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:images/BombImg.png
+
+#begin images/Coin.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/Coin.png
 
 #begin images/DoorLockedUp.json
 /copy:images/DoorLockedUp.json
@@ -191,6 +210,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:images/HeartsUI.png
+
+#begin images/key.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/key.png
 
 #begin images/metallic_tears.png
 /importer:TextureImporter
@@ -264,7 +295,7 @@
 /processorParam:TextureFormat=Color
 /build:images/Spikes.png
 
-#begin player.png
+#begin player-full.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -274,7 +305,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:player.png
+/build:player-full.png
 
 #begin PlayerDefaultSprite.json
 /copy:PlayerDefaultSprite.json
@@ -345,11 +376,23 @@
 /processorParam:Quality=Best
 /build:sounds/isaac/isaacdies.mp3
 
+#begin sounds/items/coinpickup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/coinpickup.wav
+
 #begin sounds/items/itemrecharge.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sounds/items/itemrecharge.mp3
+
+#begin sounds/items/keypickup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/keypickup.wav
 
 #begin sounds/items/plop.mp3
 /importer:Mp3Importer
@@ -362,6 +405,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sounds/items/Powerup2.mp3
+
+#begin sounds/items/rocketexplode04.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/rocketexplode04.wav
 
 #begin sounds/items/warp.wav
 /importer:WavImporter
@@ -398,6 +447,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sounds/other/Rock_crumble 0.mp3
+
+#begin sounds/other/unlock.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/other/unlock.wav
 
 #begin sounds/projectiles/splatter00.mp3
 /importer:Mp3Importer

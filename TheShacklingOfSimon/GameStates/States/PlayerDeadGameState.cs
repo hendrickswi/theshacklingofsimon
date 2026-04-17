@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Input;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
@@ -47,13 +48,13 @@ public class PlayerDeadGameState : IGameState
         _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
             .WithFade(0.0f, 0.8f, 0.25f).
             WithDelay(1.5f);
-        _gameOverSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps", "YOU DIED")
+        _gameOverSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps28", "YOU DIED")
             .WithFade(0.0f, 0.8f, 0.125f)
             .WithDelay(4.5f);
-        _keyboardControlsSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps", "Press R to restart, Q to quit.")
+        _keyboardControlsSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "Press R to restart, Q to quit.")
             .WithFade(0.0f, 0.8f, 0.125f)
             .WithDelay(6.5f);
-        _gamepadControlsSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps", "Press A to restart, START to quit.")
+        _gamepadControlsSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "Press A to restart, START to quit.")
             .WithFade(0.0f, 0.8f, 0.125f)
             .WithDelay(6.5f);
     }
@@ -61,8 +62,8 @@ public class PlayerDeadGameState : IGameState
     public void Enter()
     {
         _inputManager.LoadDeadStateControls(_restartGame, _quitGame);
-        
-        // TODO: should play the infamous Dark Souls "you died" sound effect here
+        string darkSouls = SoundManager.Instance.AddSFX("other", "dark-souls-you-died-sound-effect_hm5sYFG");
+        SoundManager.Instance.PlaySFX(darkSouls);
     }
 
     public void Exit()

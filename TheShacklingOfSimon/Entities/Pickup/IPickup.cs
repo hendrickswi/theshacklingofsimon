@@ -7,5 +7,5 @@ using TheShacklingOfSimon.Items;
 namespace TheShacklingOfSimon.Entities.Pickup;
 public interface IPickup : IEntity
 {
-    IItem Item { get; set; }
+    IItem Item { get; }
 }

@@ -75,7 +75,7 @@
             "weapon": "BasicWeapon"
         },
         {
-            "type": "ChaseEnemy",
+            "type": "FlyingEnemy",
             "x": 1,
             "y": 1,
             "name": "AngelicBaby",

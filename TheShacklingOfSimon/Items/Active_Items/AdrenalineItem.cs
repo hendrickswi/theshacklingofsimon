@@ -1,7 +1,9 @@
 ﻿#region
 
 using Microsoft.Xna.Framework;
-using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.Sounds;
+using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
 using TheShacklingOfSimon.StatusEffects.Templates;
 
@@ -9,103 +11,92 @@ using TheShacklingOfSimon.StatusEffects.Templates;
 
 namespace TheShacklingOfSimon.Items.Active_Items;
 
-public class AdrenalineItem : IItem
+public class AdrenalineItem : ActiveItem, IInventoryItem
 {
-    public string Name { get; }
-    public string Description { get; }
-    public IPlayer Player { get; }
-    public ItemEffects Effects { get; } // unused
-
-    // Tunables
-    private readonly float _durationSeconds;     // how long buff lasts
-    private readonly float _cooldownSeconds;     // cooldown AFTER buff ends (match teleport)
-    private readonly float _moveSpeedMultiplier; // noticeable movement boost
-    private readonly float _fireRateMultiplier;  // < 1 => faster firing (lower cooldowns)
-    private readonly float _projSpeedMultiplier; // faster projectiles
-
-    // Buffs
-    private readonly IStatusEffect _speedBuff;
-    private readonly IStatusEffect _primaryCooldownBuff;
-    private readonly IStatusEffect _secondaryCooldownBuff;
-    private readonly IStatusEffect _projectileSpeedBuff;
-    
-    // Timers/state
-    private float _cooldownTimer;
-    private float _buffTimer;
+    private readonly string _sfx;
+    private float _timer;
+    private readonly float _cooldownDuration;
     private bool _buffActive;
 
-    public AdrenalineItem(
-        IPlayer player,
-        float durationSeconds = 4.0f,
-        float cooldownSeconds = 5.0f,     // match teleport
-        float moveSpeedMultiplier = 2f,
-        float fireRateMultiplier = 0.50f, // half cooldown => 2x fire rate
-        float projSpeedMultiplier = 2f)
-    {
-        Player = player;
+    private readonly float _buffDuration;
+    private readonly float _moveSpeedMultiplier;
+    private readonly float _fireRateMultiplier;
+    private readonly float _projSpeedMultiplier;
 
-        _durationSeconds = durationSeconds;
-        _cooldownSeconds = cooldownSeconds;
-        _moveSpeedMultiplier = moveSpeedMultiplier;
-        _fireRateMultiplier = fireRateMultiplier;
-        _projSpeedMultiplier = projSpeedMultiplier;
-        
-        _speedBuff = new MoveSpeedEffect("Speed up", EffectType.MoveSpeed, Player, _moveSpeedMultiplier, _durationSeconds);
-        _primaryCooldownBuff = new PrimaryCooldownEffect("Primary attack speed up", EffectType.PrimaryCooldown, Player, _fireRateMultiplier, _durationSeconds);
-        _secondaryCooldownBuff = new SecondaryCooldownEffect("Secondary attack speed up", EffectType.SecondaryCooldown, Player, _fireRateMultiplier, _durationSeconds);
-        _projectileSpeedBuff = new ProjectileSpeedEffect("Projectile speed up", EffectType.ProjectileSpeedMultiplier, Player, _projSpeedMultiplier, _durationSeconds);
+    public AdrenalineItem(
+        IDamageableEntity entity,
+        float buffDuration = 4.0f,
+        float cooldownDuration = 5.0f,
+        float moveSpeedMultiplier = 2f,
+        float fireRateMultiplier = 0.50f,
+        float projSpeedMultiplier = 2f)
+        : base(entity)
+    {
+        _cooldownDuration = cooldownDuration;
 
         Name = "Adrenaline";
         Description = "Massive speed, fire-rate, and projectile speed boost for a short time.";
-        Effects = new ItemEffects(0, 0, 0, 0, false);
-    }
-
-    public void Update(GameTime gameTime)
-    {
-        float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-        // Buff ticking
-        if (_buffActive)
-        {
-            _buffTimer -= dt;
-            if (_buffTimer <= 0f)
-            {
-                // Cooldown starts after the effect finishes
-                _cooldownTimer = _cooldownSeconds;
-            }
-            return; // do not tick cooldown while buff is active
-        }
-
-        // Cooldown ticking (only when not buffing)
-        if (_cooldownTimer > 0f)
-            _cooldownTimer -= dt;
-    }
-
-    public void Effect()
-    {
-        // Can't activate during cooldown
-        if (_cooldownTimer > 0f) return;
-
-        // If already active, refresh duration (optional but possibly useful for another item)
-        if (_buffActive)
-        {
-            _buffTimer = _durationSeconds;
-            return;
-        }
-
-        StartBuff();
-        _buffTimer = _durationSeconds;
-    }
-
-    private void StartBuff()
-    {
-        _buffActive = true;
+        sfx = SoundManager.Instance.AddSFX("items","Powerup2");
         
-        Player.EffectManager.AddEffect(_speedBuff);
-        Player.EffectManager.AddEffect(_primaryCooldownBuff);
-        Player.EffectManager.AddEffect(_secondaryCooldownBuff);
-        Player.EffectManager.AddEffect(_projectileSpeedBuff);
+        _buffDuration = buffDuration;
+        _moveSpeedMultiplier = moveSpeedMultiplier;
+        _fireRateMultiplier = fireRateMultiplier;
+        _projSpeedMultiplier = projSpeedMultiplier;
     }
-    
-    // No need for a RemoveBuff() method; the StatusEffectManager already handles effect removal
+
+    public override void Update(GameTime gameTime)
+    {
+        if (!_buffActive) return;
+        _timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        if (_timer <= 0f)
+        {
+            _buffActive = false;
+        }
+    }
+
+    public override bool ApplyEffect()
+    {
+        if (_buffActive) return false;
+        _buffActive = true;
+        _timer = _cooldownDuration;
+        
+        // Create effects here to avoid issues with the effects being applied to the wrong entity
+        var speedEffect = new MoveSpeedEffect(
+            Name, 
+            EffectType.MoveSpeed, 
+            Entity,
+            _moveSpeedMultiplier * Entity.GetStat(StatType.MoveSpeed), 
+            _buffDuration
+        );
+        var primaryCooldownEffect = new PrimaryCooldownEffect(
+            Name, 
+            EffectType.PrimaryCooldown, 
+            Entity,
+            _fireRateMultiplier * Entity.GetStat(StatType.PrimaryCooldown), 
+            _buffDuration
+        );
+        var secondaryCooldownEffect = new SecondaryCooldownEffect(
+            Name, 
+            EffectType.SecondaryCooldown, 
+            Entity,
+            _fireRateMultiplier * Entity.GetStat(StatType.SecondaryCooldown), 
+            _buffDuration
+        );
+        var projectileSpeedEffect = new ProjectileSpeedEffect(
+            Name, 
+            EffectType.ProjectileSpeedMultiplier, 
+            Entity,
+            _projSpeedMultiplier * Entity.GetStat(StatType.ProjectileSpeedMultiplier), 
+            _buffDuration
+        );
+        
+        Entity.EffectManager.AddEffect(speedEffect);
+        Entity.EffectManager.AddEffect(primaryCooldownEffect);
+        Entity.EffectManager.AddEffect(secondaryCooldownEffect);
+        Entity.EffectManager.AddEffect(projectileSpeedEffect);
+        SoundManager.Instance.PlaySFX(_sfx);
+
+        return true;
+    }
 }

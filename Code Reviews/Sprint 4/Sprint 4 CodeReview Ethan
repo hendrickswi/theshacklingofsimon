@@ -1,0 +1,20 @@
+Author: Ethan Chitturi (CoolestToDoIt)
+Date: 04/13/26
+Sprint 4
+File(s) being reviewed: PlayerWithTwoSprites.cs, PlayerInputBuffer.cs, ConfigDBPlayer.cs,
+    PlayerTwoStatesManager.cs, StatusEffectManager.cs, StatusEffects.Implementations
+Author of file(s): William Hendricks (hendrickswi)
+
+Comments: 
+        PlayerWithTwoSprites is looking much better now since last sprint. The
+        readability as a result has also improved heavily.
+        
+        In PlayerInputBuffer I noticed that most of the ConsumeXY methods are very similar. This leads me to ask if they could be condensed into a single Consume method that takes in the vector as a reference and modifies it from there.
+
+        I like the addition of a Config file for player to host all the numbers for the stats. I see that you are pulling from it in PlayerWithTwoSprites by that name in a string. This could probably moved to the top as a variable so that in the future, if we want to create instances of the player with different base stats, it is easier to modify.
+
+        The PlayerTwoStatesManager is a definite good addition for understandability and division of responsibilities.
+
+        The StatusEffectManager looks very nice. In AddEffect, however, it looks like the effect, after being merged, gets removed before it can be applied. Let me know if I have this mixed up.
+
+        The implementations of the states also look good as a whole. The majority of them do look very similar so I would think about making an abstract class doing the math work and having each stat-specific implementation then use that math. This might shorten the amount of work each specific class does. Even if you choose to not use that exact architecture then I think something with that idea could be useful.

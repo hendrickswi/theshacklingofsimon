@@ -17,6 +17,6 @@ public class UseItemCommand : ICommand
 
     public void Execute()
     {
-        _player.Inventory.CurrentActiveItem?.Effect();
+        _player.Inventory.CurrentActiveItem?.ApplyEffect();
     }
 }

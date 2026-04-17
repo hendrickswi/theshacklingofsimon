@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.GameStates;
+
+#endregion
 
 namespace TheShacklingOfSimon.Level_Handling;
 

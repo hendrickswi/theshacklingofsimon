@@ -4,6 +4,7 @@ namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes
     public enum EnemyTypeList
     {
         ProjectileEnemy,
-        ChaseEnemy
+        ChaseEnemy,
+        FlyingEnemy
     }
 }

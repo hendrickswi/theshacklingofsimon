@@ -10,7 +10,7 @@ using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
 
-namespace TheShacklingOfSimon.Entities.Projectiles;
+namespace TheShacklingOfSimon.Entities.Projectiles.Implementations;
 
 public abstract class ProjectileBase : IProjectile
 {
@@ -44,20 +44,16 @@ public abstract class ProjectileBase : IProjectile
     
     public virtual void OnCollision(IPlayer player)
     {
-        if (Stats.OwnerType != ProjectileOwner.Player)
-        {
-            player.TakeDamage(this.Stats.Damage);
-            Discontinue();
-        }
+        if (Stats.OwnerType == ProjectileOwner.Player) return;
+        player.TakeDamage(Stats.Damage);
+        Discontinue();
     }
     
     public virtual void OnCollision(IEnemy enemy)
-    {	
-        if (Stats.OwnerType != ProjectileOwner.Enemy)
-        {
-            enemy.TakeDamage(this.Stats.Damage);
-            Discontinue();
-        }
+    {
+        if (Stats.OwnerType == ProjectileOwner.Enemy) return;
+        enemy.TakeDamage(Stats.Damage);
+        Discontinue();
     }
     
     public virtual void OnCollision(ITile tile) {}

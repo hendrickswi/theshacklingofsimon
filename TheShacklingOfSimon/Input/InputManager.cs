@@ -16,9 +16,7 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Input.Gamepad;
 using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Mouse;
-using TheShacklingOfSimon.Items.Passive_Items;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
-using TheShacklingOfSimon.Sprites.Factory;
 
 #endregion
 
@@ -153,19 +151,6 @@ public class InputManager
             new UseItemCommand(_player)
             );
 
-        // Temporary for sprint 3
-        _keyboardController.RegisterCommand(
-            new KeyboardInput(InputState.JustPressed, KeyboardButton.F),
-            new SpawnPickupCommand(
-                () => new Pickup(
-                    new Vector2(screenDimensions.Width * 0.5f, screenDimensions.Height * 0.5f),
-                    new SpeedItem(_player),
-                    SpriteFactory.Instance.CreateStaticSprite("images/8Ball")
-                ),
-                _pickupManager
-            )
-        );
-
         _keyboardController.RegisterCommand(
             new KeyboardInput(InputState.Pressed, KeyboardButton.R),
             new GenericActionCommand(_onResetRequest)
@@ -293,6 +278,7 @@ public class InputManager
             new SecondaryAttackDownCommand(_player)
         );
         
+        // Item stuff
         _gamepadController.RegisterCommand(
             new GamepadButtonInput(
                 InputState.Pressed, GamepadButton.A
@@ -312,14 +298,44 @@ public class InputManager
             new UseItemCommand(_player)
         );
         
-        // Pausing
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.Pressed, GamepadButton.DPadUp
+            ), 
+            new NextActiveItemCommand(_player)
+        );
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.Pressed, GamepadButton.DPadDown
+            ), 
+            new PreviousActiveItemCommand(_player)
+        );
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.Pressed, GamepadButton.DPadRight
+            ), 
+            new NextSecondaryWeaponCommand(_player)
+        );
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.Pressed, GamepadButton.DPadLeft
+            ), 
+            new NextPrimaryWeaponCommand(_player)
+        );
+        
+        // Pausing and resetting
         _gamepadController.RegisterCommand(
             new GamepadButtonInput(
                 InputState.JustPressed, GamepadButton.Start
             ),
             new GenericActionCommand(onPauseRequested)
         );
-        
+        _gamepadController.RegisterCommand(
+            new GamepadButtonInput(
+                InputState.JustPressed, GamepadButton.Back
+            ),
+            new GenericActionCommand(_onResetRequest)
+        );
     }
 
     public void LoadPauseControls(Action onResumeRequested, Action onQuitRequested)

@@ -2,8 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
@@ -35,24 +33,7 @@ public class PickupManager
         }
     }
 
-    public void Update(GameTime gameTime)
-    {
-        foreach (IPickup pickup in _pickups)
-        {
-            pickup.Update(gameTime);
-        }
-        _pickups.RemoveAll(p => !p.IsActive);
-    }
-
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        foreach (IPickup pickup in _pickups)
-        {
-            pickup?.Draw(spriteBatch);
-        }
-    }
-
-    public void ClearAllPickups()
+    public void Clear()
     {
         _pickups.Clear();
     }

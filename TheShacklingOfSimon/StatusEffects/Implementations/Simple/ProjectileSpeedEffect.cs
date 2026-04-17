@@ -35,12 +35,12 @@ public class ProjectileSpeedEffect : SimpleStatusEffect
         float newSpeed = currentSpeed + Strength;
 
         Difference = currentSpeed - newSpeed;
-        Owner.SetStat(StatType.MoveSpeed, newSpeed);
+        Owner.SetStat(StatType.ProjectileSpeedMultiplier, newSpeed);
     }
 
     public override void OnRemove()
     {
-        Owner.SetStat(StatType.MoveSpeed, Owner.GetStat(StatType.MoveSpeed) + Difference);
+        Owner.SetStat(StatType.ProjectileSpeedMultiplier, Owner.GetStat(StatType.ProjectileSpeedMultiplier) + Difference);
     }
 
     public override void Merge(IStatusEffect other)

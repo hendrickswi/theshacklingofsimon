@@ -34,6 +34,14 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
+        <None Update="Content\images\Coin.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\key.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
         <None Update="Content\images\DoorLockedUp.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -82,7 +90,7 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
-        <None Update="Content\fonts\spritefont\OptimusPrinceps.spritefont">
+        <None Update="Content\fonts\spritefont\OptimusPrinceps28.spritefont">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
@@ -119,6 +127,10 @@
         </None>
 
         <None Update="Content\fonts\ttf\Upheaval.ttf">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\fonts\spritefont\OptimusPrinceps16.spritefont">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
@@ -164,6 +176,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Content\Room_Jsons\room_08.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Content\Room_Jsons\room_09.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Content\Room_Jsons\room_index.json">

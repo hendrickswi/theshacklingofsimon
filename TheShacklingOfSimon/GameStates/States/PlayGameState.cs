@@ -11,6 +11,7 @@ using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Level_Handling;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
 using TheShacklingOfSimon.Sounds;
+using TheShacklingOfSimon.UI;
 
 #endregion
 
@@ -29,6 +30,7 @@ public class PlayGameState : IGameState
     private readonly IPlayer _player;
     private readonly ProjectileManager _projectileManager;
     private readonly CollisionManager _collisionManager;
+    private readonly HUD _HUD;
 
     private readonly Action _resetGame;
 
@@ -56,7 +58,7 @@ public class PlayGameState : IGameState
         SoundManager soundManager,
         IPlayer player,
         ProjectileManager projectileManager,
-        CollisionManager collisionManager,
+        CollisionManager collisionManager,HUD HUD,
         Action resetGame)
     {
         _stateManager = stateManager;
@@ -70,6 +72,7 @@ public class PlayGameState : IGameState
         _player = player;
         _projectileManager = projectileManager;
         _collisionManager = collisionManager;
+        _HUD = HUD;
         _resetGame = resetGame;
     }
 
@@ -102,10 +105,8 @@ public class PlayGameState : IGameState
             UpdateFade(dt);
             return;
         }
-
-        _projectileManager.Update(delta);
+        
         _roomManager.Update(delta);
-        _pickupManager.Update(delta);
         _player.Update(delta);
 
         _collisionManager.Update(delta);
@@ -115,16 +116,15 @@ public class PlayGameState : IGameState
             BeginRoomTransition();
             return;
         }
-
+        
         _objectiveManager.Update(delta);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
         _roomManager.Draw(spriteBatch);
-        _pickupManager.Draw(spriteBatch);
-        _projectileManager.Draw(spriteBatch);
         _player.Draw(spriteBatch);
+        _HUD.Draw(spriteBatch);
 
         if (_fadeAlpha > 0f)
         {

@@ -1,0 +1,21 @@
+Author: Akrem Ramadan
+Date: 4/13/2026
+
+Item Suite of Classes (By Cameron and Will) Code Review:
+
+A good separation of responsibilities. Item classes manage the effect of an item, whereas pickup classes deal with the world logic, 
+position, rendering, collision detection, and other aspects. It is good for cohesion in the system. BasePickup is an excellent example of 
+the reduction of duplicate code in pickup classes.
+
+Good abstraction and interfaces. The usage of IItem, IConsumableItem, IInventoryItem, IPickup interfaces improves flexibility of 
+implementation and allows implementing other item or pickup type implementations. It is an example of loose coupling since the code depends on interfaces rather than specific concrete classes.
+
+Inconsistent active item design. AdrenalineItem inherits from ActiveItem, whereas TeleportItem implements IItem, so different patterns apply to the active items. The extension of the set of active items will become complicated, because there will be no single template pattern to follow. 
+
+Incorrect implementation of some pickup collision logic. ConsumablePickup removes itself from the game upon collision regardless of whether ApplyEffect is successful or not, meaning that even a healing item will be removed even if the player is already at full HP. The pickup should only discontinue if the effect is applied successfully.
+
+The design of target-related code could use some work. Since each item has a reference to a target entity which is mutable, the target must be re-set in the collision logic prior to effect application. It is better to pass the reference of the target entity directly into the ApplyEffect method.
+
+Unfinished/poorly used classes. PickupFactory does nothing right now and PickupManager is used as a List-wrapper for pickups. These classes can be optimized to improve the quality of the code.
+
+The system has very nice and solid architecture, it follows well principles of object-oriented programming and provides a clear separation of item and pickup classes. Main suggestions are to fix active item pattern issues, pickup discontinuation, and hidden state problem of item targets.

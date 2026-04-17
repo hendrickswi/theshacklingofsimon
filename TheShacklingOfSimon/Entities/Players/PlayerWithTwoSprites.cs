@@ -10,10 +10,11 @@ using TheShacklingOfSimon.Entities.Players.Config;
 using TheShacklingOfSimon.Entities.Players.Drawing;
 using TheShacklingOfSimon.Entities.Players.States;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Templates;
-using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 
 #endregion
 
@@ -27,6 +28,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
     // Public but not in the interface for internal use
     public PlayerTwoStatesManager StatesManager { get; private set; }
     public PlayerTwoSpritesManager SpritesManager { get; private set; }
+    public string HurtSFX { get; private set; }
+    public string HealSFX { get; private set; }
+    public string DieSFX { get; private set; }
     
     // Renaming for clarity
     IPlayerState IPlayer.CurrentState => StatesManager.Body;
@@ -69,9 +73,12 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         StatesManager.Head.HandleSecondaryAttack(InputBuffer.ConsumeSecondaryAttack(), Inventory.CurrentSecondaryWeapon.BaseCooldown + EffectStats[StatType.SecondaryCooldown]);
         
         // Update position and velocity
-        float dt = (float)delta.ElapsedGameTime.TotalSeconds;
+        float dt = (float) delta.ElapsedGameTime.TotalSeconds;
         Position += Velocity * dt;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
+        
+        // Update inventory (active items)
+        Inventory.Update(delta);
 
         // Update states and sprites
         StatesManager.Update(delta);
@@ -141,6 +148,10 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         EffectStats.Add(StatType.ProjectileSpeedMultiplier, config.ProjectileSpeedMultiplier);
         EffectStats.Add(StatType.PrimaryCooldown, config.PrimaryCooldown);
         EffectStats.Add(StatType.SecondaryCooldown, config.SecondaryCooldown);
+
+        HurtSFX = SoundManager.Instance.AddSFX("isaac","Isaac_Hurt_Grunt0");
+        HealSFX = SoundManager.Instance.AddSFX("isaac","1up");
+        DieSFX = SoundManager.Instance.AddSFX("isaac","isaacdies");
         
         // Only create these the first time Initialize()
         // is called (during instantiation of *this*)

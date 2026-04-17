@@ -11,7 +11,9 @@ using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
+using TheShacklingOfSimon.Items.Passive_Items;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -24,6 +26,7 @@ namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 public abstract class BaseEnemy : DamageableEntity, IEnemy
 {
     public string Name { get; }
+    public bool IsBoss { get; }
     public bool MarkedForRemoval { get; private set; }
 
     public IEnemyState CurrentState { get; private set; }
@@ -34,16 +37,22 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     protected float AttackTimer;
     public float AttackRange { get; set; }
     public float ContactDamage { get; set; }
+    public string HurtSFX { get; set; }
+    public string DieSFX { get; set; }
     public IItem EnemyDrop { get; set; }
 
     protected IMovementBehavior _movementBehaviour;
 
     public event Action<IProjectile> OnProjectileCreated;
+    public event Action<IItem, Vector2> OnItemDropped;
 
     protected BaseEnemy(Vector2 startPosition, IWeapon weapon, string name)
     {
         Name = name;
-        var config = ConfigDB.Configs[name];
+        var config = ConfigDBEnemy.Configs[name];
+
+        //IsBoss
+        IsBoss = config.IsBoss;
 
         // IDamageable properties
         MaxHealth = config.MaxHealth;
@@ -60,8 +69,22 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
         AttackTimer = 0f;
 
+        HurtSFX = SoundManager.Instance.AddSFX("enemy","TearImpacts0");
+        DieSFX = SoundManager.Instance.AddSFX("enemy","goodeath0");
+
         //movement default
         _movementBehaviour = new NoMovementBehaviour();
+
+        //item drop
+        EnemyDrop = config.DropItemType switch
+        {
+            EnemyDropType.None => null,
+            EnemyDropType.Health => new HealingItem(this),
+            EnemyDropType.Speed => new SpeedItem(this),
+            EnemyDropType.Coin => new CoinItem(this),
+            EnemyDropType.Key => new KeyItem(this),
+            _ => null
+        };
 
         SetWeapon(weapon);
         Reset(startPosition);
@@ -178,6 +201,11 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     }
 
     public void MarkForRemoval() => IsActive = false;
+
+    public void SpawnPickup(IItem item, Vector2 position)
+    {
+        OnItemDropped?.Invoke(item, position);
+    }
 
     // Collision handling
 

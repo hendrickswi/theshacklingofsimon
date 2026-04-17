@@ -1,6 +1,5 @@
-#region
+﻿#region
 
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
@@ -13,20 +12,18 @@ using TheShacklingOfSimon.Sprites.Products;
 #endregion
 
 namespace TheShacklingOfSimon.Entities.Pickup;
-public class Pickup : IPickup
+
+public abstract class BasePickup : IPickup
 {
-    private List<IPickup> _pickups = new();
-
-    public IItem Item { get; set; }
-    public Vector2 Position { get; private set; }
+    public abstract IItem Item { get; protected set; }
+    public Vector2 Position { get; protected set; }
     public Vector2 Velocity { get; set; }
-    public bool IsActive { get; private set; }
-    public Rectangle Hitbox { get; private set; }
+    public bool IsActive { get; protected set; }
+    public Rectangle Hitbox { get; protected set; }
     public ISprite Sprite { get; set; }
-
-    public Pickup(Vector2 position, IItem item, ISprite sprite)
+    
+    protected BasePickup(Vector2 position, ISprite sprite)
     {
-        Item = item;
         Position = position;
         Velocity = Vector2.Zero;
         IsActive = true;
@@ -43,6 +40,7 @@ public class Pickup : IPickup
     {
         Sprite?.Draw(spriteBatch, Position, Color.White);
     }
+    
     public void Discontinue()
     {
         IsActive = false;
@@ -60,32 +58,21 @@ public class Pickup : IPickup
         other.OnCollision(this);
     }
 
-    public void OnCollision(IPlayer player)
+    public abstract void OnCollision(IPlayer player);
+    
+    public virtual void OnCollision(IEnemy enemy)
     {
-        if (player.Inventory.Contains(Item))
-        {
-            player.Inventory.Add(Item);
-        }
-        Discontinue();
     }
     
-    public void OnCollision(IEnemy enemy)
+    public virtual void OnCollision(IProjectile projectile)
     {
-        // No-op
-    }
-    
-    public void OnCollision(IProjectile projectile)
-    {
-        // No-op
     }
 
-    public void OnCollision(ITile tile)
+    public virtual void OnCollision(ITile tile)
     {
-        // No-op
     }
 
-    public void OnCollision(IPickup pickup)
+    public virtual void OnCollision(IPickup pickup)
     {
-        // No-op
     }
 }

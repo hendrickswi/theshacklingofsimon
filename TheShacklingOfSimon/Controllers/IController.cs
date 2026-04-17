@@ -1,6 +1,10 @@
+#region
+
 using System;
 using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Input;
+
+#endregion
 
 namespace TheShacklingOfSimon.Controllers;
 
