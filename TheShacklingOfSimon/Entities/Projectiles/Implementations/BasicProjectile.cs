@@ -34,10 +34,9 @@ public class BasicProjectile : ProjectileBase
 		
 		Velocity = direction * stats.Speed;
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
-        fireBall = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
+        Sprite = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
         
-		_sfx = SoundManager.Instance.NameSFX("projectiles", "splatter00");
-        SoundManager.Instance.AddSFX(_sfx);
+		_sfx = SoundManager.Instance.AddSFX("projectiles", "splatter00");
     }
 
     public override void Update(GameTime gameTime)
