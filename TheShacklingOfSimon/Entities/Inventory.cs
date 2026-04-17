@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Items;
+using TheShacklingOfSimon.Items.Active_Items;
 using TheShacklingOfSimon.Weapons;
 
 #endregion

@@ -10,7 +10,7 @@ using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
 
-namespace TheShacklingOfSimon.Entities.Projectiles;
+namespace TheShacklingOfSimon.Entities.Projectiles.Implementations;
 
 public class FireballProjectile : ProjectileBase
 {

@@ -10,14 +10,13 @@ using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
 
-namespace TheShacklingOfSimon.Entities.Projectiles;
+namespace TheShacklingOfSimon.Entities.Projectiles.Implementations;
 
 public class BasicProjectile : ProjectileBase
 {
-	private float timeActive;
-	private Texture2D debugTexture;
-    private ISprite fireBall;
-
+	private readonly string _sfx;
+	private float _timer;
+	
     public BasicProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
         Position = startPos;
@@ -34,67 +33,40 @@ public class BasicProjectile : ProjectileBase
 		}
 		
 		Velocity = direction * stats.Speed;
-
-		Sprite = sprite;
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
-
-        fireBall = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
-
-		SFX = SoundManager.Instance.NameSFX("projectiles", "splatter00");
-        SoundManager.Instance.AddSFX(SFX);
+        Sprite = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
+        
+		_sfx = SoundManager.Instance.NameSFX("projectiles", "splatter00");
+        SoundManager.Instance.AddSFX(_sfx);
     }
 
     public override void Update(GameTime gameTime)
 	{
 		float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-		timeActive +=dt;
 		Position += Velocity * dt;
-
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
-		ShouldDestroy();
+		Sprite.Update(gameTime);
 
-		Sprite?.Update(gameTime);
+		_timer += dt;
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		//       debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-		//	debugTexture.SetData(new[] { Color.White });
-
-		//       spriteBatch.Draw(debugTexture, Hitbox, Color.Red);
-		fireBall.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-    }
+		Sprite.Draw(spriteBatch, Position, Color.White);
+	}
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
 		return new BasicProjectile(startPos, direction, sprite, stats);
 	}
 
-	private void ShouldDestroy()
-	{
-		if (timeActive>1.5f) { 
-			Discontinue();
-		}
-		if (Position.X < 0||Position.X>1920||Position.Y<0||Position.Y>1080) {
-			Discontinue();
-		
-		}
-	}
-
     public override void OnCollision(ITile tile)
     {
         if (!IsActive || tile == null) return;
 
-        // effect any projectile-affectable tiles
-        if (tile is IProjectileAffectableTile affectable)
-        {
-            affectable.OnProjectileHit();
-        }
-
         if (tile.BlocksProjectiles)
         {
-			SoundManager.Instance.PlaySFX(SFX);
-            Discontinue();
+			SoundManager.Instance.PlaySFX(_sfx);
         }
     }
 }

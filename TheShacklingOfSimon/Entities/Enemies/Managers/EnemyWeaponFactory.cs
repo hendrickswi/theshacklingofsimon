@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Entities.Projectiles.Implementations;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Weapons;
 

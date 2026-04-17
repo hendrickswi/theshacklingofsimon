@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Items;
+using TheShacklingOfSimon.Items.Passive_Items;
 using TheShacklingOfSimon.Sprites.Products;
 
 #endregion

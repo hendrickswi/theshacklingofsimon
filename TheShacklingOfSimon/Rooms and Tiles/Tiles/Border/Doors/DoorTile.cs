@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
 using TheShacklingOfSimon.Sprites.Products;
@@ -128,16 +129,14 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Border.Doors
 
         public override void OnCollision(IEnemy enemy)
         {
-            if (enemy == null || !IsActive)
-            {
-                return;
-            }
+            if (enemy == null || !IsActive) return;
+            ResolveEntityCollision(enemy);
+        }
 
-            Vector2 mtv = CollisionDetector.CalculateMinimumTranslationVector(enemy.Hitbox, this.Hitbox);
-            if (mtv.LengthSquared() < 0.0001f) return;
-
-            // still keep enemies inside the room even if the door is unlocked.
-            enemy.SetPosition(enemy.Position + mtv);
+        public override void OnCollision(IProjectile proj)
+        {
+            if (proj == null || !IsActive) return;
+            proj.Discontinue();
         }
 
         private float GetRotation()

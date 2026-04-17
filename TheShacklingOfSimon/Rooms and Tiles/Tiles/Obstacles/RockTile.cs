@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Products;
@@ -43,6 +44,12 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Obstacles
             if (enemy == null || !IsActive) return;
 
             ResolveEntityCollision(enemy);
+        }
+
+        public override void OnCollision(IProjectile proj)
+        {
+            if (proj == null || !IsActive) return;
+            proj.Discontinue();
         }
     }
 }
