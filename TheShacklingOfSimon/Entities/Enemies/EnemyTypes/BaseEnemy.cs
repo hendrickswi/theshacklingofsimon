@@ -11,12 +11,12 @@ using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
+using TheShacklingOfSimon.Items.Passive_Items;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-using TheShacklingOfSimon.Items.Passive_Items;
 
 #endregion
 

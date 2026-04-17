@@ -2,10 +2,10 @@
 
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
-using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
-using TheShacklingOfSimon.StatusEffects.Templates;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
+using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
+using TheShacklingOfSimon.StatusEffects.Templates;
 
 #endregion
 

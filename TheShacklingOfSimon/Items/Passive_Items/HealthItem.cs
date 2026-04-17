@@ -1,5 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿#region
+
 using TheShacklingOfSimon.Entities;
+
+#endregion
 
 namespace TheShacklingOfSimon.Items.Passive_Items;
 

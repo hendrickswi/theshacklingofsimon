@@ -1,7 +1,6 @@
 ﻿#region
 
 using TheShacklingOfSimon.Entities.Projectiles;
-using TheShacklingOfSimon.Sounds;
 
 #endregion
 

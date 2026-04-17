@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Players;
@@ -7,6 +9,8 @@ using TheShacklingOfSimon.GameStates.States;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
+
+#endregion
 
 namespace TheShacklingOfSimon.Level_Handling.Implementations;
 

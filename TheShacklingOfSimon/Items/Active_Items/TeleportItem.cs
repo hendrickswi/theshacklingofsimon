@@ -3,7 +3,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
-using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Sounds;
 
 #endregion

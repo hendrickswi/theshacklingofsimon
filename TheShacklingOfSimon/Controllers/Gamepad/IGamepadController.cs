@@ -1,5 +1,9 @@
+#region
+
 using System;
 using TheShacklingOfSimon.Input;
+
+#endregion
 
 namespace TheShacklingOfSimon.Controllers.Gamepad;
 

@@ -10,11 +10,11 @@ using TheShacklingOfSimon.Entities.Players.Config;
 using TheShacklingOfSimon.Entities.Players.Drawing;
 using TheShacklingOfSimon.Entities.Players.States;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Products;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Templates;
-using TheShacklingOfSimon.Sounds;
-using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 
 #endregion
 

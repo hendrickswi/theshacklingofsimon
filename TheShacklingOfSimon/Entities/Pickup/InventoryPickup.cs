@@ -1,7 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿#region
+
+using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Sprites.Products;
+
+#endregion
 
 namespace TheShacklingOfSimon.Entities.Pickup;
 

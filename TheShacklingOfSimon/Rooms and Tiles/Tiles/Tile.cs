@@ -10,7 +10,6 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
-using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Products;
 
 #endregion

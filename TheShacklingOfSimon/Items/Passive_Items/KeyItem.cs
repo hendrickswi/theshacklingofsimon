@@ -1,5 +1,9 @@
+#region
+
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
+
+#endregion
 
 namespace TheShacklingOfSimon.Items.Passive_Items;
 

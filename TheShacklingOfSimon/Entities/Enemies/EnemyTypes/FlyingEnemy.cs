@@ -1,13 +1,13 @@
 #region
 
+using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours.AttackBehaviours;
 using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours.MovementBehaviours;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-using TheShacklingOfSimon.Entities.Collisions;
-using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
-using Microsoft.Xna.Framework;
 
 #endregion
 

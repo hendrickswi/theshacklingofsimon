@@ -1,7 +1,6 @@
 #region
 
 using TheShacklingOfSimon.Entities;
-using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
 using TheShacklingOfSimon.StatusEffects.Templates;

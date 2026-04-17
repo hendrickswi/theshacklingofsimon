@@ -1,9 +1,6 @@
 #region
 
-using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
-using TheShacklingOfSimon.Entities.Players;
-using TheShacklingOfSimon.StatusEffects;
 
 #endregion
 

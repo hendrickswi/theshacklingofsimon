@@ -1,6 +1,5 @@
 #region
 
-using System;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
