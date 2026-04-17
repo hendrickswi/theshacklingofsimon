@@ -1,20 +1,16 @@
-#region
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Sprites.Products;
 
-#endregion
-
 namespace TheShacklingOfSimon.Sprites.Decorators;
 
-public class DelayedSprite : ISprite
+public class DrawDelaySprite : ISprite
 {
     private readonly ISprite _baseSprite;
     private readonly float _delay;
     private float _timer;
     
-    public DelayedSprite(ISprite baseSprite, float delay)
+    public DrawDelaySprite(ISprite baseSprite, float delay)
     {
         _baseSprite = baseSprite;
         _delay = delay;
@@ -48,11 +44,8 @@ public class DelayedSprite : ISprite
 
     public void Update(GameTime delta)
     {
-        _timer += (float) delta.ElapsedGameTime.TotalSeconds;
-        if (_timer >= _delay)
-        {
-            _baseSprite.Update(delta);
-        }
+        _timer += (float)delta.ElapsedGameTime.TotalSeconds;
+        _baseSprite.Update(delta);
     }
 
     public Vector2 GetDimensions()

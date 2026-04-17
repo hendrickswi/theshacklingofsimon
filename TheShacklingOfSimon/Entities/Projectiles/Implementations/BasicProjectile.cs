@@ -47,7 +47,12 @@ public class BasicProjectile : ProjectileBase
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
 		Sprite.Update(gameTime);
 
+		// Safety in case collision doesn't work
 		_timer += dt;
+		if (_timer > 10f)
+		{
+			Discontinue();
+		}
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
@@ -63,7 +68,6 @@ public class BasicProjectile : ProjectileBase
     public override void OnCollision(ITile tile)
     {
         if (!IsActive || tile == null) return;
-
         if (tile.BlocksProjectiles)
         {
 			SoundManager.Instance.PlaySFX(_sfx);

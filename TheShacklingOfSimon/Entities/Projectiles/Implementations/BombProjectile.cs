@@ -8,6 +8,7 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
 using TheShacklingOfSimon.Sounds;
+using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
 #endregion
@@ -18,23 +19,28 @@ public class BombProjectile : ProjectileBase
 {
     private readonly string _sfx;
     
-    private float fuseTimer = 0f;
-    private float fuseDuration = 2.0f;
+    private float _fuseTimer = 0f;
+    private readonly float _fuseDuration = 1.5f;
 
-    private bool hasExploded = false;
-    private float explosionTimer = 0f;
-    private float explosionDuration = 0.4f;
+    private bool _hasExploded = false;
+    private float _explosionTimer = 0f;
+    private readonly float _explosionDuration = 1f;
 
-    private float explosionSize = 80f;
+    private readonly float _explosionSize = 80f;
     private readonly HashSet<ITile> _tilesExploded = new();
 
-    private Texture2D pixel; // for red square
+    private readonly ISprite _explosionPixel;
 
     public BombProjectile(Vector2 startPos, ISprite bombSprite, ProjectileStats stats)
     {
         Position = startPos;
         Stats = stats;
+        
         Sprite = bombSprite;
+        _explosionPixel = SpriteFactory.Instance.CreateStaticSprite("1x1white")
+            .WithFade(0.8f, 0f, -0.75f)
+            .WithUpdateDelay(0.25f);
+        
         IsActive = true;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 16, 16);
         _sfx = SoundManager.Instance.NameSFX("items", "rocketexplode04");
@@ -45,57 +51,55 @@ public class BombProjectile : ProjectileBase
     {
         return new BombProjectile(startPos, sprite, stats);
     }
-
-    public override void Update(GameTime gameTime)
+    
+    public override void Discontinue()
     {
-        float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        // Do not allow collision before explosion is over to delete *this*
+        if (!_hasExploded || (_hasExploded && _explosionTimer < _explosionDuration)) return;
+        IsActive = false;
+    }
 
-        if (!hasExploded)
+    public override void Update(GameTime delta)
+    {
+        float dt = (float) delta.ElapsedGameTime.TotalSeconds;
+
+        if (!_hasExploded)
         {
-            fuseTimer += dt;
-            Sprite?.Update(gameTime);
-
-            if (fuseTimer >= fuseDuration)
+            _fuseTimer += dt;
+            Sprite.Update(delta);
+            if (_fuseTimer >= _fuseDuration)
+            {
                 Explode();
+            }
         }
         else
         {
-            explosionTimer += dt;
-
-            if (explosionTimer >= explosionDuration)
+            _explosionTimer += dt;
+            _explosionPixel.Update(delta);
+            if (_explosionTimer >= _explosionDuration)
+            {
                 Discontinue();
+            }
         }
     }
 
     public override void Draw(SpriteBatch spriteBatch)
     {
         if (!IsActive) return;
-
-        if (!hasExploded)
+        if (!_hasExploded)
         {
-            // Draw bomb sprite
             Sprite?.Draw(spriteBatch, Position, Color.Gray);
         }
-        
         else
         {
-            // Draw red explosion square
-            if (pixel == null)
-            {
-                pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-                pixel.SetData(new[] { Color.White });
-            }
-
-            spriteBatch.Draw(pixel, Hitbox, Color.Red * 0.8f);
+            _explosionPixel.Draw(spriteBatch, Hitbox, Color.Red);
         }
     }
 
     public override void OnCollision(ITile tile)
     {
         if (!IsActive || tile == null) return;
-
-        // Only apply bomb effects during explosion
-        if (!hasExploded) return;
+        if (!_hasExploded) return;
 
         if (tile is IBombableTile bombable && _tilesExploded.Add(tile))
         {
@@ -103,9 +107,12 @@ public class BombProjectile : ProjectileBase
         }
     }
 
+    /*
+     * Overriden OnCollision() methods for self-damage
+     */
     public override void OnCollision(IEnemy enemy)
     {
-        if (hasExploded)
+        if (_hasExploded)
         {
             enemy.TakeDamage(Stats.Damage);   
         }
@@ -113,7 +120,7 @@ public class BombProjectile : ProjectileBase
 
     public override void OnCollision(IPlayer player)
     {
-        if (hasExploded)
+        if (_hasExploded)
         {
             player.TakeDamage(Stats.Damage);   
         }
@@ -121,12 +128,12 @@ public class BombProjectile : ProjectileBase
 
     private void Explode()
     {
-        hasExploded = true;
+        _hasExploded = true;
         Hitbox = new Rectangle(
-            (int)(Position.X - explosionSize / 2),
-            (int)(Position.Y - explosionSize / 2),
-            (int)explosionSize,
-            (int)explosionSize
+            (int)(Position.X - _explosionSize / 2),
+            (int)(Position.Y - _explosionSize / 2),
+            (int)_explosionSize,
+            (int)_explosionSize
         );
         
         SoundManager.Instance.PlaySFX(_sfx);

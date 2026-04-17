@@ -26,14 +26,25 @@ public static class SpriteDecoratorExtensions
     }
 
     /// <summary>
-    /// Adds a delay to the rendering and updating behavior of an existing sprite.
+    /// Adds a delay to the update behavior of an existing sprite.
     /// </summary>
     /// <param name="baseSprite">The base sprite to which the delay behavior will be added.</param>
-    /// <param name="delay">The amount of time, in seconds, to delay rendering and updating operations for the sprite.</param>
-    /// <returns>A new sprite instance with delay behavior applied.</returns>
-    public static ISprite WithDelay(this ISprite baseSprite, float delay)
+    /// <param name="delay">The amount of time, in seconds, to delay update operations.</param>
+    /// <returns>A new sprite instance with the update delay applied.</returns>
+    public static ISprite WithUpdateDelay(this ISprite baseSprite, float delay)
     {
-        return new DelayedSprite(baseSprite, delay);
+        return new UpdateDelaySprite(baseSprite, delay);
+    }
+
+    /// <summary>
+    /// Adds a delay to the rendering of an existing sprite.
+    /// </summary>
+    /// <param name="baseSprite">The base sprite to which the delay behavior will be added.</param>
+    /// <param name="delay">The amount of time, in seconds, to delay rendering operations.</param>
+    /// <returns>A new sprite instance with the render delay behavior applied.</returns>
+    public static ISprite WithDrawDelay(this ISprite baseSprite, float delay)
+    {
+        return new DrawDelaySprite(baseSprite, delay);
     }
 
     // Can add more decorator instantiation methods here as more decorators are implemented

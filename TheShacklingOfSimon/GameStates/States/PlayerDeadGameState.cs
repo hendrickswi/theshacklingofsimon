@@ -45,18 +45,26 @@ public class PlayerDeadGameState : IGameState
         };
         _quitGame = quitGame;
 
-        _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
-            .WithFade(0.0f, 0.8f, 0.25f).
-            WithDelay(1.5f);
-        _gameOverSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps28", "YOU DIED")
+        _backgroundSprite = SpriteFactory.Instance
+            .CreateStaticSprite("1x1white")
+            .WithFade(0.0f, 0.8f, 0.25f)
+            .WithUpdateDelay(1.5f)
+            .WithDrawDelay(1.5f);
+        _gameOverSprite = SpriteFactory.Instance
+            .CreateTextSprite("OptimusPrinceps28", "YOU DIED")
             .WithFade(0.0f, 0.8f, 0.125f)
-            .WithDelay(4.5f);
-        _keyboardControlsSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "Press R to restart, Q to quit.")
+            .WithUpdateDelay(4.5f)
+            .WithDrawDelay(4.5f);
+        _keyboardControlsSprite = SpriteFactory.Instance
+            .CreateTextSprite("OptimusPrinceps16", "Press R to restart, Q to quit.")
             .WithFade(0.0f, 0.8f, 0.125f)
-            .WithDelay(6.5f);
-        _gamepadControlsSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "Press A to restart, START to quit.")
+            .WithUpdateDelay(6.5f)
+            .WithDrawDelay(6.5f);
+        _gamepadControlsSprite = SpriteFactory.Instance
+            .CreateTextSprite("OptimusPrinceps16", "Press A to restart, START to quit.")
             .WithFade(0.0f, 0.8f, 0.125f)
-            .WithDelay(6.5f);
+            .WithUpdateDelay(6.5f)
+            .WithDrawDelay(6.5f);
     }
     
     public void Enter()

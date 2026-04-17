@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
@@ -14,14 +15,11 @@ namespace TheShacklingOfSimon.Entities.Projectiles.Implementations;
 
 public class FireballProjectile : ProjectileBase
 {
-	private float timeActive;
-	private Texture2D debugTexture;
-	
-    private ISprite fireBall;
+	private readonly string _sfx;
+	private float _timer;
 
     public FireballProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
-        
         Position = startPos;
 		Stats = stats;
 		IsActive = true;
@@ -36,71 +34,43 @@ public class FireballProjectile : ProjectileBase
 		}
 		
 		Velocity = direction * stats.Speed;
-
-		Sprite = sprite;
-		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
 		
-		fireBall = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
-
+		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
+		Sprite = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
     }
 
 	public override void Update(GameTime gameTime)
 	{
 		float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-		timeActive +=dt;
 		Position += Velocity * dt;
-
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
-		ShouldDestroy();
+		Sprite.Update(gameTime);
 
-		Sprite?.Update(gameTime);
+		// Safety in case collision doesn't work
+		_timer += dt;
+		if (_timer > 10f)
+		{
+			Discontinue();
+		}
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-        //      debugTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-        //debugTexture.SetData(new[] { Color.White });
-
-        //spriteBatch.Draw(debugTexture, Hitbox, Color.Blue);
-        fireBall.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-
-    }
+		Sprite.Draw(spriteBatch, Position, Color.White);
+	}
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
 		return new FireballProjectile(startPos, direction, sprite, stats);
 	}
 
-	private void ShouldDestroy()
-	{
-		if (timeActive>3f) { 
-			Discontinue();
-		}
-		if (Position.X < 0||Position.X>1920||Position.Y<0||Position.Y>1080) {
-			Discontinue();
-		
-		}
-	}
-
     public override void OnCollision(ITile tile)
     {
-        if (!IsActive || tile == null) return;
+	    if (!IsActive || tile == null) return;
+	    if (tile.BlocksProjectiles)
+	    {
+		    // play sfx here
+	    }
 
-        // effect any projectile-affectable tiles
-        if (tile is IProjectileAffectableTile affectable)
-        {
-            affectable.OnProjectileHit();
-        }
-
-        if (tile.BlocksProjectiles)
-        {
-            Discontinue();
-        }
-    }
-    public override void OnCollision(IEnemy enemy)
-    {
-
-		enemy.TakeDamage(Stats.Damage);
-		Discontinue();
     }
 }

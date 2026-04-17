@@ -44,25 +44,31 @@ public class WinGameState : IGameState
         };
         _quitGame = quitGame;
 
-        _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
-            .WithFade(0.0f, 0.8f, 0.25f).WithDelay(1.5f);
-        _gameWonSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "YOU WIN!")
+        _backgroundSprite = SpriteFactory.Instance
+            .CreateStaticSprite("1x1white")
+            .WithFade(0.0f, 0.8f, 0.25f)
+            .WithUpdateDelay(1.5f)
+            .WithDrawDelay(1.5f);
+        _gameWonSprite = SpriteFactory.Instance
+            .CreateTextSprite("Upheaval32", "YOU WIN!")
             .WithFade(0.0f, 0.8f, 0.125f)
-            .WithDelay(4.5f);
+            .WithUpdateDelay(4.5f)
+            .WithDrawDelay(4.5f);
         _keyboardControlsSprite = SpriteFactory.Instance
             .CreateTextSprite("Upheaval16", "Press R to restart, Q to quit.")
             .WithFade(0.0f, 0.8f, 0.125f)
-            .WithDelay(6.5f);
+            .WithUpdateDelay(6.5f)
+            .WithDrawDelay(6.5f);
         _gamepadControlsSprite = SpriteFactory.Instance
             .CreateTextSprite("Upheaval16", "Press A to restart, START to quit.")
             .WithFade(0.0f, 0.8f, 0.125f)
-            .WithDelay(6.5f);
+            .WithUpdateDelay(6.5f)
+            .WithDrawDelay(6.5f);
     }
     
     public void Enter()
     {
         _inputManager.LoadDeadStateControls(_restartGame, _quitGame);
-        // Console.WriteLine("Game win state pushed"); // debug
     }
 
     public void Exit()
