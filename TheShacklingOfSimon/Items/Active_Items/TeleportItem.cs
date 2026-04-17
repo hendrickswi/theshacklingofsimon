@@ -44,8 +44,7 @@ public class TeleportItem : IItem
         Description = "Teleports you a short distance forward.";
         Effects = new ItemEffects(0, 0, 0, 0, false);
 
-        SFX = SoundManager.Instance.NameSFX("items","warp");
-        SoundManager.Instance.AddSFX(SFX);
+        SFX = SoundManager.Instance.AddSFX("items","warp");
     }
 
     // Call this once per frame from wherever we update items / player

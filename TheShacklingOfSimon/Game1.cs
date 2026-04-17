@@ -91,7 +91,7 @@ public class Game1 : Game
         LoadSpriteAssets();
         LoadSounds();
         LoadMusic();
-        PlayMusic("sounds/music/basement");
+        PlayMusic("basement");
 
         RoomFactory roomFactory = CreateRoomFactory();
         CreateRoomManager(roomFactory);
@@ -204,8 +204,10 @@ public class Game1 : Game
 
     private void PlayMusic(string songName)
     {
-        Song song = SoundFactory.Instance.GetSong(songName);
-        //MediaPlayer.Play(song);
+        string songStr = "sounds/music/"+songName;
+        Song song = SoundFactory.Instance.GetSong(songStr);
+        MediaPlayer.Play(song);
+        MediaPlayer.IsRepeating = true;
     }
 
     private RoomFactory CreateRoomFactory()
@@ -364,6 +366,7 @@ public class Game1 : Game
         _collisionBulkLoader.RegisterRoomCollidables(_roomManager.CurrentRoom);
         CreatePlayerWeapons();
         CreatePlayerItems();
-        PlayMusic("sounds/music/basement");
+        MediaPlayer.Stop();
+        PlayMusic("basement");
     }
 }

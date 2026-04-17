@@ -19,18 +19,15 @@ public sealed class SoundManager
         _soundEffects = new Dictionary<string, SoundEffect>();
     }
 
-    public string NameSFX(string callType, string sfxName)
+    public string AddSFX(string callType, string sfxName)
     {
-        return "sounds/" + callType + "/" + sfxName;
-    }
-
-    public void AddSFX(string fullName)
-    {
+        string fullName = "sounds/" + callType + "/" + sfxName;
         SoundEffect toAdd = SoundFactory.Instance.GetSFX(fullName);
         if (toAdd != null && !_soundEffects.ContainsKey(fullName))
         {
             _soundEffects.Add(fullName, toAdd);
         }
+        return fullName;
     }
 
     public void RemoveSFX(string sfx)

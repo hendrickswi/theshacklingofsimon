@@ -21,8 +21,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Obstacles
 
         public RockTile(ISprite sprite, Vector2 position) : base(sprite, position)
         {
-            SFX = SoundManager.Instance.NameSFX("other","Rock_crumble 0");
-            SoundManager.Instance.AddSFX(SFX);
+            SFX = SoundManager.Instance.AddSFX("other", "Rock_crumble 0");
         }
 
         public void OnExplode()

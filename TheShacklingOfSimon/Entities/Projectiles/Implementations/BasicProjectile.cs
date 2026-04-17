@@ -40,8 +40,7 @@ public class BasicProjectile : ProjectileBase
 
         fireBall = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
 
-		SFX = SoundManager.Instance.NameSFX("projectiles", "splatter00");
-        SoundManager.Instance.AddSFX(SFX);
+		SFX = SoundManager.Instance.AddSFX("projectiles", "splatter00");
     }
 
     public override void Update(GameTime gameTime)

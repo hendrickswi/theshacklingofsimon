@@ -149,12 +149,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         EffectStats.Add(StatType.PrimaryCooldown, config.PrimaryCooldown);
         EffectStats.Add(StatType.SecondaryCooldown, config.SecondaryCooldown);
 
-        HurtSFX = SoundManager.Instance.NameSFX("isaac","Isaac_Hurt_Grunt0");
-        SoundManager.Instance.AddSFX(HurtSFX);
-        HealSFX = SoundManager.Instance.NameSFX("isaac","1up");
-        SoundManager.Instance.AddSFX(HealSFX);
-        DieSFX = SoundManager.Instance.NameSFX("isaac","isaacdies");
-        SoundManager.Instance.AddSFX(DieSFX);
+        HurtSFX = SoundManager.Instance.AddSFX("isaac","Isaac_Hurt_Grunt0");
+        HealSFX = SoundManager.Instance.AddSFX("isaac","1up");
+        DieSFX = SoundManager.Instance.AddSFX("isaac","isaacdies");
         
         // Only create these the first time Initialize()
         // is called (during instantiation of *this*)

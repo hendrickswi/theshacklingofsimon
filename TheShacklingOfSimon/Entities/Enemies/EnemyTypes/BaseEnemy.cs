@@ -69,10 +69,8 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
         AttackTimer = 0f;
 
-        HurtSFX = SoundManager.Instance.NameSFX("enemy","TearImpacts0");
-        SoundManager.Instance.AddSFX(HurtSFX);
-        DieSFX = SoundManager.Instance.NameSFX("enemy","goodeath0");
-        SoundManager.Instance.AddSFX(DieSFX);
+        HurtSFX = SoundManager.Instance.AddSFX("enemy","TearImpacts0");
+        DieSFX = SoundManager.Instance.AddSFX("enemy","goodeath0");
 
         //movement default
         _movementBehaviour = new NoMovementBehaviour();

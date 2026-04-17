@@ -1,5 +1,6 @@
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Sounds;
 
 namespace TheShacklingOfSimon.Items.Passive_Items;
 
@@ -16,6 +17,7 @@ public class CoinItem : PassiveItem, IConsumableItem
     {
         Name = name;
         Description = description;
+        SFX = SoundManager.Instance.AddSFX("items","coinpickup");
         _amt = amt;
     }
     
@@ -23,6 +25,7 @@ public class CoinItem : PassiveItem, IConsumableItem
     {
         if (Entity is not IPlayer player) return false;
         player.Inventory.NumCoins += _amt;
+        SoundManager.Instance.PlaySFX(SFX);
         return true;
     }
 }

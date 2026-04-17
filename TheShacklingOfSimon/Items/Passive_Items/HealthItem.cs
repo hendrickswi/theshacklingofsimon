@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.Sounds;
 
 namespace TheShacklingOfSimon.Items.Passive_Items;
 
@@ -16,6 +17,7 @@ public class HealingItem : PassiveItem, IConsumableItem
     {
         Name = name;
         Description = description;
+        SFX = SoundManager.Instance.AddSFX("isaac","1up");
         _amt = amt;
     }
     
@@ -23,6 +25,7 @@ public class HealingItem : PassiveItem, IConsumableItem
     {
         if (Entity.Health >= Entity.MaxHealth) return false;
         Entity.Heal(_amt);
+        SoundManager.Instance.PlaySFX(SFX);
         return true;
     }
 }
