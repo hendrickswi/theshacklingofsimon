@@ -17,6 +17,7 @@ public class FireballProjectile : ProjectileBase
 {
 	private readonly string _sfx;
 	private float _timer;
+	private Vector2 Direction;
 
     public FireballProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
@@ -34,10 +35,12 @@ public class FireballProjectile : ProjectileBase
 		}
 		
 		Velocity = direction * stats.Speed;
-		
+		Direction = direction;
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 10, 10);
 		Sprite = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
-    }
+		
+		
+	}
 
 	public override void Update(GameTime gameTime)
 	{
@@ -56,8 +59,30 @@ public class FireballProjectile : ProjectileBase
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		Sprite.Draw(spriteBatch, Position, Color.White);
-	}
+		//Sprite.Draw(spriteBatch,Position , Color.White);
+		if (Direction==new Vector2(0,1))
+		{
+            Sprite = SpriteFactory.Instance.CreateStaticSprite("FireballProjectileVertical");
+            Sprite.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+
+        }
+		else if (Direction == new Vector2(1, 0)) {
+
+            Sprite.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        }
+        else if (Direction == new Vector2(-1,0))
+        {
+
+            Sprite.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 1f);
+        }
+        else if (Direction == new Vector2(0, -1))
+        {
+            Sprite = SpriteFactory.Instance.CreateStaticSprite("FireballProjectileVertical");
+            Sprite.Draw(spriteBatch, Position, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipVertically, 1f);
+
+        }
+        
+    }
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{

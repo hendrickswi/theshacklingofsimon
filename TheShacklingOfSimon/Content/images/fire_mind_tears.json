@@ -4,14 +4,25 @@
 			"Name": "FireballProjectile",
 			"Frames": [
 				{
-					"X": 3,
+					"X": 0,
 					"Y": 38,
-					"W": 25,
+					"W": 23,
 					"H": 20
 				}
 			]
-			
 
+
+		},
+		{
+			"Name": "FireballProjectileVertical",
+			"Frames": [
+				{
+					"X": 8,
+					"Y": 1,
+					"W": 16,
+					"H": 23
+				}
+			]
 		}
 	]
 }
