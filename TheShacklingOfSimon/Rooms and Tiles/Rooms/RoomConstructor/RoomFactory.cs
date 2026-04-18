@@ -8,6 +8,7 @@ using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Entities.Enemies.Managers;
 using TheShacklingOfSimon.Entities.Pickup;
+using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
@@ -33,6 +34,11 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
         // without rewriting DoorTile.
         public Func<DoorData, IDoorUnlockCondition> DoorConditionFactory { get; set; }
 
+        // Assigned by Game1 after player creation and before RoomManager creation.
+        public Func<IPlayer> PlayerProvider { get; set; }
+
+        private readonly PickupFactory pickupFactory = new PickupFactory();
+
         public Room Create(RoomFileData data, int viewportWidth, int viewportHeight)
         {
             if (data == null)
@@ -40,6 +46,9 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
 
             if (DoorTextures == null)
                 throw new InvalidOperationException("DoorTextures must be assigned before creating rooms.");
+
+            if (PlayerProvider == null)
+                throw new InvalidOperationException("PlayerProvider must be assigned before creating rooms.");
 
             var tileMap = new TileMap();
             var spriteFactory = SpriteFactory.Instance;
@@ -61,6 +70,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
 
             IList<IEntity> entities = new List<IEntity>();
             PlaceEnemies(tileMap, entities, data.Enemies);
+            PlacePickups(tileMap, entities, data.Pickups);
 
             IEnumerable<IEntity> exposedEntities = entities;
             return new Room(data.Id, data.IsBossRoom, tileMap, exposedEntities, data.Doors, background);
@@ -161,8 +171,6 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
 
                 IDoorUnlockCondition unlockCondition = CreateDoorCondition(d);
 
-                // DoorTile still inherits from Tile, so we pass a dummy sprite to the base class.
-                // Real drawing comes from the locked/unlocked upright textures in DoorTextureSet.
                 var door = new DoorTile(
                     SpriteFactory.Instance.CreateStaticSprite("images/Rocks"),
                     tileMap.GridToWorld(borderPos),
@@ -173,8 +181,6 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
                     unlockCondition
                 );
 
-                //Debug.WriteLine(
-                //    $"CREATE DOOR in room build at ({borderPos.X},{borderPos.Y}) side={side} -> {d.To.Room} spawn=({d.To.Spawn.X},{d.To.Spawn.Y})");
                 tileMap.PlaceTile(borderPos, door);
             }
         }
@@ -231,45 +237,44 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
                 enemy.OnProjectileCreated += proj => OnProjectileCreated?.Invoke(proj);
                 enemy.OnItemDropped += (item, pos) =>
                 {
-                    // Temporary type-of logic and sprite until we decide on how to instantiate pickups dynamically
                     IPickup p;
                     switch (item)
                     {
                         case IInventoryItem inventoryItem:
-                        {
-                            p = new InventoryPickup(pos, SpriteFactory.Instance.CreateStaticSprite("images/8Ball"),
+                            p = new InventoryPickup(
+                                pos,
+                                SpriteFactory.Instance.CreateStaticSprite("images/8Ball"),
                                 inventoryItem);
                             break;
-                        }
+
                         case IConsumableItem consumableItem:
-                        {
-                            p = new ConsumablePickup(pos, SpriteFactory.Instance.CreateStaticSprite("images/Red_Heart"),
+                            p = new ConsumablePickup(
+                                pos,
+                                SpriteFactory.Instance.CreateStaticSprite("images/Red_Heart"),
                                 consumableItem);
                             break;
-                        }
+
                         default:
-                        {
                             throw new InvalidOperationException($"Unknown item type: {item.GetType()}");
-                        }
                     }
 
-                    // Console.WriteLine("Pickup instantiated: " + p.GetType().Name + " at " + pos + ""); // debug
                     OnItemDropped?.Invoke(p);
                 };
-                
+
                 entities.Add(enemy);
             }
         }
 
         private void PlacePickups(TileMap tileMap, IList<IEntity> entities, List<PickupData> pickups)
         {
-            if (pickups == null) return;
+            if (pickups == null || pickups.Count == 0) return;
+
+            IPlayer player = PlayerProvider();
 
             foreach (var p in pickups)
             {
-                Vector2 worldPos = tileMap.GridToWorld(new Point(p.X, p.Y));
-                //IPickup pickup = new Pickup(worldPos, p.Item, p.Item.sprite);
-                //entities.Add(pickup);
+                IPickup pickup = pickupFactory.CreatePickup(p, player, tileMap);
+                entities.Add((IEntity)pickup);
             }
         }
     }

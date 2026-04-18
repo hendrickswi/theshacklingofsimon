@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
-using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.TileConstructor;
 using TheShacklingOfSimon.Weapons;
 
@@ -75,6 +74,17 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public IItem Item { get; set; }
+
+        // "Key", "Heart", "Coin"
+        public string ItemType { get; set; } = "";
+
+        // Optional override. Leave blank to use defaults from code.
+        public string Sprite { get; set; } = "";
+
+        // 0 = free pickup, > 0 = shop pickup
+        public int Price { get; set; } = 0;
+
+        // For stackable pickups like keys/coins
+        public int Amount { get; set; } = 1;
     }
 }

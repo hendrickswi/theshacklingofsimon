@@ -1,55 +1,27 @@
 {
     "id": "room_05",
     "isBossRoom": false,
-    "tiles": [
-        {
-            "x": 5,
-            "y": 2,
-            "type": "Rock"
-        },
-        {
-            "x": 6,
-            "y": 2,
-            "type": "Rock"
-        },
-        {
-            "x": 7,
-            "y": 2,
-            "type": "Rock"
-        },
-        {
-            "x": 8,
-            "y": 2,
-            "type": "Rock"
-        },
-        {
-            "x": 9,
-            "y": 2,
-            "type": "Rock"
-        },
-        {
-            "x": 5,
-            "y": 6,
-            "type": "Rock"
-        },
-        {
-            "x": 9,
-            "y": 6,
-            "type": "Rock"
-        },
-        {
-            "x": 6,
-            "y": 5,
-            "type": "Rock"
-        },
-        {
-            "x": 8,
-            "y": 5,
-            "type": "Rock"
-        }
-    ],
+    "tiles": [],
     "entities": [],
     "enemies": [],
+    "pickups": [
+        {
+            "x": 5,
+            "y": 4,
+            "itemType": "Key",
+            "sprite": "images/key",
+            "price": 5,
+            "amount": 1
+        },
+        {
+            "x": 8,
+            "y": 4,
+            "itemType": "Heart",
+            "sprite": "images/Red_Heart",
+            "price": 3,
+            "amount": 1
+        }
+    ],
     "doors": [
         {
             "x": 0,

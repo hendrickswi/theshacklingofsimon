@@ -39,7 +39,19 @@ public sealed class SoundManager
 
     public void PlaySFX(string sfx)
     {
-        _soundEffects.GetValueOrDefault(sfx).Play();
-        
+        if (string.IsNullOrEmpty(sfx))
+        {
+            System.Console.WriteLine("WARNING: PlaySFX called with null or empty string.");
+            return;
+        }
+
+        SoundEffect effect = _soundEffects.GetValueOrDefault(sfx);
+        if (effect == null)
+        {
+            System.Console.WriteLine($"WARNING: No sound effect found for key: {sfx}");
+            return;
+        }
+
+        effect.Play();
     }
 }

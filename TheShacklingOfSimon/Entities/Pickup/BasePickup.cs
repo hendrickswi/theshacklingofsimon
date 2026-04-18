@@ -21,7 +21,7 @@ public abstract class BasePickup : IPickup
     public bool IsActive { get; protected set; }
     public Rectangle Hitbox { get; protected set; }
     public ISprite Sprite { get; set; }
-    
+
     protected BasePickup(Vector2 position, ISprite sprite)
     {
         Position = position;
@@ -35,12 +35,12 @@ public abstract class BasePickup : IPickup
     {
         Sprite?.Update(delta);
     }
-    
-    public void Draw(SpriteBatch spriteBatch)
+
+    public virtual void Draw(SpriteBatch spriteBatch)
     {
         Sprite?.Draw(spriteBatch, Position, Color.White);
     }
-    
+
     public void Discontinue()
     {
         IsActive = false;
@@ -59,11 +59,11 @@ public abstract class BasePickup : IPickup
     }
 
     public abstract void OnCollision(IPlayer player);
-    
+
     public virtual void OnCollision(IEnemy enemy)
     {
     }
-    
+
     public virtual void OnCollision(IProjectile projectile)
     {
     }

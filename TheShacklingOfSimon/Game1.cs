@@ -39,6 +39,7 @@ public class Game1 : Game
 
     private readonly GraphicsDeviceManager _graphics;
     private readonly List<IEntity> _persistentDynamicEntities = new();
+    private readonly HashSet<string> _initializedSpecialRooms = new();
 
     private SpriteBatch _spriteBatch;
 
@@ -81,12 +82,12 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        
+
         _projectileManager = new ProjectileManager();
         _collisionManager = new CollisionManager();
-        _soundManager = new SoundManager();
+        _soundManager = SoundManager.Instance;
         _pickupManager = new PickupManager();
-        
+
         LoadFonts();
         LoadSpriteAssets();
         LoadSounds();
@@ -94,12 +95,15 @@ public class Game1 : Game
         PlayMusic("basement");
 
         RoomFactory roomFactory = CreateRoomFactory();
+
+        CreatePlayer();
+        roomFactory.PlayerProvider = () => _player;
+
         CreateRoomManager(roomFactory);
-        
+
         // _roomManager holds a reference to roomFactory, so this is safe
         roomFactory.OnItemDropped += _pickupManager.AddPickup;
-        
-        CreatePlayer();
+
         CreatePlayerWeapons();
         CreatePlayerItems();
         CreateInputManager();
@@ -195,6 +199,9 @@ public class Game1 : Game
 
         SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/splatter00");
         SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/stoneshoot2");
+
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/coinpickup");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/keypickup");
     }
 
     private void LoadMusic()
@@ -243,7 +250,6 @@ public class Game1 : Game
     private void CreatePlayer()
     {
         _player = new PlayerWithTwoSprites(GetScreenCenter());
-        HUD = new HUD(_player, _roomManager, GraphicsDevice);
     }
 
     private void CreatePlayerWeapons()
@@ -323,6 +329,8 @@ public class Game1 : Game
 
     private void CreateGameStates()
     {
+        HUD = new HUD(_player, _roomManager, GraphicsDevice);
+
         _gameStateManager = new GameStateManager();
         _gameStateManager.AddState(
             new PlayGameState(
@@ -332,13 +340,13 @@ public class Game1 : Game
                 this,
                 _roomManager,
                 new StandardLevelObjectiveManager(
-                    _gameStateManager, 
-                    _inputManager, 
-                    GraphicsDevice, 
-                    _player, 
-                    _roomManager, 
-                    Reset, 
-                    Exit), // can create functionality to start in different game modes
+                    _gameStateManager,
+                    _inputManager,
+                    GraphicsDevice,
+                    _player,
+                    _roomManager,
+                    Reset,
+                    Exit),
                 _pickupManager,
                 _soundManager,
                 _player,
@@ -346,8 +354,8 @@ public class Game1 : Game
                 _collisionManager,
                 HUD,
                 Reset
-                )
-            );
+            )
+        );
     }
 
     private Vector2 GetScreenCenter()
