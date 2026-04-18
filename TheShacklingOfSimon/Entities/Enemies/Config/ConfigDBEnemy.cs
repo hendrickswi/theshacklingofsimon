@@ -18,7 +18,7 @@ public static class ConfigDBEnemy
             ContactDamage = 1f,
             MaxHealth = 3,
             InvulnerabilityDuration = 0.25f,
-            DropItemType = EnemyDropType.Speed
+            DropItemType = EnemyDropType.Health
         },
 
         ["SpiderEnemy"] = new EnemyConfig
@@ -30,7 +30,7 @@ public static class ConfigDBEnemy
             ContactDamage = 1f,
             MaxHealth = 2,
             InvulnerabilityDuration = 0.25f,
-            DropItemType = EnemyDropType.Health
+            DropItemType = EnemyDropType.Coin
         },
 
         ["AngelicBaby"] = new EnemyConfig
@@ -42,7 +42,7 @@ public static class ConfigDBEnemy
             ContactDamage = 1f,
             MaxHealth = 4,
             InvulnerabilityDuration = 0.25f,
-            DropItemType = EnemyDropType.Coin
+            DropItemType = EnemyDropType.Key
         },
 
         ["AdultLeech"] = new EnemyConfig
