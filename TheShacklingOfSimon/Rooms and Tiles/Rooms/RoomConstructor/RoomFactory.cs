@@ -221,6 +221,9 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
         {
             if (enemies == null) return;
 
+            IPlayer player = PlayerProvider();
+            IPathfindingService pathfindingService = new GridPathfindingService(tileMap);
+
             foreach (var e in enemies)
             {
                 Vector2 worldPos = tileMap.GridToWorld(new Point(e.X, e.Y));
@@ -234,6 +237,12 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
                     EnemyTypeList.FlyingEnemy => new FlyingEnemy(worldPos, weapon, e.Name),
                     _ => throw new InvalidOperationException($"Unknown enemy type: {e.Type}")
                 };
+
+                if (enemy is BaseEnemy baseEnemy)
+                {
+                    baseEnemy.SetTargetPlayer(player);
+                    baseEnemy.SetPathfindingService(pathfindingService);
+                }
 
                 enemy.OnProjectileCreated += proj => OnProjectileCreated?.Invoke(proj);
                 enemy.OnItemDropped += (item, pos) =>

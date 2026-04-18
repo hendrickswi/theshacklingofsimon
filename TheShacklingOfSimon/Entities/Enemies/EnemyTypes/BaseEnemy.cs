@@ -12,14 +12,15 @@ using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
 using TheShacklingOfSimon.Items.Passive_Items;
+using TheShacklingOfSimon.Rooms_and_Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
+using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Obstacles;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 #endregion
-
 
 namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
@@ -43,6 +44,9 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
     protected IMovementBehavior _movementBehaviour;
 
+    protected IPathfindingService _pathfindingService;
+    protected IPlayer _targetPlayer;
+
     public event Action<IProjectile> OnProjectileCreated;
     public event Action<IItem, Vector2> OnItemDropped;
 
@@ -51,31 +55,25 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         Name = name;
         var config = ConfigDBEnemy.Configs[name];
 
-        //IsBoss
         IsBoss = config.IsBoss;
 
-        // IDamageable properties
         MaxHealth = config.MaxHealth;
         Health = MaxHealth;
 
-        // These can all be overriden with public set method
         MoveSpeedStat = config.MoveSpeed;
         AttackCooldown = config.AttackCooldown;
         ContactDamage = config.ContactDamage;
         AttackRange = config.AttackRange;
-        
-        // TODO: do all stats like this to allow for status effects on enemies
+
         EffectStats.Add(StatType.InvulnerabilityDuration, config.InvulnerabilityDuration);
 
         AttackTimer = 0f;
 
-        HurtSFX = SoundManager.Instance.AddSFX("enemy","TearImpacts0");
-        DieSFX = SoundManager.Instance.AddSFX("enemy","goodeath0");
+        HurtSFX = SoundManager.Instance.AddSFX("enemy", "TearImpacts0");
+        DieSFX = SoundManager.Instance.AddSFX("enemy", "goodeath0");
 
-        //movement default
         _movementBehaviour = new NoMovementBehaviour();
 
-        //item drop
         EnemyDrop = config.DropItemType switch
         {
             EnemyDropType.None => null,
@@ -88,6 +86,16 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
         SetWeapon(weapon);
         Reset(startPosition);
+    }
+
+    public void SetPathfindingService(IPathfindingService pathfindingService)
+    {
+        _pathfindingService = pathfindingService;
+    }
+
+    public void SetTargetPlayer(IPlayer player)
+    {
+        _targetPlayer = player;
     }
 
     public virtual void Reset(Vector2 startPosition)
@@ -113,9 +121,44 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
     public virtual Vector2 FindTarget()
     {
-        // Placeholder for target finding logic, e.g., find the player or other entities
-        Vector2 targetPosition = Position + new Vector2(25, 0);
-        return targetPosition - Position;
+        if (_targetPlayer == null)
+        {
+            return Vector2.Zero;
+        }
+
+        if (_pathfindingService == null)
+        {
+            Vector2 direct = _targetPlayer.Position - Position;
+            if (direct.LengthSquared() < 0.0001f) return Vector2.Zero;
+            direct.Normalize();
+            return direct;
+        }
+
+        Func<ITile, bool> canTraverse = tile => !tile.BlocksGround;
+
+        Func<ITile, float> getTraversalCost = tile =>
+        {
+            if (tile == null) return 1f;
+
+            if (tile.BlocksGround)
+            {
+                return float.PositiveInfinity;
+            }
+
+            return tile switch
+            {
+                SpikeTile => 8f,
+                FireTile => 10f,
+                HoleTile => float.PositiveInfinity,
+                _ => 1f
+            };
+        };
+
+        return _pathfindingService.GetNextDirection(
+            Position,
+            _targetPlayer.Position,
+            canTraverse,
+            getTraversalCost);
     }
 
     public virtual void RegisterMovement(float dt, Vector2 targetDirection)
@@ -179,7 +222,6 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
             Sprite.Draw(spriteBatch, Position, Color.White, 0.0f,
                         new Vector2(0, 0), 1.0f, flip, 0.0f);
         }
-        
     }
 
     public override bool TakeDamage(int damage)
@@ -207,31 +249,28 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         OnItemDropped?.Invoke(item, position);
     }
 
-    // Collision handling
-
     public override void OnCollision(IEntity other)
     {
         if (other == null || !IsActive) return;
         other.OnCollision(this);
     }
-    
+
     public override void OnCollision(IPlayer player)
     {
         if (player == null || !IsActive) return;
-
-        // Deal 1 damage on contact
         player.TakeDamage((int)ContactDamage);
     }
 
     public override void OnCollision(IEnemy enemy)
     {
-        // No-op for now (avoid enemies pushing each other until desired).
     }
 
     public override void OnCollision(IProjectile projectile)
     {
-        // No-op for now if projectiles should damage enemies,
-        // implement damage in projectile or here consistently across the codebase.
+    }
+
+    public override void OnCollision(IPickup pickup)
+    {
     }
 
     public override void OnCollision(ITile tile)
@@ -256,10 +295,5 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
                 Velocity = new Vector2(Velocity.X, 0.0f);
                 break;
         }
-    }
-
-    public override void OnCollision(IPickup pickup)
-    {
-        // No-op
     }
 }

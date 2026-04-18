@@ -8,7 +8,6 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 #endregion
 
-
 namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
 public class ChaseEnemy : BaseEnemy
@@ -21,7 +20,7 @@ public class ChaseEnemy : BaseEnemy
     {
         _rangedAttackBehaviour = new NoAttackBehaviour();
         _contactAttackBehaviour = new AllowedAttackBehaviour();
-        _movementBehaviour = new WanderMovementBehavior();
+        _movementBehaviour = new ChaseMovementBehavior();
     }
 
     public override void RegisterAttack(float dt, Vector2 targetDirection)
@@ -33,7 +32,6 @@ public class ChaseEnemy : BaseEnemy
     {
         if (player == null || !IsActive) return;
 
-        // Deal 1 damage on contact
         _contactAttackBehaviour.Execute(this, 0, Vector2.Zero);
         player.TakeDamage((int)ContactDamage);
     }

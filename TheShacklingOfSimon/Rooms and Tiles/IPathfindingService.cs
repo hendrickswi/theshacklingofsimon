@@ -19,5 +19,9 @@ public interface IPathfindingService
      * Can simply add more bool properties to ITile to allow even more diverse pathfinding
      * Each enemy can define their behavior with a simple lambda one-liner
      */
-    Vector2 GetNextDirection(Vector2 currentPosition, Vector2 targetPosition, Func<ITile, bool> rules);
+    Vector2 GetNextDirection(
+        Vector2 currentPosition,
+        Vector2 targetPosition,
+        Func<ITile, bool> canTraverse,
+        Func<ITile, float> getTraversalCost);
 }
