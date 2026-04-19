@@ -17,8 +17,9 @@ public interface IDamageableEntity : IEntity
     /// If the entity is invulnerable, no damage is applied.
     /// </summary>
     /// <param name="amt">The amount of damage to apply to the entity's health.</param>
+    /// <param name="bypassInvulnerability"></param>
     /// <returns>A boolean with value true if <c>this</c> applied the damage, false otherwise.</returns>
-    bool TakeDamage(int amt);
+    bool TakeDamage(int amt, bool bypassInvulnerability = false);
 
     /// <summary>
     /// Heals <c>this</c> by the specified amount.

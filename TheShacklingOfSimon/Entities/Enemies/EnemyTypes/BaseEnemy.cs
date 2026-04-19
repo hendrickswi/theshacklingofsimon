@@ -182,9 +182,9 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         
     }
 
-    public override bool TakeDamage(int damage)
+    public override bool TakeDamage(int damage, bool bypassInvulnerability = false)
     {
-        if (!base.TakeDamage(damage)) return false;
+        if (!base.TakeDamage(damage, bypassInvulnerability)) return false;
 
         CurrentState.HandleDamage(damage);
         return true;

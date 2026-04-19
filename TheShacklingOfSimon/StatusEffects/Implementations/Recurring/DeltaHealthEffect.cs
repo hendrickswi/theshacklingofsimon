@@ -27,7 +27,7 @@ public class DeltaHealthEffect : RecurringStatusEffect
         }
         else
         {
-            Owner.TakeDamage((int)-Strength);
+            Owner.TakeDamage((int)-Strength, true);
                     
         }
         PreviousApplicationTime -= TickDuration;
