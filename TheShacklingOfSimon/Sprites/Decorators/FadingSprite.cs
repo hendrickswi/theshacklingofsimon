@@ -8,34 +8,33 @@ using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Sprites.Decorators;
 
-public class FadingSprite : ISprite
+public class FadingSprite : BaseDecoratedSprite
 {
-    private readonly ISprite _baseSprite;
     private float _currentAlpha;
     private float _endAlpha;
     private float _fadeSpeed;
 
-    public FadingSprite(ISprite baseSprite, float startAlpha, float endAlpha, float fadeSpeed)
+    public FadingSprite(ISprite baseSprite, float startAlpha, float endAlpha, float fadeSpeed) 
+        : base(baseSprite)
     {
-        _baseSprite = baseSprite;
         _endAlpha = MathHelper.Clamp(endAlpha, 0f, 1f);
         _currentAlpha = MathHelper.Clamp(startAlpha, 0f, 1f);
         _fadeSpeed = fadeSpeed;
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
     {
-        _baseSprite.Draw(spriteBatch, pos, color * _currentAlpha);
+        BaseSprite.Draw(spriteBatch, pos, color * _currentAlpha);
     }
     
-    public void Draw(SpriteBatch spriteBatch, Rectangle destination, Color color)
+    public override void Draw(SpriteBatch spriteBatch, Rectangle destination, Color color)
     {
-        _baseSprite.Draw(spriteBatch, destination, color * _currentAlpha);
+        BaseSprite.Draw(spriteBatch, destination, color * _currentAlpha);
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
     {
-        _baseSprite.Draw(
+        BaseSprite.Draw(
             spriteBatch, 
             pos, 
             color * _currentAlpha, 
@@ -46,7 +45,7 @@ public class FadingSprite : ISprite
             layerDepth);
     }
 
-    public void Update(GameTime delta)
+    public override void Update(GameTime delta)
     {
         _currentAlpha += _fadeSpeed * (float)delta.ElapsedGameTime.TotalSeconds;
 
@@ -57,16 +56,6 @@ public class FadingSprite : ISprite
         }
         
         _currentAlpha = MathHelper.Clamp(_currentAlpha, 0f, 1f);
-        _baseSprite.Update(delta);
-    }
-    
-    public Vector2 GetDimensions()
-    {
-        return _baseSprite.GetDimensions();
-    }
-    
-    public ISprite RemoveDecorator()
-    {
-        return _baseSprite;
+        BaseSprite.Update(delta);
     }
 }
