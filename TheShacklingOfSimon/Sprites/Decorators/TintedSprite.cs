@@ -4,30 +4,29 @@ using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Sprites.Decorators;
 
-public class TintedSprite : ISprite
+public class TintedSprite : BaseDecoratedSprite
 {
-    private readonly ISprite _baseSprite;
     private readonly Color _tintColor;
     
-    public TintedSprite(ISprite baseSprite, Color tintColor)
+    public TintedSprite(ISprite baseSprite, Color tintColor) 
+        : base(baseSprite)
     {
-        _baseSprite = baseSprite;
         _tintColor = tintColor;
     }
     
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
     {
-        _baseSprite.Draw(spriteBatch, pos, CalculateTintColor(color));
+        BaseSprite.Draw(spriteBatch, pos, CalculateTintColor(color));
     }
     
-    public void Draw(SpriteBatch spriteBatch, Rectangle destination, Color color)
+    public override void Draw(SpriteBatch spriteBatch, Rectangle destination, Color color)
     {
-        _baseSprite.Draw(spriteBatch, destination, CalculateTintColor(color));
+        BaseSprite.Draw(spriteBatch, destination, CalculateTintColor(color));
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
     {
-        _baseSprite.Draw(
+        BaseSprite.Draw(
             spriteBatch, 
             pos, 
             CalculateTintColor(color),
@@ -38,21 +37,16 @@ public class TintedSprite : ISprite
             layerDepth);
     }
 
-    public void Update(GameTime delta)
+    public override void Update(GameTime delta)
     {
-        _baseSprite.Update(delta);
-    }
-
-    public Vector2 GetDimensions()
-    {
-        return _baseSprite.GetDimensions();
+        BaseSprite.Update(delta);
     }
 
     private Color CalculateTintColor(Color incomingColor)
     {
         if (incomingColor == Color.White) return _tintColor;
         
-        // If incoming color, is not white, find the "average" of the two colors
+        // If incoming color is not white, find the "average" of the two colors
         return Color.Lerp(_tintColor, incomingColor, 0.5f);
     }
 }

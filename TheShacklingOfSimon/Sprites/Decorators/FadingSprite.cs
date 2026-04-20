@@ -64,4 +64,9 @@ public class FadingSprite : ISprite
     {
         return _baseSprite.GetDimensions();
     }
+    
+    public ISprite RemoveDecorator()
+    {
+        return _baseSprite;
+    }
 }

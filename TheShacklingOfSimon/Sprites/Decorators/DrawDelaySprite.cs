@@ -4,34 +4,33 @@ using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Sprites.Decorators;
 
-public class DrawDelaySprite : ISprite
+public class DrawDelaySprite : BaseDecoratedSprite
 {
-    private readonly ISprite _baseSprite;
     private readonly float _delay;
     private float _timer;
     
-    public DrawDelaySprite(ISprite baseSprite, float delay)
+    public DrawDelaySprite(ISprite baseSprite, float delay) 
+        : base(baseSprite)
     {
-        _baseSprite = baseSprite;
         _delay = delay;
     }
     
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
     {
         if (_timer < _delay) return;
-        _baseSprite.Draw(spriteBatch, pos, color);
+        BaseSprite.Draw(spriteBatch, pos, color);
     }
     
-    public void Draw(SpriteBatch spriteBatch, Rectangle destination, Color color)
+    public override void Draw(SpriteBatch spriteBatch, Rectangle destination, Color color)
     {
         if (_timer < _delay) return;
-        _baseSprite.Draw(spriteBatch, destination, color);
+        BaseSprite.Draw(spriteBatch, destination, color);
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
     {
         if (_timer < _delay) return;
-        _baseSprite.Draw(
+        BaseSprite.Draw(
             spriteBatch, 
             pos, 
             color,
@@ -42,14 +41,9 @@ public class DrawDelaySprite : ISprite
             layerDepth);
     }
 
-    public void Update(GameTime delta)
+    public override void Update(GameTime delta)
     {
         _timer += (float)delta.ElapsedGameTime.TotalSeconds;
-        _baseSprite.Update(delta);
-    }
-
-    public Vector2 GetDimensions()
-    {
-        return _baseSprite.GetDimensions();
+        BaseSprite.Update(delta);
     }
 }

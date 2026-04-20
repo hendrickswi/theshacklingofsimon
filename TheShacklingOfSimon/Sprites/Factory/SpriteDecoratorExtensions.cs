@@ -1,5 +1,6 @@
 #region
 
+using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Sprites.Decorators;
 using TheShacklingOfSimon.Sprites.Products;
 
@@ -47,5 +48,18 @@ public static class SpriteDecoratorExtensions
         return new DrawDelaySprite(baseSprite, delay);
     }
 
-    // Can add more decorator instantiation methods here as more decorators are implemented
+    /// <summary>
+    /// Adds tinting behavior to an existing sprite, allowing its color to be modified.
+    /// </summary>
+    /// <remarks>
+    /// For more than one stacked tint decorator, colors are additively combined.
+    /// For example, red+blue = purple.
+    /// </remarks>
+    /// <param name="baseSprite">The base sprite to which tinting behavior will be applied.</param>
+    /// <param name="tint">The color tint to apply to the sprite. This color will be blended with the sprite's original appearance.</param>
+    /// <returns>A new sprite instance with tinting behavior applied.</returns>
+    public static ISprite WithTint(this ISprite baseSprite, Color tint)
+    {
+        return new TintedSprite(baseSprite, tint);
+    }
 }

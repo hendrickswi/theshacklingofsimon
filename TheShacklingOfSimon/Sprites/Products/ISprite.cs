@@ -50,5 +50,19 @@ public interface ISprite
     /// <param name="delta">The elapsed game time since the last update</param>
     public void Update(GameTime delta);
 
+    /// <summary>
+    /// Retrieves the dimensions of the sprite as it would be displayed on screen.
+    /// </summary>
+    /// <returns>A <c>Vector2</c> object containing the width and height of the sprite.</returns>
     public Vector2 GetDimensions();
+
+    /// <summary>
+    /// Removes the "top" decorator wrapping the current sprite, returning the wrapped sprite.
+    /// If the sprite is not wrapped in any decorators, the current sprite instance is returned.
+    /// </summary>
+    /// <returns>
+    /// The inner, potentially still wrapped sprite, or the current sprite if no
+    /// decorators are applied.
+    /// </returns>
+    public ISprite RemoveDecorator();
 }

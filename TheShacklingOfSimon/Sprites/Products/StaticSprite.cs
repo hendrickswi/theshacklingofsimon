@@ -43,4 +43,9 @@ public class StaticSprite : ISprite
     {
         return new Vector2(_sourceRectangle.Width, _sourceRectangle.Height);
     }
+
+    public ISprite RemoveDecorator()
+    {
+        return this;
+    }
 }

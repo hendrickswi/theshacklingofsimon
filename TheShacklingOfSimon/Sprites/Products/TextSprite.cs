@@ -60,4 +60,9 @@ public class TextSprite : ISprite
     {
         return _font.MeasureString(_text);
     }
+    
+    public ISprite RemoveDecorator()
+    {
+        return this;
+    }
 }

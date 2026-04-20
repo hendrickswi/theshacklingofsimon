@@ -60,4 +60,9 @@ public class AnimatedSprite : ISprite
     {
         return new Vector2(_sourceRectangle[_currentFrame].Width, _sourceRectangle[_currentFrame].Height);
     }
+
+    public ISprite RemoveDecorator()
+    {
+        return this;
+    }
 }

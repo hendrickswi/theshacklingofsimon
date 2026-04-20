@@ -8,31 +8,30 @@ using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Sprites.Decorators;
 
-public class UpdateDelaySprite : ISprite
+public class UpdateDelaySprite : BaseDecoratedSprite
 {
-    private readonly ISprite _baseSprite;
     private readonly float _delay;
     private float _timer;
     
-    public UpdateDelaySprite(ISprite baseSprite, float delay)
+    public UpdateDelaySprite(ISprite baseSprite, float delay) 
+        : base(baseSprite)
     {
-        _baseSprite = baseSprite;
         _delay = delay;
     }
     
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color)
     {
-        _baseSprite.Draw(spriteBatch, pos, color);
+        BaseSprite.Draw(spriteBatch, pos, color);
     }
     
-    public void Draw(SpriteBatch spriteBatch, Rectangle destination, Color color)
+    public override void Draw(SpriteBatch spriteBatch, Rectangle destination, Color color)
     {
-        _baseSprite.Draw(spriteBatch, destination, color);
+        BaseSprite.Draw(spriteBatch, destination, color);
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+    public override void Draw(SpriteBatch spriteBatch, Vector2 pos, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
     {
-        _baseSprite.Draw(
+        BaseSprite.Draw(
             spriteBatch, 
             pos, 
             color,
@@ -43,15 +42,9 @@ public class UpdateDelaySprite : ISprite
             layerDepth);
     }
 
-    public void Update(GameTime delta)
+    public override void Update(GameTime delta)
     {
         _timer += (float) delta.ElapsedGameTime.TotalSeconds;
         if (_timer < _delay) return;
-        _baseSprite.Update(delta);
-    }
-
-    public Vector2 GetDimensions()
-    {
-        return _baseSprite.GetDimensions();
     }
 }
