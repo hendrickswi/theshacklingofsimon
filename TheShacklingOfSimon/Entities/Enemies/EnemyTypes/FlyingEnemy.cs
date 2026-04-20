@@ -35,9 +35,19 @@ public class FlyingEnemy : BaseEnemy
             return Vector2.Zero;
         }
 
+        Vector2 myCenter = new Vector2(
+            Hitbox.X + Hitbox.Width / 2f,
+            Hitbox.Y + Hitbox.Height / 2f
+        );
+
+        Vector2 targetCenter = new Vector2(
+            _targetPlayer.Hitbox.X + _targetPlayer.Hitbox.Width / 2f,
+            _targetPlayer.Hitbox.Y + _targetPlayer.Hitbox.Height / 2f
+        );
+
         if (_pathfindingService == null)
         {
-            Vector2 direct = _targetPlayer.Position - Position;
+            Vector2 direct = targetCenter - myCenter;
             if (direct.LengthSquared() < 0.0001f) return Vector2.Zero;
             direct.Normalize();
             return direct;
@@ -56,18 +66,19 @@ public class FlyingEnemy : BaseEnemy
 
             return tile switch
             {
-                SpikeTile => 6f,
-                FireTile => 8f,
+                SpikeTile => 40f,
+                FireTile => 60f,
                 HoleTile => 1f,
                 _ => 1f
             };
         };
 
         return _pathfindingService.GetNextDirection(
-            Position,
-            _targetPlayer.Position,
+            myCenter,
+            targetCenter,
             canTraverse,
-            getTraversalCost);
+            getTraversalCost
+        );
     }
 
     public override void RegisterAttack(float dt, Vector2 targetDirection)
