@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Pickup;
@@ -9,7 +9,7 @@ using TheShacklingOfSimon.StatusEffects.Templates;
 
 namespace TheShacklingOfSimon.Entities.Projectiles.Decorators;
 
-public class StatusEffectProjectile : IProjectile
+public class StatusEffectProjectileDecorator : IProjectile
 {
     private readonly IProjectile _baseProjectile;
     private readonly IStatusEffect _statusEffectPrototype;
@@ -21,7 +21,7 @@ public class StatusEffectProjectile : IProjectile
         get => _baseProjectile.Velocity;
         set => _baseProjectile.Velocity = value;
     }
-    
+
     public bool IsActive => _baseProjectile.IsActive;
     public Rectangle Hitbox => _baseProjectile.Hitbox;
 
@@ -32,8 +32,8 @@ public class StatusEffectProjectile : IProjectile
         set => _baseProjectile.Sprite = value;
     }
     public ProjectileStats Stats => _baseProjectile.Stats;
-    
-    public StatusEffectProjectile(IProjectile baseProjectile, IStatusEffect statusEffectPrototype)
+
+    public StatusEffectProjectileDecorator(IProjectile baseProjectile, IStatusEffect statusEffectPrototype)
     {
         _baseProjectile = baseProjectile;
         _statusEffectPrototype = statusEffectPrototype;
@@ -51,14 +51,14 @@ public class StatusEffectProjectile : IProjectile
 
     public IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
     {
-        return new StatusEffectProjectile(_baseProjectile.Clone(startPos, direction, sprite, stats), _statusEffectPrototype);
+        return new StatusEffectProjectileDecorator(_baseProjectile.Clone(startPos, direction, sprite, stats), _statusEffectPrototype);
     }
-    
+
     public void Discontinue()
     {
         _baseProjectile.Discontinue();
     }
-	
+
     public void SetPosition(Vector2 position)
     {
         _baseProjectile.SetPosition(position);

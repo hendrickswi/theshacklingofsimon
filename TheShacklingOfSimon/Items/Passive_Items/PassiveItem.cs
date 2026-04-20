@@ -18,4 +18,8 @@ public abstract class PassiveItem : IPassiveItem
     }
 
     public abstract bool ApplyEffect();
+
+    public virtual void ClearEffect()
+    {
+    }
 }

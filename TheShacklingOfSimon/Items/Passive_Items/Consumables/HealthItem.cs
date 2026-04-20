@@ -5,7 +5,7 @@ using TheShacklingOfSimon.Sounds;
 
 #endregion
 
-namespace TheShacklingOfSimon.Items.Passive_Items;
+namespace TheShacklingOfSimon.Items.Passive_Items.Consumables;
 
 public class HealingItem : PassiveItem, IConsumableItem
 {

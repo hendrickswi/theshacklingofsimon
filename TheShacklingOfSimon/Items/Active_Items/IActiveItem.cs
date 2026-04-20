@@ -12,6 +12,5 @@ namespace TheShacklingOfSimon.Items.Active_Items;
 /// </summary>
 public interface IActiveItem : IItem
 {
-    void ClearEffect();
     void Update(GameTime delta);
 }

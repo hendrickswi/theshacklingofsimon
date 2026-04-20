@@ -270,7 +270,7 @@ public class Game1 : Game
                 SpriteFactory.Instance.CreateAnimatedSprite("PlayerHeadShootingDown", 0.1f),
                 new ProjectileStats(1, 0.0f, ProjectileOwner.Player)));
 
-        IProjectile fireballProjectile = new StatusEffectProjectile(
+        IProjectile fireballProjectile = new StatusEffectProjectileDecorator(
             new FireballProjectile(
                 Vector2.Zero,
                 new Vector2(0, 1),

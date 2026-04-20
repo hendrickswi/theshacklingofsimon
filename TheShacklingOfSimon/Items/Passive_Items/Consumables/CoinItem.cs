@@ -1,33 +1,34 @@
-using Microsoft.Xna.Framework.Audio;
+#region
+
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Sounds;
 
+#endregion
 
-namespace TheShacklingOfSimon.Items.Passive_Items;
+namespace TheShacklingOfSimon.Items.Passive_Items.Consumables;
 
-public class KeyItem : PassiveItem, IConsumableItem
+public class CoinItem : PassiveItem, IConsumableItem
 {
     private readonly int _amt;
     
-    public KeyItem(
+    public CoinItem(
         IDamageableEntity entity, 
-        string name = "Key", 
-        string description = "Unlocks a door", 
+        string name = "Coin", 
+        string description = "A shiny gold coin that can be used to buy stuff!", 
         int amt = 1) 
         : base(entity)
     {
         Name = name;
         Description = description;
-        SFX = SoundManager.Instance.AddSFX("items", "keypickup");
+        SFX = SoundManager.Instance.AddSFX("items","coinpickup");
         _amt = amt;
     }
     
     public override bool ApplyEffect()
     {
-        // Temporary cast
         if (Entity is not IPlayer player) return false;
-        player.Inventory.NumKeys += _amt;
+        player.Inventory.NumCoins += _amt;
         SoundManager.Instance.PlaySFX(SFX);
         return true;
     }

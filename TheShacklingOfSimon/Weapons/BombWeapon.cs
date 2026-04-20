@@ -8,12 +8,14 @@ namespace TheShacklingOfSimon.Weapons;
 
 public class BombWeapon : BaseWeapon, ISecondaryWeapon
 {
-    public BombWeapon(IProjectile prototype)
+    public BombWeapon(
+        IProjectile baseProjectile,
+        string name = "Bomb", 
+        string description = "Drops a bomb that explodes.", 
+        float baseCooldown = 1.25f, 
+        int baseDamage = 3
+    ) : base(name, description, baseCooldown, baseDamage, baseProjectile)
     {
-        Name = "Bomb";
-        Description = "Drops a bomb that explodes.";
-        BaseCooldown = 1.25f;
-        BaseDamage = 3;
-        Prototype = prototype;
+        // add sfx here
     }
 }
