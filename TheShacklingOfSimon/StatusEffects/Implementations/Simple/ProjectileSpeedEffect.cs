@@ -50,4 +50,9 @@ public class ProjectileSpeedEffect : SimpleStatusEffect
         Strength += castedOther.Strength;
         Duration = Math.Max(Duration, castedOther.Duration);
     }
+    
+    public override IStatusEffect Clone(IDamageableEntity newTarget)
+    {
+        return new ProjectileSpeedEffect(Name, Type, newTarget, Strength, Duration);
+    }
 }

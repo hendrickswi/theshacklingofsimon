@@ -30,7 +30,6 @@ public abstract class SimpleStatusEffect : IStatusEffect
     }
 
     public abstract void OnApply();
-
     public abstract void OnRemove();
 
     public virtual void Update(GameTime delta)
@@ -43,4 +42,5 @@ public abstract class SimpleStatusEffect : IStatusEffect
     }
 
     public abstract void Merge(IStatusEffect other);
+    public abstract IStatusEffect Clone(IDamageableEntity newTarget);
 }

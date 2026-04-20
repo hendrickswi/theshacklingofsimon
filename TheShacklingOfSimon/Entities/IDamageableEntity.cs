@@ -13,16 +13,19 @@ public interface IDamageableEntity : IEntity
     StatusEffectManager EffectManager { get; }
 
     /// <summary>
-    /// Applies damage to <c>this</c>, reducing its health by the specified amount. If the entity is invulnerable, no damage is applied.
+    /// Applies damage to <c>this</c>, reducing its health by the specified amount.
+    /// If the entity is invulnerable, no damage is applied.
     /// </summary>
     /// <param name="amt">The amount of damage to apply to the entity's health.</param>
+    /// <param name="bypassInvulnerability"></param>
     /// <returns>A boolean with value true if <c>this</c> applied the damage, false otherwise.</returns>
-    bool TakeDamage(int amt);
+    bool TakeDamage(int amt, bool bypassInvulnerability = false);
 
     /// <summary>
     /// Heals <c>this</c> by the specified amount.
+    /// Does not allow the health property to increase above the MaxHealth property.
     /// </summary>
-    /// <param name="amt">The amount to increase the health property of <c>this</c> by</param>
+    /// <param name="amt">The amount to increase the health property of <c>this</c> by.</param>
     void Heal(int amt);
 
     /// <summary>

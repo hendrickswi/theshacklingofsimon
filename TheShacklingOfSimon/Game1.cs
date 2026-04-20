@@ -13,6 +13,7 @@ using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
+using TheShacklingOfSimon.Entities.Projectiles.Decorators;
 using TheShacklingOfSimon.Entities.Projectiles.Implementations;
 using TheShacklingOfSimon.GameStates;
 using TheShacklingOfSimon.GameStates.States;
@@ -24,6 +25,8 @@ using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Border.Doors;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
+using TheShacklingOfSimon.StatusEffects.Implementations.Recurring;
+using TheShacklingOfSimon.StatusEffects.Templates;
 using TheShacklingOfSimon.UI;
 using TheShacklingOfSimon.Weapons;
 using KeyboardInput = TheShacklingOfSimon.Controllers.Keyboard.KeyboardInput;
@@ -267,12 +270,24 @@ public class Game1 : Game
                 SpriteFactory.Instance.CreateAnimatedSprite("PlayerHeadShootingDown", 0.1f),
                 new ProjectileStats(1, 0.0f, ProjectileOwner.Player)));
 
-        IPrimaryWeapon playerFireballWeapon = new FireballWeapon(
+        IProjectile fireballProjectile = new StatusEffectProjectile(
             new FireballProjectile(
                 Vector2.Zero,
                 new Vector2(0, 1),
                 SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"),
-                new ProjectileStats(2, 100.0f, ProjectileOwner.Player)));
+                new ProjectileStats(2, 100.0f, ProjectileOwner.Player)
+            ),
+            new DeltaHealthEffect(
+                "On Fire!",
+                EffectType.OnFire,
+                _player, // Dummy owner which is changed when status effect cloning happens
+                -1f,
+                3f,
+                2f
+            )
+        );
+        IPrimaryWeapon playerFireballWeapon = new FireballWeapon(fireballProjectile);
+            
         _player.Inventory.Add(playerBasicWeapon);
         _player.Inventory.CurrentPrimaryWeapon = playerBasicWeapon;
 

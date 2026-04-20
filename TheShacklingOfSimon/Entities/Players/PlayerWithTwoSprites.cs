@@ -48,9 +48,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         Initialize(startPosition);
     }
 
-    public override bool TakeDamage(int damage)
+    public override bool TakeDamage(int damage, bool bypassInvulnerability = false)
     {
-        if (!base.TakeDamage(damage)) return false;
+        if (!base.TakeDamage(damage, bypassInvulnerability)) return false;
         InvulnerabilityTimer = EffectStats[StatType.InvulnerabilityDuration];
         
         StatesManager.HandleDamageInterrupt(Health <= 0);

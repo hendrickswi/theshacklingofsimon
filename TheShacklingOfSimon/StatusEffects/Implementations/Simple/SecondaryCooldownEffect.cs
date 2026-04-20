@@ -51,4 +51,9 @@ public class SecondaryCooldownEffect : SimpleStatusEffect
         Strength += otherCasted.Strength;
         Duration = Math.Max(Duration, otherCasted.Duration);
     }
+    
+    public override IStatusEffect Clone(IDamageableEntity newTarget)
+    {
+        return new SecondaryCooldownEffect(Name, Type, newTarget, Strength, Duration);
+    }
 }

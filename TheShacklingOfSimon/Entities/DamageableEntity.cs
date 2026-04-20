@@ -73,7 +73,7 @@ public abstract class DamageableEntity : IDamageableEntity
     public abstract void OnCollision(ITile tile);
     public abstract void OnCollision(IPickup pickup);
     
-    public virtual bool TakeDamage(int amt)
+    public virtual bool TakeDamage(int amt, bool bypassInvulnerability = false)
     {
         if (!IsActive) return false;
         if (InvulnerabilityTimer > 0) return false;

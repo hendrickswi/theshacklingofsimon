@@ -48,4 +48,9 @@ public class MaxHealthEffect : SimpleStatusEffect
         Strength += castedOther.Strength;
         Duration = Math.Max(Duration, castedOther.Duration);
     }
+    
+    public override IStatusEffect Clone(IDamageableEntity newTarget)
+    {
+        return new MaxHealthEffect(Name, Type, newTarget, Strength, Duration);
+    }
 }

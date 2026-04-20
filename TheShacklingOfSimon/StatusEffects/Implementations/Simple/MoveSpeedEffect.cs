@@ -47,4 +47,9 @@ public class MoveSpeedEffect : SimpleStatusEffect
         Strength += castedOther.Strength;
         Duration = Math.Max(Duration, castedOther.Duration);
     }
+    
+    public override IStatusEffect Clone(IDamageableEntity newTarget)
+    {
+        return new MoveSpeedEffect(Name, Type, newTarget, Strength, Duration);
+    }
 }
