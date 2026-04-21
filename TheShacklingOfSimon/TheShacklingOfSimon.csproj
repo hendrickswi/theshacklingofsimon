@@ -82,6 +82,14 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
+        <None Update="Content\images\LoseGamble.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\WinGamble.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
         <None Update="Content\images\Spikes.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

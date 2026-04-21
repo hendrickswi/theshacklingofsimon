@@ -2,12 +2,15 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Diagnostics;
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
+using TheShacklingOfSimon.Weapons;
 
 #endregion
 
@@ -99,8 +102,26 @@ namespace TheShacklingOfSimon.UI
 
         private void DrawWeaponIndicator(SpriteBatch spriteBatch)
         {
-            //_fireballIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
-            _basicIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+     
+            switch(_player.Inventory.CurrentPrimaryWeapon.Name){
+                case "Basic Weapon":
+                    _basicIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                    break;
+                case "Fireball Spell":
+                    _fireballIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
+                    break;
+                case "Gambling Weapon":
+                    _bombIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 2.5f, SpriteEffects.None, 1f);
+                    break;
+                default:
+                    _basicIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                    break;
+            }
+             
+
+            System.Diagnostics.Debug.WriteLine(_player.Inventory.CurrentPrimaryWeapon.Name);
+
+
             _bombIndicator.Draw(spriteBatch, new Vector2(80, 90), Color.White, 0f, Vector2.Zero, 2.5f, SpriteEffects.None, 1f);
         }
 

@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
@@ -11,12 +12,12 @@ using TheShacklingOfSimon.Sprites.Products;
 
 namespace TheShacklingOfSimon.Entities.Projectiles.Implementations;
 
-public class BasicProjectile : ProjectileBase
+public class GamblingProjectile : ProjectileBase
 {
 	private readonly string _sfx;
 	private float _timer;
 	
-    public BasicProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
+    public GamblingProjectile(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
         Position = startPos;
 		Stats = stats;
@@ -30,13 +31,25 @@ public class BasicProjectile : ProjectileBase
 		{
 			direction = new Vector2(0, 1);
 		}
-
 		
 		Velocity = direction * stats.Speed;
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
-        Sprite = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
+		Random random = new Random();
+		if (random.Next(1, 11) == 1)
+		{
+			stats.Damage = 1000;
+            Sprite = SpriteFactory.Instance.CreateStaticSprite("WinGamble");
+           
+
+        }
+        else { 
+			stats.Damage =0;
+            Sprite = SpriteFactory.Instance.CreateStaticSprite("LoseGamble");
+
+        }
         
-		_sfx = SoundManager.Instance.AddSFX("projectiles", "splatter00");
+
+        _sfx = SoundManager.Instance.AddSFX("projectiles", "splatter00");
     }
 
     public override void Update(GameTime gameTime)
@@ -56,12 +69,12 @@ public class BasicProjectile : ProjectileBase
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		Sprite.Draw(spriteBatch, Position, Color.White);
+		Sprite.Draw(spriteBatch, Position, Color.White,0f,new Vector2(0,0),0.75f,SpriteEffects.None,1f);
 	}
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
-		return new BasicProjectile(startPos, direction, sprite, stats);
+		return new GamblingProjectile(startPos, direction, sprite, stats);
 	}
 
     public override void OnCollision(ITile tile)

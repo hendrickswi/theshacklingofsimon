@@ -1,0 +1,15 @@
+{
+	"Sprites": [
+		{
+			"Name": "LoseGamble",
+			"Frames": [
+				{
+					"X": 0,
+					"Y": 0,
+					"W": 49,
+					"H": 20
+				}
+			]
+		}
+	]
+}

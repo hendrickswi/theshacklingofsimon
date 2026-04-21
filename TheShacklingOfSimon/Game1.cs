@@ -175,6 +175,8 @@ public class Game1 : Game
         SpriteFactory.Instance.LoadTexture(Content, "images/fire_mind_tears.json", "images/fire_mind_tears");
         SpriteFactory.Instance.LoadTexture(Content, "images/metallic_tears.json", "images/metallic_tears");
         SpriteFactory.Instance.LoadTexture(Content, "images/BombImg.json", "images/BombImg");
+        SpriteFactory.Instance.LoadTexture(Content, "images/WinGamble.json", "images/WinGamble");
+        SpriteFactory.Instance.LoadTexture(Content, "images/LoseGamble.json", "images/LoseGamble");
         
         // 1x1 white pixel used for background stuff
         SpriteFactory.Instance.LoadTexture(Content, "1x1white.json", "1x1white");
@@ -297,10 +299,21 @@ public class Game1 : Game
                 2f
             )
         );
+        IPrimaryWeapon playerGamblingWeapon = new GamblingWeapon(
+            new GamblingProjectile(
+                Vector2.Zero,
+                new Vector2(0, 1),
+                SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"),
+                new ProjectileStats(1, 50f, ProjectileOwner.Player)));
+
+        
+
         IPrimaryWeapon playerFireballWeapon = new FireballWeapon(fireballProjectile);
             
         _player.Inventory.Add(playerBasicWeapon);
-        _player.Inventory.CurrentPrimaryWeapon = playerBasicWeapon;
+        //_player.Inventory.CurrentPrimaryWeapon = playerBasicWeapon;
+        _player.Inventory.Add(playerGamblingWeapon);
+        _player.Inventory.CurrentPrimaryWeapon = playerGamblingWeapon;
 
         _player.Inventory.Add(playerBombWeapon);
         _player.Inventory.CurrentSecondaryWeapon = playerBombWeapon;
@@ -315,6 +328,9 @@ public class Game1 : Game
 
         playerFireballWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
         playerFireballWeapon.OnProjectileFired += _projectileManager.AddProjectile;
+
+        playerGamblingWeapon.OnProjectileFired += _collisionManager.AddDynamicEntity;
+        playerGamblingWeapon.OnProjectileFired += _projectileManager.AddProjectile;
     }
 
     private void CreatePlayerItems()
