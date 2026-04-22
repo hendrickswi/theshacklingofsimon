@@ -30,6 +30,9 @@
         <Content Include="Content\AngelicBaby.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </Content>
 
+        <Content Include="Content\Cohort.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </Content>
+
         <None Update="Content\images\8Ball.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
