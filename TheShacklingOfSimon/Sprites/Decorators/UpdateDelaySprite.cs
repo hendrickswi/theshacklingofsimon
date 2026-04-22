@@ -16,6 +16,7 @@ public class UpdateDelaySprite : BaseDecoratedSprite
     public UpdateDelaySprite(ISprite baseSprite, float delay) 
         : base(baseSprite)
     {
+        _timer = 0.0f;
         _delay = delay;
     }
     
@@ -46,5 +47,6 @@ public class UpdateDelaySprite : BaseDecoratedSprite
     {
         _timer += (float) delta.ElapsedGameTime.TotalSeconds;
         if (_timer < _delay) return;
+        BaseSprite.Update(delta);
     }
 }

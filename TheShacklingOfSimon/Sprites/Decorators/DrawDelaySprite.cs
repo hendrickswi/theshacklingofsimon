@@ -16,6 +16,7 @@ public class DrawDelaySprite : BaseDecoratedSprite
     public DrawDelaySprite(ISprite baseSprite, float delay) 
         : base(baseSprite)
     {
+        _timer = 0.0f;
         _delay = delay;
     }
     
