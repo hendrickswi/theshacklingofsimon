@@ -55,6 +55,18 @@ public static class ConfigDBEnemy
             MaxHealth = 10,
             InvulnerabilityDuration = 0.25f,
             DropItemType = EnemyDropType.Key
+        },
+
+        ["Cohort"] = new EnemyConfig
+        {
+            IsBoss = false,
+            MoveSpeed = 8f,
+            AttackCooldown = 1f,
+            AttackRange = 10f,
+            ContactDamage = 2f,
+            MaxHealth = 5,
+            InvulnerabilityDuration = 0.25f,
+            DropItemType = EnemyDropType.Coin
         }
     };
 }
