@@ -25,6 +25,7 @@ public class EnemyDamagedState : IEnemyState
     {
         // Set hurt sprite
         string spriteName = _enemy.Name + "_Hurt";
+        _enemy.HitboxEnabled = true;
         _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(spriteName);
 
         SoundManager.Instance.PlaySFX(_enemy.HurtSFX);

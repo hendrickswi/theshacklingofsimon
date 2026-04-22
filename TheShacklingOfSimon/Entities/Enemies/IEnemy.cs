@@ -30,6 +30,7 @@ public interface IEnemy : IDamageableEntity
     string HurtSFX { get; set; }
     string DieSFX { get; set; }
     IItem EnemyDrop { get; set; } // we can set this to null/noneitem if we don't want an enemy dropping something
+    bool HitboxEnabled { get; set; }
 
     IWeapon Weapon { get; }
     public event Action<IProjectile> OnProjectileCreated;

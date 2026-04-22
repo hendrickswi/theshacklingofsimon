@@ -33,6 +33,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
     public IEnemyState CurrentState { get; private set; }
     public IWeapon Weapon { get; protected set; }
+    public bool HitboxEnabled { get; set; } = true;
 
     public float MoveSpeedStat { get; set; }
     public float AttackCooldown { get; set; }
@@ -104,6 +105,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         Position = startPosition;
         Velocity = Vector2.Zero;
         IsActive = true;
+        HitboxEnabled = true;
         Hitbox = new Rectangle((int)startPosition.X, (int)startPosition.Y, 20, 20);
 
         Health = MaxHealth;
@@ -216,7 +218,14 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
         Position += Velocity * dt;
 
-        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);
+        if (HitboxEnabled)
+        {
+            Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 20, 20);
+        }
+        else
+        {
+            Hitbox = Rectangle.Empty;
+        }
 
         CurrentState.Update(delta);
     }

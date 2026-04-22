@@ -31,6 +31,7 @@ public class EnemyAttackingState : IEnemyState
 
         string newAnimationName = _enemy.Name + "_Attack";
 
+        _enemy.HitboxEnabled = true;
         _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.5f);
 
         // _direction is already "cardinalized" from PlayerHeadIdleState consider changing to match movement direction

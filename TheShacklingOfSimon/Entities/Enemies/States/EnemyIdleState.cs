@@ -71,6 +71,7 @@ public class EnemyIdleState : IEnemyState
     {
         string newAnimationName = _enemy.Name + "_Idle";
         
+        _enemy.HitboxEnabled = true;
         _enemy.Sprite = SpriteFactory.Instance.CreateStaticSprite(newAnimationName);
         _currentAnimation = newAnimationName;
     }

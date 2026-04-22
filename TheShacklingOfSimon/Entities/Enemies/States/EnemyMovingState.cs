@@ -15,6 +15,8 @@ public class EnemyMovingState : IEnemyState
     private Vector2 _direction;
     private float _enterWalkTimer;
     private bool _hasSwitchedToWalk = false;
+    private float _idleTimer = 0f;
+    private bool _isIdleTimerActive = false;
 
     public EnemyMovingState(IEnemy enemy, Vector2 lastDirection)
     {
@@ -29,6 +31,8 @@ public class EnemyMovingState : IEnemyState
         _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 6f);
         _currentAnimation = newAnimationName;
         _hasSwitchedToWalk = false;
+        _idleTimer = 0f;
+        _isIdleTimerActive = false;
     }
     
     public void Exit()
@@ -48,17 +52,28 @@ public class EnemyMovingState : IEnemyState
                 _hasSwitchedToWalk = true;
             }
         }
+
+        if (_isIdleTimerActive)
+        {
+            _idleTimer += (float)delta.ElapsedGameTime.TotalSeconds;
+            if (_idleTimer >= 3f)
+            {
+                _enemy.Velocity = Vector2.Zero;
+                _enemy.ChangeState(new EnemyIdleState(_enemy, _direction));
+            }
+        }
     }
 
     public void HandleMovement(Vector2 direction)
     {
         if (direction.LengthSquared() < 0.0001f)
         {
-            _enemy.Velocity = Vector2.Zero;
-            _enemy.ChangeState(new EnemyIdleState(_enemy, direction));
+            _isIdleTimerActive = true;
         }
         else
         {
+            _isIdleTimerActive = false;
+            _idleTimer = 0f;
             _enemy.Velocity = direction * _enemy.MoveSpeedStat;
             UpdateSprite();
         }
@@ -93,6 +108,11 @@ public class EnemyMovingState : IEnemyState
         {
             _enemy.Sprite = SpriteFactory.Instance.CreateAnimatedSprite(newAnimationName, 0.5f);
             _currentAnimation = newAnimationName;
+
+            if (_enemy.Name == "AdultLeech")
+            {
+                _enemy.HitboxEnabled = false;
+            }
         }
     }
 
