@@ -42,7 +42,9 @@ public class PlayerBodyIdleState : IPlayerBodyState
     {
         if (direction.LengthSquared() < float.Epsilon 
             && Math.Abs(_player.GetStat(StatType.MoveSpeed)) < float.Epsilon 
-            && Math.Abs(_player.GetStat(StatType.MoveSpeedMultiplier)) < float.Epsilon) 
+            && Math.Abs(_player.GetStat(StatType.MoveSpeedMultiplier)) < float.Epsilon 
+            && _player.GetStat(StatType.StunCount) > float.Epsilon
+            )
             return;
         
         // Only transition to moving state if the player should actually be moving

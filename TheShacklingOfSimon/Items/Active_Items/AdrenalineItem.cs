@@ -64,28 +64,24 @@ public class AdrenalineItem : ActiveItem, IInventoryItem
         // Create effects here to avoid issues with the effects being applied to the wrong entity
         var speedEffect = new MoveSpeedEffect(
             Name, 
-            EffectType.MoveSpeed, 
             Entity,
             _moveSpeedMultiplier * Entity.GetStat(StatType.MoveSpeed), 
             _buffDuration
         );
         var primaryCooldownEffect = new PrimaryCooldownEffect(
-            Name, 
-            EffectType.PrimaryCooldown, 
+            Name,
             Entity,
             _fireRateMultiplier * Entity.GetStat(StatType.PrimaryCooldown), 
             _buffDuration
         );
         var secondaryCooldownEffect = new SecondaryCooldownEffect(
             Name, 
-            EffectType.SecondaryCooldown, 
             Entity,
             _fireRateMultiplier * Entity.GetStat(StatType.SecondaryCooldown), 
             _buffDuration
         );
         var projectileSpeedEffect = new ProjectileSpeedEffect(
-            Name, 
-            EffectType.ProjectileSpeedMultiplier, 
+            Name,
             Entity,
             _projSpeedMultiplier * Entity.GetStat(StatType.ProjectileSpeedMultiplier), 
             _buffDuration

@@ -6,8 +6,8 @@ namespace TheShacklingOfSimon.StatusEffects.Implementations.Simple;
 
 public class MoveSpeedMultiplierEffect : SimpleStatusEffect
 {
-    public MoveSpeedMultiplierEffect(string name, EffectType type, IDamageableEntity owner, float strength, float duration)
-        : base(name, type, owner, strength, duration)
+    public MoveSpeedMultiplierEffect(string name, IDamageableEntity owner, float strength, float duration)
+        : base(name, EffectType.MoveSpeedMultiplier, owner, strength, duration)
     {
     }
 
@@ -36,6 +36,6 @@ public class MoveSpeedMultiplierEffect : SimpleStatusEffect
     
     public override IStatusEffect Clone(IDamageableEntity newTarget)
     {
-        return new MoveSpeedMultiplierEffect(Name, Type, newTarget, Strength, Duration);
+        return new MoveSpeedMultiplierEffect(Name, newTarget, Strength, Duration);
     }
 }

@@ -24,8 +24,8 @@ public class PrimaryCooldownEffect : SimpleStatusEffect
     /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is applied.</param>
     /// <param name="strength">The amount of cooldown reduction to be added or removed.</param>
     /// <param name="duration">The duration of the effect in seconds.</param>
-    public PrimaryCooldownEffect(string name, EffectType type, IDamageableEntity owner, float strength, float duration)
-        : base(name, type, owner, strength, duration)
+    public PrimaryCooldownEffect(string name, IDamageableEntity owner, float strength, float duration)
+        : base(name, EffectType.PrimaryCooldown, owner, strength, duration)
     {
     }
 
@@ -55,6 +55,6 @@ public class PrimaryCooldownEffect : SimpleStatusEffect
     
     public override IStatusEffect Clone(IDamageableEntity newTarget)
     {
-        return new PrimaryCooldownEffect(Name, Type, newTarget, Strength, Duration);
+        return new PrimaryCooldownEffect(Name, newTarget, Strength, Duration);
     }
 }

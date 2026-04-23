@@ -13,7 +13,7 @@ public class AddConfusedEffectToPlayerCommand : ICommand
     public AddConfusedEffectToPlayerCommand(IPlayer player)
     {
         _player = player;
-        _effectFactory = () => new ConfusedEffect("Confused!", EffectType.Confusion, player, 2f);
+        _effectFactory = () => new ConfusedEffect("Confused!", player, 2f);
     }
 
     public void Execute()

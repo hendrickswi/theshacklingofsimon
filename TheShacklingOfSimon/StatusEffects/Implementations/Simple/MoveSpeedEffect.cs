@@ -20,8 +20,8 @@ public class MoveSpeedEffect : SimpleStatusEffect
     /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is to be applied</param>
     /// <param name="strength">The amount of movement speed to be added or removed</param>
     /// <param name="duration">The duration of the effect in seconds</param>
-    public MoveSpeedEffect(string name, EffectType type, IDamageableEntity owner, float strength, float duration) 
-        : base(name, type, owner, strength, duration)
+    public MoveSpeedEffect(string name, IDamageableEntity owner, float strength, float duration) 
+        : base(name, EffectType.MoveSpeed, owner, strength, duration)
     {
     }
 
@@ -50,6 +50,6 @@ public class MoveSpeedEffect : SimpleStatusEffect
     
     public override IStatusEffect Clone(IDamageableEntity newTarget)
     {
-        return new MoveSpeedEffect(Name, Type, newTarget, Strength, Duration);
+        return new MoveSpeedEffect(Name, newTarget, Strength, Duration);
     }
 }

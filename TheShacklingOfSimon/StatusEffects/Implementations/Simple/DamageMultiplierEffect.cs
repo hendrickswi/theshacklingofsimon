@@ -15,14 +15,13 @@ public class DamageMultiplierEffect : SimpleStatusEffect
     /// type IDamageableEntity. This effect increases the damage multiplier of the targeted entity
     /// for a specified duration.
     /// </summary>
-    /// <param name="name">The name of the effect.</param>"
-    /// <param name="type">The matching <c>EffectType</c> of the effect.</param>
+    /// <param name="name">The name of the effect.</param>
     /// <param name="owner">The object of type IDamageableEntity to which the effect is applied.</param>
     /// <param name="strength">The amount of damage multiplier to be added or removed.</param>
     /// <param name="duration">The duration of the effect in seconds.</param>
-    /// 
-    public DamageMultiplierEffect(string name, EffectType type, IDamageableEntity owner, float strength, float duration) 
-        : base(name, type, owner, strength, duration)
+    /// "
+    public DamageMultiplierEffect(string name, IDamageableEntity owner, float strength, float duration) 
+        : base(name, EffectType.DamageMultiplier, owner, strength, duration)
     {
     }
 
@@ -52,6 +51,6 @@ public class DamageMultiplierEffect : SimpleStatusEffect
 
     public override IStatusEffect Clone(IDamageableEntity newTarget)
     {
-        return new DamageMultiplierEffect(Name, Type, newTarget, Strength, Duration);
+        return new DamageMultiplierEffect(Name, newTarget, Strength, Duration);
     }
 }

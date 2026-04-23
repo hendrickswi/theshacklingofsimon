@@ -7,15 +7,18 @@ namespace TheShacklingOfSimon.StatusEffects.Implementations.Complex;
 
 public class ConfusedEffect : ComplexStatusEffect
 {
-    public ConfusedEffect(string name, EffectType type, IDamageableEntity owner, float confusedDuration)
-        : base(name, type, owner)
+    public ConfusedEffect(string name, IDamageableEntity owner, float confusedDuration)
+        : base(name, EffectType.Confusion, owner)
     {
+        // Effectively, don't allow multiple confused effects at once
+        float str = owner.GetStat(StatType.MoveSpeedMultiplier) < float.Epsilon 
+            ? 0f 
+            : owner.GetStat(StatType.MoveSpeedMultiplier) * -2f;
         ComponentEffects.Add(
             new MoveSpeedMultiplierEffect(
-                name, 
-                EffectType.MoveSpeedMultiplier, 
-                owner, 
-                owner.GetStat(StatType.MoveSpeedMultiplier) * -1f * 2, 
+                name,
+                owner,
+                str,
                 confusedDuration
             )
         );

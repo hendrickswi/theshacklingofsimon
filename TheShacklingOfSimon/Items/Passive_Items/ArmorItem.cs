@@ -31,14 +31,12 @@ public class ArmorItem : PassiveItem, IInventoryItem
     {
         IStatusEffect maxHealthEffect = new MaxHealthEffect(
             Name, 
-            EffectType.MaxHealth, 
             Entity, 
             _amt * Entity.GetStat(StatType.MaxHealth),
             _duration
         );
         IStatusEffect invulnerabilityDurationEffect = new InvulnerabilityDurationEffect(
             Name, 
-            EffectType.InvulnerabilityDuration, 
             Entity, 
             _amt * Entity.GetStat(StatType.InvulnerabilityDuration), 
             _duration

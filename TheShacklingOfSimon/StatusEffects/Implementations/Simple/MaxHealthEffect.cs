@@ -22,8 +22,8 @@ public class MaxHealthEffect : SimpleStatusEffect
     /// <param name="strength">The amount of health to be added or removed.</param>
     /// <param name="duration">The duration of the effect in seconds.</param>
     /// 
-    public MaxHealthEffect(string name, EffectType type, IDamageableEntity owner, float strength, float duration) 
-        : base(name, type, owner, strength, duration)
+    public MaxHealthEffect(string name, IDamageableEntity owner, float strength, float duration) 
+        : base(name, EffectType.MaxHealth, owner, strength, duration)
     {
     }
     
@@ -51,6 +51,6 @@ public class MaxHealthEffect : SimpleStatusEffect
     
     public override IStatusEffect Clone(IDamageableEntity newTarget)
     {
-        return new MaxHealthEffect(Name, Type, newTarget, Strength, Duration);
+        return new MaxHealthEffect(Name, newTarget, Strength, Duration);
     }
 }

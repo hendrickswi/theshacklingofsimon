@@ -23,8 +23,8 @@ public class ProjectileSpeedEffect : SimpleStatusEffect
     /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is applied.</param>
     /// <param name="strength">The amount of projectile speed to be added or removed.</param>
     /// <param name="duration">The duration of the effect in seconds.</param>
-    public ProjectileSpeedEffect(string name, EffectType type, IDamageableEntity owner, float strength, float duration)
-        : base(name, type, owner, strength, duration)
+    public ProjectileSpeedEffect(string name, IDamageableEntity owner, float strength, float duration)
+        : base(name, EffectType.ProjectileSpeedMultiplier, owner, strength, duration)
     {
     }
 
@@ -53,6 +53,6 @@ public class ProjectileSpeedEffect : SimpleStatusEffect
     
     public override IStatusEffect Clone(IDamageableEntity newTarget)
     {
-        return new ProjectileSpeedEffect(Name, Type, newTarget, Strength, Duration);
+        return new ProjectileSpeedEffect(Name, newTarget, Strength, Duration);
     }
 }

@@ -10,6 +10,7 @@ public enum StatType
     ProjectileSpeedMultiplier,
     PrimaryCooldown,
     SecondaryCooldown,
+    StunCount,
     
     // Enemy specific stuff
     ContactDamage,

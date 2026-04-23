@@ -13,7 +13,7 @@ public class AddStunEffectToPlayerCommand : ICommand
     public AddStunEffectToPlayerCommand(IPlayer player)
     {
         _player = player;
-        _effectFactory = () => new StunEffect("Stunned!", EffectType.Stun, player, 2f, 3f);
+        _effectFactory = () => new StunEffect("Stunned!", player, 2f, 3f);
     }
 
     public void Execute()

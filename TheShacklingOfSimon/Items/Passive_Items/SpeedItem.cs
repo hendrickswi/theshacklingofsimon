@@ -32,7 +32,6 @@ public class SpeedItem : PassiveItem, IInventoryItem
     {
         IStatusEffect effect = new MoveSpeedEffect(
             Name, 
-            EffectType.MoveSpeed, 
             Entity, 
             Entity.GetStat(StatType.MoveSpeed) * _amt, 
             _duration

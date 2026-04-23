@@ -11,22 +11,19 @@ namespace TheShacklingOfSimon.StatusEffects.Implementations.Complex;
 
 public class StunEffect : ComplexStatusEffect
 {
-    public StunEffect(string name, EffectType type, IDamageableEntity owner, float moveStunDuration, float disarmDuration) 
-        : base(name, type, owner)
+    public StunEffect(string name, IDamageableEntity owner, float moveStunDuration, float disarmDuration) 
+        : base(name, EffectType.Stun, owner)
     {
         ComponentEffects.Add(
-            new MoveSpeedMultiplierEffect(
-                Name, 
-                EffectType.MoveSpeed, 
-                owner, 
-                owner.GetStat(StatType.MoveSpeedMultiplier) * -1f,
+            new StunCountEffect(
+                name, 
+                owner,
                 moveStunDuration
             )
         );
         ComponentEffects.Add(
             new PrimaryCooldownEffect(
                 Name,
-                EffectType.PrimaryCooldown,
                 Owner,
                 disarmDuration,
                 disarmDuration
@@ -34,8 +31,7 @@ public class StunEffect : ComplexStatusEffect
         );
         ComponentEffects.Add(
             new SecondaryCooldownEffect(
-                Name, 
-                EffectType.SecondaryCooldown, 
+                Name,
                 Owner, 
                 disarmDuration, 
                 disarmDuration

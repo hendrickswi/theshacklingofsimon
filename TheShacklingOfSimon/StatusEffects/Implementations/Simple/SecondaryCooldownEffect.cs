@@ -24,8 +24,8 @@ public class SecondaryCooldownEffect : SimpleStatusEffect
     /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is applied.</param>
     /// <param name="strength">The amount of cooldown reduction to be added or removed.</param>
     /// <param name="duration">The duration of the effect in seconds.</param>
-    public SecondaryCooldownEffect(string name, EffectType type, IDamageableEntity owner, float strength, float duration)
-        : base(name, type, owner, strength, duration)
+    public SecondaryCooldownEffect(string name, IDamageableEntity owner, float strength, float duration)
+        : base(name, EffectType.SecondaryCooldown, owner, strength, duration)
     {
     }
 
@@ -54,6 +54,6 @@ public class SecondaryCooldownEffect : SimpleStatusEffect
     
     public override IStatusEffect Clone(IDamageableEntity newTarget)
     {
-        return new SecondaryCooldownEffect(Name, Type, newTarget, Strength, Duration);
+        return new SecondaryCooldownEffect(Name, newTarget, Strength, Duration);
     }
 }

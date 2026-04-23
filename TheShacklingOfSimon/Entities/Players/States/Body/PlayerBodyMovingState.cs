@@ -40,6 +40,13 @@ public class PlayerBodyMovingState : IPlayerBodyState
 
     public void HandleMovement(Vector2 direction, float frameDuration)
     {
+        if (_player.GetStat(StatType.StunCount) > float.Epsilon)
+        {
+            _player.Velocity = Vector2.Zero;
+            _player.StatesManager.ChangeBodyState(new PlayerBodyIdleState(_player));
+            return;
+        }
+        
         if (direction.LengthSquared() < 0.0001f)
         {
             _player.Velocity = Vector2.Zero;
