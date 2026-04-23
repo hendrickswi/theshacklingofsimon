@@ -1,6 +1,7 @@
 #region
 
 using System;
+using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Players;
@@ -26,6 +27,9 @@ public class PlayerDeadGameState : IGameState
     private readonly ISprite _gameOverSprite;
     private readonly ISprite _keyboardControlsSprite;
     private readonly ISprite _gamepadControlsSprite;
+    private float Timer;
+    private string darkSouls;
+    private bool darkSoulsPlayed;
 
     public PlayerDeadGameState(
         GameStateManager stateManager, 
@@ -70,8 +74,8 @@ public class PlayerDeadGameState : IGameState
     public void Enter()
     {
         _inputManager.LoadDeadStateControls(_restartGame, _quitGame);
-        string darkSouls = SoundManager.Instance.AddSFX("other", "dark-souls-you-died-sound-effect_hm5sYFG");
-        SoundManager.Instance.PlaySFX(darkSouls);
+        darkSouls = SoundManager.Instance.AddSFX("other", "dark-souls-you-died-sound-effect_hm5sYFG");
+        darkSoulsPlayed = false;
     }
 
     public void Exit()
@@ -87,6 +91,15 @@ public class PlayerDeadGameState : IGameState
         _gameOverSprite.Update(delta);
         _keyboardControlsSprite.Update(delta);
         _gamepadControlsSprite.Update(delta);
+        Timer += (float) delta.ElapsedGameTime.TotalSeconds;
+        if (!darkSoulsPlayed)
+        {
+            if (Timer >= 3)
+            {
+                SoundManager.Instance.PlaySFX(darkSouls);
+                darkSoulsPlayed = true;
+            }
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch)
