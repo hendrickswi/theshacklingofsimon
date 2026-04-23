@@ -16,7 +16,6 @@ public class MaxHealthEffect : SimpleStatusEffect
     /// health for a specified duration and with a specific strength.
     /// </summary>
     /// <param name="name">The name of the effect.</param>"
-    /// <param name="type">The matching <c>EffectType</c> of the effect.</param>
     /// <param name="owner">The object of type <c>IDamageableEntity</c> to which
     /// the effect is applied.</param>
     /// <param name="strength">The amount of health to be added or removed.</param>

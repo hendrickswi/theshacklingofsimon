@@ -11,7 +11,20 @@ namespace TheShacklingOfSimon.StatusEffects.Implementations.Complex;
 
 public class StunEffect : ComplexStatusEffect
 {
-    public StunEffect(string name, IDamageableEntity owner, float moveStunDuration, float disarmDuration) 
+    /// <summary>
+    /// Represents a combination status effect that applies a stun to the
+    /// object of type <c>IDamageableEntity</c> for a specified duration.
+    /// </summary>
+    /// <param name="name">The name of the effect.</param>
+    /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is applied.</param>
+    /// <param name="moveStunDuration">The duration of the movement stun in seconds.</param>
+    /// <param name="disarmDuration">The duration of the disarm in seconds.</param>
+    /// <remarks>
+    /// The stun effect combines multiple component effects,
+    /// including movement stun, primary cooldown, and secondary cooldown,
+    /// effectively disarming the entity and preventing movement.
+    /// </remarks>
+    public StunEffect(string name, IDamageableEntity owner, float moveStunDuration, float disarmDuration)
         : base(name, EffectType.Stun, owner)
     {
         ComponentEffects.Add(

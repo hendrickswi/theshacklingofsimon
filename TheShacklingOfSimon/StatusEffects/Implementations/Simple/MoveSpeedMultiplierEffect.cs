@@ -6,6 +6,15 @@ namespace TheShacklingOfSimon.StatusEffects.Implementations.Simple;
 
 public class MoveSpeedMultiplierEffect : SimpleStatusEffect
 {
+    /// <summary>
+    /// Represents a status effect additively that modifies the move speed
+    /// multiplier stat of the given object of type <c>IDamageableEntity</c>
+    /// for a specific duration.
+    /// </summary>
+    /// <param name="name">The name of the effect</param>
+    /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is to be applied</param>
+    /// <param name="strength">The amount of move speed multiplier to be added or removed</param>
+    /// <param name="duration">The duration of the effect in seconds</param>
     public MoveSpeedMultiplierEffect(string name, IDamageableEntity owner, float strength, float duration)
         : base(name, EffectType.MoveSpeedMultiplier, owner, strength, duration)
     {

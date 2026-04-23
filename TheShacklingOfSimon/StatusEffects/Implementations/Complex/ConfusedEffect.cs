@@ -7,6 +7,17 @@ namespace TheShacklingOfSimon.StatusEffects.Implementations.Complex;
 
 public class ConfusedEffect : ComplexStatusEffect
 {
+    /// <summary>
+    /// Represents a status effect that inverts the move speed multiplier stat of the
+    /// given object of type <c>IDamageableEntity</c> for a specific duration.
+    /// </summary>
+    /// <param name="name">The name of the effect</param>
+    /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is to be applied</param>
+    /// <param name="confusedDuration">The duration of the effect in seconds</param>
+    /// <remarks>
+    /// Effectively, by inverting the move speed multiplier, this effect
+    /// reverses the movement of the specified entity.
+    /// </remarks>
     public ConfusedEffect(string name, IDamageableEntity owner, float confusedDuration)
         : base(name, EffectType.Confusion, owner)
     {

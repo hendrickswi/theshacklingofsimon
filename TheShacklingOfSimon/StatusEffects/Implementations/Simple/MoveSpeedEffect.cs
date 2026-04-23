@@ -16,7 +16,6 @@ public class MoveSpeedEffect : SimpleStatusEffect
     /// object of type <c>IDamageableEntity</c> for a specific duration.
     /// </summary>
     /// <param name="name">The name of the effect</param>"
-    /// <param name="type">The matching <c>EffectType</c> of the effect.</param>
     /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is to be applied</param>
     /// <param name="strength">The amount of movement speed to be added or removed</param>
     /// <param name="duration">The duration of the effect in seconds</param>

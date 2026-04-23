@@ -19,7 +19,6 @@ public class ProjectileSpeedEffect : SimpleStatusEffect
     /// Simply changes the underlying stat of <c>owner</c>.
     /// </remarks>
     /// <param name="name">The name of the effect.</param>
-    /// <param name="type">The matching <c>EffectType</c> of the effect.</param>
     /// <param name="owner">The object of type <c>IDamageableEntity</c> to which the effect is applied.</param>
     /// <param name="strength">The amount of projectile speed to be added or removed.</param>
     /// <param name="duration">The duration of the effect in seconds.</param>
