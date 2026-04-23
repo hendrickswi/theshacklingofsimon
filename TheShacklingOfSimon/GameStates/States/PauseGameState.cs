@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Input;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 
 #endregion
@@ -44,6 +45,7 @@ public class PauseGameState : IGameState
             _overlayTexture.SetData(new[] { Color.White });
         }
         MediaPlayer.Pause();
+        SoundManager.Instance.StopAllSFX();
     }
 
     public void Exit()

@@ -28,6 +28,7 @@ public class PlayerBodyDeadState : IPlayerBodyState
     {
         string spritePrefix = _player.SpritesManager.GetSkin("Body");
         _player.SpritesManager.Body = SpriteFactory.Instance.CreateAnimatedSprite(spritePrefix + "DeadAnimation", _frameDuration);
+        SoundManager.Instance.StopAllSFX();
         SoundManager.Instance.PlaySFX(_player.DieSFX);
         MediaPlayer.Stop();
     }

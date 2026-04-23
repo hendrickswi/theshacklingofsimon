@@ -413,6 +413,7 @@ public class Game1 : Game
         CreatePlayerWeapons();
         CreatePlayerItems();
         MediaPlayer.Stop();
+        SoundManager.Instance.StopAllSFX();
         PlayMusic("basement");
     }
 }
