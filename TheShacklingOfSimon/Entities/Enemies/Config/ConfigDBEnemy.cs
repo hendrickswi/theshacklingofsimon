@@ -12,7 +12,7 @@ public static class ConfigDBEnemy
         ["BlackMaw"] = new EnemyConfig
         {
             IsBoss = false,
-            MoveSpeed = 75f,
+            MoveSpeed = 90f,
             AttackCooldown = 3f,
             AttackRange = 10f,
             ContactDamage = 1f,
@@ -24,7 +24,7 @@ public static class ConfigDBEnemy
         ["SpiderEnemy"] = new EnemyConfig
         {
             IsBoss = false,
-            MoveSpeed = 25f,
+            MoveSpeed = 60f,
             AttackCooldown = 3f,
             AttackRange = 8f,
             ContactDamage = 1f,
