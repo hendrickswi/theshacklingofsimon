@@ -174,6 +174,7 @@ public class Game1 : Game
         SpriteFactory.Instance.LoadTexture(Content, "images/BombImg.json", "images/BombImg");
         SpriteFactory.Instance.LoadTexture(Content, "images/WinGamble.json", "images/WinGamble");
         SpriteFactory.Instance.LoadTexture(Content, "images/LoseGamble.json", "images/LoseGamble");
+        SpriteFactory.Instance.LoadTexture(Content, "images/fogofwar.json", "images/fogofwar");
         
         // 1x1 white pixel used for background stuff
         SpriteFactory.Instance.LoadTexture(Content, "1x1white.json", "1x1white");
