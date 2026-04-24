@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Gamepad;
@@ -375,7 +376,18 @@ public class Game1 : Game
 
     private void CreateGameStates()
     {
-        HUD = new HUD(_player, _roomManager, GraphicsDevice);
+        string fogEffectPath = System.IO.Path.Combine(
+            AppContext.BaseDirectory,
+            "Content",
+            "Effects",
+            "FogOfWarEffect.xnb"
+        );
+
+        System.Diagnostics.Debug.WriteLine("Fog effect expected at: " + fogEffectPath);
+        System.Diagnostics.Debug.WriteLine("Fog effect exists: " + System.IO.File.Exists(fogEffectPath));
+
+        Effect fogEffect = Content.Load<Effect>("Effects/FogOfWarEffect");
+        HUD = new HUD(_player, _roomManager, GraphicsDevice, fogEffect);
 
         _gameStateManager = new GameStateManager();
         _gameStateManager.AddState(
