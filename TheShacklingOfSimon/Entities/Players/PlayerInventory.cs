@@ -15,7 +15,7 @@ public class PlayerInventory : Inventory
     private IItem _currentActiveItem;
     private int _numKeys;
     private int _numCoins;
-
+    public bool fogofwar;
     public IPrimaryWeapon CurrentPrimaryWeapon
     {
         get { return _currentPrimaryWeapon; }

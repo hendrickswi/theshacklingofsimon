@@ -28,6 +28,8 @@ namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
 public abstract class BaseEnemy : DamageableEntity, IEnemy
 {
+    private const float WaypointReachDistance = 4f;
+
     public string Name { get; }
     public bool IsBoss { get; }
     public bool MarkedForRemoval { get; private set; }
@@ -49,6 +51,8 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
     protected IPathfindingService _pathfindingService;
     protected IPlayer _targetPlayer;
+
+    private Vector2? _currentPathWaypoint;
 
     public event Action<IProjectile> OnProjectileCreated;
     public event Action<IItem, Vector2> OnItemDropped;
@@ -95,11 +99,27 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     public void SetPathfindingService(IPathfindingService pathfindingService)
     {
         _pathfindingService = pathfindingService;
+        _currentPathWaypoint = null;
     }
 
     public void SetTargetPlayer(IPlayer player)
     {
         _targetPlayer = player;
+        _currentPathWaypoint = null;
+    }
+
+    public void CenterOnWorldPoint(Vector2 center)
+    {
+        Vector2 dimensions = GetSpriteDimensions();
+
+        Position = new Vector2(
+            center.X - dimensions.X / 2f,
+            center.Y - dimensions.Y / 2f
+        );
+
+        Velocity = Vector2.Zero;
+        Hitbox = GetSpriteHitbox(Position);
+        _currentPathWaypoint = null;
     }
 
     public virtual void Reset(Vector2 startPosition)
@@ -108,6 +128,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         Velocity = Vector2.Zero;
         IsActive = true;
         HitboxEnabled = true;
+        _currentPathWaypoint = null;
 
         Health = MaxHealth;
 
@@ -129,53 +150,94 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     {
         if (_targetPlayer == null)
         {
+            _currentPathWaypoint = null;
             return Vector2.Zero;
         }
 
-        Vector2 myCenter = new Vector2(
-            Hitbox.X + Hitbox.Width / 2f,
-            Hitbox.Y + Hitbox.Height / 2f
-        );
+        Vector2 myCenter = GetHitboxCenter(Hitbox);
+        Vector2 targetCenter = GetHitboxCenter(_targetPlayer.Hitbox);
 
-        Vector2 targetCenter = new Vector2(
-            _targetPlayer.Hitbox.X + _targetPlayer.Hitbox.Width / 2f,
-            _targetPlayer.Hitbox.Y + _targetPlayer.Hitbox.Height / 2f
-        );
-
-        if (_pathfindingService == null)
+        if (_pathfindingService is not GridPathfindingService gridPathfindingService)
         {
-            Vector2 direct = targetCenter - myCenter;
-            if (direct.LengthSquared() < 0.0001f) return Vector2.Zero;
-            direct.Normalize();
-            return direct;
+            return GetDirectDirection(myCenter, targetCenter);
         }
 
-        Func<ITile, bool> canTraverse = tile => !tile.BlocksGround;
-
-        Func<ITile, float> getTraversalCost = tile =>
+        if (_currentPathWaypoint.HasValue)
         {
-            if (tile == null) return 1f;
+            float distanceSquared = Vector2.DistanceSquared(myCenter, _currentPathWaypoint.Value);
 
-            if (tile.BlocksGround)
+            if (distanceSquared <= WaypointReachDistance * WaypointReachDistance)
             {
-                return float.PositiveInfinity;
+                _currentPathWaypoint = null;
+            }
+        }
+
+        if (!_currentPathWaypoint.HasValue)
+        {
+            bool foundWaypoint = gridPathfindingService.TryGetNextWaypoint(
+                myCenter,
+                targetCenter,
+                CanTraverseTile,
+                GetTraversalCost,
+                out Vector2 nextWaypoint
+            );
+
+            if (!foundWaypoint)
+            {
+                return Vector2.Zero;
             }
 
-            return tile switch
-            {
-                SpikeTile => 50f,
-                FireTile => 70f,
-                HoleTile => float.PositiveInfinity,
-                _ => 1f
-            };
-        };
+            _currentPathWaypoint = nextWaypoint;
+        }
 
-        return _pathfindingService.GetNextDirection(
-            myCenter,
-            targetCenter,
-            canTraverse,
-            getTraversalCost
+        return GetDirectDirection(myCenter, _currentPathWaypoint.Value);
+    }
+
+    protected static Vector2 GetDirectDirection(Vector2 currentCenter, Vector2 targetCenter)
+    {
+        Vector2 direction = targetCenter - currentCenter;
+
+        if (direction.LengthSquared() < 0.0001f)
+        {
+            return Vector2.Zero;
+        }
+
+        direction.Normalize();
+        return direction;
+    }
+
+    protected static Vector2 GetHitboxCenter(Rectangle hitbox)
+    {
+        return new Vector2(
+            hitbox.X + hitbox.Width / 2f,
+            hitbox.Y + hitbox.Height / 2f
         );
+    }
+
+    protected virtual bool CanTraverseTile(ITile tile)
+    {
+        if (tile == null) return true;
+
+        if (tile.BlocksGround) return false;
+
+        // These tiles are unsafe for normal ground enemies.
+        if (tile is FireTile) return false;
+        if (tile is SpikeTile) return false;
+        if (tile is HoleTile) return false;
+
+        return true;
+    }
+
+    protected virtual float GetTraversalCost(ITile tile)
+    {
+        if (tile == null) return 1f;
+
+        if (!CanTraverseTile(tile))
+        {
+            return float.PositiveInfinity;
+        }
+
+        return 1f;
     }
 
     public virtual void RegisterMovement(float dt, Vector2 targetDirection)
@@ -219,7 +281,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         RegisterMovement(dt, targetDirection);
         RegisterAttack(dt, targetDirection);
 
-        Position += Velocity * dt;
+        MoveSafely(dt);
 
         if (HitboxEnabled)
         {
@@ -231,6 +293,54 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         }
 
         CurrentState.Update(delta);
+    }
+
+    private void MoveSafely(float dt)
+    {
+        if (Velocity.LengthSquared() < 0.0001f)
+        {
+            return;
+        }
+
+        Vector2 move = Velocity * dt;
+
+        Vector2 desiredPosition = Position + move;
+        if (CanSafelyOccupy(desiredPosition))
+        {
+            Position = desiredPosition;
+            return;
+        }
+
+        Vector2 xOnlyPosition = Position + new Vector2(move.X, 0f);
+        if (CanSafelyOccupy(xOnlyPosition))
+        {
+            Position = xOnlyPosition;
+            Velocity = new Vector2(Velocity.X, 0f);
+            return;
+        }
+
+        Vector2 yOnlyPosition = Position + new Vector2(0f, move.Y);
+        if (CanSafelyOccupy(yOnlyPosition))
+        {
+            Position = yOnlyPosition;
+            Velocity = new Vector2(0f, Velocity.Y);
+            return;
+        }
+
+        Velocity = Vector2.Zero;
+        _currentPathWaypoint = null;
+    }
+
+    private bool CanSafelyOccupy(Vector2 candidatePosition)
+    {
+        if (_pathfindingService is not GridPathfindingService gridPathfindingService)
+        {
+            return true;
+        }
+
+        Rectangle candidateHitbox = GetSpriteHitbox(candidatePosition);
+
+        return gridPathfindingService.IsAreaSafe(candidateHitbox, CanTraverseTile);
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -266,13 +376,27 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         }
     }
 
+    protected virtual Point GetGameplayHitboxSize()
+    {
+        return new Point(26, 26);
+    }
+
     private Rectangle GetSpriteHitbox(Vector2 position)
     {
         Vector2 dimensions = GetSpriteDimensions();
-        int width = Math.Max(1, (int)Math.Ceiling(dimensions.X));
-        int height = Math.Max(1, (int)Math.Ceiling(dimensions.Y));
 
-        return new Rectangle((int)position.X, (int)position.Y, width, height);
+        int spriteWidth = Math.Max(1, (int)Math.Ceiling(dimensions.X));
+        int spriteHeight = Math.Max(1, (int)Math.Ceiling(dimensions.Y));
+
+        Point desiredSize = GetGameplayHitboxSize();
+
+        int width = Math.Min(desiredSize.X, spriteWidth);
+        int height = Math.Min(desiredSize.Y, spriteHeight);
+
+        int x = (int)MathF.Round(position.X + (spriteWidth - width) / 2f);
+        int y = (int)MathF.Round(position.Y + (spriteHeight - height) / 2f);
+
+        return new Rectangle(x, y, width, height);
     }
 
     private Vector2 GetSpriteDimensions()
@@ -327,7 +451,8 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
         if (mtv == Vector2.Zero) return;
 
         Position += mtv;
-        Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
+        Hitbox = GetSpriteHitbox(Position);
+        _currentPathWaypoint = null;
 
         switch (CollisionDetector.GetCollisionSideFromMtv(mtv))
         {

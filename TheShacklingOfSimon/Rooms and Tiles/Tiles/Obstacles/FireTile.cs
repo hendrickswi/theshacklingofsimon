@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Enemies;
+using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
@@ -44,6 +45,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Obstacles
 
         public override void OnCollision(IEnemy enemy)
         {
+            if (enemy is FlyingEnemy) return;
             enemy?.TakeDamage(1);
         }
 

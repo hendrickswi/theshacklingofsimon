@@ -1,13 +1,13 @@
 #region
 
-using System;
 using Microsoft.Xna.Framework;
+using System;
 using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours.AttackBehaviours;
 using TheShacklingOfSimon.Entities.Enemies.EnemyBehaviours.MovementBehaviours;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Rooms_and_Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
-using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Obstacles;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -17,10 +17,14 @@ namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 
 public class FlyingEnemy : BaseEnemy
 {
+    private const float WaypointReachDistance = 4f;
+
     private readonly IAttackBehaviour _rangedAttackBehaviour;
     private readonly IAttackBehaviour _contactAttackBehaviour;
 
-    public FlyingEnemy(Vector2 startPosition, IWeapon weapon, string name = "BlackMaw")
+    private Vector2? _currentFleeWaypoint;
+
+    public FlyingEnemy(Vector2 startPosition, IWeapon weapon, string name = "AngelicBaby")
         : base(startPosition, weapon, name)
     {
         _rangedAttackBehaviour = new NoAttackBehaviour();
@@ -32,53 +36,81 @@ public class FlyingEnemy : BaseEnemy
     {
         if (_targetPlayer == null)
         {
+            _currentFleeWaypoint = null;
             return Vector2.Zero;
         }
 
-        Vector2 myCenter = new Vector2(
-            Hitbox.X + Hitbox.Width / 2f,
-            Hitbox.Y + Hitbox.Height / 2f
-        );
-
-        Vector2 targetCenter = new Vector2(
-            _targetPlayer.Hitbox.X + _targetPlayer.Hitbox.Width / 2f,
-            _targetPlayer.Hitbox.Y + _targetPlayer.Hitbox.Height / 2f
-        );
-
-        if (_pathfindingService == null)
+        // Only the angel enemy flees. Other flying enemies can still chase normally.
+        if (Name != "AngelicBaby")
         {
-            Vector2 direct = targetCenter - myCenter;
-            if (direct.LengthSquared() < 0.0001f) return Vector2.Zero;
-            direct.Normalize();
-            return direct;
+            return base.FindTarget();
         }
 
-        Func<ITile, bool> canTraverse = tile => !tile.BlocksFly;
+        Vector2 myCenter = GetHitboxCenter(Hitbox);
+        Vector2 playerCenter = GetHitboxCenter(_targetPlayer.Hitbox);
 
-        Func<ITile, float> getTraversalCost = tile =>
+        if (_pathfindingService is not GridPathfindingService gridPathfindingService)
         {
-            if (tile == null) return 1f;
+            return GetDirectDirection(playerCenter, myCenter);
+        }
 
-            if (tile.BlocksFly)
+        if (_currentFleeWaypoint.HasValue)
+        {
+            float distanceSquared = Vector2.DistanceSquared(myCenter, _currentFleeWaypoint.Value);
+
+            if (distanceSquared <= WaypointReachDistance * WaypointReachDistance)
             {
-                return float.PositiveInfinity;
+                _currentFleeWaypoint = null;
+            }
+        }
+
+        if (!_currentFleeWaypoint.HasValue)
+        {
+            bool foundWaypoint = gridPathfindingService.TryGetNextWaypointAwayFromThreat(
+                myCenter,
+                playerCenter,
+                CanTraverseTile,
+                GetTraversalCost,
+                out Vector2 nextWaypoint
+            );
+
+            if (!foundWaypoint)
+            {
+                return Vector2.Zero;
             }
 
-            return tile switch
-            {
-                SpikeTile => 40f,
-                FireTile => 60f,
-                HoleTile => 1f,
-                _ => 1f
-            };
-        };
+            _currentFleeWaypoint = nextWaypoint;
+        }
 
-        return _pathfindingService.GetNextDirection(
-            myCenter,
-            targetCenter,
-            canTraverse,
-            getTraversalCost
-        );
+        return GetDirectDirection(myCenter, _currentFleeWaypoint.Value);
+    }
+
+    protected override bool CanTraverseTile(ITile tile)
+    {
+        if (tile == null)
+        {
+            return true;
+        }
+
+        // Flying enemies can travel over fire, spikes, and holes.
+        // They only stop at tiles that specifically block flying.
+        return !tile.BlocksFly;
+    }
+
+    protected override float GetTraversalCost(ITile tile)
+    {
+        if (tile == null)
+        {
+            return 1f;
+        }
+
+        if (!CanTraverseTile(tile))
+        {
+            return float.PositiveInfinity;
+        }
+
+        // Fire, spikes, and holes are normal terrain for flying enemies.
+        return 1f;
     }
 
     public override void RegisterAttack(float dt, Vector2 targetDirection)
@@ -103,6 +135,7 @@ public class FlyingEnemy : BaseEnemy
 
         Position += mtv;
         Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Hitbox.Width, Hitbox.Height);
+        _currentFleeWaypoint = null;
 
         switch (CollisionDetector.GetCollisionSideFromMtv(mtv))
         {

@@ -41,6 +41,10 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
 
+        <None Update="Content\images\fogofwar.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
         <None Update="Content\images\key.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
