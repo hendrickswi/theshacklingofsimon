@@ -153,6 +153,7 @@ public class Game1 : Game
         SpriteFactory.Instance.LoadTexture(Content, "BlackMaw.json", "BlackMaw");
         SpriteFactory.Instance.LoadTexture(Content, "AngelicBaby.json", "AngelicBaby");
         SpriteFactory.Instance.LoadTexture(Content, "AdultLeech.json", "AdultLeech");
+        SpriteFactory.Instance.LoadTexture(Content, "Cohort.json", "Cohort");
 
         SpriteFactory.Instance.LoadTexture(Content, "images/Rocks.json", "images/Rocks");
         SpriteFactory.Instance.LoadTexture(Content, "images/Spikes.json", "images/Spikes");

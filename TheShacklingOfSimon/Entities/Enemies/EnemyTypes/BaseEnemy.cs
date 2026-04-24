@@ -52,6 +52,7 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
     public event Action<IProjectile> OnProjectileCreated;
     public event Action<IItem, Vector2> OnItemDropped;
+    public event Action<IEnemy> OnEnemySpawned;
 
     protected BaseEnemy(Vector2 startPosition, IWeapon weapon, string name)
     {
@@ -287,6 +288,11 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     public void SpawnPickup(IItem item, Vector2 position)
     {
         OnItemDropped?.Invoke(item, position);
+    }
+
+    public void SpawnEnemy(IEnemy enemy)
+    {
+        OnEnemySpawned?.Invoke(enemy);
     }
 
     public override void OnCollision(IEntity other)

@@ -31,6 +31,7 @@ namespace TheShacklingOfSimon.UI
         private readonly ISprite _heartEmptySprite;
         private readonly ISprite _bombIndicator;
         private readonly ISprite _basicIndicator;
+        private readonly ISprite _gamblingIndicator;
         private readonly ISprite _fireballIndicator;
         private readonly ISprite _Coin;
         private readonly ISprite _key;
@@ -51,6 +52,7 @@ namespace TheShacklingOfSimon.UI
             _heartFilledSprite = SpriteFactory.Instance.CreateStaticSprite("FilledHeart");
             _heartEmptySprite = SpriteFactory.Instance.CreateStaticSprite("EmptyHeart");
             _bombIndicator = SpriteFactory.Instance.CreateStaticSprite("BombIndicator");
+            _gamblingIndicator = SpriteFactory.Instance.CreateStaticSprite("WinGamble");
             _basicIndicator = SpriteFactory.Instance.CreateStaticSprite("BasicProjectile");
             _fireballIndicator = SpriteFactory.Instance.CreateStaticSprite("FireballProjectile");
             _Coin = SpriteFactory.Instance.CreateStaticSprite("Coin");
@@ -111,7 +113,7 @@ namespace TheShacklingOfSimon.UI
                     _fireballIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
                     break;
                 case "Gambling Weapon":
-                    _bombIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 2.5f, SpriteEffects.None, 1f);
+                    _gamblingIndicator.Draw(spriteBatch, new Vector2(10, 110), Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 1f);
                     break;
                 default:
                     _basicIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
@@ -119,7 +121,7 @@ namespace TheShacklingOfSimon.UI
             }
              
 
-            System.Diagnostics.Debug.WriteLine(_player.Inventory.CurrentPrimaryWeapon.Name);
+            //System.Diagnostics.Debug.WriteLine(_player.Inventory.CurrentPrimaryWeapon.Name);
 
 
             _bombIndicator.Draw(spriteBatch, new Vector2(80, 90), Color.White, 0f, Vector2.Zero, 2.5f, SpriteEffects.None, 1f);

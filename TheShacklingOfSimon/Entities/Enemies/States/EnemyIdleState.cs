@@ -35,7 +35,7 @@ public class EnemyIdleState : IEnemyState
 
     public void Update(GameTime delta)
     {
-        _enemy.Sprite.Update(delta);
+        UpdateSprite();
     }
 
     public void HandleMovement(Vector2 direction)

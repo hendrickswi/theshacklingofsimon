@@ -51,10 +51,10 @@
     "entities": [],
     "enemies": [
         {
-            "type": "ChaseEnemy",
+            "type": "SpawnerEnemy",
             "x": 3,
             "y": 2,
-            "name": "BlackMaw",
+            "name": "Cohort",
             "weapon": "NoneWeapon"
         },
         {
