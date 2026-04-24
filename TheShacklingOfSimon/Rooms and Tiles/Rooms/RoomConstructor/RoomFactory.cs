@@ -226,21 +226,26 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
 
             foreach (var e in enemies)
             {
-                Vector2 worldPos = tileMap.GridToWorld(new Point(e.X, e.Y));
+                Point gridPosition = new Point(e.X, e.Y);
+                Vector2 cellCenter = tileMap.GridToWorld(gridPosition)
+                                     + new Vector2(RoomConstants.TileSize / 2f, RoomConstants.TileSize / 2f);
 
                 IWeapon weapon = EnemyWeaponFactory.CreateWeapon(e.Weapon);
 
                 IEnemy enemy = e.Type switch
                 {
-                    EnemyTypeList.ProjectileEnemy => new ProjectileEnemy(worldPos, weapon, e.Name),
-                    EnemyTypeList.ChaseEnemy => new ChaseEnemy(worldPos, weapon, e.Name),
-                    EnemyTypeList.FlyingEnemy => new FlyingEnemy(worldPos, weapon, e.Name),
-                    EnemyTypeList.SpawnerEnemy => new SpawnerEnemy(worldPos, weapon, e.Name),
+                    EnemyTypeList.ProjectileEnemy => new ProjectileEnemy(cellCenter, weapon, e.Name),
+                    EnemyTypeList.ChaseEnemy => new ChaseEnemy(cellCenter, weapon, e.Name),
+                    EnemyTypeList.FlyingEnemy => new FlyingEnemy(cellCenter, weapon, e.Name),
+                    EnemyTypeList.SpawnerEnemy => new SpawnerEnemy(cellCenter, weapon, e.Name),
                     _ => throw new InvalidOperationException($"Unknown enemy type: {e.Type}")
                 };
 
                 if (enemy is BaseEnemy baseEnemy)
                 {
+                    // Enemy constructors treat Position as sprite top-left, but JSON positions
+                    // are grid cells. Center the enemy in the grid cell after construction.
+                    baseEnemy.CenterOnWorldPoint(cellCenter);
                     baseEnemy.SetTargetPlayer(player);
                     baseEnemy.SetPathfindingService(pathfindingService);
                 }
