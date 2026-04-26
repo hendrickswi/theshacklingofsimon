@@ -67,6 +67,30 @@ public static class ConfigDBEnemy
             MaxHealth = 5,
             InvulnerabilityDuration = 0.25f,
             DropItemType = EnemyDropType.Coin
+        },
+
+        ["BlindCreep"] = new EnemyConfig
+        {
+            IsBoss = false,
+            MoveSpeed = 100f,
+            AttackCooldown = 6f,
+            AttackRange = 8f,
+            ContactDamage = 1f,
+            MaxHealth = 4,
+            InvulnerabilityDuration = 0.25f,
+            DropItemType = EnemyDropType.Coin
+        },
+        
+        ["Clotty"] = new EnemyConfig
+        {
+            IsBoss = false,
+            MoveSpeed = 80f,
+            AttackCooldown = 4f,
+            AttackRange = 10f,
+            ContactDamage = 1f,
+            MaxHealth = 3,
+            InvulnerabilityDuration = 0.25f,
+            DropItemType = EnemyDropType.Health
         }
     };
 }

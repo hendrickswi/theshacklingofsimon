@@ -237,6 +237,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor
                     EnemyTypeList.ChaseEnemy => new ChaseEnemy(cellCenter, weapon, e.Name),
                     EnemyTypeList.FlyingEnemy => new FlyingEnemy(cellCenter, weapon, e.Name),
                     EnemyTypeList.SpawnerEnemy => new SpawnerEnemy(cellCenter, weapon, e.Name),
+                    EnemyTypeList.AxisEnemy => new AxisEnemy(cellCenter, weapon, e.Name),
                     _ => throw new InvalidOperationException($"Unknown enemy type: {e.Type}")
                 };
 

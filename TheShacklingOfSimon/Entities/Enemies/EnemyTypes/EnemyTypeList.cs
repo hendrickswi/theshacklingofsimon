@@ -6,6 +6,7 @@ namespace TheShacklingOfSimon.Entities.Enemies.EnemyTypes
         ProjectileEnemy,
         ChaseEnemy,
         FlyingEnemy,
-        SpawnerEnemy
+        SpawnerEnemy,
+        AxisEnemy
     }
 }

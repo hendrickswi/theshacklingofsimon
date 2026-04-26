@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Enemies.Config;
@@ -11,14 +12,14 @@ using TheShacklingOfSimon.Entities.Pickup;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Entities.Projectiles;
 using TheShacklingOfSimon.Items;
-using TheShacklingOfSimon.Items.Passive_Items;
+using TheShacklingOfSimon.StatusEffects;
+using TheShacklingOfSimon.StatusEffects.Templates;
 using TheShacklingOfSimon.Items.Passive_Items.Consumables;
 using TheShacklingOfSimon.Items.Passive_Items.Inventory_Items;
 using TheShacklingOfSimon.Rooms_and_Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Obstacles;
 using TheShacklingOfSimon.Sounds;
-using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.Weapons;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -94,6 +95,11 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
         SetWeapon(weapon);
         Reset(startPosition);
+    }
+
+    public IEnumerable<IStatusEffect> GetActiveEffects()
+    {
+        return EffectManager.ActiveEffects;
     }
 
     public void SetPathfindingService(IPathfindingService pathfindingService)

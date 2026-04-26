@@ -63,6 +63,20 @@
             "y": 6,
             "name": "BlackMaw",
             "weapon": "NoneWeapon"
+        },
+        {
+            "type": "AxisEnemy",
+            "x": 5,
+            "y": 4,
+            "name": "BlindCreep",
+            "weapon": "NoneWeapon"
+        },
+        {
+            "type": "AxisEnemy",
+            "x": 4,
+            "y": 7,
+            "name": "Clotty",
+            "weapon": "NoneWeapon"
         }
     ],
     "doors": [
