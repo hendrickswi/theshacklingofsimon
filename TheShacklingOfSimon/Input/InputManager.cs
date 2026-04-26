@@ -83,23 +83,35 @@ public class InputManager
             ICommand command = pair.Value;
 
             // Register the commands with the appropriate input to the appropriate controller
-            if (profile.KeyboardMap != null && profile.KeyboardMap.TryGetValue(action, out var keyboardInput))
+            if (profile.KeyboardMap != null && profile.KeyboardMap.TryGetValue(action, out var keyboardInputs))
             {
-                _keyboardController.RegisterCommand(keyboardInput, command);
+                foreach (var input in keyboardInputs)
+                {
+                    _keyboardController.RegisterCommand(input, command);
+                }
             }
             if (profile.GamepadButtonMap != null &&
-                profile.GamepadButtonMap.TryGetValue(action, out var gamepadButtonInput))
+                profile.GamepadButtonMap.TryGetValue(action, out var gamepadButtonInputs))
             {
-                _gamepadController.RegisterCommand(gamepadButtonInput, command);
+                foreach (var input in gamepadButtonInputs)
+                {
+                    _gamepadController.RegisterCommand(input, command);
+                }
             }
             if (profile.GamepadJoystickMap != null &&
-                profile.GamepadJoystickMap.TryGetValue(action, out var gamepadJoystickInput))
+                profile.GamepadJoystickMap.TryGetValue(action, out var gamepadJoystickInputs))
             {
-                _gamepadController.RegisterCommand(gamepadJoystickInput, command);
+                foreach (var input in gamepadJoystickInputs)
+                {
+                    _gamepadController.RegisterCommand(input, command);
+                }
             }
-            if (profile.MouseMap != null && profile.MouseMap.TryGetValue(action, out var mouseInput))
+            if (profile.MouseMap != null && profile.MouseMap.TryGetValue(action, out var mouseInputs))
             {
-                _mouseController.RegisterCommand(mouseInput, command);
+                foreach (var input in mouseInputs)
+                {
+                    _mouseController.RegisterCommand(input, command);
+                }
             }
         }
     }

@@ -7,16 +7,8 @@ using TheShacklingOfSimon.Input.Mouse;
 
 namespace TheShacklingOfSimon.Controllers.Mouse;
 
-public record struct MouseInput
-{
-    public readonly MouseInputRegion Region;
-    public readonly InputState State;
-    public readonly MouseButton Button;
-
-    public MouseInput(MouseInputRegion region, InputState state, MouseButton button)
-    {
-        Region = region;
-        State = state;
-        Button = button;
-    }
-}
+public record struct MouseInput(
+    MouseInputRegion Region, 
+    MouseButton Button, 
+    InputState State
+);

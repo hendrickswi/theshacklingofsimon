@@ -72,8 +72,8 @@ public class SettingsGameState : IGameState
                     backSize.X,
                     backSize.Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             _stateManager.RemoveState
         );
@@ -90,8 +90,8 @@ public class SettingsGameState : IGameState
                     muteSize.X,
                     muteSize.Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             SoundOptions.Instance.ToggleMute
         );
@@ -110,8 +110,8 @@ public class SettingsGameState : IGameState
                     incSize.X,
                     incSize.Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             SoundOptions.Instance.IncSFX
         );
@@ -123,8 +123,8 @@ public class SettingsGameState : IGameState
                     decSize.X,
                     decSize.Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             SoundOptions.Instance.DecSFX
         );
@@ -140,8 +140,8 @@ public class SettingsGameState : IGameState
                     incSize.X,
                     incSize.Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             SoundOptions.Instance.IncMusic
         );
@@ -153,8 +153,8 @@ public class SettingsGameState : IGameState
                     decSize.X,
                     decSize.Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             SoundOptions.Instance.DecMusic
         );

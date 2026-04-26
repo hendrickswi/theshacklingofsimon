@@ -133,8 +133,8 @@ public class PauseGameState : IGameState
                     _resumeSprite.GetDimensions().X,
                     _resumeSprite.GetDimensions().Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             _stateManager.RemoveState
         );
@@ -147,8 +147,8 @@ public class PauseGameState : IGameState
                     _settingsSprite.GetDimensions().X,
                     _settingsSprite.GetDimensions().Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             () => _stateManager.AddState(
                 new SettingsGameState(
@@ -167,8 +167,8 @@ public class PauseGameState : IGameState
                     _quitSprite.GetDimensions().X, 
                     _quitSprite.GetDimensions().Y
                 ),
-                InputState.JustPressed,
-                MouseButton.Left
+                MouseButton.Left,
+                InputState.JustPressed
             ),
             _quitGame
         );

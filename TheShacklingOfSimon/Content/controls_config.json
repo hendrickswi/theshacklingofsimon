@@ -1,217 +1,313 @@
 ﻿{
     "KeyboardMap": {
-        "MoveUp": {
-            "State": "Pressed",
-            "Button": "W"
-        },
-        "MoveLeft": {
-            "State": "Pressed",
-            "Button": "A"
-        },
-        "MoveDown": {
-            "State": "Pressed",
-            "Button": "S"
-        },
-        "MoveRight": {
-            "State": "Pressed",
-            "Button": "D"
-        },
-        "PrimaryAttackUp": {
-            "State": "Pressed",
-            "Button": "Up"
-        },
-        "PrimaryAttackLeft": {
-            "State": "Pressed",
-            "Button": "Left"
-        },
-        "PrimaryAttackDown": {
-            "State": "Pressed",
-            "Button": "Down"
-        },
-        "PrimaryAttackRight": {
-            "State": "Pressed",
-            "Button": "Right"
-        },
-        "SecondaryAttackDown": {
-            "State": "Pressed",
-            "Button": "LeftShift"
-        },
-        "NextPrimaryWeapon": {
-            "State": "JustPressed",
-            "Button": "J"
-        },
-        "NextSecondaryWeapon": {
-            "State": "JustPressed",
-            "Button": "K"
-        },
-        "NextActiveItem": {
-            "State": "JustPressed",
-            "Button": "I"
-        },
-        "PreviousActiveItem": {
-            "State": "JustPressed",
-            "Button": "U"
-        },
-        "UseActiveItem": {
-            "State": "JustPressed",
-            "Button": "Space"
-        },
-        "Reset": {
-            "State": "JustPressed",
-            "Button": "R"
-        },
-        "Pause": {
-            "State": "JustPressed",
-            "Button": "Escape"
-        },
-        "Quit": {
-            "State": "JustPressed",
-            "Button": "Q"
-        },
-        "Resume": {
-            "State": "JustPressed",
-            "Button": "Escape"
-        }
+        "MoveUp": [
+            {
+                "Button": "W",
+                "State": "Pressed"
+            }
+        ],
+        "MoveLeft": [
+            {
+                "Button": "A",
+                "State": "Pressed"
+            }
+        ],
+        "MoveDown": [
+            {
+                "Button": "S",
+                "State": "Pressed"
+            }
+        ],
+        "MoveRight": [
+            {
+                "Button": "D",
+                "State": "Pressed"
+            }
+        ],
+        "PrimaryAttackUp": [
+            {
+                "Button": "Up",
+                "State": "Pressed"
+            }
+        ],
+        "PrimaryAttackLeft": [
+            {
+                "Button": "Left",
+                "State": "Pressed"
+            }
+        ],
+        "PrimaryAttackDown": [
+            {
+                "Button": "Down",
+                "State": "Pressed"
+            }
+        ],
+        "PrimaryAttackRight": [
+            {
+                "Button": "Right",
+                "State": "Pressed"
+            }
+        ],
+        "SecondaryAttackDown": [
+            {
+                "Button": "LeftShift",
+                "State": "Pressed"
+            },
+            {
+                "Button": "RightShift",
+                "State": "Pressed"
+            },
+            {
+                "Button": "E",
+                "State": "Pressed"
+            }
+        ],
+        "NextPrimaryWeapon": [
+            {
+                "Button": "J",
+                "State": "JustPressed"
+            }
+        ],
+        "NextSecondaryWeapon": [
+            {
+                "Button": "K",
+                "State": "JustPressed"
+            }
+        ],
+        "NextActiveItem": [
+            {
+                "Button": "I",
+                "State": "JustPressed"
+            }
+        ],
+        "PreviousActiveItem": [
+            {
+                "Button": "U",
+                "State": "JustPressed"
+            }
+        ],
+        "UseActiveItem": [
+            {
+                "Button": "Space",
+                "State": "JustPressed"
+            }
+        ],
+        "Reset": [
+            {
+                "Button": "R",
+                "State": "JustPressed"
+            }
+        ],
+        "Pause": [
+            {
+                "Button": "Escape",
+                "State": "JustPressed"
+            }
+        ],
+        "Quit": [
+            {
+                "Button": "Q",
+                "State": "JustPressed"
+            }
+        ],
+        "Resume": [
+            {
+                "Button": "Escape",
+                "State": "JustPressed"
+            }
+        ]
     },
     "MouseMap": {},
     "GamepadButtonMap": {
-        "SecondaryAttackDown": {
-            "State": "Pressed",
-            "Button": "B"
-        },
-        "UseActiveItem": {
-            "State": "Pressed",
-            "Button": "RightTrigger"
-        },
-        "NextActiveItem": {
-            "State": "Pressed",
-            "Button": "DPadUp"
-        },
-        "PreviousActiveItem": {
-            "State": "Pressed",
-            "Button": "DPadDown"
-        },
-        "NextSecondaryWeapon": {
-            "State": "Pressed",
-            "Button": "DPadRight"
-        },
-        "NextPrimaryWeapon": {
-            "State": "Pressed",
-            "Button": "DPadLeft"
-        },
-        "Pause": {
-            "State": "JustPressed",
-            "Button": "Start"
-        },
-        "Reset": {
-            "State": "JustPressed",
-            "Button": "Back"
-        },
-        "Quit": {
-            "State": "JustPressed",
-            "Button": "X"
-        },
-        "Resume": {
-            "State": "JustPressed",
-            "Button": "A"
-        }
+        "SecondaryAttackDown": [
+            {
+                "Button": "B",
+                "State": "Pressed"
+            },
+            {
+                "Button": "LeftShoulder",
+                "State": "Pressed"
+            },
+            {
+                "Button": "LeftTrigger",
+                "State": "Pressed"
+            }
+        ],
+        "UseActiveItem": [
+            {
+                "Button": "A",
+                "State": "Pressed"
+            },
+            {
+                "Button": "RightTrigger",
+                "State": "Pressed"
+            },
+            {
+                "Button": "RightShoulder",
+                "State": "Pressed"
+            }
+        ],
+        "NextActiveItem": [
+            {
+                "Button": "DPadUp",
+                "State": "Pressed"
+            }
+        ],
+        "PreviousActiveItem": [
+            {
+                "Button": "DPadDown",
+                "State": "Pressed"
+            }
+        ],
+        "NextSecondaryWeapon": [
+            {
+                "Button": "DPadRight",
+                "State": "Pressed"
+            }
+        ],
+        "NextPrimaryWeapon": [
+            {
+                "Button": "DPadLeft",
+                "State": "Pressed"
+            }
+        ],
+        "Pause": [
+            {
+                "Button": "Start",
+                "State": "JustPressed"
+            }
+        ],
+        "Reset": [
+            {
+                "Button": "Back",
+                "State": "JustPressed"
+            }
+        ],
+        "Quit": [
+            {
+                "Button": "X",
+                "State": "JustPressed"
+            }
+        ],
+        "Resume": [
+            {
+                "Button": "A",
+                "State": "JustPressed"
+            }
+        ]
     },
     "GamepadJoystickMap": {
-        "MoveUp": {
-            "Stick": "Left",
-            "Region": {
-                "Direction": {
-                    "X": 0,
-                    "Y": 1
+        "MoveUp": [
+            {
+                "Stick": "Left",
+                "Region": {
+                    "Direction": {
+                        "X": 0,
+                        "Y": 1
+                    },
+                    "AngleTolerance": 120.0,
+                    "Deadzone": 0.1
                 },
-                "AngleTolerance": 120.0,
-                "Deadzone": 0.1
-            },
-            "State": "Pressed"
-        },
-        "MoveLeft": {
-            "Stick": "Left",
-            "Region": {
-                "Direction": {
-                    "X": -1,
-                    "Y": 0
+                "State": "Pressed"
+            }
+        ],
+        "MoveLeft": [
+            {
+                "Stick": "Left",
+                "Region": {
+                    "Direction": {
+                        "X": -1,
+                        "Y": 0
+                    },
+                    "AngleTolerance": 120.0,
+                    "Deadzone": 0.1
                 },
-                "AngleTolerance": 120.0,
-                "Deadzone": 0.1
-            },
-            "State": "Pressed"
-        },
-        "MoveRight": {
-            "Stick": "Left",
-            "Region": {
-                "Direction": {
-                    "X": 1,
-                    "Y": 0
+                "State": "Pressed"
+            }
+        ],
+        "MoveRight": [
+            {
+                "Stick": "Left",
+                "Region": {
+                    "Direction": {
+                        "X": 1,
+                        "Y": 0
+                    },
+                    "AngleTolerance": 120.0,
+                    "Deadzone": 0.1
                 },
-                "AngleTolerance": 120.0,
-                "Deadzone": 0.1
-            },
-            "State": "Pressed"
-        },
-        "MoveDown": {
-            "Stick": "Left",
-            "Region": {
-                "Direction": {
-                    "X": 0,
-                    "Y": -1
+                "State": "Pressed"
+            }
+        ],
+        "MoveDown": [
+            {
+                "Stick": "Left",
+                "Region": {
+                    "Direction": {
+                        "X": 0,
+                        "Y": -1
+                    },
+                    "AngleTolerance": 120.0,
+                    "Deadzone": 0.1
                 },
-                "AngleTolerance": 120.0,
-                "Deadzone": 0.1
-            },
-            "State": "Pressed"
-        },
-        "PrimaryAttackUp": {
-            "Stick": "Right",
-            "Region": {
-                "Direction": {
-                    "X": 0,
-                    "Y": 1
+                "State": "Pressed"
+            }
+        ],
+        "PrimaryAttackUp": [
+            {
+                "Stick": "Right",
+                "Region": {
+                    "Direction": {
+                        "X": 0,
+                        "Y": 1
+                    },
+                    "AngleTolerance": 90.0,
+                    "Deadzone": 0.1
                 },
-                "AngleTolerance": 90.0,
-                "Deadzone": 0.1
-            },
-            "State": "Pressed"
-        },
-        "PrimaryAttackDown": {
-            "Stick": "Right",
-            "Region": {
-                "Direction": {
-                    "X": 0,
-                    "Y": -1
+                "State": "Pressed"
+            }
+        ],
+        "PrimaryAttackDown": [
+            {
+                "Stick": "Right",
+                "Region": {
+                    "Direction": {
+                        "X": 0,
+                        "Y": -1
+                    },
+                    "AngleTolerance": 90.0,
+                    "Deadzone": 0.1
                 },
-                "AngleTolerance": 90.0,
-                "Deadzone": 0.1
-            },
-            "State": "Pressed"
-        },
-        "PrimaryAttackLeft": {
-            "Stick": "Right",
-            "Region": {
-                "Direction": {
-                    "X": -1,
-                    "Y": 0
+                "State": "Pressed"
+            }
+        ],
+        "PrimaryAttackLeft": [
+            {
+                "Stick": "Right",
+                "Region": {
+                    "Direction": {
+                        "X": -1,
+                        "Y": 0
+                    },
+                    "AngleTolerance": 90.0,
+                    "Deadzone": 0.1
                 },
-                "AngleTolerance": 90.0,
-                "Deadzone": 0.1
-            },
-            "State": "Pressed"
-        },
-        "PrimaryAttackRight": {
-            "Stick": "Right",
-            "Region": {
-                "Direction": {
-                    "X": 1,
-                    "Y": 0
+                "State": "Pressed"
+            }
+        ],
+        "PrimaryAttackRight": [
+            {
+                "Stick": "Right",
+                "Region": {
+                    "Direction": {
+                        "X": 1,
+                        "Y": 0
+                    },
+                    "AngleTolerance": 90.0,
+                    "Deadzone": 0.1
                 },
-                "AngleTolerance": 90.0,
-                "Deadzone": 0.1
-            },
-            "State": "Pressed"
-        }
+                "State": "Pressed"
+            }
+        ]
     }
 }
