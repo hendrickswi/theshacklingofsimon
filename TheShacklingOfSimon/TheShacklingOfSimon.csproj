@@ -39,6 +39,18 @@
         <Content Include="Content\Clotty.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> </Content>
 
+        <None Update="Content\images\TeleportIndicator.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\InvincibilityIndicator.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <None Update="Content\images\AdrenalinIndicator.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
         <None Update="Content\images\8Ball.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

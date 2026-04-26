@@ -169,6 +169,9 @@ public class Game1 : Game
         SpriteFactory.Instance.LoadTexture(Content, "images/WinGamble.json", "images/WinGamble");
         SpriteFactory.Instance.LoadTexture(Content, "images/LoseGamble.json", "images/LoseGamble");
         SpriteFactory.Instance.LoadTexture(Content, "images/fogofwar.json", "images/fogofwar");
+        SpriteFactory.Instance.LoadTexture(Content, "images/AdrenalinIndicator.json", "images/AdrenalinIndicator");
+        SpriteFactory.Instance.LoadTexture(Content, "images/InvincibilityIndicator.json", "images/InvincibilityIndicator");
+        SpriteFactory.Instance.LoadTexture(Content, "images/TeleportIndicator.json", "images/TeleportIndicator");
         
         // 1x1 white pixel used for background stuff
         SpriteFactory.Instance.LoadTexture(Content, "1x1white.json", "1x1white");
@@ -338,6 +341,9 @@ public class Game1 : Game
 
         _player.Inventory.Add(teleportItem);
         _player.Inventory.Add(new AdrenalineItem(_player));
+        _player.Inventory.Add(new InvinciblityItem(_player, 1000, 5));
+        
+        
         _player.Inventory.CurrentActiveItem = teleportItem;
     }
 

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Enemies;
 using TheShacklingOfSimon.Entities.Players;
+using TheShacklingOfSimon.Items.Active_Items;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
@@ -34,7 +35,10 @@ namespace TheShacklingOfSimon.UI
         private readonly ISprite _coinSprite;
         private readonly ISprite _keySprite;
         private readonly ISprite _pixelSprite;
-
+        private readonly ISprite _adrenalinIndicator;
+        private readonly ISprite _invincibilityIndicator;
+        private readonly ISprite _teleportIndicator;
+        
         private ISprite _coinFont;
         private ISprite _keyFont;
 
@@ -63,14 +67,19 @@ namespace TheShacklingOfSimon.UI
             _coinSprite = SpriteFactory.Instance.CreateStaticSprite("Coin");
             _keySprite = SpriteFactory.Instance.CreateStaticSprite("key");
             _pixelSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white");
+            _adrenalinIndicator = SpriteFactory.Instance.CreateStaticSprite("AdrenalinIndicator");
+            _invincibilityIndicator = SpriteFactory.Instance.CreateStaticSprite("InvincibilityIndicator");
+            _teleportIndicator = SpriteFactory.Instance.CreateStaticSprite("TeleportIndicator");
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            
             _fogOfWar.Draw(spriteBatch);
 
             DrawHearts(spriteBatch);
             DrawWeaponIndicator(spriteBatch);
+            DrawActiveItemIndicator(spriteBatch);
             DrawPickupIndicators(spriteBatch);
             _miniMap.Draw(spriteBatch);
 
@@ -130,6 +139,29 @@ namespace TheShacklingOfSimon.UI
             _bombIndicator.Draw(spriteBatch, new Vector2(80, 90), Color.White, 0f, Vector2.Zero, 2.5f, SpriteEffects.None, 1f);
         }
 
+        private void DrawActiveItemIndicator(SpriteBatch spriteBatch)
+        {
+          
+            switch (_player.Inventory.CurrentActiveItem.Name)
+            {
+                case "Blink":
+                    _teleportIndicator.Draw(spriteBatch, new Vector2(925, 110), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 1f);
+                    break;
+
+                case "Adrenaline":
+                    _adrenalinIndicator.Draw(spriteBatch, new Vector2(910, 120), Color.White, 0f, Vector2.Zero, 0.05f, SpriteEffects.None, 1f);
+                    break;
+
+                case "Invincibility":
+                    _invincibilityIndicator.Draw(spriteBatch, new Vector2(900, 105), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 1f);
+                    break;
+
+                default:
+                    _basicIndicator.Draw(spriteBatch, new Vector2(10, 100), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                    break;
+            }
+            
+        }
         private void DrawBossHealthBar(SpriteBatch spriteBatch)
         {
             IEnemy boss = null;
