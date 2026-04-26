@@ -1,6 +1,8 @@
 ﻿#region
 
 using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Commands.Temporary_Commands;
+using TheShacklingOfSimon.Sounds;
 
 #endregion
 
@@ -32,5 +34,11 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass
         public static Point InteriorOffset => new Point(Border, Border);
 
         public static Rectangle WorldBounds => new Rectangle(0, 0, PixelWidth, PixelHeight);
+
+        // Misc SFX that don't really fit elsewhere
+        public static string EnemiesClearedSFX = SoundManager.Instance.AddSFX("enemy", "deathburst"); // clear room of enemies
+        public static string DoorOpenSFX = SoundManager.Instance.AddSFX("other", "doorOpen"); // open door from enemy clear
+        public static string KeyUnlockSFX = SoundManager.Instance.AddSFX("other", "unlock"); // open door from key
+        public static string DoorCloseSFX = SoundManager.Instance.AddSFX("other", "doorClose"); // close door in enemy room
     }
 }

@@ -177,7 +177,7 @@ public class Game1 : Game
     private void LoadSounds()
     {
         SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/goodeath0");
-        SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/Meaty_Deaths_0");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/deathburst");
         SoundFactory.Instance.LoadSFX(Content, "sounds/enemy/TearImpacts0");
 
         SoundFactory.Instance.LoadSFX(Content, "sounds/isaac/1up");
@@ -193,7 +193,10 @@ public class Game1 : Game
         SoundFactory.Instance.LoadSFX(Content, "sounds/other/Coin_Slot");
         SoundFactory.Instance.LoadSFX(Content, "sounds/other/dark-souls-you-died-sound-effect_hm5sYFG");
         SoundFactory.Instance.LoadSFX(Content, "sounds/other/Fart");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/other/doorClose");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/other/doorOpen");
         SoundFactory.Instance.LoadSFX(Content, "sounds/other/Rock_crumble 0");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/other/unlock");
 
         SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/splatter00");
         SoundFactory.Instance.LoadSFX(Content, "sounds/projectiles/stoneshoot2");
@@ -205,6 +208,7 @@ public class Game1 : Game
     private void LoadMusic()
     {
         SoundFactory.Instance.LoadSong(Content, "sounds/music/basement");
+        SoundFactory.Instance.LoadSong(Content, "sounds/music/ffVictory");
     }
 
     private void PlayMusic(string songName)
