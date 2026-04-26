@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Commands;
+using TheShacklingOfSimon.Commands.Gamestate;
 using TheShacklingOfSimon.Commands.PlayerAttack;
 using TheShacklingOfSimon.Commands.PlayerInventoryManagement;
 using TheShacklingOfSimon.Commands.PlayerMovement;
@@ -52,7 +53,9 @@ public class InputManager
         IPlayer player,
         Game1 game,
         RoomManager roomManager,
-        Action onResetRequest)
+        Action onResetRequest,
+        PauseCommand pauseCommand,
+        UnpauseCommand unpauseCommand)
     {
         _keyboardService = new MonoGameKeyboardService();
         _mouseService = new MonoGameMouseService();
@@ -95,10 +98,9 @@ public class InputManager
             { PlayerAction.NextActiveItem, new NextActiveItemCommand(_player) },
             
             // Miscellaneous
-            // TODO: Find a way to do pause, resume and quit here (commands?)
-            { PlayerAction.Pause, new GenericActionCommand(onResetRequest) },
-            { PlayerAction.Resume, new GenericActionCommand(onResetRequest) },
-            { PlayerAction.Quit, new GenericActionCommand(onResetRequest) },
+            { PlayerAction.Pause, pauseCommand },
+            { PlayerAction.Resume, unpauseCommand },
+            { PlayerAction.Quit, new ExitCommand(_game) },
             { PlayerAction.Reset, new GenericActionCommand(onResetRequest) },
         };
     }
