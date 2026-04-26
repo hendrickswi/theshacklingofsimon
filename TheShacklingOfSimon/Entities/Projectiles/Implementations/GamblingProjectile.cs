@@ -34,19 +34,8 @@ public class GamblingProjectile : ProjectileBase
 		
 		Velocity = direction * stats.Speed;
 		Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 8, 8);
-		Random random = new Random();
-		if (random.Next(1, 11) == 1)
-		{
-			stats.Damage = 1000;
-            Sprite = SpriteFactory.Instance.CreateStaticSprite("WinGamble");
-           
-
-        }
-        else { 
-			stats.Damage =0;
-            Sprite = SpriteFactory.Instance.CreateStaticSprite("LoseGamble");
-
-        }
+		
+		Sprite=sprite;
         
 
         _sfx = SoundManager.Instance.AddSFX("projectiles", "splatter00");
@@ -74,7 +63,8 @@ public class GamblingProjectile : ProjectileBase
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
-		return new GamblingProjectile(startPos, direction, sprite, stats);
+       
+        return new GamblingProjectile(startPos, direction, sprite, stats);
 	}
 
     public override void OnCollision(ITile tile)

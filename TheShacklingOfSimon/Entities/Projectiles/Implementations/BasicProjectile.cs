@@ -61,6 +61,7 @@ public class BasicProjectile : ProjectileBase
 
 	public override IProjectile Clone(Vector2 startPos, Vector2 direction, ISprite sprite, ProjectileStats stats)
 	{
+		
 		return new BasicProjectile(startPos, direction, sprite, stats);
 	}
 

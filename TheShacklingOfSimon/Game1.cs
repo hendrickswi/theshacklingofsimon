@@ -299,7 +299,7 @@ public class Game1 : Game
             new GamblingProjectile(
                 Vector2.Zero,
                 new Vector2(0, 1),
-                SpriteFactory.Instance.CreateStaticSprite("BasicProjectile"),
+               null,
                 new ProjectileStats(1, 50f, ProjectileOwner.Player)));
 
         
@@ -307,9 +307,9 @@ public class Game1 : Game
         IPrimaryWeapon playerFireballWeapon = new FireballWeapon(fireballProjectile);
             
         _player.Inventory.Add(playerBasicWeapon);
-        //_player.Inventory.CurrentPrimaryWeapon = playerBasicWeapon;
+  
         _player.Inventory.Add(playerGamblingWeapon);
-        _player.Inventory.CurrentPrimaryWeapon = playerGamblingWeapon;
+        _player.Inventory.CurrentPrimaryWeapon = playerBasicWeapon;
 
         _player.Inventory.Add(playerBombWeapon);
         _player.Inventory.CurrentSecondaryWeapon = playerBombWeapon;
