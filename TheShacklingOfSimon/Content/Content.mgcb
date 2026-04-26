@@ -418,17 +418,17 @@
 #begin Room_Jsons/room_index.json
 /copy:Room_Jsons/room_index.json
 
+#begin sounds/enemy/deathburst.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/enemy/deathburst.wav
+
 #begin sounds/enemy/goodeath0.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sounds/enemy/goodeath0.mp3
-
-#begin sounds/enemy/Meaty_Deaths_0.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:sounds/enemy/Meaty_Deaths_0.mp3
 
 #begin sounds/enemy/TearImpacts0.mp3
 /importer:Mp3Importer
@@ -502,6 +502,12 @@
 /processorParam:Quality=Best
 /build:sounds/music/basement.mp3
 
+#begin sounds/music/ffVictory.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:sounds/music/ffVictory.mp3
+
 #begin sounds/other/Coin_Slot.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -513,6 +519,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sounds/other/dark-souls-you-died-sound-effect_hm5sYFG.mp3
+
+#begin sounds/other/doorClose.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/other/doorClose.wav
+
+#begin sounds/other/doorOpen.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/other/doorOpen.wav
 
 #begin sounds/other/Fart.mp3
 /importer:Mp3Importer

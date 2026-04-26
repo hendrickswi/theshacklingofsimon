@@ -169,7 +169,6 @@ public class PlayGameState : IGameState
     private void BeginRoomTransition()
     {
         _inputManager.ClearAllControls();
-        SoundManager.Instance.StopAllSFX();
         _fadeState = FadeState.FadingOut;
     }
 

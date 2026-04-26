@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Profiles;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
 
@@ -28,6 +30,10 @@ public class WinGameState : IGameState
     private readonly ISprite _gameWonSprite;
     private readonly ISprite _keyboardControlsSprite;
     private readonly ISprite _gamepadControlsSprite;
+    private readonly string _winSFX = "sounds/music/ffVictory";
+
+    private float Timer;
+    private bool victoryPlayed;
 
     public WinGameState(
         GameStateManager stateManager,
@@ -72,14 +78,13 @@ public class WinGameState : IGameState
     public void Enter()
     {
         _inputManager.ClearAllControls();
-        
+        MediaPlayer.Stop();
         InputProfile profile = InputProfileManager.LoadProfile();
         Dictionary<PlayerAction, ICommand> actionToCommandMap = new Dictionary<PlayerAction, ICommand>
         {
             { PlayerAction.Reset, new GenericActionCommand(_restartGame) },
             { PlayerAction.Quit, new GenericActionCommand(_quitGame) },
         };
-        
         _inputManager.LoadControls(profile, actionToCommandMap);
     }
 
@@ -95,6 +100,15 @@ public class WinGameState : IGameState
         _gameWonSprite.Update(delta);
         _keyboardControlsSprite.Update(delta);
         _gamepadControlsSprite.Update(delta);
+        Timer += (float) delta.ElapsedGameTime.TotalSeconds;
+        if (!victoryPlayed)
+        {
+            if (Timer >= 1)
+            {
+                MediaPlayer.Play(SoundFactory.Instance.GetSong(_winSFX));
+                victoryPlayed = true;
+            }
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch)
