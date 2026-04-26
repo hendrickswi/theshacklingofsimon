@@ -44,18 +44,26 @@ namespace TheShacklingOfSimon.UI
 
         public bool IsFogOfWarActive
         {
-            get => _fogOfWar.IsActive;
-            set => _fogOfWar.IsActive = value;
+            get =>  _fogOfWar != null && _fogOfWar.IsActive;
+            
+            set
+            {
+                if (_fogOfWar == null) return;
+                _fogOfWar.IsActive = value;
+            }
         }
 
-        public HUD(IPlayer player, RoomManager roomManager, GraphicsDevice graphicsDevice, Effect fogEffect)
+        public HUD(IPlayer player, RoomManager roomManager, GraphicsDevice graphicsDevice, Effect fogEffect = null)
         {
             _player = player;
             _roomManager = roomManager;
             _graphicsDevice = graphicsDevice;
 
             _miniMap = new MiniMap(roomManager, graphicsDevice);
-            _fogOfWar = new FogOfWar(player, roomManager, graphicsDevice, fogEffect);
+            if (fogEffect != null)
+            {
+                _fogOfWar = new FogOfWar(player, roomManager, graphicsDevice, fogEffect);
+            }
 
             _heartHalfSprite = SpriteFactory.Instance.CreateStaticSprite("HalfHeart");
             _heartFilledSprite = SpriteFactory.Instance.CreateStaticSprite("FilledHeart");
@@ -75,7 +83,7 @@ namespace TheShacklingOfSimon.UI
         public void Draw(SpriteBatch spriteBatch)
         {
             
-            _fogOfWar.Draw(spriteBatch);
+            _fogOfWar?.Draw(spriteBatch);
 
             DrawHearts(spriteBatch);
             DrawWeaponIndicator(spriteBatch);
@@ -203,7 +211,7 @@ namespace TheShacklingOfSimon.UI
         public void Reset()
         {
             _miniMap.Reset();
-            _fogOfWar.Reset();
+            _fogOfWar?.Reset();
         }
     }
 }
