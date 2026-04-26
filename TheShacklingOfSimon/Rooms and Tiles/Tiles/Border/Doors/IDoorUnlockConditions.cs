@@ -2,6 +2,7 @@
 
 using TheShacklingOfSimon.Entities.Players;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
+using TheShacklingOfSimon.Sounds;
 
 #endregion
 
@@ -57,6 +58,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Border.Doors
 
             player.Inventory.NumKeys -= 1;
             _isUnlocked = true;
+            SoundManager.Instance.PlaySFX(RoomConstants.KeyUnlockSFX);
             return true;
         }
     }
