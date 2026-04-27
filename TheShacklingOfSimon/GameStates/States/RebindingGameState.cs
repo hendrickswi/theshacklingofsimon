@@ -18,7 +18,7 @@ public class RebindingGameState : IGameState
     private readonly InputSchema _targetHardware;
     private readonly PlayerAction _actionToBeRebound;
     private readonly Action<KeyboardButton?> _onKeyboardRebindComplete;
-    private readonly Action<GamepadButton?> _onGaempadRebindComplete;
+    private readonly Action<GamepadButton?> _onGamepadRebindComplete;
 
     private readonly ISprite _backgroundSprite;
     private readonly ISprite _promptTextSprite;
@@ -44,7 +44,7 @@ public class RebindingGameState : IGameState
         _targetHardware = targetHardware;
         _actionToBeRebound = actionToBeRebound;
         _onKeyboardRebindComplete = onKeyboardRebindComplete;
-        _onGaempadRebindComplete = onGamepadRebindComplete;
+        _onGamepadRebindComplete = onGamepadRebindComplete;
 
         _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
             .WithTint(new Color(0, 0, 0, 180));
@@ -88,11 +88,11 @@ public class RebindingGameState : IGameState
                 {
                     if (newButton.Value == GamepadButton.Back || newButton.Value == GamepadButton.Start)
                     {
-                        _onGaempadRebindComplete.Invoke(null);
+                        _onGamepadRebindComplete.Invoke(null);
                     }
                     else
                     {
-                        _onGaempadRebindComplete.Invoke(newButton);
+                        _onGamepadRebindComplete.Invoke(newButton);
                     }
                     _stateManager.RemoveState();
                 }

@@ -30,7 +30,6 @@ public class InputManager
     public InputSchema ActiveSchema { get; private set; }
     public Vector2 VirtualCursorPosition { get; set; }
     
-    
     private readonly IController<KeyboardInput> _keyboardController;
     private readonly IController<MouseInput> _mouseController;
     private readonly IGamepadController _gamepadController;
@@ -38,6 +37,8 @@ public class InputManager
     private readonly IKeyboardService _keyboardService;
     private readonly IMouseService _mouseService;
     private readonly IGamepadService _gamepadService;
+
+    private InputProfile _currentProfile;
     
     // TODO: Replace this with custom gamepad service
     private Microsoft.Xna.Framework.Input.GamePadState _prevGamepadState;
@@ -84,6 +85,7 @@ public class InputManager
 
     public void LoadControls(InputProfile profile, Dictionary<PlayerAction, ICommand> actionToCommandMap)
     {
+        _currentProfile = profile;
         foreach (var pair in actionToCommandMap)
         {
             PlayerAction action = pair.Key;
@@ -162,14 +164,32 @@ public class InputManager
     {
         switch (schema)
         {
-            case InputSchema.Keyboard or InputSchema.Mouse:
+            case InputSchema.Mouse:
             {
                 VirtualCursorPosition = _mouseService.GetPosition();
                 break;
             }
+            case InputSchema.Keyboard:
+            {
+                if (_currentProfile == null) break;
+
+                Vector2 keyboardMovement = Vector2.Zero;
+                if (IsKeyboardActionPressed(PlayerAction.MenuUp)) keyboardMovement.Y -= 1;
+                if (IsKeyboardActionPressed(PlayerAction.MenuDown)) keyboardMovement.Y += 1;
+                if (IsKeyboardActionPressed(PlayerAction.MenuLeft)) keyboardMovement.X -= 1;
+                if (IsKeyboardActionPressed(PlayerAction.MenuRight)) keyboardMovement.X += 1;
+
+                if (keyboardMovement.LengthSquared() > float.Epsilon)
+                {
+                    keyboardMovement.Normalize();
+                    VirtualCursorPosition += keyboardMovement * 10.0f;
+                }
+                break;
+            }
             case InputSchema.GamepadButton or InputSchema.GamepadJoystick:
             {
-                VirtualCursorPosition = _gamepadService.GetLeftJoystickPosition();
+                Vector2 joystickPosition = _gamepadService.GetLeftJoystickPosition();
+                VirtualCursorPosition += joystickPosition * 10.0f;
                 break;
             }
             default:
@@ -206,5 +226,21 @@ public class InputManager
             GamepadButton.RightStick => Microsoft.Xna.Framework.Input.Buttons.RightStick,
             _ => 0 // Fallback
         };
+    }
+
+    private bool IsKeyboardActionPressed(PlayerAction action)
+    {
+        if (_currentProfile.KeyboardMap.TryGetValue(action, out var keys))
+        {
+            foreach (var key in keys)
+            {
+                if (_keyboardService.GetKeyState(key.Button) == InputState.Pressed)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

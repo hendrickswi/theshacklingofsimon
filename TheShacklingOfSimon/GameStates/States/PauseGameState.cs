@@ -32,16 +32,20 @@ public class PauseGameState : IGameState
     private readonly ISprite _resumeSprite;
     private readonly ISprite _settingsSprite;
     private readonly ISprite _quitSprite;
-
+    
     // Keeping these not readonly in case we want to move the positions
+    private Vector2 _pauseSize;
+    private Vector2 _resumeSize;
+    private Vector2 _settingsSize;
+    private Vector2 _quitSize; 
     private Vector2 _pausedPos;
     private Vector2 _resumePos;
     private Vector2 _settingsPos;
     private Vector2 _quitPos;
-
-    // Used for hover functionality
-    private int _hoverIndex = 0;
-    private int _hoverIndexMax = 2;
+    private Rectangle _resumeBounds;
+    private Rectangle _settingsBounds;
+    private Rectangle _quitBounds;
+    
     private Action[] _actions = new Action[3];
 
     public PauseGameState(
@@ -78,34 +82,37 @@ public class PauseGameState : IGameState
         
         // Position calculations
         Rectangle screen = _graphicsDevice.Viewport.Bounds;
-        Vector2 pauseSize = _pauseSprite.GetDimensions();
-        Vector2 resumeSize = _resumeSprite.GetDimensions();
-        Vector2 settingsSize = _settingsSprite.GetDimensions();
-        Vector2 quitSize = _quitSprite.GetDimensions();
+        _pauseSize = _pauseSprite.GetDimensions();
+        _resumeSize = _resumeSprite.GetDimensions();
+        _settingsSize = _settingsSprite.GetDimensions();
+        _quitSize = _quitSprite.GetDimensions();
 
         _pausedPos = new Vector2(
-            (screen.Width - pauseSize.X) * 0.5f,
-            (screen.Height - pauseSize.Y) * 0.5f
+            (screen.Width - _pauseSize.X) * 0.5f,
+            (screen.Height - _pauseSize.Y) * 0.5f
         );
         _resumePos = new Vector2(
-            (screen.Width - resumeSize.X) * 0.5f,
-            (screen.Height - resumeSize.Y) * 0.5f + 40f
+            (screen.Width - _resumeSize.X) * 0.5f,
+            (screen.Height - _resumeSize.Y) * 0.5f + 40f
         );
         _settingsPos = new Vector2(
-            (screen.Width - settingsSize.X) * 0.5f,
-            (screen.Height - settingsSize.Y) * 0.5f + 80f
+            (screen.Width - _settingsSize.X) * 0.5f,
+            (screen.Height - _settingsSize.Y) * 0.5f + 80f
         );
         _quitPos = new Vector2(
-            (screen.Width - quitSize.X) * 0.5f,
-            (screen.Height - quitSize.Y) * 0.5f + 120f
+            (screen.Width - _quitSize.X) * 0.5f,
+            (screen.Height - _quitSize.Y) * 0.5f + 120f
         );
-
-        // TODO: Replace direct usage of XNA Mouse.GetState()
+        
+        _resumeBounds = new Rectangle((int)_resumePos.X, (int)_resumePos.Y, (int)_resumeSize.X, (int)_resumeSize.Y);
+        _settingsBounds = new Rectangle((int)_settingsPos.X, (int)_settingsPos.Y, (int)_settingsSize.X, (int)_settingsSize.Y);
+        _quitBounds = new Rectangle((int)_quitPos.X, (int)_quitPos.Y, (int)_quitSize.X, (int)_quitSize.Y);
+        
         _resumeSprite = _resumeSprite.WithHoverFunctionality(
             () => {
                 Vector2 size = _resumeSprite.GetDimensions();
                 Rectangle bounds = new Rectangle((int)_resumePos.X, (int)_resumePos.Y, (int)size.X, (int)size.Y);
-                return bounds.Contains(Mouse.GetState().Position);
+                return bounds.Contains(_inputManager.VirtualCursorPosition);
             },
             Color.Gray, 
             Color.White
@@ -114,7 +121,7 @@ public class PauseGameState : IGameState
             () => {
                 Vector2 size = _settingsSprite.GetDimensions();
                 Rectangle bounds = new Rectangle((int)_settingsPos.X, (int)_settingsPos.Y, (int)size.X, (int)size.Y);
-                return bounds.Contains(Mouse.GetState().Position);
+                return bounds.Contains(_inputManager.VirtualCursorPosition);
             },
             Color.Gray, 
             Color.White
@@ -123,7 +130,7 @@ public class PauseGameState : IGameState
             () => {
                 Vector2 size = _quitSprite.GetDimensions();
                 Rectangle bounds = new Rectangle((int)_quitPos.X, (int)_quitPos.Y, (int)size.X, (int)size.Y);
-                return bounds.Contains(Mouse.GetState().Position);
+                return bounds.Contains(_inputManager.VirtualCursorPosition);
             },
             Color.Gray, 
             Color.White
@@ -139,16 +146,6 @@ public class PauseGameState : IGameState
         {
             { PlayerAction.Resume, new GenericActionCommand(_stateManager.RemoveState) },
             { PlayerAction.Quit, new GenericActionCommand(_quitGame) },
-            
-            { PlayerAction.MenuUp, new GenericActionCommand(() =>
-            {
-                _hoverIndex = (_hoverIndex - 1 + (_hoverIndexMax + 1)) % (_hoverIndexMax + 1);
-            })},
-            { PlayerAction.MenuDown, new GenericActionCommand(() =>
-            {
-                _hoverIndex = (_hoverIndex + 1) % (_hoverIndexMax + 1);
-            })},
-            { PlayerAction.MenuConfirm, new GenericActionCommand(_actions[_hoverIndex]) },
             { PlayerAction.MenuCancel, new GenericActionCommand(_stateManager.RemoveState) }, 
             { PlayerAction.Pause, new GenericActionCommand(_stateManager.RemoveState) }
         };
@@ -211,17 +208,6 @@ public class PauseGameState : IGameState
     public void Update(GameTime delta)
     {
         Vector2 mousePos = _inputManager.VirtualCursorPosition;
-        Vector2 resumeSize = _resumeSprite.GetDimensions();
-        Vector2 settingsSize = _settingsSprite.GetDimensions();
-        Vector2 quitSize = _quitSprite.GetDimensions();
-        
-        // TODO: Move this out of Update() so it's not called every frame
-        Rectangle resumeBounds = new Rectangle((int)_resumePos.X, (int)_resumePos.Y, (int)resumeSize.X, (int)resumeSize.Y);
-        Rectangle settingsBounds = new Rectangle((int)_settingsPos.X, (int)_settingsPos.Y, (int)settingsSize.X, (int)settingsSize.Y);
-        Rectangle quitBounds = new Rectangle((int)_quitPos.X, (int)_quitPos.Y, (int)quitSize.X, (int)quitSize.Y);
-        if (resumeBounds.Contains(mousePos)) _hoverIndex = 0;
-        else if (settingsBounds.Contains(mousePos)) _hoverIndex = 1;
-        else if (quitBounds.Contains(mousePos)) _hoverIndex = 2;
         
         _backgroundSprite.Update(delta);
         _pauseSprite.Update(delta);
@@ -236,5 +222,10 @@ public class PauseGameState : IGameState
         _resumeSprite.Draw(spriteBatch, _resumePos, Color.White);
         _settingsSprite.Draw(spriteBatch, _settingsPos, Color.White);
         _quitSprite.Draw(spriteBatch, _quitPos, Color.White);
+    }
+
+    private void RefreshPositioning()
+    {
+        
     }
 }

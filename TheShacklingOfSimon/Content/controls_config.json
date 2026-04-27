@@ -115,6 +115,30 @@
                 "Button": "Escape",
                 "State": "JustPressed"
             }
+        ],
+        "MenuUp": [
+            { "Button": "Up", "State": "Pressed" },
+            { "Button": "W", "State": "Pressed" }
+        ],
+        "MenuDown": [
+            { "Button": "Down", "State": "Pressed" },
+            { "Button": "S", "State": "Pressed" }
+        ],
+        "MenuLeft": [
+            { "Button": "Left", "State": "Pressed" },
+            { "Button": "A", "State": "Pressed" }
+        ],
+        "MenuRight": [
+            { "Button": "Right", "State": "Pressed" },
+            { "Button": "D", "State": "Pressed" }
+        ],
+        "MenuConfirm": [
+            { "Button": "Enter", "State": "JustPressed" },
+            { "Button": "Space", "State": "JustPressed" }
+        ],
+        "MenuCancel": [
+            { "Button": "Escape", "State": "JustPressed" },
+            { "Button": "Back", "State": "JustPressed" }
         ]
     },
     "MouseMap": {},
@@ -194,6 +218,24 @@
                 "Button": "A",
                 "State": "JustPressed"
             }
+        ],
+        "MenuUp": [
+            { "Button": "DPadUp", "State": "Pressed" }
+        ],
+        "MenuDown": [
+            { "Button": "DPadDown", "State": "Pressed" }
+        ],
+        "MenuLeft": [
+            { "Button": "DPadLeft", "State": "Pressed" }
+        ],
+        "MenuRight": [
+            { "Button": "DPadRight", "State": "Pressed" }
+        ],
+        "MenuConfirm": [
+            { "Button": "A", "State": "JustPressed" }
+        ],
+        "MenuCancel": [
+            { "Button": "B", "State": "JustPressed" }
         ]
     },
     "GamepadJoystickMap": {
