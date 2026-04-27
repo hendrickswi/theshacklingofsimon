@@ -168,4 +168,9 @@ public class PlayerWithTwoSprites : DamageableEntity, IPlayer, ITargetProvider
         SpritesManager = new PlayerTwoSpritesManager(this);
         StatesManager = new PlayerTwoStatesManager(this, SpritesManager);
     }
+    public void TriggerInvulnerability()
+    {
+        
+        InvulnerabilityTimer = EffectStats[StatType.InvulnerabilityDuration];
+    }
 }

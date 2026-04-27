@@ -341,7 +341,7 @@ public class Game1 : Game
 
         _player.Inventory.Add(teleportItem);
         _player.Inventory.Add(new AdrenalineItem(_player));
-        _player.Inventory.Add(new InvinciblityItem(_player, 1000, 5));
+        _player.Inventory.Add(new InvinciblityItem(_player, 5, 5));
         
         
         _player.Inventory.CurrentActiveItem = teleportItem;

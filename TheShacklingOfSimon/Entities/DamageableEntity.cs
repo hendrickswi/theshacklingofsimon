@@ -17,7 +17,7 @@ namespace TheShacklingOfSimon.Entities;
 
 public abstract class DamageableEntity : IDamageableEntity
 {
-    protected float InvulnerabilityTimer;
+    public float InvulnerabilityTimer;
     protected readonly Dictionary<StatType, float> EffectStats = new();
     
     public Vector2 Position { get; protected set; }
