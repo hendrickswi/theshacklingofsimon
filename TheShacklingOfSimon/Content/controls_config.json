@@ -150,25 +150,25 @@
         "NextActiveItem": [
             {
                 "Button": "DPadUp",
-                "State": "Pressed"
+                "State": "JustPressed"
             }
         ],
         "PreviousActiveItem": [
             {
                 "Button": "DPadDown",
-                "State": "Pressed"
+                "State": "JustPressed"
             }
         ],
         "NextSecondaryWeapon": [
             {
                 "Button": "DPadRight",
-                "State": "Pressed"
+                "State": "JustPressed"
             }
         ],
         "NextPrimaryWeapon": [
             {
                 "Button": "DPadLeft",
-                "State": "Pressed"
+                "State": "JustPressed"
             }
         ],
         "Pause": [
@@ -201,11 +201,11 @@
             {
                 "Stick": "Left",
                 "Region": {
-                    "Direction": {
+                    "Target": {
                         "X": 0,
                         "Y": 1
                     },
-                    "AngleTolerance": 120.0,
+                    "ToleranceDegrees": 150.0,
                     "Deadzone": 0.1
                 },
                 "State": "Pressed"
@@ -215,11 +215,11 @@
             {
                 "Stick": "Left",
                 "Region": {
-                    "Direction": {
+                    "Target": {
                         "X": -1,
                         "Y": 0
                     },
-                    "AngleTolerance": 120.0,
+                    "ToleranceDegrees": 150.0,
                     "Deadzone": 0.1
                 },
                 "State": "Pressed"
@@ -229,11 +229,11 @@
             {
                 "Stick": "Left",
                 "Region": {
-                    "Direction": {
+                    "Target": {
                         "X": 1,
                         "Y": 0
                     },
-                    "AngleTolerance": 120.0,
+                    "ToleranceDegrees": 150.0,
                     "Deadzone": 0.1
                 },
                 "State": "Pressed"
@@ -243,11 +243,11 @@
             {
                 "Stick": "Left",
                 "Region": {
-                    "Direction": {
+                    "Target": {
                         "X": 0,
                         "Y": -1
                     },
-                    "AngleTolerance": 120.0,
+                    "ToleranceDegrees": 150.0,
                     "Deadzone": 0.1
                 },
                 "State": "Pressed"
@@ -257,11 +257,11 @@
             {
                 "Stick": "Right",
                 "Region": {
-                    "Direction": {
+                    "Target": {
                         "X": 0,
                         "Y": 1
                     },
-                    "AngleTolerance": 90.0,
+                    "ToleranceDegrees": 90.0,
                     "Deadzone": 0.1
                 },
                 "State": "Pressed"
@@ -271,11 +271,11 @@
             {
                 "Stick": "Right",
                 "Region": {
-                    "Direction": {
+                    "Target": {
                         "X": 0,
                         "Y": -1
                     },
-                    "AngleTolerance": 90.0,
+                    "ToleranceDegrees": 90.0,
                     "Deadzone": 0.1
                 },
                 "State": "Pressed"
@@ -285,11 +285,11 @@
             {
                 "Stick": "Right",
                 "Region": {
-                    "Direction": {
+                    "Target": {
                         "X": -1,
                         "Y": 0
                     },
-                    "AngleTolerance": 90.0,
+                    "ToleranceDegrees": 90.0,
                     "Deadzone": 0.1
                 },
                 "State": "Pressed"
@@ -299,11 +299,11 @@
             {
                 "Stick": "Right",
                 "Region": {
-                    "Direction": {
+                    "Target": {
                         "X": 1,
                         "Y": 0
                     },
-                    "AngleTolerance": 90.0,
+                    "ToleranceDegrees": 90.0,
                     "Deadzone": 0.1
                 },
                 "State": "Pressed"

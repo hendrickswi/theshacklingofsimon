@@ -7,7 +7,7 @@ using TheShacklingOfSimon.Input.Gamepad;
 
 namespace TheShacklingOfSimon.Controllers.Gamepad;
 
-public record struct GamepadButtonInput(
+public readonly record struct GamepadButtonInput(
     GamepadButton Button, 
     InputState State
 );

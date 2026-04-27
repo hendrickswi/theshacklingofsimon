@@ -7,7 +7,7 @@ using TheShacklingOfSimon.Input.Keyboard;
 
 namespace TheShacklingOfSimon.Controllers.Keyboard;
 
-public record struct KeyboardInput(
+public readonly record struct KeyboardInput(
     KeyboardButton Button, 
     InputState State
 );

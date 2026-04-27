@@ -219,6 +219,9 @@ public class PlayGameState : IGameState
             { PlayerAction.PrimaryAttackDown, new PrimaryAttackDownCommand(_player) },
             { PlayerAction.SecondaryAttackDown, new SecondaryAttackDownCommand(_player) },
             
+            // Item usage
+            { PlayerAction.UseActiveItem, new UseItemCommand(_player) },
+            
             // Rotary controls
             { PlayerAction.NextPrimaryWeapon, new NextPrimaryWeaponCommand(_player) },
             { PlayerAction.PreviousPrimaryWeapon, new PreviousPrimaryWeaponCommand(_player) },

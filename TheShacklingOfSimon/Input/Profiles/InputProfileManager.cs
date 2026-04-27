@@ -20,6 +20,7 @@ public static class InputProfileManager
     {
         WriteIndented = true,
         PropertyNameCaseInsensitive = true,
+        IncludeFields = true,
         Converters = { new JsonStringEnumConverter() }
     };
 
@@ -59,6 +60,10 @@ public static class InputProfileManager
         }
     }
 
+    /*
+     * This method will only be called if the profile file cannot be found OR is unparsable.
+     * Otherwise, loading and saving on a single .json file will happen
+     */
     private static InputProfile GenerateDefaultProfile()
     {
         InputProfile profile = new InputProfile()
