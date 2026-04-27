@@ -12,7 +12,10 @@ public enum EnemyDropType
     Health,
     Speed,
     Coin,
-    Key
+    Key,
+    Armor,
+    Damage,
+    ProjectileAugment
 }
 
 public class EnemyConfig
