@@ -49,6 +49,8 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     public IItem EnemyDrop { get; set; }
 
     protected IMovementBehavior _movementBehaviour;
+    private static readonly Random _rng = new();
+    private readonly IReadOnlyList<EnemyDropType> _dropPool;
 
     protected IPathfindingService _pathfindingService;
     protected IPlayer _targetPlayer;
@@ -83,15 +85,12 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
 
         _movementBehaviour = new NoMovementBehaviour();
 
-        EnemyDrop = config.DropItemType switch
-        {
-            EnemyDropType.None => null,
-            EnemyDropType.Health => new HealingItem(this),
-            EnemyDropType.Speed => new SpeedItem(this),
-            EnemyDropType.Coin => new CoinItem(this),
-            EnemyDropType.Key => new KeyItem(this),
-            _ => null
-        };
+        IReadOnlyList<EnemyDropType> initialDropPool = config.DropItemPool?.Length > 0
+            ? config.DropItemPool
+            : new[] { config.DropItemType };
+
+        _dropPool = Array.AsReadOnly(new List<EnemyDropType>(initialDropPool).ToArray());
+        EnemyDrop = null;
 
         SetWeapon(weapon);
         Reset(startPosition);
@@ -418,6 +417,24 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
     public void SpawnPickup(IItem item, Vector2 position)
     {
         OnItemDropped?.Invoke(item, position);
+    }
+
+    public IItem CreateDropItem()
+    {
+        if (_dropPool == null || _dropPool.Count == 0)
+        {
+            return null;
+        }
+
+        EnemyDropType chosenDrop = _dropPool[_rng.Next(_dropPool.Count)];
+        return chosenDrop switch
+        {
+            EnemyDropType.Health => new HealingItem(this),
+            EnemyDropType.Speed => new SpeedItem(this),
+            EnemyDropType.Coin => new CoinItem(this),
+            EnemyDropType.Key => new KeyItem(this),
+            _ => null
+        };
     }
 
     public void SpawnEnemy(IEnemy enemy)

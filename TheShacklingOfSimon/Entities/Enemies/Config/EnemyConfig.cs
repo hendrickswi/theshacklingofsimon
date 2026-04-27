@@ -1,5 +1,6 @@
 #region
 
+using System;
 using TheShacklingOfSimon.Weapons;
 
 #endregion
@@ -26,4 +27,5 @@ public class EnemyConfig
     
     public float InvulnerabilityDuration { get; set; }
     public EnemyDropType DropItemType { get; set; } = EnemyDropType.None;
+    public EnemyDropType[] DropItemPool { get; set; } = Array.Empty<EnemyDropType>();
 }

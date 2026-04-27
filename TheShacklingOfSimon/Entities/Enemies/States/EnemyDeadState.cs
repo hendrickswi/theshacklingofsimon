@@ -1,6 +1,7 @@
 #region
 
 using Microsoft.Xna.Framework;
+using TheShacklingOfSimon.Entities.Enemies.EnemyTypes;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 
@@ -60,6 +61,16 @@ public class EnemyDeadState : IEnemyState
         if (_enemy.EnemyDrop != null)
         {
             _enemy.SpawnPickup(_enemy.EnemyDrop, _enemy.Position);
+            return;
+        }
+
+        if (_enemy is BaseEnemy baseEnemy)
+        {
+            var drop = baseEnemy.CreateDropItem();
+            if (drop != null)
+            {
+                _enemy.SpawnPickup(drop, _enemy.Position);
+            }
         }
     }
 
