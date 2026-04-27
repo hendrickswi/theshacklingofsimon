@@ -17,7 +17,8 @@ public class RebindingGameState : IGameState
     private readonly GraphicsDevice _graphicsDevice;
     private readonly InputSchema _targetHardware;
     private readonly PlayerAction _actionToBeRebound;
-    private readonly Action<KeyboardButton?> _onRebindComplete;
+    private readonly Action<KeyboardButton?> _onKeyboardRebindComplete;
+    private readonly Action<GamepadButton?> _onGaempadRebindComplete;
 
     private readonly ISprite _backgroundSprite;
     private readonly ISprite _promptTextSprite;
@@ -27,18 +28,29 @@ public class RebindingGameState : IGameState
     private Vector2 _promptTextPos;
     private Vector2 _actionTextPos;
     
-    public RebindingGameState(GameStateManager stateManager, InputManager inputManager, GraphicsDevice graphicsDevice, InputSchema targetHardware, PlayerAction actionToBeRebound, Action<KeyboardButton?> onRebindComplete)
+    public RebindingGameState(
+        GameStateManager stateManager, 
+        InputManager inputManager, 
+        GraphicsDevice graphicsDevice, 
+        InputSchema targetHardware, 
+        PlayerAction actionToBeRebound, 
+        Action<KeyboardButton?> onKeyboardRebindComplete = null,
+        Action<GamepadButton?> onGamepadRebindComplete = null
+        )
     {
         _stateManager = stateManager;
         _inputManager = inputManager;
         _graphicsDevice = graphicsDevice;
         _targetHardware = targetHardware;
         _actionToBeRebound = actionToBeRebound;
-        _onRebindComplete = onRebindComplete;
+        _onKeyboardRebindComplete = onKeyboardRebindComplete;
+        _onGaempadRebindComplete = onGamepadRebindComplete;
 
         _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
             .WithTint(new Color(0, 0, 0, 180));
-        _promptTextSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "Press a key to rebind for action: ");
+        
+        string hardwareNoun = targetHardware == InputSchema.Keyboard ? "key" : "button";
+        _promptTextSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", $"Press a {hardwareNoun} to rebind for action: ");
         _actionTextSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", actionToBeRebound.ToString());
         
         // Position calculations
@@ -50,7 +62,7 @@ public class RebindingGameState : IGameState
             (screen.Width - promptTextSize.X) * 0.5f,
             (screen.Height - promptTextSize.Y) * 0.5f
         );
-        _promptTextPos = new Vector2(
+        _actionTextPos = new Vector2(
             (screen.Width - actionTextSize.X) * 0.5f,
             (screen.Height - actionTextSize.Y) * 0.5f + 40f
         );
@@ -74,7 +86,15 @@ public class RebindingGameState : IGameState
                 GamepadButton? newButton = _inputManager.GetAnyGamepadButtonJustPressed();
                 if (newButton.HasValue)
                 {
-                    
+                    if (newButton.Value == GamepadButton.Back || newButton.Value == GamepadButton.Start)
+                    {
+                        _onGaempadRebindComplete.Invoke(null);
+                    }
+                    else
+                    {
+                        _onGaempadRebindComplete.Invoke(newButton);
+                    }
+                    _stateManager.RemoveState();
                 }
                 break;
             }
@@ -90,11 +110,11 @@ public class RebindingGameState : IGameState
                  {
                      if (newKey.Value == KeyboardButton.Escape)
                      {
-                         _onRebindComplete.Invoke(null);
+                         _onKeyboardRebindComplete.Invoke(null);
                      }
                      else
                      {
-                         _onRebindComplete.Invoke(newKey);
+                         _onKeyboardRebindComplete.Invoke(newKey);
                      }
                      
                      _stateManager.RemoveState();

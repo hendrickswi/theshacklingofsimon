@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Commands;
+using TheShacklingOfSimon.Controllers.Gamepad;
 using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Input;
+using TheShacklingOfSimon.Input.Gamepad;
 using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Mouse;
 using TheShacklingOfSimon.Input.Profiles;
@@ -40,7 +42,7 @@ public class InputSettingsGameState : IGameState
     private Rectangle _saveBounds;
     private Rectangle _cancelBounds;
     
-    private readonly Action[] _actions = new Action[3];
+    private readonly Action[] _actions = new Action[4];
     
     // For hover functionality
     private int _hoverIndex = 0;
@@ -159,6 +161,51 @@ public class InputSettingsGameState : IGameState
 
     private void OnBindButtonClicked(InputSchema targetHardware, PlayerAction action, int bindIndex)
     {
+        switch (targetHardware)
+        {
+            case InputSchema.GamepadButton or InputSchema.GamepadJoystick:
+            {
+                _stateManager.AddState(
+                    new RebindingGameState(
+                        _stateManager, 
+                        _inputManager, 
+                        _graphicsDevice, 
+                        targetHardware, 
+                        action, 
+                        onGamepadRebindComplete:(newButton) => 
+                        {
+                            if (newButton.HasValue)
+                            {
+                                ApplyGamepadButtonRebind(action, bindIndex, newButton.Value);
+                            }
+                            RefreshUI();
+                        }
+                    )
+                );
+                break;
+            }
+            case InputSchema.Keyboard or InputSchema.Mouse:
+            {
+                _stateManager.AddState(
+                    new RebindingGameState(
+                        _stateManager, 
+                        _inputManager, 
+                        _graphicsDevice, 
+                        targetHardware, 
+                        action, 
+                        onKeyboardRebindComplete: (newKey) => 
+                        {
+                            if (newKey.HasValue)
+                            {
+                                ApplyKeyboardRebind(action, bindIndex, newKey.Value);
+                            }
+                            RefreshUI();
+                        }
+                    )
+                );
+                break;
+            }
+        }
         _stateManager.AddState(
             new RebindingGameState(
             _stateManager, 
@@ -188,6 +235,26 @@ public class InputSettingsGameState : IGameState
         var bindList = _draftProfile.KeyboardMap[action];
         var newInput = new KeyboardInput(newButton, InputState.Pressed);
 
+        if (bindIndex < bindList.Count)
+        {
+            bindList[bindIndex] = newInput;
+        }
+        else
+        {
+            bindList.Add(newInput);
+        }
+    }
+
+    private void ApplyGamepadButtonRebind(PlayerAction action, int bindIndex, GamepadButton newButton)
+    {
+        if (!_draftProfile.GamepadButtonMap.ContainsKey(action))
+        {
+            _draftProfile.GamepadButtonMap[action] = new List<GamepadButtonInput>();
+        }
+        
+        var bindList = _draftProfile.GamepadButtonMap[action];
+        var newInput = new GamepadButtonInput(newButton, InputState.Pressed);
+        
         if (bindIndex < bindList.Count)
         {
             bindList[bindIndex] = newInput;

@@ -41,7 +41,7 @@ public class PauseGameState : IGameState
 
     // Used for hover functionality
     private int _hoverIndex = 0;
-    private int _hoverIndexMax = 3;
+    private int _hoverIndexMax = 2;
     private Action[] _actions = new Action[3];
 
     public PauseGameState(
@@ -137,7 +137,7 @@ public class PauseGameState : IGameState
         InputProfile profile = InputProfileManager.LoadProfile();
         Dictionary<PlayerAction, ICommand> actionToCommandMap = new Dictionary<PlayerAction, ICommand>
         {
-            { PlayerAction.Resume, new UnpauseCommand(_stateManager) },
+            { PlayerAction.Resume, new GenericActionCommand(_stateManager.RemoveState) },
             { PlayerAction.Quit, new GenericActionCommand(_quitGame) },
             
             { PlayerAction.MenuUp, new GenericActionCommand(() =>
