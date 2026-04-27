@@ -120,7 +120,7 @@ public class InputManager
     {
         switch (schema)
         {
-            case InputSchema.KeyboardMouse:
+            case InputSchema.Keyboard or InputSchema.Mouse:
             {
                 VirtualCursorPosition = _mouseService.GetPosition();
                 break;

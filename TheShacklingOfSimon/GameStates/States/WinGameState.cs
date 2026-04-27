@@ -117,7 +117,7 @@ public class WinGameState : IGameState
         ISprite controlsSprite;
         switch (_inputManager.ActiveSchema)
         {
-            case InputSchema.KeyboardMouse:
+            case InputSchema.Keyboard or InputSchema.Mouse:
             {
                 controlsSprite = _keyboardControlsSprite;
                 break;

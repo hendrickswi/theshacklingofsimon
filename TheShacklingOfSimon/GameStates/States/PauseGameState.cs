@@ -39,6 +39,11 @@ public class PauseGameState : IGameState
     private Vector2 _settingsPos;
     private Vector2 _quitPos;
 
+    // Used for hover functionality
+    private int _hoverIndex = 0;
+    private int _hoverIndexMax = 3;
+    private Action[] _actions = new Action[3];
+
     public PauseGameState(
         GameStateManager stateManager,
         InputManager inputManager,
@@ -49,6 +54,20 @@ public class PauseGameState : IGameState
         _inputManager = inputManager;
         _graphicsDevice = graphicsDevice;
         _quitGame = quitGame;
+        
+        _actions[0] = () => _stateManager.RemoveState();
+        _actions[1] = () =>
+        {
+            _stateManager.AddState(
+                new SettingsGameState(
+                    _stateManager,
+                    _inputManager,
+                    _graphicsDevice,
+                    _quitGame
+                )
+            );
+        };
+        _actions[2] = _quitGame;
         
         _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
             .WithTint(Color.Black);
@@ -120,6 +139,18 @@ public class PauseGameState : IGameState
         {
             { PlayerAction.Resume, new UnpauseCommand(_stateManager) },
             { PlayerAction.Quit, new GenericActionCommand(_quitGame) },
+            
+            { PlayerAction.MenuUp, new GenericActionCommand(() =>
+            {
+                _hoverIndex = (_hoverIndex - 1 + (_hoverIndexMax + 1)) % (_hoverIndexMax + 1);
+            })},
+            { PlayerAction.MenuDown, new GenericActionCommand(() =>
+            {
+                _hoverIndex = (_hoverIndex + 1) % (_hoverIndexMax + 1);
+            })},
+            { PlayerAction.MenuConfirm, new GenericActionCommand(_actions[_hoverIndex]) },
+            { PlayerAction.MenuCancel, new GenericActionCommand(_stateManager.RemoveState) }, 
+            { PlayerAction.Pause, new GenericActionCommand(_stateManager.RemoveState) }
         };
         
         _inputManager.LoadControls(profile, actionToCommandMap);
@@ -136,7 +167,7 @@ public class PauseGameState : IGameState
                 MouseButton.Left,
                 InputState.JustPressed
             ),
-            _stateManager.RemoveState
+            _actions[0]
         );
         
         guiControls.Add(
@@ -150,14 +181,7 @@ public class PauseGameState : IGameState
                 MouseButton.Left,
                 InputState.JustPressed
             ),
-            () => _stateManager.AddState(
-                new SettingsGameState(
-                    _stateManager,
-                    _inputManager,
-                    _graphicsDevice,
-                    _quitGame
-                )
-            )
+            _actions[1]
         );
         guiControls.Add(
             new MouseInput(
@@ -170,7 +194,7 @@ public class PauseGameState : IGameState
                 MouseButton.Left,
                 InputState.JustPressed
             ),
-            _quitGame
+            _actions[2]
         );
         
         _inputManager.LoadGUIControls(guiControls);
@@ -186,6 +210,12 @@ public class PauseGameState : IGameState
 
     public void Update(GameTime delta)
     {
+        Vector2 mousePos = _inputManager.VirtualCursorPosition;
+        Vector2 size = _resumeSprite.GetDimensions();
+        Rectangle bounds = new Rectangle((int)_resumePos.X, (int)_resumePos.Y, (int)size.X, (int)size.Y);
+        if (bounds.Contains(mousePos)) _hoverIndex = 0;
+        
+        
         _backgroundSprite.Update(delta);
         _pauseSprite.Update(delta);
         _settingsSprite.Update(delta);
@@ -194,9 +224,7 @@ public class PauseGameState : IGameState
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        Rectangle screen = _graphicsDevice.Viewport.Bounds;
-        
-        _backgroundSprite.Draw(spriteBatch, screen, Color.White);
+        _backgroundSprite.Draw(spriteBatch, _graphicsDevice.Viewport.Bounds, Color.White);
         _pauseSprite.Draw(spriteBatch, _pausedPos, Color.White);
         _resumeSprite.Draw(spriteBatch, _resumePos, Color.White);
         _settingsSprite.Draw(spriteBatch, _settingsPos, Color.White);

@@ -17,6 +17,9 @@ public enum PlayerAction
     PreviousActiveItem, NextActiveItem,
     
     // Miscellaneous
-    Pause, Resume, Quit, Reset
+    Pause, Resume, Quit, Reset,
+    
+    // Menu controls
+    MenuUp, MenuDown, MenuLeft, MenuRight, MenuConfirm, MenuCancel,
     
 }

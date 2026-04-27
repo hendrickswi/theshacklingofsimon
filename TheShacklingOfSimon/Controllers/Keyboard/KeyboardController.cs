@@ -83,7 +83,7 @@ public class KeyboardController : IController<KeyboardInput>
             )
             {
                 command.Execute();
-                OnInputDetected?.Invoke(InputSchema.KeyboardMouse);
+                OnInputDetected?.Invoke(InputSchema.Keyboard);
             }
 
             _previousStates[input.Button] = currentState;

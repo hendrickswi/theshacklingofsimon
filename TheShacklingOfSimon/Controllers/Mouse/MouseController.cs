@@ -76,7 +76,7 @@ public class MouseController : IController<MouseInput>
             )
             {
                 command.Execute();
-                OnInputDetected?.Invoke(InputSchema.KeyboardMouse);
+                OnInputDetected?.Invoke(InputSchema.Mouse);
             }
         }
 
