@@ -1,22 +1,15 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Commands;
-using TheShacklingOfSimon.Commands.Gamestate;
-using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Input;
-using TheShacklingOfSimon.Input.Mouse;
 using TheShacklingOfSimon.Input.Profiles;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
-
-#endregion
+using TheShacklingOfSimon.Sprites.Decorators;
 
 namespace TheShacklingOfSimon.GameStates.States;
 
@@ -32,21 +25,19 @@ public class PauseGameState : IGameState
     private readonly ISprite _resumeSprite;
     private readonly ISprite _settingsSprite;
     private readonly ISprite _quitSprite;
+    private readonly ISprite _cursorSprite;
     
-    // Keeping these not readonly in case we want to move the positions
-    private Vector2 _pauseSize;
-    private Vector2 _resumeSize;
-    private Vector2 _settingsSize;
-    private Vector2 _quitSize; 
-    private Vector2 _pausedPos;
-    private Vector2 _resumePos;
-    private Vector2 _settingsPos;
-    private Vector2 _quitPos;
-    private Rectangle _resumeBounds;
-    private Rectangle _settingsBounds;
-    private Rectangle _quitBounds;
+    private readonly Vector2 _pausedPos;
+    private readonly Vector2 _resumePos;
+    private readonly Vector2 _settingsPos;
+    private readonly Vector2 _quitPos;
     
-    private Action[] _actions = new Action[3];
+    private readonly Rectangle _resumeBounds;
+    private readonly Rectangle _settingsBounds;
+    private readonly Rectangle _quitBounds;
+    private readonly Vector2 _cursorSize = new Vector2(10, 10);
+    
+    private readonly Action[] _actions = new Action[3];
 
     public PauseGameState(
         GameStateManager stateManager,
@@ -60,81 +51,43 @@ public class PauseGameState : IGameState
         _quitGame = quitGame;
         
         _actions[0] = () => _stateManager.RemoveState();
-        _actions[1] = () =>
-        {
-            _stateManager.AddState(
-                new SettingsGameState(
-                    _stateManager,
-                    _inputManager,
-                    _graphicsDevice,
-                    _quitGame
-                )
-            );
-        };
+        _actions[1] = () => _stateManager.AddState(new SettingsGameState(_stateManager, _inputManager, _graphicsDevice, _quitGame));
         _actions[2] = _quitGame;
         
-        _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
-            .WithTint(Color.Black);
+        _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white").WithTint(Color.Black);
         _pauseSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps28", "PAUSED");
-        _resumeSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "RESUME");
-        _settingsSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "SETTINGS");
-        _quitSprite = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "QUIT");
+        
+        ISprite baseResume = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "RESUME");
+        ISprite baseSettings = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "SETTINGS");
+        ISprite baseQuit = SpriteFactory.Instance.CreateTextSprite("OptimusPrinceps16", "QUIT");
+        
+        _cursorSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white").WithTint(Color.Blue);
         
         // Position calculations
         Rectangle screen = _graphicsDevice.Viewport.Bounds;
-        _pauseSize = _pauseSprite.GetDimensions();
-        _resumeSize = _resumeSprite.GetDimensions();
-        _settingsSize = _settingsSprite.GetDimensions();
-        _quitSize = _quitSprite.GetDimensions();
+        Vector2 pauseSize = _pauseSprite.GetDimensions();
+        Vector2 resumeSize = baseResume.GetDimensions();
+        Vector2 settingsSize = baseSettings.GetDimensions();
+        Vector2 quitSize = baseQuit.GetDimensions();
 
-        _pausedPos = new Vector2(
-            (screen.Width - _pauseSize.X) * 0.5f,
-            (screen.Height - _pauseSize.Y) * 0.5f
-        );
-        _resumePos = new Vector2(
-            (screen.Width - _resumeSize.X) * 0.5f,
-            (screen.Height - _resumeSize.Y) * 0.5f + 40f
-        );
-        _settingsPos = new Vector2(
-            (screen.Width - _settingsSize.X) * 0.5f,
-            (screen.Height - _settingsSize.Y) * 0.5f + 80f
-        );
-        _quitPos = new Vector2(
-            (screen.Width - _quitSize.X) * 0.5f,
-            (screen.Height - _quitSize.Y) * 0.5f + 120f
-        );
+        _pausedPos = new Vector2((screen.Width - pauseSize.X) * 0.5f, (screen.Height - pauseSize.Y) * 0.5f);
+        _resumePos = new Vector2((screen.Width - resumeSize.X) * 0.5f, (screen.Height - resumeSize.Y) * 0.5f + 40f);
+        _settingsPos = new Vector2((screen.Width - settingsSize.X) * 0.5f, (screen.Height - settingsSize.Y) * 0.5f + 80f);
+        _quitPos = new Vector2((screen.Width - quitSize.X) * 0.5f, (screen.Height - quitSize.Y) * 0.5f + 120f);
         
-        _resumeBounds = new Rectangle((int)_resumePos.X, (int)_resumePos.Y, (int)_resumeSize.X, (int)_resumeSize.Y);
-        _settingsBounds = new Rectangle((int)_settingsPos.X, (int)_settingsPos.Y, (int)_settingsSize.X, (int)_settingsSize.Y);
-        _quitBounds = new Rectangle((int)_quitPos.X, (int)_quitPos.Y, (int)_quitSize.X, (int)_quitSize.Y);
+        _resumeBounds = new Rectangle((int)_resumePos.X, (int)_resumePos.Y, (int)resumeSize.X, (int)resumeSize.Y);
+        _settingsBounds = new Rectangle((int)_settingsPos.X, (int)_settingsPos.Y, (int)settingsSize.X, (int)settingsSize.Y);
+        _quitBounds = new Rectangle((int)_quitPos.X, (int)_quitPos.Y, (int)quitSize.X, (int)quitSize.Y);
         
-        _resumeSprite = _resumeSprite.WithHoverFunctionality(
-            () => {
-                Vector2 size = _resumeSprite.GetDimensions();
-                Rectangle bounds = new Rectangle((int)_resumePos.X, (int)_resumePos.Y, (int)size.X, (int)size.Y);
-                return bounds.Contains(_inputManager.VirtualCursorPosition);
-            },
-            Color.Gray, 
-            Color.White
-        );
-        _settingsSprite = _settingsSprite.WithHoverFunctionality(
-            () => {
-                Vector2 size = _settingsSprite.GetDimensions();
-                Rectangle bounds = new Rectangle((int)_settingsPos.X, (int)_settingsPos.Y, (int)size.X, (int)size.Y);
-                return bounds.Contains(_inputManager.VirtualCursorPosition);
-            },
-            Color.Gray, 
-            Color.White
-        );
-        _quitSprite = _quitSprite.WithHoverFunctionality(
-            () => {
-                Vector2 size = _quitSprite.GetDimensions();
-                Rectangle bounds = new Rectangle((int)_quitPos.X, (int)_quitPos.Y, (int)size.X, (int)size.Y);
-                return bounds.Contains(_inputManager.VirtualCursorPosition);
-            },
-            Color.Gray, 
-            Color.White
-        );
+        // Apply hover functionality
+        _resumeSprite = baseResume.WithHoverFunctionality(
+            () => _resumeBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
+            
+        _settingsSprite = baseSettings.WithHoverFunctionality(
+            () => _settingsBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
+            
+        _quitSprite = baseQuit.WithHoverFunctionality(
+            () => _quitBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
     }
 
     public void Enter()
@@ -142,59 +95,14 @@ public class PauseGameState : IGameState
         _inputManager.ClearAllControls();
         
         InputProfile profile = InputProfileManager.LoadProfile();
-        Dictionary<PlayerAction, ICommand> actionToCommandMap = new Dictionary<PlayerAction, ICommand>
+        var actionToCommandMap = new Dictionary<PlayerAction, ICommand>
         {
             { PlayerAction.Resume, new GenericActionCommand(_stateManager.RemoveState) },
-            { PlayerAction.Quit, new GenericActionCommand(_quitGame) },
+            { PlayerAction.MenuConfirm, new GenericActionCommand(ExecuteHoveredAction) },
             { PlayerAction.MenuCancel, new GenericActionCommand(_stateManager.RemoveState) }, 
             { PlayerAction.Pause, new GenericActionCommand(_stateManager.RemoveState) }
         };
-        
         _inputManager.LoadControls(profile, actionToCommandMap);
-        
-        Dictionary<MouseInput, Action> guiControls = new Dictionary<MouseInput, Action>();
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    _resumePos.X,
-                    _resumePos.Y,
-                    _resumeSprite.GetDimensions().X,
-                    _resumeSprite.GetDimensions().Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            _actions[0]
-        );
-        
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    _settingsPos.X,
-                    _settingsPos.Y,
-                    _settingsSprite.GetDimensions().X,
-                    _settingsSprite.GetDimensions().Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            _actions[1]
-        );
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    _quitPos.X, 
-                    _quitPos.Y, 
-                    _quitSprite.GetDimensions().X, 
-                    _quitSprite.GetDimensions().Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            _actions[2]
-        );
-        
-        _inputManager.LoadGUIControls(guiControls);
         
         MediaPlayer.Pause();
         SoundManager.Instance.StopAllSFX();
@@ -207,12 +115,12 @@ public class PauseGameState : IGameState
 
     public void Update(GameTime delta)
     {
-        Vector2 mousePos = _inputManager.VirtualCursorPosition;
-        
         _backgroundSprite.Update(delta);
         _pauseSprite.Update(delta);
+        _resumeSprite.Update(delta);
         _settingsSprite.Update(delta);
         _quitSprite.Update(delta);
+        _cursorSprite.Update(delta);
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -222,10 +130,20 @@ public class PauseGameState : IGameState
         _resumeSprite.Draw(spriteBatch, _resumePos, Color.White);
         _settingsSprite.Draw(spriteBatch, _settingsPos, Color.White);
         _quitSprite.Draw(spriteBatch, _quitPos, Color.White);
+
+        if (_inputManager.ActiveSchema != InputSchema.Mouse)
+        {
+            Vector2 cursorPos = _inputManager.VirtualCursorPosition;
+            _cursorSprite.Draw(spriteBatch, new Rectangle((int)cursorPos.X, (int)cursorPos.Y, (int)_cursorSize.X, (int)_cursorSize.Y), Color.White);
+        }
     }
 
-    private void RefreshPositioning()
+    private void ExecuteHoveredAction()
     {
+        Vector2 cursor = _inputManager.VirtualCursorPosition;
         
+        if (_resumeBounds.Contains(cursor)) _actions[0].Invoke();
+        else if (_settingsBounds.Contains(cursor)) _actions[1].Invoke();
+        else if (_quitBounds.Contains(cursor)) _actions[2].Invoke();
     }
 }

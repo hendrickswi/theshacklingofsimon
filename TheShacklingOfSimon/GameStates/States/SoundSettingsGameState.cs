@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Commands;
-using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Input;
-using TheShacklingOfSimon.Input.Mouse;
 using TheShacklingOfSimon.Input.Profiles;
 using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.Sprites.Factory;
 using TheShacklingOfSimon.Sprites.Products;
+using TheShacklingOfSimon.Sprites.Decorators;
 
 namespace TheShacklingOfSimon.GameStates.States;
 
@@ -18,31 +17,90 @@ public class SoundSettingsGameState : IGameState
     private readonly GameStateManager _stateManager;
     private readonly InputManager _inputManager;
     private readonly GraphicsDevice _graphicsDevice;
-    private readonly Action _quitGame;
 
     private readonly ISprite _backgroundSprite;
     private readonly ISprite _backSprite;
     private readonly ISprite _muteSprite;
     private readonly ISprite _sfxSprite;
     private readonly ISprite _musicSprite;
-    private readonly ISprite _incSprite;
-    private readonly ISprite _decSprite;
+    
+    private readonly ISprite _sfxIncSprite;
+    private readonly ISprite _sfxDecSprite;
+    private readonly ISprite _musicIncSprite;
+    private readonly ISprite _musicDecSprite;
+    private readonly ISprite _cursorSprite;
 
-    public SoundSettingsGameState(GameStateManager stateManager, InputManager inputManager, GraphicsDevice graphicsDevice, Action quitGame)
+    private readonly Vector2 _backPos;
+    private readonly Vector2 _mutePos;
+    private readonly Vector2 _sfxPos;
+    private readonly Vector2 _musicPos;
+    private readonly Vector2 _sfxIncPos;
+    private readonly Vector2 _sfxDecPos;
+    private readonly Vector2 _musicIncPos;
+    private readonly Vector2 _musicDecPos;
+
+    private readonly Rectangle _backBounds;
+    private readonly Rectangle _muteBounds;
+    private readonly Rectangle _sfxIncBounds;
+    private readonly Rectangle _sfxDecBounds;
+    private readonly Rectangle _musicIncBounds;
+    private readonly Rectangle _musicDecBounds;
+
+    private readonly Vector2 _cursorSize = new Vector2(10, 10);
+
+    public SoundSettingsGameState(GameStateManager stateManager, InputManager inputManager, GraphicsDevice graphicsDevice)
     {
         _stateManager = stateManager;
         _inputManager = inputManager;
         _graphicsDevice = graphicsDevice;
-        _quitGame = quitGame;
         
-        _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
-            .WithTint(Color.Black);
-        _backSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "BACK");
-        _muteSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "MUTE");
+        _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white").WithTint(Color.Black);
+        ISprite baseBack = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "BACK");
+        ISprite baseMute = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "MUTE");
         _sfxSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "SFX");
         _musicSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "Music");
-        _incSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "+");
-        _decSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "-");
+        ISprite baseSfxInc = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "+");
+        ISprite baseSfxDec = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "-");
+        ISprite baseMusicInc = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "+");
+        ISprite baseMusicDec = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "-");
+        
+        _cursorSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white").WithTint(Color.Blue);
+
+        // Position calculations
+        Rectangle screen = _graphicsDevice.Viewport.Bounds;
+        Vector2 center = new Vector2(screen.Width * 0.5f, screen.Height * 0.5f);
+        
+        Vector2 backSize = baseBack.GetDimensions();
+        Vector2 muteSize = baseMute.GetDimensions();
+        Vector2 sfxSize = _sfxSprite.GetDimensions();
+        Vector2 musicSize = _musicSprite.GetDimensions();
+        Vector2 incSize = baseSfxInc.GetDimensions();
+        Vector2 decSize = baseSfxDec.GetDimensions();
+
+        _backPos = new Vector2(5, screen.Height - backSize.Y - 5);
+        _mutePos = new Vector2(center.X - (muteSize.X / 2), center.Y);
+        
+        _sfxPos = new Vector2(center.X - (sfxSize.X / 2), center.Y + muteSize.Y + 5);
+        _sfxIncPos = new Vector2(_sfxPos.X + sfxSize.X + 5, _sfxPos.Y);
+        _sfxDecPos = new Vector2(_sfxPos.X - decSize.X - 5, _sfxPos.Y);
+
+        _musicPos = new Vector2(center.X - (musicSize.X / 2), center.Y + muteSize.Y + sfxSize.Y + 10);
+        _musicIncPos = new Vector2(_musicPos.X + musicSize.X + 5, _musicPos.Y);
+        _musicDecPos = new Vector2(_musicPos.X - decSize.X - 5, _musicPos.Y);
+        
+        _backBounds = new Rectangle((int)_backPos.X, (int)_backPos.Y, (int)backSize.X, (int)backSize.Y);
+        _muteBounds = new Rectangle((int)_mutePos.X, (int)_mutePos.Y, (int)muteSize.X, (int)muteSize.Y);
+        _sfxIncBounds = new Rectangle((int)_sfxIncPos.X, (int)_sfxIncPos.Y, (int)incSize.X, (int)incSize.Y);
+        _sfxDecBounds = new Rectangle((int)_sfxDecPos.X, (int)_sfxDecPos.Y, (int)decSize.X, (int)decSize.Y);
+        _musicIncBounds = new Rectangle((int)_musicIncPos.X, (int)_musicIncPos.Y, (int)incSize.X, (int)incSize.Y);
+        _musicDecBounds = new Rectangle((int)_musicDecPos.X, (int)_musicDecPos.Y, (int)decSize.X, (int)decSize.Y);
+        
+        _backSprite = baseBack.WithHoverFunctionality(() => _backBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
+        _muteSprite = baseMute.WithHoverFunctionality(() => _muteBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
+        _sfxIncSprite = baseSfxInc.WithHoverFunctionality(() => _sfxIncBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
+        _sfxDecSprite = baseSfxDec.WithHoverFunctionality(() => _sfxDecBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
+        _musicIncSprite = baseMusicInc.WithHoverFunctionality(() => _musicIncBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
+        _musicDecSprite = baseMusicDec.WithHoverFunctionality(() => _musicDecBounds.Contains(_inputManager.VirtualCursorPosition), Color.Gray, Color.White);
     }
 
     public void Enter()
@@ -50,121 +108,17 @@ public class SoundSettingsGameState : IGameState
         _inputManager.ClearAllControls();
         
         InputProfile profile = InputProfileManager.LoadProfile();
-        Dictionary<PlayerAction, ICommand> actionToCommandMap = new Dictionary<PlayerAction, ICommand>
+        var actionToCommandMap = new Dictionary<PlayerAction, ICommand>
         {
-            { PlayerAction.Resume, new GenericActionCommand(_stateManager.RemoveState) },
-            { PlayerAction.Quit, new GenericActionCommand(_quitGame) },
+            { PlayerAction.MenuConfirm, new GenericActionCommand(ExecuteHoveredAction) },
+            { PlayerAction.MenuCancel, new GenericActionCommand(_stateManager.RemoveState) },
+            { PlayerAction.Resume, new GenericActionCommand(_stateManager.RemoveState) }
         };
         
         _inputManager.LoadControls(profile, actionToCommandMap);
-        
-        Dictionary<MouseInput, Action> guiControls = new Dictionary<MouseInput, Action>();
-        
-        Rectangle screen = _graphicsDevice.Viewport.Bounds;
-        Vector2 backSize = _backSprite.GetDimensions();
-        Vector2 backPos = new Vector2(5, screen.Height - backSize.Y - 5);
-        
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    backPos.X,
-                    backPos.Y,
-                    backSize.X,
-                    backSize.Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            _stateManager.RemoveState
-        );
-        
-        Vector2 center = new Vector2(screen.Width / 2, screen.Height / 2);
-        Vector2 muteSize = _muteSprite.GetDimensions();
-        Vector2 mutePos = new Vector2(center.X - (muteSize.X / 2), center.Y);
-
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    mutePos.X,
-                    mutePos.Y,
-                    muteSize.X,
-                    muteSize.Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            SoundOptions.Instance.ToggleMute
-        );
-
-        Vector2 incSize = _incSprite.GetDimensions();
-        Vector2 decSize = _decSprite.GetDimensions();
-
-        Vector2 sfxSize = _sfxSprite.GetDimensions();
-        Vector2 sfxPos = new Vector2(center.X - (sfxSize.X / 2), center.Y + muteSize.Y + 5);
-
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    sfxPos.X + sfxSize.X + 5,
-                    sfxPos.Y,
-                    incSize.X,
-                    incSize.Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            SoundOptions.Instance.IncSFX
-        );
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    sfxPos.X - decSize.X - 5,
-                    sfxPos.Y,
-                    decSize.X,
-                    decSize.Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            SoundOptions.Instance.DecSFX
-        );
-
-        Vector2 musicSize = _musicSprite.GetDimensions();
-        Vector2 musicPos = new Vector2(center.X - (musicSize.X / 2), center.Y + muteSize.Y + sfxSize.Y + 10);
-
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    musicPos.X + musicSize.X + 5,
-                    musicPos.Y,
-                    incSize.X,
-                    incSize.Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            SoundOptions.Instance.IncMusic
-        );
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    musicPos.X - decSize.X - 5,
-                    musicPos.Y,
-                    decSize.X,
-                    decSize.Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            SoundOptions.Instance.DecMusic
-        );
-
-        _inputManager.LoadGUIControls(guiControls);
     }
 
-    public void Exit()
-    {
-    }
+    public void Exit() { }
 
     public void Update(GameTime delta)
     {
@@ -173,39 +127,42 @@ public class SoundSettingsGameState : IGameState
         _muteSprite.Update(delta);
         _sfxSprite.Update(delta);
         _musicSprite.Update(delta);
-        _incSprite.Update(delta);
-        _decSprite.Update(delta);
-
+        _sfxIncSprite.Update(delta);
+        _sfxDecSprite.Update(delta);
+        _musicIncSprite.Update(delta);
+        _musicDecSprite.Update(delta);
+        _cursorSprite.Update(delta);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        Rectangle screen = _graphicsDevice.Viewport.Bounds;
-        Vector2 backSize = _backSprite.GetDimensions();
-        Vector2 backPos = new Vector2(5, screen.Height - backSize.Y - 5);
+        _backgroundSprite.Draw(spriteBatch, _graphicsDevice.Viewport.Bounds, Color.White);
+        _backSprite.Draw(spriteBatch, _backPos, Color.White);
+        _muteSprite.Draw(spriteBatch, _mutePos, Color.White);
+        _sfxSprite.Draw(spriteBatch, _sfxPos, Color.White);
+        _musicSprite.Draw(spriteBatch, _musicPos, Color.White);
+        
+        _sfxIncSprite.Draw(spriteBatch, _sfxIncPos, Color.White);
+        _sfxDecSprite.Draw(spriteBatch, _sfxDecPos, Color.White);
+        _musicIncSprite.Draw(spriteBatch, _musicIncPos, Color.White);
+        _musicDecSprite.Draw(spriteBatch, _musicDecPos, Color.White);
 
-        Vector2 center = new Vector2(screen.Width / 2, screen.Height / 2);
-        Vector2 muteSize = _muteSprite.GetDimensions();
-        Vector2 mutePos = new Vector2(center.X - (muteSize.X / 2), center.Y);
+        if (_inputManager.ActiveSchema != InputSchema.Mouse)
+        {
+            Vector2 cursorPos = _inputManager.VirtualCursorPosition;
+            _cursorSprite.Draw(spriteBatch, new Rectangle((int)cursorPos.X, (int)cursorPos.Y, (int)_cursorSize.X, (int)_cursorSize.Y), Color.White);
+        }
+    }
 
-        Vector2 incSize = _incSprite.GetDimensions();
-        Vector2 decSize = _decSprite.GetDimensions();
-
-        Vector2 sfxSize = _sfxSprite.GetDimensions();
-        Vector2 sfxPos = new Vector2(center.X - (sfxSize.X / 2), center.Y + muteSize.Y + 5);
-
-        Vector2 musicSize = _musicSprite.GetDimensions();
-        Vector2 musicPos = new Vector2(center.X - (musicSize.X / 2), center.Y + muteSize.Y + sfxSize.Y + 10);
-
-        _backgroundSprite.Draw(spriteBatch, screen, Color.White);
-        _backSprite.Draw(spriteBatch, backPos, Color.White);
-        _muteSprite.Draw(spriteBatch, mutePos, Color.White);
-        _sfxSprite.Draw(spriteBatch, sfxPos, Color.White);
-        _musicSprite.Draw(spriteBatch, musicPos, Color.White);
-        _incSprite.Draw(spriteBatch, new Vector2(sfxPos.X + sfxSize.X + 5, sfxPos.Y), Color.White);
-        _decSprite.Draw(spriteBatch, new Vector2(sfxPos.X - decSize.X - 5, sfxPos.Y), Color.White);
-
-        _incSprite.Draw(spriteBatch, new Vector2(musicPos.X + musicSize.X + 5, musicPos.Y), Color.White);
-        _decSprite.Draw(spriteBatch, new Vector2(musicPos.X - decSize.X - 5, musicPos.Y), Color.White);
+    private void ExecuteHoveredAction()
+    {
+        Vector2 cursor = _inputManager.VirtualCursorPosition;
+        
+        if (_backBounds.Contains(cursor)) _stateManager.RemoveState();
+        else if (_muteBounds.Contains(cursor)) SoundOptions.Instance.ToggleMute();
+        else if (_sfxIncBounds.Contains(cursor)) SoundOptions.Instance.IncSFX();
+        else if (_sfxDecBounds.Contains(cursor)) SoundOptions.Instance.DecSFX();
+        else if (_musicIncBounds.Contains(cursor)) SoundOptions.Instance.IncMusic();
+        else if (_musicDecBounds.Contains(cursor)) SoundOptions.Instance.DecMusic();
     }
 }

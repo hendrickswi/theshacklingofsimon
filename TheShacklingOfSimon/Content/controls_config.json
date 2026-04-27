@@ -141,7 +141,20 @@
             { "Button": "Back", "State": "JustPressed" }
         ]
     },
-    "MouseMap": {},
+    "MouseMap": {
+        "MenuConfirm": [
+            {
+                "Region": {
+                    "X": 0,
+                    "Y": 0,
+                    "Width": 1024,
+                    "Height": 768
+                },
+                "Button": "Left",
+                "State": "JustPressed"
+            }
+        ]
+    },
     "GamepadButtonMap": {
         "SecondaryAttackDown": [
             {
@@ -198,24 +211,6 @@
         "Pause": [
             {
                 "Button": "Start",
-                "State": "JustPressed"
-            }
-        ],
-        "Reset": [
-            {
-                "Button": "Back",
-                "State": "JustPressed"
-            }
-        ],
-        "Quit": [
-            {
-                "Button": "X",
-                "State": "JustPressed"
-            }
-        ],
-        "Resume": [
-            {
-                "Button": "A",
                 "State": "JustPressed"
             }
         ],

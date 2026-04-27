@@ -24,15 +24,17 @@ public class SettingsGameState : IGameState
     private readonly ISprite _backSprite;
     private readonly ISprite _soundSprite;
     private readonly ISprite _inputSprite;
+    private readonly ISprite _cursorSprite;
     
     // Keeping these not readonly in case we want to move the positions
     private Vector2 _backPos;
     private Vector2 _soundPos;
     private Vector2 _inputPos;
-
-    // Used for hover functionality
-    private int _hoverIndex = 0;
-    private int _hoverIndexMax = 2;
+    private Rectangle _backBounds;
+    private Rectangle _soundBounds;
+    private Rectangle _inputBounds;
+    private Vector2 _cursorSize;
+    
     private Action[] _actions = new Action[3];
 
     public SettingsGameState(GameStateManager stateManager, InputManager inputManager, GraphicsDevice graphicsDevice, Action quitGame)
@@ -40,41 +42,29 @@ public class SettingsGameState : IGameState
         _stateManager = stateManager;
         _inputManager = inputManager;
         _graphicsDevice = graphicsDevice;
-        _quitGame = quitGame;
         
         _actions[0] = () => _stateManager.RemoveState();
-        _actions[1] = () =>
-        {
-            _stateManager.AddState(
-                new SoundSettingsGameState(
-                    _stateManager,
-                    _inputManager,
-                    _graphicsDevice,
-                    _quitGame
-                )
-            );
-        };
-        _actions[2] = () =>
-        {
-            _stateManager.AddState(
-                new InputSettingsGameState(
-                    _stateManager,
-                    _inputManager,
-                    _graphicsDevice)
-            );
-        };
+        _actions[1] = () => _stateManager.AddState(
+            new SoundSettingsGameState(_stateManager, _inputManager, _graphicsDevice)
+        );
+        _actions[2] = () => _stateManager.AddState(
+            new InputSettingsGameState(_stateManager, _inputManager, _graphicsDevice)
+        );
         
         _backgroundSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
             .WithTint(Color.Black);
-        _backSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "BACK");
-        _soundSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "SOUND");
-        _inputSprite = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "INPUT");
+        ISprite baseBack = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "BACK");
+        ISprite baseSound = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "SOUND");
+        ISprite baseInput = SpriteFactory.Instance.CreateTextSprite("Upheaval32", "INPUT");
+        _cursorSprite = SpriteFactory.Instance.CreateStaticSprite("1x1white")
+            .WithTint(Color.Blue);
         
         // Position calculations
         Rectangle screen = _graphicsDevice.Viewport.Bounds;
-        Vector2 backSize = _backSprite.GetDimensions();
-        Vector2 soundSize = _soundSprite.GetDimensions();
-        Vector2 inputSize = _inputSprite.GetDimensions();
+        Vector2 backSize = baseBack.GetDimensions();
+        Vector2 soundSize = baseSound.GetDimensions();
+        Vector2 inputSize = baseInput.GetDimensions();
+        _cursorSize = new Vector2(10, 10);
         
         _backPos = new Vector2(5, screen.Height - backSize.Y - 5);
         _soundPos = new Vector2(
@@ -85,6 +75,22 @@ public class SettingsGameState : IGameState
             (screen.Width - inputSize.X) * 0.5f,
             (screen.Height - inputSize.Y) * 0.5f + 40f
         );
+
+        _backBounds = new Rectangle((int)_backPos.X, (int)_backPos.Y, (int)backSize.X, (int)backSize.Y);
+        _soundBounds = new Rectangle((int)_soundPos.X, (int)_soundPos.Y, (int)soundSize.X, (int)soundSize.Y);
+        _inputBounds = new Rectangle((int)_inputPos.X, (int)_inputPos.Y, (int)inputSize.X, (int)inputSize.Y);
+        
+        _backSprite = baseBack.WithHoverFunctionality(
+            () => _backBounds.Contains(_inputManager.VirtualCursorPosition),
+            Color.Gray, Color.White);
+
+        _soundSprite = baseSound.WithHoverFunctionality(
+            () => _soundBounds.Contains(_inputManager.VirtualCursorPosition),
+            Color.Gray, Color.White);
+
+        _inputSprite = baseInput.WithHoverFunctionality(
+            () => _inputBounds.Contains(_inputManager.VirtualCursorPosition),
+            Color.Gray, Color.White);
     }
 
     public void Enter()
@@ -92,69 +98,14 @@ public class SettingsGameState : IGameState
         _inputManager.ClearAllControls();
         
         InputProfile profile = InputProfileManager.LoadProfile();
-        Dictionary<PlayerAction, ICommand> actionToCommandMap = new Dictionary<PlayerAction, ICommand>()
+        var actionToCommandMap = new Dictionary<PlayerAction, ICommand>()
         {
             { PlayerAction.Resume, new GenericActionCommand(_stateManager.RemoveState) },
-            { PlayerAction.MenuUp, new GenericActionCommand(() =>
-            {
-                _hoverIndex = (_hoverIndex - 1 + (_hoverIndexMax + 1)) % (_hoverIndexMax + 1);
-            })},
-            { PlayerAction.MenuDown, new GenericActionCommand(() =>
-            {
-                _hoverIndex = (_hoverIndex + 1) % (_hoverIndexMax + 1);
-            })},
-            { PlayerAction.MenuConfirm, new GenericActionCommand(_actions[_hoverIndex]) },
+            { PlayerAction.MenuConfirm, new GenericActionCommand(ExecuteHoveredAction) },
             { PlayerAction.MenuCancel, new GenericActionCommand(_stateManager.RemoveState) }, 
             { PlayerAction.Pause, new GenericActionCommand(_stateManager.RemoveState) }
         };
         _inputManager.LoadControls(profile, actionToCommandMap);
-        
-        // GUI Controls (mouse)
-        Dictionary<MouseInput, Action> guiControls = new Dictionary<MouseInput, Action>();
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    _backPos.X,
-                    _backPos.Y,
-                    _backSprite.GetDimensions().X,
-                    _backSprite.GetDimensions().Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            _actions[0]
-        );
-        
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    _soundPos.X,
-                    _soundPos.Y,
-                    _soundSprite.GetDimensions().X,
-                    _soundSprite.GetDimensions().Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            _actions[1]
-        );
-        
-        guiControls.Add(
-            new MouseInput(
-                new MouseInputRegion(
-                    _inputPos.X,
-                    _inputPos.Y,
-                    _inputSprite.GetDimensions().X,
-                    _inputSprite.GetDimensions().Y
-                ),
-                MouseButton.Left,
-                InputState.JustPressed
-            ),
-            _actions[2]
-        );
-        
-        _inputManager.LoadGUIControls(guiControls);
-
     }
 
     public void Exit()
@@ -163,23 +114,11 @@ public class SettingsGameState : IGameState
 
     public void Update(GameTime delta)
     {
-        Vector2 mousePos = _inputManager.VirtualCursorPosition;
-        Vector2 backSize = _backSprite.GetDimensions();
-        Vector2 soundSize = _soundSprite.GetDimensions();
-        Vector2 inputSize = _inputSprite.GetDimensions();
-        
-        // TODO: Move this out of Update() so it's not called every frame
-        Rectangle backBounds = new Rectangle((int)_backPos.X, (int)_backPos.Y, (int)backSize.X, (int)backSize.Y);
-        Rectangle soundBounds = new Rectangle((int)_soundPos.X, (int)_soundPos.Y, (int)soundSize.X, (int)soundSize.Y);
-        Rectangle inputBounds = new Rectangle((int)_inputPos.X, (int)_inputPos.Y, (int)inputSize.X, (int)inputSize.Y);
-        if (backBounds.Contains(mousePos)) _hoverIndex = 0;
-        else if (soundBounds.Contains(mousePos)) _hoverIndex = 1;
-        else if (inputBounds.Contains(mousePos)) _hoverIndex = 2;
-        
         _backgroundSprite.Update(delta);
         _backSprite.Update(delta);
         _soundSprite.Update(delta);
         _inputSprite.Update(delta);
+        _cursorSprite.Update(delta);
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -188,6 +127,20 @@ public class SettingsGameState : IGameState
         _backSprite.Draw(spriteBatch, _backPos, Color.White);
         _soundSprite.Draw(spriteBatch, _soundPos, Color.White);
         _inputSprite.Draw(spriteBatch, _inputPos, Color.White);
+
+        if (_inputManager.ActiveSchema != InputSchema.Mouse)
+        {
+            Vector2 cursorPos = _inputManager.VirtualCursorPosition;
+            _cursorSprite.Draw(spriteBatch, new Rectangle((int)cursorPos.X, (int)cursorPos.Y, (int)_cursorSize.X, (int)_cursorSize.Y), Color.White);
+        }
     }
-    
+
+    private void ExecuteHoveredAction()
+    {
+        Vector2 mousePos = _inputManager.VirtualCursorPosition;
+        
+        if (_backBounds.Contains(mousePos)) _actions[0].Invoke();
+        else if (_soundBounds.Contains(mousePos)) _actions[1].Invoke();
+        else if (_inputBounds.Contains(mousePos)) _actions[2].Invoke();
+    }
 }

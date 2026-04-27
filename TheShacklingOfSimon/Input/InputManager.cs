@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Commands.Gamestate;
 using TheShacklingOfSimon.Commands.PlayerAttack;
@@ -29,7 +30,8 @@ public class InputManager
 {
     public InputSchema ActiveSchema { get; private set; }
     public Vector2 VirtualCursorPosition { get; set; }
-    
+
+    private readonly GraphicsDevice _graphicsDevice;
     private readonly IController<KeyboardInput> _keyboardController;
     private readonly IController<MouseInput> _mouseController;
     private readonly IGamepadController _gamepadController;
@@ -39,12 +41,15 @@ public class InputManager
     private readonly IGamepadService _gamepadService;
 
     private InputProfile _currentProfile;
+    private Vector2 _prevMousePos;
     
-    // TODO: Replace this with custom gamepad service
+    // TODO: Replace this with custom gamepad and keyboard services?
     private Microsoft.Xna.Framework.Input.GamePadState _prevGamepadState;
+    private Microsoft.Xna.Framework.Input.KeyboardState _prevKeyboardState;
 
-    public InputManager()
+    public InputManager(GraphicsDevice graphicsDevice)
     {
+        _graphicsDevice = graphicsDevice;
         _keyboardService = new MonoGameKeyboardService();
         _mouseService = new MonoGameMouseService();
         _gamepadService = new MonoGameGamepadService(PlayerIndex.One);
@@ -64,8 +69,53 @@ public class InputManager
         _mouseController.Update();
         _gamepadController.Update();
         
-        // TODO: Replace this with custom gamepad service
+        // Mouse tracking
+        Vector2 currentMousePos = _mouseService.GetPosition();
+        if (currentMousePos != _prevMousePos)
+        {
+            VirtualCursorPosition = currentMousePos;
+            _prevMousePos = currentMousePos;
+            ActiveSchema = InputSchema.Mouse; 
+        }
+
+        // Gamepad (joystick) tracking
+        Vector2 joystickPos = _gamepadService.GetLeftJoystickPosition();
+        if (joystickPos.LengthSquared() > 0.05f) // Simple deadzone check
+        {
+            joystickPos.Y *= -1; // Invert Y so "Up" moves the cursor up the screen
+            VirtualCursorPosition += joystickPos * 10.0f; // 10.0f is cursor speed
+            ActiveSchema = InputSchema.GamepadJoystick;
+        }
+        
+        // Keyboard tracking
+        if (_currentProfile != null)
+        {
+            Vector2 keyboardMovement = Vector2.Zero;
+        
+            // Use the helper we discussed to check if the bound keys are held down
+            if (IsKeyboardActionPressed(PlayerAction.MenuUp)) keyboardMovement.Y -= 1;
+            if (IsKeyboardActionPressed(PlayerAction.MenuDown)) keyboardMovement.Y += 1;
+            if (IsKeyboardActionPressed(PlayerAction.MenuLeft)) keyboardMovement.X -= 1;
+            if (IsKeyboardActionPressed(PlayerAction.MenuRight)) keyboardMovement.X += 1;
+
+            if (keyboardMovement != Vector2.Zero)
+            {
+                keyboardMovement.Normalize();
+                VirtualCursorPosition += keyboardMovement * 8.0f;
+                ActiveSchema = InputSchema.Keyboard;
+            }
+        }
+
+        // Clamp cursor to screen bounds
+        Rectangle screenBounds = _graphicsDevice.Viewport.Bounds;
+        VirtualCursorPosition = new Vector2(
+            MathHelper.Clamp(VirtualCursorPosition.X, 0, screenBounds.Width),
+            MathHelper.Clamp(VirtualCursorPosition.Y, 0, screenBounds.Height)
+        );
+
+        // Track previous states for JustPressed logic
         _prevGamepadState = Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.One);
+        _prevKeyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
     }
 
     public void ClearAllControls()
@@ -162,43 +212,6 @@ public class InputManager
 
     private void HandleInputDetected(InputSchema schema)
     {
-        switch (schema)
-        {
-            case InputSchema.Mouse:
-            {
-                VirtualCursorPosition = _mouseService.GetPosition();
-                break;
-            }
-            case InputSchema.Keyboard:
-            {
-                if (_currentProfile == null) break;
-
-                Vector2 keyboardMovement = Vector2.Zero;
-                if (IsKeyboardActionPressed(PlayerAction.MenuUp)) keyboardMovement.Y -= 1;
-                if (IsKeyboardActionPressed(PlayerAction.MenuDown)) keyboardMovement.Y += 1;
-                if (IsKeyboardActionPressed(PlayerAction.MenuLeft)) keyboardMovement.X -= 1;
-                if (IsKeyboardActionPressed(PlayerAction.MenuRight)) keyboardMovement.X += 1;
-
-                if (keyboardMovement.LengthSquared() > float.Epsilon)
-                {
-                    keyboardMovement.Normalize();
-                    VirtualCursorPosition += keyboardMovement * 10.0f;
-                }
-                break;
-            }
-            case InputSchema.GamepadButton or InputSchema.GamepadJoystick:
-            {
-                Vector2 joystickPosition = _gamepadService.GetLeftJoystickPosition();
-                VirtualCursorPosition += joystickPosition * 10.0f;
-                break;
-            }
-            default:
-            {
-                // Safety
-                break;
-            }
-        }
-        
         if (ActiveSchema == schema) return;
         ActiveSchema = schema;
     }

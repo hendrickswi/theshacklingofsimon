@@ -3,12 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using System;
 using System.Collections.Generic;
-using TheShacklingOfSimon.Controllers;
-using TheShacklingOfSimon.Controllers.Gamepad;
-using TheShacklingOfSimon.Controllers.Keyboard;
-using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Entities;
 using TheShacklingOfSimon.Entities.Collisions;
 using TheShacklingOfSimon.Entities.Pickup;
@@ -22,7 +17,6 @@ using TheShacklingOfSimon.GameStates.States;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Items.Active_Items;
 using TheShacklingOfSimon.Level_Handling.Implementations;
-using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomConstructor;
 using TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomManager;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Border.Doors;
@@ -75,7 +69,7 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        _inputManager = new InputManager();
+        _inputManager = new InputManager(GraphicsDevice);
         base.Initialize();
     }
 
@@ -365,18 +359,18 @@ public class Game1 : Game
 
     private void CreateGameStates()
     {
-        string fogEffectPath = System.IO.Path.Combine(
-            AppContext.BaseDirectory,
-            "Content",
-            "Effects",
-            "FogOfWarEffect.xnb"
-        );
+        // string fogEffectPath = System.IO.Path.Combine(
+        //     AppContext.BaseDirectory,
+        //     "Content",
+        //     "Effects",
+        //     "FogOfWarEffect.xnb"
+        // );
 
         // System.Diagnostics.Debug.WriteLine("Fog effect expected at: " + fogEffectPath);
         // System.Diagnostics.Debug.WriteLine("Fog effect exists: " + System.IO.File.Exists(fogEffectPath));
 
-        Effect fogEffect = Content.Load<Effect>("Effects/FogOfWarEffect");
-        HUD = new HUD(_player, _roomManager, GraphicsDevice, fogEffect);
+        // Effect fogEffect = Content.Load<Effect>("Effects/FogOfWarEffect");
+        HUD = new HUD(_player, _roomManager, GraphicsDevice/*, fogEffect*/);
 
         _gameStateManager = new GameStateManager();
         _gameStateManager.AddState(
