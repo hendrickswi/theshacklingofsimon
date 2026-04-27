@@ -33,7 +33,12 @@ public static class InputProfileManager
     {
         try
         {
-            Directory.CreateDirectory(BaseDir);
+            string directory = Path.GetDirectoryName(JsonPath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            
             string jsonString = JsonSerializer.Serialize(profile, Options);
             File.WriteAllText(JsonPath, jsonString);
             Console.WriteLine("Profile saved successfully to " + JsonPath);

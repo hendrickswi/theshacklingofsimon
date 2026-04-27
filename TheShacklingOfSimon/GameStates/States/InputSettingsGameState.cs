@@ -71,7 +71,11 @@ public class InputSettingsGameState : IGameState
 
     public void Enter()
     {
-        _draftProfile = InputProfileManager.LoadProfile();
+        if (_draftProfile == null)
+        {
+            _draftProfile = InputProfileManager.LoadProfile();
+        }
+        
         _playerActions = _draftProfile.KeyboardMap.Keys
             .Where(action => !_systemPlayerActions.Contains(action))
             .ToList();
@@ -246,22 +250,78 @@ public class InputSettingsGameState : IGameState
 
     private void ApplyKeyboardRebind(PlayerAction action, int bindIndex, KeyboardButton newButton)
     {
-        if (!_draftProfile.KeyboardMap.ContainsKey(action)) _draftProfile.KeyboardMap[action] = new List<KeyboardInput>();
+        if (!_draftProfile.KeyboardMap.ContainsKey(action))
+        {
+            _draftProfile.KeyboardMap[action] = new List<KeyboardInput>();
+        }
+        
         var bindList = _draftProfile.KeyboardMap[action];
-        var newInput = new KeyboardInput(newButton, InputState.Pressed);
 
-        if (bindIndex < bindList.Count) bindList[bindIndex] = newInput;
-        else bindList.Add(newInput);
+        InputState state = InputState.Pressed;
+        if (bindList.Count > 0)
+        {
+            // The input state should be the same regardless of which slot
+            state = bindList[0].State;
+        }
+        else
+        {
+            // Fallback for empty list
+            if (action.ToString().Contains("Next") ||
+                action.ToString().Contains("Previous") ||
+                action == PlayerAction.UseActiveItem
+               )
+            {
+                state = InputState.JustPressed;
+            }
+        }
+        
+        var newInput = new KeyboardInput(newButton, state);
+
+        // Add padding
+        while (bindList.Count <= bindIndex)
+        {
+            bindList.Add(new KeyboardInput(KeyboardButton.None, state));
+        }
+
+        bindList[bindIndex] = newInput;
     }
 
     private void ApplyGamepadButtonRebind(PlayerAction action, int bindIndex, GamepadButton newButton)
     {
-        if (!_draftProfile.GamepadButtonMap.ContainsKey(action)) _draftProfile.GamepadButtonMap[action] = new List<GamepadButtonInput>();
-        var bindList = _draftProfile.GamepadButtonMap[action];
-        var newInput = new GamepadButtonInput(newButton, InputState.Pressed);
+        if (!_draftProfile.GamepadButtonMap.ContainsKey(action))
+        {
+            _draftProfile.GamepadButtonMap[action] = new List<GamepadButtonInput>();
+        }
         
-        if (bindIndex < bindList.Count) bindList[bindIndex] = newInput;
-        else bindList.Add(newInput);
+        var bindList = _draftProfile.GamepadButtonMap[action];
+
+        InputState state = InputState.Pressed;
+        if (bindList.Count > 0)
+        {
+            // The input state should be the same regardless of which slot
+            state = bindList[0].State;
+        }
+        else
+        {
+            // Fallback for empty list
+            if (action.ToString().Contains("Next") ||
+                action.ToString().Contains("Previous") ||
+                action == PlayerAction.UseActiveItem
+               )
+            {
+                state = InputState.JustPressed;
+            }
+        }
+        
+        var newInput = new GamepadButtonInput(newButton, state);
+
+        // Add padding
+        while (bindList.Count <= bindIndex)
+        {
+            bindList.Add(new GamepadButtonInput(GamepadButton.None, state));
+        }
+
+        bindList[bindIndex] = newInput;
     }
 
     private void SaveAndApply()
