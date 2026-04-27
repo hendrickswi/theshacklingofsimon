@@ -23,7 +23,7 @@ public class SpawnerEnemy : BaseEnemy
     {
         _contactAttackBehaviour = new AllowedAttackBehaviour();
         _movementBehaviour = new NoMovementBehaviour();
-        _spawnInterval = 4f;
+        _spawnInterval = 2f;
         _spawnTimer = _spawnInterval;
     }
 

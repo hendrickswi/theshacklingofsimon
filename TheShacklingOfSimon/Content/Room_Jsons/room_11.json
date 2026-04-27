@@ -46,6 +46,16 @@
             "x": 7,
             "y": 6,
             "type": "Rock"
+        },
+        {
+            "x": 5,
+            "y": 7,
+            "type": "Rock"
+        },
+        {
+            "x": 9,
+            "y": 7,
+            "type": "Rock"
         }
     ],
     "entities": [],
@@ -63,7 +73,7 @@
             "x": 14,
             "y": 4,
             "to": {
-                "room": "room_04",
+                "room": "room_10",
                 "spawn": {
                     "x": 1,
                     "y": 4

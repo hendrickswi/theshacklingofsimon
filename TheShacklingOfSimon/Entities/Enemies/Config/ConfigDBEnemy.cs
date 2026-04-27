@@ -18,7 +18,7 @@ public static class ConfigDBEnemy
             ContactDamage = 1f,
             MaxHealth = 3,
             InvulnerabilityDuration = 0.25f,
-            DropItemPool = new[] { EnemyDropType.Health, EnemyDropType.Coin }
+            DropItemPool = new[] { EnemyDropType.Health, EnemyDropType.Coin, EnemyDropType.Speed, EnemyDropType.Armor }
         },
 
         ["SpiderEnemy"] = new EnemyConfig
@@ -30,7 +30,7 @@ public static class ConfigDBEnemy
             ContactDamage = 1f,
             MaxHealth = 2,
             InvulnerabilityDuration = 0.25f,
-            DropItemPool = new[] { EnemyDropType.Coin, EnemyDropType.Health }
+            DropItemPool = new[] { EnemyDropType.Coin, EnemyDropType.Health, EnemyDropType.Damage, EnemyDropType.Armor }
         },
 
         ["AngelicBaby"] = new EnemyConfig
@@ -42,7 +42,7 @@ public static class ConfigDBEnemy
             ContactDamage = 1f,
             MaxHealth = 2,
             InvulnerabilityDuration = 0.25f,
-            DropItemPool = new[] { EnemyDropType.Key, EnemyDropType.Coin }
+            DropItemPool = new[] { EnemyDropType.Key }
         },
 
         ["AdultLeech"] = new EnemyConfig
@@ -64,9 +64,9 @@ public static class ConfigDBEnemy
             AttackCooldown = 1f,
             AttackRange = 10f,
             ContactDamage = 2f,
-            MaxHealth = 5,
+            MaxHealth = 10,
             InvulnerabilityDuration = 0.25f,
-            DropItemPool = new[] { EnemyDropType.Coin, EnemyDropType.Speed }
+            DropItemPool = new[] { EnemyDropType.Coin, EnemyDropType.Speed, EnemyDropType.Armor }
         },
 
         ["BlindCreep"] = new EnemyConfig
@@ -78,7 +78,7 @@ public static class ConfigDBEnemy
             ContactDamage = 1f,
             MaxHealth = 4,
             InvulnerabilityDuration = 0.25f,
-            DropItemPool = new[] { EnemyDropType.Coin, EnemyDropType.Health }
+            DropItemPool = new[] { EnemyDropType.Coin, EnemyDropType.Health, EnemyDropType.Damage }
         },
         
         ["Clotty"] = new EnemyConfig
@@ -90,7 +90,7 @@ public static class ConfigDBEnemy
             ContactDamage = 1f,
             MaxHealth = 3,
             InvulnerabilityDuration = 0.25f,
-            DropItemPool = new[] { EnemyDropType.Health, EnemyDropType.Coin }
+            DropItemPool = new[] { EnemyDropType.Health, EnemyDropType.Coin, EnemyDropType.Damage, EnemyDropType.Armor }
         }
     };
 }

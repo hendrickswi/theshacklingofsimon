@@ -180,11 +180,6 @@ namespace TheShacklingOfSimon.UI
                 return false;
             }
 
-            if (_roomManager.CurrentRoom.IsBossRoom)
-            {
-                _darkRooms[roomId] = true;
-                return true;
-            }
 
             // Fire rooms are always dark so fire can act as a meaningful light source.
             if (HasActiveFireTiles())
@@ -199,7 +194,8 @@ namespace TheShacklingOfSimon.UI
                 _darkRooms[roomId] = isDark;
             }
 
-            return isDark;
+
+			return isDark;
         }
 
         private bool HasActiveFireTiles()
