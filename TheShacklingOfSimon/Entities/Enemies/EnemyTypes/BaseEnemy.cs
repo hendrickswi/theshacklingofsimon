@@ -16,6 +16,7 @@ using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Templates;
 using TheShacklingOfSimon.Items.Passive_Items.Consumables;
 using TheShacklingOfSimon.Items.Passive_Items.Inventory_Items;
+using TheShacklingOfSimon.Items.Passive_Items.Projectile_Augmentation_Items;
 using TheShacklingOfSimon.Rooms_and_Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles;
 using TheShacklingOfSimon.Rooms_and_Tiles.Tiles.Obstacles;
@@ -433,6 +434,9 @@ public abstract class BaseEnemy : DamageableEntity, IEnemy
             EnemyDropType.Speed => new SpeedItem(this),
             EnemyDropType.Coin => new CoinItem(this),
             EnemyDropType.Key => new KeyItem(this),
+            EnemyDropType.Armor => new ArmorItem(this),
+            EnemyDropType.Damage => new DamageItem(this),
+            //EnemyDropType.ProjectileAugment => new ProjectileAugmentItem(this),
             _ => null
         };
     }
