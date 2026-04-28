@@ -227,10 +227,7 @@ public class PlayGameState : IGameState
             
             // Rotary controls
             { PlayerAction.NextPrimaryWeapon, new NextPrimaryWeaponCommand(_player) },
-            { PlayerAction.PreviousPrimaryWeapon, new PreviousPrimaryWeaponCommand(_player) },
             { PlayerAction.NextSecondaryWeapon, new NextSecondaryWeaponCommand(_player) },
-            { PlayerAction.PreviousSecondaryWeapon, new PreviousSecondaryWeaponCommand(_player) },
-            { PlayerAction.PreviousActiveItem, new PreviousActiveItemCommand(_player) },
             { PlayerAction.NextActiveItem, new NextActiveItemCommand(_player) },
             
             // Miscellaneous

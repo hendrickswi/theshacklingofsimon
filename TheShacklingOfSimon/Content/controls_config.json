@@ -64,19 +64,19 @@
         ],
         "NextPrimaryWeapon": [
             {
-                "Button": "J",
+                "Button": "R",
                 "State": "JustPressed"
             }
         ],
         "NextSecondaryWeapon": [
             {
-                "Button": "K",
+                "Button": "Q",
                 "State": "JustPressed"
             }
         ],
         "NextActiveItem": [
             {
-                "Button": "I",
+                "Button": "F",
                 "State": "JustPressed"
             }
         ],
