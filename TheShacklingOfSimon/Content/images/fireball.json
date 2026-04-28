@@ -1,0 +1,17 @@
+{
+	"Sprites": [
+		{
+			"Name": "images/fireball",
+			"Frames": [
+				{
+					"X": 0,
+					"Y": 0,
+					"W": 12,
+					"H": 12
+				}
+			]
+			
+
+		}
+	]
+}

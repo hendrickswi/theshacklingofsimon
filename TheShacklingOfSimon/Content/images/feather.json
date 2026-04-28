@@ -1,0 +1,17 @@
+{
+	"Sprites": [
+		{
+			"Name": "images/feather",
+			"Frames": [
+				{
+					"X": 0,
+					"Y": 0,
+					"W": 13,
+					"H": 13
+				}
+			]
+			
+
+		}
+	]
+}

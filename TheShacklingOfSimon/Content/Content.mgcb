@@ -184,6 +184,21 @@
 /processorParam:TextureFormat=Color
 /build:images/BombImg.png
 
+#begin images/chestplate.json
+/copy:images/chestplate.json
+
+#begin images/chestplate.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/chestplate.png
+
 #begin images/Coin.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -226,6 +241,21 @@
 /processorParam:TextureFormat=Color
 /build:images/DoorUnlockedUp.png
 
+#begin images/feather.json
+/copy:images/feather.json
+
+#begin images/feather.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/feather.png
+
 #begin images/fire_mind_tears.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -252,6 +282,21 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:images/Fire.png
+
+#begin images/fireball.json
+/copy:images/fireball.json
+
+#begin images/fireball.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/fireball.png
 
 #begin images/fogofwar.png
 /importer:TextureImporter
@@ -490,11 +535,29 @@
 /processorParam:Quality=Best
 /build:sounds/isaac/isaacdies.mp3
 
+#begin sounds/items/boost.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/boost.ogg
+
+#begin sounds/items/clang.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/clang.ogg
+
 #begin sounds/items/coinpickup.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sounds/items/coinpickup.wav
+
+#begin sounds/items/equip_armor.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/items/equip_armor.ogg
 
 #begin sounds/items/itemrecharge.mp3
 /importer:Mp3Importer

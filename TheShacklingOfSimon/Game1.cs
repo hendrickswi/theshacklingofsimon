@@ -150,6 +150,9 @@ public class Game1 : Game
 
         SpriteFactory.Instance.LoadTexture(Content, "images/8Ball.json", "images/8Ball");
         SpriteFactory.Instance.LoadTexture(Content, "images/Red_Heart.json", "images/Red_Heart");
+        SpriteFactory.Instance.LoadTexture(Content, "images/chestplate.json", "images/chestplate");
+        SpriteFactory.Instance.LoadTexture(Content, "images/fireball.json", "images/fireball");
+        SpriteFactory.Instance.LoadTexture(Content, "images/feather.json", "images/feather");
         SpriteFactory.Instance.LoadTexture(Content, "images/Coin.json", "images/Coin");
         SpriteFactory.Instance.LoadTexture(Content, "images/key.json", "images/key");
 
@@ -186,6 +189,9 @@ public class Game1 : Game
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/rocketexplode04");
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/Powerup2");
         SoundFactory.Instance.LoadSFX(Content, "sounds/items/warp");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/boost");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/clang");
+        SoundFactory.Instance.LoadSFX(Content, "sounds/items/equip_armor");
 
         SoundFactory.Instance.LoadSFX(Content, "sounds/other/Coin_Slot");
         SoundFactory.Instance.LoadSFX(Content, "sounds/other/dark-souls-you-died-sound-effect_hm5sYFG");

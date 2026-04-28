@@ -1,6 +1,7 @@
 #region
 
 using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
 using TheShacklingOfSimon.StatusEffects.Templates;
@@ -12,6 +13,7 @@ namespace TheShacklingOfSimon.Items.Passive_Items.Inventory_Items;
 public class DamageItem : PassiveItem, IInventoryItem
 {
     private readonly IStatusEffect _damageMultiplierEffect;
+    private readonly string SFX;
     
     public DamageItem(
         IDamageableEntity entity, 
@@ -21,6 +23,7 @@ public class DamageItem : PassiveItem, IInventoryItem
         float duration = float.MaxValue) 
         : base(name, description, entity)
     {
+        SFX = SoundManager.Instance.AddSFX("items", "clang");
         _damageMultiplierEffect = new DamageMultiplierEffect(
             Name, 
             Entity, 
@@ -31,6 +34,7 @@ public class DamageItem : PassiveItem, IInventoryItem
     public override bool ApplyEffect()
     {
         Entity.EffectManager.AddPermanentEffect(_damageMultiplierEffect);
+        SoundManager.Instance.PlaySFX(SFX);
         return true;
     }
     
