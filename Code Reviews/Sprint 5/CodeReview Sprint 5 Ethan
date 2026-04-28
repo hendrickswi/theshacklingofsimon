@@ -1,8 +1,27 @@
 Author: Ethan Chitturi (CoolestToDoIt)
 Date: 04/27/26
 Sprint 5
-File(s) being reviewed: PlayerWithTwoSprites.cs, PlayerInputBuffer.cs, ConfigDBPlayer.cs,
-    PlayerTwoStatesManager.cs, StatusEffectManager.cs, StatusEffects.Implementations
+File(s) being reviewed: Players, Inputs, SpriteDecorators, ProjectileAugmentation
 Author of file(s): William Hendricks (hendrickswi)
 
 Comments:
+Players:
+    Player: It looks like most of this is similar to last time, which looked good to me for the
+    most part, aside from the slight nitpicks that I mentioned in the previous sprint. I like the
+    setup and it makes it easy to read as a lot of the stuff is similarly built to the enemy
+    setup as well.
+
+    Inputs: The work you did on this was impressive. I am glad that you were able to get the
+    ability to change bindings working. I don't really have any notes for this either because it
+    looks very clean already.
+
+    SpriteDecorators: These new decorators also look very clean. I am sure if we had more time to
+    make proper use of them in gameplay features, they would make many appearances. I am
+    particularly impressed for most of them that you were able to give them very simple
+    constructors. I would, however, like to see some default values for the longer constructors
+    like the FadingSprite as it seems like something that would be used often. Default values
+    would allow the code to look smaller when implementing them.
+
+    ProjectileAgumentation: Not much to say here as most of the work is deferred to the
+    StatusEffects that I went over last sprint. It looks clean and simple to implement as an
+    item drop.

@@ -98,10 +98,9 @@ public static class InputProfileManager
         ]);
 
         // Keyboard inventory and weapons
-        profile.KeyboardMap.Add(PlayerAction.NextPrimaryWeapon, [new(KeyboardButton.J, InputState.JustPressed)]);
-        profile.KeyboardMap.Add(PlayerAction.NextSecondaryWeapon, [new(KeyboardButton.K, InputState.JustPressed)]);
-        profile.KeyboardMap.Add(PlayerAction.NextActiveItem, [new(KeyboardButton.I, InputState.JustPressed)]);
-        profile.KeyboardMap.Add(PlayerAction.PreviousActiveItem, [new(KeyboardButton.U, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.NextPrimaryWeapon, [new(KeyboardButton.R, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.NextSecondaryWeapon, [new(KeyboardButton.Q, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.NextActiveItem, [new(KeyboardButton.F, InputState.JustPressed)]);
         profile.KeyboardMap.Add(PlayerAction.UseActiveItem, [new(KeyboardButton.Space, InputState.JustPressed)]);
 
         // Keyboard miscellaneous
