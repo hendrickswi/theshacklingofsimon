@@ -1,0 +1,9 @@
+Author: Cameron
+Files to review: Items, projectiles, PlayState UI
+
+It doesn't look like there's any clear indication for invincibility granted from the invincibility item. To be fair, we technically don't for the other items either, but their immediate impact on gameplay solves that issue. We also could've gone the Mario route of playing some music for the duration that the invincibility is active. Oh well.
+The code itself looks good and functions perfectly fine.
+
+I can't seem to find where the RNG for the gambling projectile is done. Additionally, the only indication of the RNG's result is the small projectile sprite, which could be difficult to make out.
+
+The game UI is functional, which is all we were really aiming for. It might've been beneficial to place RegisterControls someplace else, but again it's functional.
