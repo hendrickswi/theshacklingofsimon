@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Gamepad;
@@ -35,10 +34,6 @@ public class InputManager
 
     private InputProfile _currentProfile;
     private Vector2 _prevMousePos;
-    
-    // TODO: Replace this with custom gamepad and keyboard services?
-    private GamePadState _prevGamepadState;
-    private KeyboardState _prevKeyboardState;
 
     public InputManager(GraphicsDevice graphicsDevice)
     {
@@ -58,6 +53,9 @@ public class InputManager
 
     public void Update()
     {
+        _keyboardService.Update();
+        _mouseService.Update();
+        _gamepadService.Update();
         _keyboardController.Update();
         _mouseController.Update();
         _gamepadController.Update();
@@ -105,10 +103,6 @@ public class InputManager
             MathHelper.Clamp(VirtualCursorPosition.X, 0, screenBounds.Width),
             MathHelper.Clamp(VirtualCursorPosition.Y, 0, screenBounds.Height)
         );
-
-        // Track previous states for JustPressed logic
-        _prevGamepadState = GamePad.GetState(PlayerIndex.One);
-        _prevKeyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
     }
 
     public void ClearAllControls()
@@ -116,14 +110,6 @@ public class InputManager
         _keyboardController.ClearCommands();
         _mouseController.ClearCommands();
         _gamepadController.ClearCommands();
-    }
-
-    public void LoadGUIControls(Dictionary<MouseInput, Action> controlMapping)
-    {
-        foreach (var control in controlMapping)
-        {
-            _mouseController.RegisterCommand(control.Key, new GenericActionCommand(control.Value));
-        }
     }
 
     public void LoadControls(InputProfile profile, Dictionary<PlayerAction, ICommand> actionToCommandMap)
@@ -170,14 +156,13 @@ public class InputManager
 
     public KeyboardButton? GetAnyKeyboardKeyJustPressed()
     {
-        // TODO: Replace this with custom keyboard service
-        var keys = Microsoft.Xna.Framework.Input.Keyboard.GetState().GetPressedKeys();
+        var keys = _keyboardService.GetPressedKeys();
 
-        if (keys.Length > 0)
+        foreach (var key in keys)
         {
-            if (Enum.TryParse(keys[0].ToString(), out KeyboardButton result))
+            if (_keyboardService.GetKeyState(key) == InputState.JustPressed)
             {
-                return result;
+                return key;
             }
         }
 
@@ -186,15 +171,11 @@ public class InputManager
 
     public GamepadButton? GetAnyGamepadButtonJustPressed()
     {
-        // TODO: Replace this with custom gamepad service
-        var currentState = GamePad.GetState(PlayerIndex.One);
-        if (!currentState.IsConnected) return null;
-
-        foreach (GamepadButton button in Enum.GetValues<GamepadButton>())
+        var pressedButtons = _gamepadService.GetPressedButtons();
+        
+        foreach (var button in pressedButtons)
         {
-            var monoGamepadButton = ConvertToMonoGameButton(button);
-            if (currentState.IsButtonDown(monoGamepadButton)
-                && _prevGamepadState.IsButtonUp(monoGamepadButton))
+            if (_gamepadService.GetButtonState(button) == InputState.JustPressed)
             {
                 return button;
             }
@@ -207,31 +188,6 @@ public class InputManager
     {
         if (ActiveSchema == schema) return;
         ActiveSchema = schema;
-    }
-    
-    // TODO: Delete this when this implementation is updated to use gamepad service
-    private Buttons ConvertToMonoGameButton(GamepadButton button)
-    {
-        return button switch
-        {
-            GamepadButton.A => Buttons.A,
-            GamepadButton.B => Buttons.B,
-            GamepadButton.X => Buttons.X,
-            GamepadButton.Y => Buttons.Y,
-            GamepadButton.Start => Buttons.Start,
-            GamepadButton.Back => Buttons.Back,
-            GamepadButton.DPadUp => Buttons.DPadUp,
-            GamepadButton.DPadDown => Buttons.DPadDown,
-            GamepadButton.DPadLeft => Buttons.DPadLeft,
-            GamepadButton.DPadRight => Buttons.DPadRight,
-            GamepadButton.LeftShoulder => Buttons.LeftShoulder,
-            GamepadButton.RightShoulder => Buttons.RightShoulder,
-            GamepadButton.LeftTrigger => Buttons.LeftTrigger,
-            GamepadButton.RightTrigger => Buttons.RightTrigger,
-            GamepadButton.LeftStick => Buttons.LeftStick,
-            GamepadButton.RightStick => Buttons.RightStick,
-            _ => 0 // Fallback
-        };
     }
 
     private bool IsKeyboardActionPressed(PlayerAction action)
