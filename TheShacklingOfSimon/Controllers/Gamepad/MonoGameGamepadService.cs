@@ -12,6 +12,10 @@ namespace TheShacklingOfSimon.Controllers.Gamepad;
 
 public class MonoGameGamepadService : IGamepadService
 {
+    private GamePadState _prevState;
+    private GamePadState _currentState;
+    private readonly PlayerIndex _playerIndex;
+    
     private readonly Dictionary<GamepadButton, Buttons> _buttonMap = new Dictionary<GamepadButton, Buttons>
     {
         { GamepadButton.DPadUp, Buttons.DPadUp },
@@ -40,11 +44,17 @@ public class MonoGameGamepadService : IGamepadService
         { GamepadButton.RightTrigger, Buttons.RightTrigger }
     };
     
-    private readonly PlayerIndex _playerIndex;
-    
     public MonoGameGamepadService(PlayerIndex playerIndex)
     {
         _playerIndex = playerIndex;
+    }
+    
+    public bool IsConnected => GamePad.GetState(_playerIndex).IsConnected;
+
+    public void Update()
+    {
+        _prevState = _currentState;
+        _currentState = GamePad.GetState(_playerIndex);
     }
     
     public Vector2 GetLeftJoystickPosition()
@@ -61,13 +71,29 @@ public class MonoGameGamepadService : IGamepadService
     
     public InputState GetButtonState(GamepadButton button)
     {
-        InputState state = InputState.Released;
-        if (_buttonMap.TryGetValue(button, out Buttons xnaButton))
+        if (!_buttonMap.TryGetValue(button, out var xnaButton)) return InputState.Released;
+        
+        bool isDownNow = _currentState.IsButtonDown(xnaButton);
+        bool wasDown = _prevState.IsButtonDown(xnaButton);
+
+        if (isDownNow && !wasDown) return InputState.JustPressed;
+        else if (isDownNow && wasDown) return InputState.Pressed;
+        else return InputState.Released;
+    }
+
+    public IEnumerable<GamepadButton> GetPressedButtons()
+    {
+        var buttons = new List<GamepadButton>();
+        if (!IsConnected) return buttons;
+
+        foreach (var pair in _buttonMap)
         {
-            state = GamePad.GetState(_playerIndex).IsButtonDown(xnaButton)
-                ? InputState.Pressed
-                : InputState.Released;
+            if (_currentState.IsButtonDown(pair.Value))
+            {
+                buttons.Add(pair.Key);
+            }
         }
-        return state;
+        
+        return buttons;
     }
 }

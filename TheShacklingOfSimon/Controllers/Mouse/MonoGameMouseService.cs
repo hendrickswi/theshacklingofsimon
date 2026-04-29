@@ -1,5 +1,7 @@
 ﻿#region
 
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using TheShacklingOfSimon.Input;
@@ -11,44 +13,77 @@ namespace TheShacklingOfSimon.Controllers.Mouse;
 
 public class MonoGameMouseService : IMouseService
 {
+    private MouseState _prevState;
+    private MouseState _currentState;
+    
+    public void Update()
+    {
+        _prevState = _currentState;
+        _currentState = Microsoft.Xna.Framework.Input.Mouse.GetState();
+    }
+    
     public Vector2 GetPosition()
     {
-        MouseState state = Microsoft.Xna.Framework.Input.Mouse.GetState();
-        return new Vector2(state.X, state.Y);
+        return new Vector2(_currentState.X, _currentState.Y);
     }
 
     public InputState GetButtonState(MouseButton button)
     {
-        MouseState state = Microsoft.Xna.Framework.Input.Mouse.GetState();
-        ButtonState xnaState = ButtonState.Released;
+        ButtonState currentXnaState = ButtonState.Released;
+        ButtonState prevXnaState = ButtonState.Released;
         switch (button)
         {
             case MouseButton.Left:
             {
-                xnaState = state.LeftButton;
+                currentXnaState = _currentState.LeftButton;
+                prevXnaState = _prevState.LeftButton;
                 break;
             }
             case MouseButton.Middle:
             {
-                xnaState = state.MiddleButton;
+                currentXnaState = _currentState.MiddleButton;
+                prevXnaState = _prevState.MiddleButton;
                 break;
             }
             case MouseButton.Right:
             {
-                xnaState = state.RightButton;
+                currentXnaState = _currentState.RightButton;
+                prevXnaState = _prevState.RightButton;
                 break;
             }
             case MouseButton.Thumb1:
             {
-                xnaState = state.XButton1;
+                currentXnaState = _currentState.XButton1;
+                prevXnaState = _prevState.XButton1;
                 break;
             }
             case MouseButton.Thumb2:
             {
-                xnaState = state.XButton2;
+                currentXnaState = _currentState.XButton2;
+                prevXnaState = _prevState.XButton2;
                 break;
             }
         }
-        return (xnaState == ButtonState.Pressed) ? InputState.Pressed : InputState.Released;
+
+        bool isPressedNow = currentXnaState == ButtonState.Pressed;
+        bool wasPressed = prevXnaState == ButtonState.Pressed;
+
+        if (isPressedNow && !wasPressed) return InputState.JustPressed;
+        if (isPressedNow && wasPressed) return InputState.Pressed;
+        else return InputState.Released;
+    }
+
+    public IEnumerable<MouseButton> GetPressedButtons()
+    {
+        var pressedButtons = new List<MouseButton>();
+        foreach (var button in Enum.GetValues<MouseButton>())
+        {
+            if (GetButtonState(button) == InputState.Pressed)
+            {
+                pressedButtons.Add(button);
+            }
+        }
+        
+        return pressedButtons;
     }
 }
