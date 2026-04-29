@@ -112,6 +112,9 @@ public class StatusEffectManager
     public bool ClearPermanentEffect(IStatusEffect effect)
     {
         if (effect == null) return false;
+        if (!_activePermanentEffects.Contains(effect)) return false;
+        
+        effect.OnRemove();
         return _activePermanentEffects.Remove(effect);
     }
 
