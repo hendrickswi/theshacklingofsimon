@@ -2,6 +2,7 @@ namespace TheShacklingOfSimon.Input.Gamepad;
 
 public enum GamepadButton
 {
+    None,
     DPadUp,
     DPadDown,
     DPadLeft,

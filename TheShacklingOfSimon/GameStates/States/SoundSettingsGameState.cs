@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Profiles;
@@ -118,9 +119,13 @@ public class SoundSettingsGameState : IGameState
         };
         
         _inputManager.LoadControls(profile, actionToCommandMap);
+        MediaPlayer.Resume();
     }
 
-    public void Exit() { }
+    public void Exit()
+    {
+        MediaPlayer.Pause();
+    }
 
     public void Update(GameTime delta)
     {

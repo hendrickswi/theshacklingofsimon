@@ -73,6 +73,8 @@ public class PickupFactory
             "Key" => new KeyItem(player, amt: data.Amount),
             "Coin" => new CoinItem(player, amt: data.Amount),
             "Heart" => new HealingItem(player),
+            "Armor" => new ArmorItem(player),
+            "Damage" => new DamageItem(player),
             "Speed" => new SpeedItem(player),
 
             _ => throw new InvalidOperationException(
@@ -87,7 +89,9 @@ public class PickupFactory
             KeyItem => "key",
             CoinItem => "Coin",
             HealingItem => "images/Red_Heart",
-            SpeedItem => "images/8Ball",
+            ArmorItem => "images/chestplate",
+            DamageItem => "images/fireball",
+            SpeedItem => "images/feather",
 
             _ => "images/8Ball"
         };
@@ -114,6 +118,10 @@ public class PickupFactory
 
             "Heart" => "images/Red_Heart",
             "Red_Heart" => "images/Red_Heart",
+
+            "chestplate" => "images/chestplate",
+
+            "feather" => "images/feather",
 
             "8Ball" => "images/8Ball",
 

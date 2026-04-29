@@ -10,6 +10,7 @@ using TheShacklingOfSimon.Controllers.Gamepad;
 using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Input.Gamepad;
 using TheShacklingOfSimon.Input.Keyboard;
+using TheShacklingOfSimon.Input.Mouse;
 
 #endregion
 
@@ -32,7 +33,12 @@ public static class InputProfileManager
     {
         try
         {
-            Directory.CreateDirectory(BaseDir);
+            string directory = Path.GetDirectoryName(JsonPath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            
             string jsonString = JsonSerializer.Serialize(profile, Options);
             File.WriteAllText(JsonPath, jsonString);
             Console.WriteLine("Profile saved successfully to " + JsonPath);
@@ -63,12 +69,8 @@ public static class InputProfileManager
             return GenerateDefaultProfile();
         }
     }
-
-    /*
-     * This method will only be called if the profile file cannot be found OR is unparsable.
-     * Otherwise, loading and saving on a single .json file will happen
-     */
-    private static InputProfile GenerateDefaultProfile()
+    
+    public static InputProfile GenerateDefaultProfile()
     {
         InputProfile profile = new InputProfile()
         {
@@ -79,47 +81,50 @@ public static class InputProfileManager
         };
 
         // Keyboard movement
-        profile.KeyboardMap.Add(PlayerAction.MoveUp, new List<KeyboardInput> { new(KeyboardButton.W, InputState.Pressed) });
-        profile.KeyboardMap.Add(PlayerAction.MoveLeft, new List<KeyboardInput> { new(KeyboardButton.A, InputState.Pressed) });
-        profile.KeyboardMap.Add(PlayerAction.MoveDown, new List<KeyboardInput> { new(KeyboardButton.S, InputState.Pressed) });
-        profile.KeyboardMap.Add(PlayerAction.MoveRight, new List<KeyboardInput> { new(KeyboardButton.D, InputState.Pressed) });
+        profile.KeyboardMap.Add(PlayerAction.MoveUp, [new(KeyboardButton.W, InputState.Pressed)]);
+        profile.KeyboardMap.Add(PlayerAction.MoveLeft, [new(KeyboardButton.A, InputState.Pressed)]);
+        profile.KeyboardMap.Add(PlayerAction.MoveDown, [new(KeyboardButton.S, InputState.Pressed)]);
+        profile.KeyboardMap.Add(PlayerAction.MoveRight, [new(KeyboardButton.D, InputState.Pressed)]);
 
         // Keyboard attacking
-        profile.KeyboardMap.Add(PlayerAction.PrimaryAttackUp, new List<KeyboardInput> { new(KeyboardButton.Up, InputState.Pressed) });
-        profile.KeyboardMap.Add(PlayerAction.PrimaryAttackLeft, new List<KeyboardInput> { new(KeyboardButton.Left, InputState.Pressed) });
-        profile.KeyboardMap.Add(PlayerAction.PrimaryAttackDown, new List<KeyboardInput> { new(KeyboardButton.Down, InputState.Pressed) });
-        profile.KeyboardMap.Add(PlayerAction.PrimaryAttackRight, new List<KeyboardInput> { new(KeyboardButton.Right, InputState.Pressed) });
-        profile.KeyboardMap.Add(PlayerAction.SecondaryAttackDown, new List<KeyboardInput> { new(KeyboardButton.LeftShift, InputState.Pressed) });
+        profile.KeyboardMap.Add(PlayerAction.PrimaryAttackUp, [new(KeyboardButton.Up, InputState.Pressed)]);
+        profile.KeyboardMap.Add(PlayerAction.PrimaryAttackLeft, [new(KeyboardButton.Left, InputState.Pressed)]);
+        profile.KeyboardMap.Add(PlayerAction.PrimaryAttackDown, [new(KeyboardButton.Down, InputState.Pressed)]);
+        profile.KeyboardMap.Add(PlayerAction.PrimaryAttackRight, [new(KeyboardButton.Right, InputState.Pressed)]);
+        profile.KeyboardMap.Add(PlayerAction.SecondaryAttackDown, [
+            new(KeyboardButton.LeftShift, InputState.Pressed),
+            new(KeyboardButton.RightShift, InputState.Pressed),
+            new(KeyboardButton.E, InputState.Pressed)
+        ]);
 
         // Keyboard inventory and weapons
-        profile.KeyboardMap.Add(PlayerAction.NextPrimaryWeapon, new List<KeyboardInput> { new(KeyboardButton.J, InputState.JustPressed) });
-        profile.KeyboardMap.Add(PlayerAction.NextSecondaryWeapon, new List<KeyboardInput> { new(KeyboardButton.K, InputState.JustPressed) });
-        profile.KeyboardMap.Add(PlayerAction.NextActiveItem, new List<KeyboardInput> { new(KeyboardButton.I, InputState.JustPressed) });
-        profile.KeyboardMap.Add(PlayerAction.PreviousActiveItem, new List<KeyboardInput> { new(KeyboardButton.U, InputState.JustPressed) });
-        profile.KeyboardMap.Add(PlayerAction.UseActiveItem, new List<KeyboardInput> { new(KeyboardButton.Space, InputState.JustPressed) });
+        profile.KeyboardMap.Add(PlayerAction.NextPrimaryWeapon, [new(KeyboardButton.R, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.NextSecondaryWeapon, [new(KeyboardButton.Q, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.NextActiveItem, [new(KeyboardButton.F, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.UseActiveItem, [new(KeyboardButton.Space, InputState.JustPressed)]);
 
         // Keyboard miscellaneous
-        profile.KeyboardMap.Add(PlayerAction.Reset, new List<KeyboardInput> { new(KeyboardButton.R, InputState.JustPressed) });
-        profile.KeyboardMap.Add(PlayerAction.Pause, new List<KeyboardInput> { new(KeyboardButton.Escape, InputState.JustPressed) });
-        profile.KeyboardMap.Add(PlayerAction.Quit, new List<KeyboardInput> { new(KeyboardButton.Q, InputState.JustPressed) });
-        profile.KeyboardMap.Add(PlayerAction.Resume, new List<KeyboardInput> { new(KeyboardButton.Escape, InputState.JustPressed) });
+        profile.KeyboardMap.Add(PlayerAction.Reset, [new(KeyboardButton.R, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.Pause, [new(KeyboardButton.Escape, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.Quit, [new(KeyboardButton.Q, InputState.JustPressed)]);
+        profile.KeyboardMap.Add(PlayerAction.Resume, [new(KeyboardButton.Escape, InputState.JustPressed)]);
         
         // Keyboard menu navigation
         profile.KeyboardMap.Add(PlayerAction.MenuUp, [
-            new(KeyboardButton.Up, InputState.JustPressed),
-            new(KeyboardButton.W, InputState.JustPressed)
+            new(KeyboardButton.Up, InputState.Pressed),
+            new(KeyboardButton.W, InputState.Pressed)
         ]);
         profile.KeyboardMap.Add(PlayerAction.MenuDown, [
-            new(KeyboardButton.Down, InputState.JustPressed),
-            new(KeyboardButton.S, InputState.JustPressed)
+            new(KeyboardButton.Down, InputState.Pressed),
+            new(KeyboardButton.S, InputState.Pressed)
         ]);
         profile.KeyboardMap.Add(PlayerAction.MenuLeft, [
-            new(KeyboardButton.Left, InputState.JustPressed),
-            new(KeyboardButton.A, InputState.JustPressed)
+            new(KeyboardButton.Left, InputState.Pressed),
+            new(KeyboardButton.A, InputState.Pressed)
         ]);
         profile.KeyboardMap.Add(PlayerAction.MenuRight, [
-            new(KeyboardButton.Right, InputState.JustPressed),
-            new(KeyboardButton.D, InputState.JustPressed)
+            new(KeyboardButton.Right, InputState.Pressed),
+            new(KeyboardButton.D, InputState.Pressed)
         ]);
         profile.KeyboardMap.Add(PlayerAction.MenuConfirm, [
             new(KeyboardButton.Enter, InputState.JustPressed),
@@ -130,70 +135,73 @@ public static class InputProfileManager
             new(KeyboardButton.Back, InputState.JustPressed)
         ]);
         
+        // Mouse menu navigation
+        profile.MouseMap.Add(PlayerAction.MenuConfirm, [
+            new(new MouseInputRegion(0, 0, 1024, 768), MouseButton.Left, InputState.JustPressed)
+        ]);
+        
         // Gamepad movement
-        profile.GamepadJoystickMap.Add(PlayerAction.MoveUp, new List<GamepadJoystickInput> { 
-            new(GamepadStick.Left, new JoystickInputRegion(new Vector2(0, 1), 120f, 0.1f), InputState.Pressed) 
-        });
-        profile.GamepadJoystickMap.Add(PlayerAction.MoveLeft, new List<GamepadJoystickInput> { 
-            new(GamepadStick.Left, new JoystickInputRegion(new Vector2(-1, 0), 120f, 0.1f), InputState.Pressed) 
-        });
-        profile.GamepadJoystickMap.Add(PlayerAction.MoveRight, new List<GamepadJoystickInput> { 
-            new(GamepadStick.Left, new JoystickInputRegion(new Vector2(1, 0), 120f, 0.1f), InputState.Pressed) 
-        });
-        profile.GamepadJoystickMap.Add(PlayerAction.MoveDown, new List<GamepadJoystickInput> { 
-            new(GamepadStick.Left, new JoystickInputRegion(new Vector2(0, -1), 120f, 0.1f), InputState.Pressed) 
-        });
+        profile.GamepadJoystickMap.Add(PlayerAction.MoveUp, [ 
+            new(GamepadStick.Left, new JoystickInputRegion(new Vector2(0, 1), 150f, 0.1f), InputState.Pressed) 
+        ]);
+        profile.GamepadJoystickMap.Add(PlayerAction.MoveLeft, [ 
+            new(GamepadStick.Left, new JoystickInputRegion(new Vector2(-1, 0), 150f, 0.1f), InputState.Pressed) 
+        ]);
+        profile.GamepadJoystickMap.Add(PlayerAction.MoveRight, [ 
+            new(GamepadStick.Left, new JoystickInputRegion(new Vector2(1, 0), 150f, 0.1f), InputState.Pressed) 
+        ]);
+        profile.GamepadJoystickMap.Add(PlayerAction.MoveDown, [ 
+            new(GamepadStick.Left, new JoystickInputRegion(new Vector2(0, -1), 150f, 0.1f), InputState.Pressed) 
+        ]);
 
         // Gamepad attacking
-        profile.GamepadJoystickMap.Add(PlayerAction.PrimaryAttackUp, new List<GamepadJoystickInput> { 
+        profile.GamepadJoystickMap.Add(PlayerAction.PrimaryAttackUp, [ 
             new(GamepadStick.Right, new JoystickInputRegion(new Vector2(0, 1), 90f, 0.1f), InputState.Pressed) 
-        });
-        profile.GamepadJoystickMap.Add(PlayerAction.PrimaryAttackDown, new List<GamepadJoystickInput> { 
+        ]);
+        profile.GamepadJoystickMap.Add(PlayerAction.PrimaryAttackDown, [ 
             new(GamepadStick.Right, new JoystickInputRegion(new Vector2(0, -1), 90f, 0.1f), InputState.Pressed) 
-        });
-        profile.GamepadJoystickMap.Add(PlayerAction.PrimaryAttackLeft, new List<GamepadJoystickInput> { 
+        ]);
+        profile.GamepadJoystickMap.Add(PlayerAction.PrimaryAttackLeft, [ 
             new(GamepadStick.Right, new JoystickInputRegion(new Vector2(-1, 0), 90f, 0.1f), InputState.Pressed) 
-        });
-        profile.GamepadJoystickMap.Add(PlayerAction.PrimaryAttackRight, new List<GamepadJoystickInput> { 
+        ]);
+        profile.GamepadJoystickMap.Add(PlayerAction.PrimaryAttackRight, [ 
             new(GamepadStick.Right, new JoystickInputRegion(new Vector2(1, 0), 90f, 0.1f), InputState.Pressed) 
-        });
+        ]);
         
         // Gamepad inventory & buttons
-        profile.GamepadButtonMap.Add(PlayerAction.SecondaryAttackDown, new List<GamepadButtonInput>
-        {
+        profile.GamepadButtonMap.Add(PlayerAction.SecondaryAttackDown, [
             new(GamepadButton.B, InputState.Pressed),
             new(GamepadButton.LeftShoulder, InputState.Pressed),
             new(GamepadButton.LeftTrigger, InputState.Pressed),
-        });
-        profile.GamepadButtonMap.Add(PlayerAction.UseActiveItem, new List<GamepadButtonInput>
-        {
+        ]);
+        profile.GamepadButtonMap.Add(PlayerAction.UseActiveItem, [
             new(GamepadButton.A, InputState.Pressed),
             new(GamepadButton.RightTrigger, InputState.Pressed),
             new(GamepadButton.RightShoulder, InputState.Pressed),
-        });
-        profile.GamepadButtonMap.Add(PlayerAction.NextActiveItem, new List<GamepadButtonInput> { new(GamepadButton.DPadUp, InputState.Pressed) });
-        profile.GamepadButtonMap.Add(PlayerAction.PreviousActiveItem, new List<GamepadButtonInput> { new(GamepadButton.DPadDown, InputState.Pressed) });
-        profile.GamepadButtonMap.Add(PlayerAction.NextSecondaryWeapon, new List<GamepadButtonInput> { new(GamepadButton.DPadRight, InputState.Pressed) });
-        profile.GamepadButtonMap.Add(PlayerAction.NextPrimaryWeapon, new List<GamepadButtonInput> { new(GamepadButton.DPadLeft, InputState.Pressed) });
+        ]);
+        profile.GamepadButtonMap.Add(PlayerAction.NextActiveItem, [new(GamepadButton.DPadUp, InputState.JustPressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.PreviousActiveItem, [new(GamepadButton.DPadDown, InputState.JustPressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.NextSecondaryWeapon, [new(GamepadButton.DPadRight, InputState.JustPressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.NextPrimaryWeapon, [new(GamepadButton.DPadLeft, InputState.JustPressed)]);
 
         // Gamepad miscellaneous
-        profile.GamepadButtonMap.Add(PlayerAction.Pause, new List<GamepadButtonInput> { new(GamepadButton.Start, InputState.JustPressed) });
-        profile.GamepadButtonMap.Add(PlayerAction.Reset, new List<GamepadButtonInput> { new(GamepadButton.Back, InputState.JustPressed) });
-        profile.GamepadButtonMap.Add(PlayerAction.Quit, new List<GamepadButtonInput> { new(GamepadButton.X, InputState.JustPressed) });
-        profile.GamepadButtonMap.Add(PlayerAction.Resume, new List<GamepadButtonInput> { new(GamepadButton.A, InputState.JustPressed) });
+        profile.GamepadButtonMap.Add(PlayerAction.Pause, [new(GamepadButton.Start, InputState.JustPressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.Reset, [new(GamepadButton.Back, InputState.JustPressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.Quit, [new(GamepadButton.X, InputState.JustPressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.Resume, [new(GamepadButton.A, InputState.JustPressed)]);
         
         // Gamepad menu navigation
-        profile.GamepadButtonMap.Add(PlayerAction.MenuUp, [new(GamepadButton.DPadUp, InputState.JustPressed)]);
-        profile.GamepadButtonMap.Add(PlayerAction.MenuDown, [new(GamepadButton.DPadDown, InputState.JustPressed)]);
-        profile.GamepadButtonMap.Add(PlayerAction.MenuLeft, [new(GamepadButton.DPadLeft, InputState.JustPressed)]);
-        profile.GamepadButtonMap.Add(PlayerAction.MenuRight, [new(GamepadButton.DPadRight, InputState.JustPressed)]);
-        profile.GamepadJoystickMap.Add(PlayerAction.MenuUp, [new(GamepadStick.Left, new JoystickInputRegion(new Vector2(0, 1), 90f, 0.5f), InputState.JustPressed)]);
-        profile.GamepadJoystickMap.Add(PlayerAction.MenuDown, [new(GamepadStick.Left, new JoystickInputRegion(new Vector2(0, -1), 90f, 0.5f), InputState.JustPressed)]);
-        profile.GamepadJoystickMap.Add(PlayerAction.MenuLeft, [new(GamepadStick.Left, new JoystickInputRegion(new Vector2(-1, 0), 90f, 0.5f), InputState.JustPressed)]);
-        profile.GamepadJoystickMap.Add(PlayerAction.MenuRight, [new(GamepadStick.Left, new JoystickInputRegion(new Vector2(1, 0), 90f, 0.5f), InputState.JustPressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.MenuUp, [new(GamepadButton.DPadUp, InputState.Pressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.MenuDown, [new(GamepadButton.DPadDown, InputState.Pressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.MenuLeft, [new(GamepadButton.DPadLeft, InputState.Pressed)]);
+        profile.GamepadButtonMap.Add(PlayerAction.MenuRight, [new(GamepadButton.DPadRight, InputState.Pressed)]);
+        profile.GamepadJoystickMap.Add(PlayerAction.MenuUp, [new(GamepadStick.Left, new JoystickInputRegion(new Vector2(0, 1), 90f, 0.5f), InputState.Pressed)]);
+        profile.GamepadJoystickMap.Add(PlayerAction.MenuDown, [new(GamepadStick.Left, new JoystickInputRegion(new Vector2(0, -1), 90f, 0.5f), InputState.Pressed)]);
+        profile.GamepadJoystickMap.Add(PlayerAction.MenuLeft, [new(GamepadStick.Left, new JoystickInputRegion(new Vector2(-1, 0), 90f, 0.5f), InputState.Pressed)]);
+        profile.GamepadJoystickMap.Add(PlayerAction.MenuRight, [new(GamepadStick.Left, new JoystickInputRegion(new Vector2(1, 0), 90f, 0.5f), InputState.Pressed)]);
         profile.GamepadButtonMap.Add(PlayerAction.MenuConfirm, [new(GamepadButton.A, InputState.JustPressed)]);
         profile.GamepadButtonMap.Add(PlayerAction.MenuCancel, [new(GamepadButton.B, InputState.JustPressed)]);
-            
+        
         return profile;
     }
     

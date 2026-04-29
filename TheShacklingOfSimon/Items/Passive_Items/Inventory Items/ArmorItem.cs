@@ -1,6 +1,7 @@
 #region
 
 using TheShacklingOfSimon.Entities;
+using TheShacklingOfSimon.Sounds;
 using TheShacklingOfSimon.StatusEffects;
 using TheShacklingOfSimon.StatusEffects.Implementations.Simple;
 using TheShacklingOfSimon.StatusEffects.Templates;
@@ -13,6 +14,7 @@ public class ArmorItem : PassiveItem, IInventoryItem
 {
     private readonly IStatusEffect _maxHealthEffect;
     private readonly IStatusEffect _invulnerabilityDurationEffect;
+    private readonly string SFX;
     
     public ArmorItem(
         IDamageableEntity entity, 
@@ -23,6 +25,7 @@ public class ArmorItem : PassiveItem, IInventoryItem
         ) 
         : base(name, description, entity)
     {
+        SFX = SoundManager.Instance.AddSFX("items", "equip_armor");
         _maxHealthEffect = new MaxHealthEffect(
             Name, 
             Entity, 
@@ -42,6 +45,7 @@ public class ArmorItem : PassiveItem, IInventoryItem
     {
         Entity.EffectManager.AddPermanentEffect(_maxHealthEffect);
         Entity.EffectManager.AddPermanentEffect(_invulnerabilityDurationEffect);
+        SoundManager.Instance.PlaySFX(SFX);
         return true;
     }
 

@@ -75,7 +75,7 @@ namespace TheShacklingOfSimon.Rooms_and_Tiles.Rooms.RoomClass
         public int X { get; set; }
         public int Y { get; set; }
 
-        // "Key", "Heart", "Coin"
+        // "None", "Key", "Health", "Coin", "Speed", "Armor", "Damage"
         public string ItemType { get; set; } = "";
 
         // Optional override. Leave blank to use defaults from code.

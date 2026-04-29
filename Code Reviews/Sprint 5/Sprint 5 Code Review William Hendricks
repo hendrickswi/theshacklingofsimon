@@ -1,0 +1,28 @@
+Author: William Hendricks (hendrickswi)
+Date: 04/27/2026
+Sprint 5
+File(s) being reviewed: FlyingEnemy.cs, AxisEnemy.cs, SpawnerEnemy.cs
+Author of file(s): Ethan Chitturi (CoolestToDoIt)
+
+Comments: As I mentioned in my last code review, the enemy behavior (strategy pattern) 
+design is super modular and reusable! I also think the usage of our ITargetProvider and 
+IPathfindingService interfaces to implement pathfinding for enemies is great! And, the
+usage of enemy configs to help separate hardcoded stats from the enemy type
+classes is also great!
+
+However, I believe there are few things that could be improved:
+
+  1) Anti-pattern in FlyingEnemy.cs and AxisEnemy.cs: string comparisons to determine enemy
+behaviors. This is highly unmaintainable if the project grows in size. You have to edit these
+classes everytime you want to add/remove an enemy.
+
+  2) Tight coupling in SpawnerEnemy.cs: In the method SpawnerEnemy.RegisterAttack(), you are
+hard-coding that any SpawnerEnemy should spawn a SpiderEnemy. This is also highly unmaintainable.
+You have to change this anytime you want to add/remove an enemy.
+
+Suggested Changes:
+
+  1) Add respective variables to the config object you use in all of the classes.
+Something like a FleesFromPlayer boolean and a PatrolAxis enum.
+
+  2) Use some sort of factory?

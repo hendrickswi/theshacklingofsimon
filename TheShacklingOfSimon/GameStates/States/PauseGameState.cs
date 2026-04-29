@@ -107,13 +107,11 @@ public class PauseGameState : IGameState
         };
         _inputManager.LoadControls(profile, actionToCommandMap);
         
-        MediaPlayer.Pause();
         SoundManager.Instance.StopAllSFX();
     }
 
     public void Exit()
     {
-        MediaPlayer.Resume();
     }
 
     public void Update(GameTime delta)

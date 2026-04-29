@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Gamepad;
 using TheShacklingOfSimon.Input.Keyboard;
@@ -20,7 +21,7 @@ public class RebindingGameState : IGameState
     private readonly InputManager _inputManager;
     private readonly GraphicsDevice _graphicsDevice;
     private readonly InputSchema _targetHardware;
-    private readonly PlayerAction _actionToBeRebound;
+    
     private readonly Action<KeyboardButton?> _onKeyboardRebindComplete;
     private readonly Action<GamepadButton?> _onGamepadRebindComplete;
 
@@ -28,9 +29,9 @@ public class RebindingGameState : IGameState
     private readonly ISprite _promptTextSprite;
     private readonly ISprite _actionTextSprite;
     
-    // Keeping these not readonly in case we want to move the positions
-    private Vector2 _promptTextPos;
-    private Vector2 _actionTextPos;
+    private readonly Vector2 _promptTextPos;
+    private readonly Vector2 _actionTextPos;
+    private readonly Rectangle _backgroundBounds;
     
     public RebindingGameState(
         GameStateManager stateManager, 
@@ -46,7 +47,6 @@ public class RebindingGameState : IGameState
         _inputManager = inputManager;
         _graphicsDevice = graphicsDevice;
         _targetHardware = targetHardware;
-        _actionToBeRebound = actionToBeRebound;
         _onKeyboardRebindComplete = onKeyboardRebindComplete;
         _onGamepadRebindComplete = onGamepadRebindComplete;
 
@@ -59,16 +59,24 @@ public class RebindingGameState : IGameState
         
         // Position calculations
         Rectangle screen = _graphicsDevice.Viewport.Bounds;
+        
+        _backgroundBounds = new Rectangle(
+            (int)(0.25f * screen.Width), 
+            (int)(0.25f * screen.Height), 
+            (int)(0.5f * screen.Width), 
+            (int)(0.5f * screen.Height)
+        );
+        
         Vector2 promptTextSize = _promptTextSprite.GetDimensions();
         Vector2 actionTextSize = _actionTextSprite.GetDimensions();
 
         _promptTextPos = new Vector2(
             (screen.Width - promptTextSize.X) * 0.5f,
-            (screen.Height - promptTextSize.Y) * 0.5f
+            (screen.Height - promptTextSize.Y) * 0.375f
         );
         _actionTextPos = new Vector2(
             (screen.Width - actionTextSize.X) * 0.5f,
-            (screen.Height - actionTextSize.Y) * 0.5f + 40f
+            (screen.Height - actionTextSize.Y) * 0.5f
         );
     }
 
@@ -137,7 +145,6 @@ public class RebindingGameState : IGameState
             }
         }
         
-        
         _backgroundSprite.Update(delta);
         _promptTextSprite.Update(delta);
         _actionTextSprite.Update(delta);
@@ -145,21 +152,8 @@ public class RebindingGameState : IGameState
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        Rectangle screen = _graphicsDevice.Viewport.Bounds;
-        _backgroundSprite.Draw(
-            spriteBatch, 
-            new Rectangle(
-                (int)0.25f * screen.Width, 
-                (int)0.25f * screen.Height, 
-                (int)0.5f * screen.Width, 
-                (int)0.5f * screen.Height
-            ), 
-            Color.White
-        );
-        
+        _backgroundSprite.Draw(spriteBatch, _backgroundBounds, Color.White);
         _promptTextSprite.Draw(spriteBatch, _promptTextPos, Color.White);
         _actionTextSprite.Draw(spriteBatch, _actionTextPos, Color.White);
     }
-    
-    
 }

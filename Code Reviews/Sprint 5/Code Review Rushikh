@@ -1,0 +1,28 @@
+Author: Rushikh Mungara 
+Date: 04/13/26 
+Sprint 5 File(s) being reviewed: GridPathfindingService.cs 
+Author of file(s): Akrem
+Comments: Overall, the pathfinding service is exceptionally well-structured and versatile! I am particularly impressed 
+by the specialized methods like "TryGetNextWaypointAwayFromThreat" and "TryGetNextWaypointToAlignmentWithTarget." 
+These have made implementing diverse AI behaviors like cowardice or kiting much easier.
+Using A* for the standard pathing and BFS for the reachable map shows a great understanding of algorithm efficiency.
+
+However, there are few things that could be improved:
+Performance Concern: In "TryGetNextWaypointAwayFromThreat" and "TryGetNextWaypointToAlignmentWithTarget," you are 
+calling "BuildReachableMap" every time the method is invoked. This performs a full flood-fill of the room tiles. 
+If multiple enemies call this every frame, it will cause significant CPU spikes.
+
+Logic Constraint: "GetNeighbors" is strictly limited to cardinal directions. While this fits a grid-based game, it prevents any diagonal pathfinding. 
+If an enemy has space to move diagonally, they will still move in a "staircase" pattern, which can look unnatural.
+
+Potential Bug in Line of Sight: "HasClearCardinalLineOfSight" specifically checks "tile.BlocksProjectiles." If a tile blocks movement (like a pit or a low fence)
+but allows projectiles to pass, this service might tell a melee enemy it has a clear path to "align" with a target even though it cannot physically walk there.
+
+Suggested Changes:
+Consider caching the Reachable Map for a single frame. Since the room layout (walls/pits) rarely changes mid-frame, you could generate 
+the map once and let all enemies querying the service that frame share the results.
+Add an optional boolean parameter to the service or the method to "allowDiagonal" movement. If true, include the four diagonal offsets in the 
+neighbors' check to allow for smoother, more direct paths.
+Refactor "HasClearCardinalLineOfSight" to take a collision flag or delegate. This would allow the caller to specify if they are checking for projectile LOS or 
+movement LOS, making the method more reusable for different enemy types.
+In "FindNextStep," if the goal is unreachable, it returns "start." It might be better to return a "PathNotFound" status or a null value so the calling enemy knows to transition to an Idle state rather than trying to move toward its own current position.

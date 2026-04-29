@@ -1,0 +1,17 @@
+{
+	"Sprites": [
+		{
+			"Name": "images/chestplate",
+			"Frames": [
+				{
+					"X": 0,
+					"Y": 0,
+					"W": 14,
+					"H": 13
+				}
+			]
+			
+
+		}
+	]
+}

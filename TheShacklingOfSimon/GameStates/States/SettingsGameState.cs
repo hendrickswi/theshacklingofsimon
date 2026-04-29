@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using TheShacklingOfSimon.Commands;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Profiles;
@@ -107,6 +108,7 @@ public class SettingsGameState : IGameState
             { PlayerAction.Pause, new GenericActionCommand(_stateManager.RemoveState) }
         };
         _inputManager.LoadControls(profile, actionToCommandMap);
+        MediaPlayer.Pause();
     }
 
     public void Exit()
