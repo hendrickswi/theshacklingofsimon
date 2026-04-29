@@ -16,20 +16,13 @@ namespace TheShacklingOfSimon.Controllers.Keyboard;
 public interface IKeyboardService
 {
     /// <summary>
-    /// Updates the internal state of the keyboard service.
-    /// Allows tracking previous and current states of all keys.
-    /// </summary>
-    void Update();
-
-    /// <summary>
     /// Retrieves the current state of a specified <c>KeyboardButton</c> enum.
     /// </summary>
     /// <param name="button">The <c>KeyboardButton</c> enum to be checked.</param>
     /// <returns>
-    /// The current <c>InputState</c> enum representing the current state of
-    /// the specified keyboard button.
+    /// <c>true</c> if the button is currently pressed; otherwise, <c>false</c>.
     /// </returns>
-    InputState GetKeyState(KeyboardButton button);
+    bool GetKeyState(KeyboardButton button);
 
     /// <summary>
     /// Retrieves a collection of <c>KeyboardButton</c> enums which represent the current keyboard buttons

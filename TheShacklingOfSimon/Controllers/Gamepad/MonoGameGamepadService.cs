@@ -12,8 +12,6 @@ namespace TheShacklingOfSimon.Controllers.Gamepad;
 
 public class MonoGameGamepadService : IGamepadService
 {
-    private GamePadState _prevState;
-    private GamePadState _currentState;
     private readonly PlayerIndex _playerIndex;
     
     private readonly Dictionary<GamepadButton, Buttons> _buttonMap = new Dictionary<GamepadButton, Buttons>
@@ -50,12 +48,6 @@ public class MonoGameGamepadService : IGamepadService
     }
     
     public bool IsConnected => GamePad.GetState(_playerIndex).IsConnected;
-
-    public void Update()
-    {
-        _prevState = _currentState;
-        _currentState = GamePad.GetState(_playerIndex);
-    }
     
     public Vector2 GetLeftJoystickPosition()
     {
@@ -69,26 +61,21 @@ public class MonoGameGamepadService : IGamepadService
         return new Vector2(state.ThumbSticks.Right.X, state.ThumbSticks.Right.Y);
     }
     
-    public InputState GetButtonState(GamepadButton button)
+    public bool GetButtonState(GamepadButton button)
     {
-        if (!_buttonMap.TryGetValue(button, out var xnaButton)) return InputState.Released;
-        
-        bool isDownNow = _currentState.IsButtonDown(xnaButton);
-        bool wasDown = _prevState.IsButtonDown(xnaButton);
-
-        if (isDownNow && !wasDown) return InputState.JustPressed;
-        else if (isDownNow && wasDown) return InputState.Pressed;
-        else return InputState.Released;
+        if (!_buttonMap.TryGetValue(button, out var xnaButton)) return false;
+        return GamePad.GetState(_playerIndex).IsButtonDown(xnaButton);
     }
 
     public IEnumerable<GamepadButton> GetPressedButtons()
     {
+        GamePadState state = GamePad.GetState(_playerIndex);
         var buttons = new List<GamepadButton>();
         if (!IsConnected) return buttons;
 
         foreach (var pair in _buttonMap)
         {
-            if (_currentState.IsButtonDown(pair.Value))
+            if (state.IsButtonDown(pair.Value))
             {
                 buttons.Add(pair.Key);
             }

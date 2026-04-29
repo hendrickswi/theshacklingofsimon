@@ -11,84 +11,77 @@ using TheShacklingOfSimon.Input.Keyboard;
 
 namespace TheShacklingOfSimon.Controllers.Keyboard;
 
-public class KeyboardController : IController<KeyboardInput>
+public class KeyboardController : IKeyboardController
 {
     private readonly IKeyboardService _keyboardService;
     private readonly Dictionary<KeyboardInput, ICommand> _map;
-    private readonly Dictionary<KeyboardButton, InputState> _previousStates;
+    
+    // State logic
+    private HashSet<KeyboardButton> _prevPressedKeys;
+    private HashSet<KeyboardButton> _currentPressedKeys;
+    
+    public event Action<InputSchema> OnInputDetected;
 
     public KeyboardController(IKeyboardService service)
     {
         _keyboardService = service;
         _map = new Dictionary<KeyboardInput, ICommand>();
-        _previousStates = new Dictionary<KeyboardButton, InputState>();
+        _prevPressedKeys = new HashSet<KeyboardButton>();
+        _currentPressedKeys = new HashSet<KeyboardButton>();
     }
 
     public void RegisterCommand(KeyboardInput input, ICommand command)
     {
-        bool success = _map.TryAdd(input, command);
-        if (success && !_previousStates.ContainsKey(input.Button))
-        {
-            _previousStates.Add(input.Button, InputState.Released);
-        }
+        _map.TryAdd(input, command);
     }
 
     public void UnregisterCommand(KeyboardInput input)
     {
-        bool success = _map.Remove(input);
-        if (!success)
-        {
-            return;
-        }
-
-        bool buttonStillUsed = _map.Keys.Any(existingInput => existingInput.Button.Equals(input.Button));
-        if (!buttonStillUsed)
-        {
-            _previousStates.Remove(input.Button);
-        }
+        _map.Remove(input);
     }
 
     public void ClearCommands()
     {
         _map.Clear();
-        _previousStates.Clear();
     }
 
     public void Update()
     {
-        // we use a snapshot here so commands can safely change bindings during update.
-        KeyValuePair<KeyboardInput, ICommand>[] bindings = _map.ToArray();
+        _prevPressedKeys = _currentPressedKeys;
+        _currentPressedKeys = new HashSet<KeyboardButton>(_keyboardService.GetPressedKeys());
 
-        foreach (KeyValuePair<KeyboardInput, ICommand> entry in bindings)
+        // Do _map.ToList() to prevent the _map being modified during iteration (from the command execution)
+        foreach (var pair in _map.ToList())
         {
-            KeyboardInput input = entry.Key;
-            ICommand command = entry.Value;
+            KeyboardInput input = pair.Key;
+            ICommand command = pair.Value;
 
-            if (!_previousStates.ContainsKey(input.Button))
-            {
-                _previousStates[input.Button] = InputState.Released;
-            }
-
-            InputState currentState = _keyboardService.GetKeyState(input.Button);
-            InputState previousState = _previousStates[input.Button];
-
-            bool isJustPressed =
-                currentState == InputState.Pressed &&
-                previousState == InputState.Released;
-
-            if (
-                (input.State == InputState.Pressed && currentState == InputState.Pressed) ||
-                (input.State == InputState.Released && currentState == InputState.Released) ||
-                (input.State == InputState.JustPressed && isJustPressed)
-            )
+            if (GetKeyState(input.Button) == input.State)
             {
                 command.Execute();
                 OnInputDetected?.Invoke(InputSchema.Keyboard);
             }
-
-            _previousStates[input.Button] = currentState;
         }
     }
-    
-    public event Action<InputSchema> OnInputDetected;
+
+    public IEnumerable<KeyboardButton> GetPressedKeys()
+    {
+        return _currentPressedKeys;
+    }
+
+    public IEnumerable<KeyboardButton> GetJustPressedKeys()
+    {
+        return _currentPressedKeys.Except(_prevPressedKeys);
+    }
+
+    public InputState GetKeyState(KeyboardButton key)
+    {
+        bool isDownNow = _currentPressedKeys.Contains(key);
+        bool wasDown = _prevPressedKeys.Contains(key);
+
+        if (isDownNow && !wasDown) return InputState.JustPressed;
+        else if (isDownNow && wasDown) return InputState.Pressed;
+        else if (!isDownNow && wasDown) return InputState.JustReleased;
+        else return InputState.Released;
+    }
 }

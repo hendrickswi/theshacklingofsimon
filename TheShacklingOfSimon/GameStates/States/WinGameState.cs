@@ -82,6 +82,7 @@ public class WinGameState : IGameState
         InputProfile profile = InputProfileManager.LoadProfile();
         Dictionary<PlayerAction, ICommand> actionToCommandMap = new Dictionary<PlayerAction, ICommand>
         {
+            { PlayerAction.MenuConfirm, new GenericActionCommand(_restartGame) },
             { PlayerAction.Reset, new GenericActionCommand(_restartGame) },
             { PlayerAction.Quit, new GenericActionCommand(_quitGame) },
         };

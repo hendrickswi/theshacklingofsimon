@@ -24,8 +24,8 @@ public class InputManager
     public Vector2 VirtualCursorPosition { get; set; }
 
     private readonly GraphicsDevice _graphicsDevice;
-    private readonly IController<KeyboardInput> _keyboardController;
-    private readonly IController<MouseInput> _mouseController;
+    private readonly IKeyboardController _keyboardController;
+    private readonly IMouseController _mouseController;
     private readonly IGamepadController _gamepadController;
 
     private readonly IKeyboardService _keyboardService;
@@ -53,9 +53,6 @@ public class InputManager
 
     public void Update()
     {
-        _keyboardService.Update();
-        _mouseService.Update();
-        _gamepadService.Update();
         _keyboardController.Update();
         _mouseController.Update();
         _gamepadController.Update();
@@ -160,7 +157,7 @@ public class InputManager
 
         foreach (var key in keys)
         {
-            if (_keyboardService.GetKeyState(key) == InputState.JustPressed)
+            if (_keyboardController.GetKeyState(key) == InputState.JustPressed)
             {
                 return key;
             }
@@ -175,7 +172,7 @@ public class InputManager
         
         foreach (var button in pressedButtons)
         {
-            if (_gamepadService.GetButtonState(button) == InputState.JustPressed)
+            if (_gamepadController.GetButtonState(button) == InputState.JustPressed)
             {
                 return button;
             }
@@ -196,7 +193,7 @@ public class InputManager
         {
             foreach (var key in keys)
             {
-                if (_keyboardService.GetKeyState(key.Button) == InputState.Pressed)
+                if (_keyboardController.GetKeyState(key.Button) == InputState.Pressed)
                 {
                     return true;
                 }

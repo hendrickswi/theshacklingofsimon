@@ -12,22 +12,21 @@ using TheShacklingOfSimon.Input.Mouse;
 
 namespace TheShacklingOfSimon.Controllers.Mouse;
 
-public class MouseController : IController<MouseInput>
+public class MouseController : IMouseController
 {
     private readonly IMouseService _mouseService;
     private readonly Dictionary<MouseInput, ICommand> _map;
-    private readonly Dictionary<MouseButton, InputState> _prevStates;
+
+    // State logic
+    private HashSet<MouseButton> _prevPressedButtons;
+    private HashSet<MouseButton> _currentPressedButtons;
 
     public MouseController(IMouseService service)
     {
         _mouseService = service;
-        _prevStates = new Dictionary<MouseButton, InputState>();
-        foreach (MouseButton btn in Enum.GetValues(typeof(MouseButton)))
-        {
-            _prevStates.Add(btn, InputState.Released);
-        }
-
         _map = new Dictionary<MouseInput, ICommand>();
+        _prevPressedButtons = new HashSet<MouseButton>();
+        _currentPressedButtons = new HashSet<MouseButton>();
     }
 
     public void RegisterCommand(MouseInput input, ICommand cmd)
@@ -47,44 +46,44 @@ public class MouseController : IController<MouseInput>
 
     public void Update()
     {
+        _prevPressedButtons = _currentPressedButtons;
+        _currentPressedButtons = new HashSet<MouseButton>(_mouseService.GetPressedButtons());
+        
         Vector2 pos = _mouseService.GetPosition();
 
-        // we use a snapshot here for the same reason as keyboard. (safely change binds)
-        KeyValuePair<MouseInput, ICommand>[] bindings = _map.ToArray();
-
-        foreach (KeyValuePair<MouseInput, ICommand> entry in bindings)
+        // Do _map.ToList() to prevent the _map being modified during iteration (from the command execution)
+        foreach (var pair in _map.ToList())
         {
-            MouseInput inputDefinition = entry.Key;
-            ICommand command = entry.Value;
+            MouseInput input = pair.Key;
+            ICommand command = pair.Value;
 
-            if (!inputDefinition.Region.ContainsPoint(pos.X, pos.Y))
-            {
-                continue;
-            }
-
-            InputState currentState = _mouseService.GetButtonState(inputDefinition.Button);
-            InputState previousState = _prevStates[inputDefinition.Button];
-
-            bool isJustPressed =
-                currentState == InputState.Pressed &&
-                previousState == InputState.Released;
-
-            if (
-                (inputDefinition.State == InputState.Pressed && currentState == InputState.Pressed) ||
-                (inputDefinition.State == InputState.Released && currentState == InputState.Released) ||
-                (inputDefinition.State == InputState.JustPressed && isJustPressed)
-            )
+            if (GetButtonState(input.Button) == input.State && input.Region.ContainsPoint(pos.X, pos.Y))
             {
                 command.Execute();
                 OnInputDetected?.Invoke(InputSchema.Mouse);
             }
         }
-
-        // Update the previous states for the next Update() call
-        foreach (MouseButton btn in Enum.GetValues(typeof(MouseButton)))
-        {
-            _prevStates[btn] = _mouseService.GetButtonState(btn);
-        }
+    }
+    
+    public IEnumerable<MouseButton> GetPressedButtons()
+    {
+        return _currentPressedButtons;
+    }
+    
+    public IEnumerable<MouseButton> GetJustPressedButtons()
+    {
+        return _currentPressedButtons.Except(_prevPressedButtons);
+    }
+    
+    public InputState GetButtonState(MouseButton button)
+    {
+        bool isDownNow = _currentPressedButtons.Contains(button);
+        bool wasDown = _prevPressedButtons.Contains(button);
+        
+        if (isDownNow && !wasDown) return InputState.JustPressed;
+        else if (isDownNow && wasDown) return InputState.Pressed;
+        else if (!isDownNow && wasDown) return InputState.JustReleased;
+        else return InputState.Released;
     }
     
     public event Action<InputSchema> OnInputDetected;

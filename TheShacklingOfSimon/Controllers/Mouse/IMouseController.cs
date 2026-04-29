@@ -1,17 +1,12 @@
-﻿#region
-
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Mouse;
 
-#endregion
-
 namespace TheShacklingOfSimon.Controllers.Mouse;
 
-public interface IMouseService
+public interface IMouseController : IController<MouseInput>
 {
-    Vector2 GetPosition();
-    bool GetButtonState(MouseButton button);
     IEnumerable<MouseButton> GetPressedButtons();
+    IEnumerable<MouseButton> GetJustPressedButtons();
+    InputState GetButtonState(MouseButton button);
 }

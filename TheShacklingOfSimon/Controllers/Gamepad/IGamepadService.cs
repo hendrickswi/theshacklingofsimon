@@ -16,12 +16,6 @@ public interface IGamepadService
     /// </summary>
     /// <returns><c>true</c> if the gamepad is connected, <c>false</c> otherwise.</returns>
     bool IsConnected { get; }
-    
-    /// <summary>
-    /// Updates the internal state of the gamepad service. Allows tracking of
-    /// previous and current states of all buttons and joysticks.
-    /// </summary>
-    void Update();
 
     /// <summary>
     /// Retrieves the current position of the left joystick as a 2D vector,
@@ -48,9 +42,10 @@ public interface IGamepadService
     /// </summary>
     /// <param name="button">The <c>GamepadButton</c> enum representing the gamepad button
     /// whose input state is to be retrieved.</param>
-    /// <returns>The current input state, represented as an <c>InputState</c> enum,
-    /// of the specified <c>GamepadButton</c>.</returns>
-    InputState GetButtonState(GamepadButton button);
+    /// <returns>
+    /// <c>true</c> if the button is currently pressed; otherwise, <c>false</c>.
+    /// </returns>
+    bool GetButtonState(GamepadButton button);
 
     /// <summary>
     /// Retrieves a collection of <c>GamepadButton</c> enums which represent the current gamepad buttons

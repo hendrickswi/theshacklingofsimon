@@ -1,7 +1,9 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using TheShacklingOfSimon.Input;
+using TheShacklingOfSimon.Input.Gamepad;
 
 #endregion
 
@@ -12,4 +14,8 @@ public interface IGamepadController : IController<GamepadButtonInput>, IControll
     new void Update();
     new void ClearCommands();
     new event Action<InputSchema> OnInputDetected;
+    
+    IEnumerable<GamepadButton> GetPressedButtons();
+    IEnumerable<GamepadButton> GetJustPressedButtons();
+    InputState GetButtonState(GamepadButton button);
 }

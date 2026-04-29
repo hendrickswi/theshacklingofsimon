@@ -18,22 +18,23 @@ public class GamepadController : IGamepadController
     private readonly Dictionary<GamepadButtonInput, ICommand> _buttonMap;
     private readonly Dictionary<GamepadJoystickInput, ICommand> _joystickMap;
 
-    private readonly Dictionary<GamepadButton, InputState> _previousButtonStates;
-    private readonly Dictionary<GamepadJoystickInput, bool> _previousJoystickStates;
+    // State logic
+    private HashSet<GamepadButton> _previousPressedButtons;
+    private HashSet<GamepadButton> _currentPressedButtons;
+    private Vector2 _prevLeftJoystickPos;
+    private Vector2 _prevRightJoystickPos;
+    private Vector2 _currentLeftJoystickPos;
+    private Vector2 _currentRightJoystickPos;
 
+    public event Action<InputSchema> OnInputDetected;
+    
     public GamepadController(IGamepadService gamepadService)
     {
         _gamepadService = gamepadService;
         _buttonMap = new Dictionary<GamepadButtonInput, ICommand>();
         _joystickMap = new Dictionary<GamepadJoystickInput, ICommand>();
-
-        _previousButtonStates = new Dictionary<GamepadButton, InputState>();
-        foreach (GamepadButton btn in Enum.GetValues(typeof(GamepadButton)))
-        {
-            _previousButtonStates.Add(btn, InputState.Released);
-        }
-
-        _previousJoystickStates = new Dictionary<GamepadJoystickInput, bool>();
+        _previousPressedButtons = new HashSet<GamepadButton>();
+        _currentPressedButtons = new HashSet<GamepadButton>();
     }
 
     public void RegisterCommand(GamepadButtonInput input, ICommand cmd)
@@ -44,10 +45,6 @@ public class GamepadController : IGamepadController
     public void RegisterCommand(GamepadJoystickInput input, ICommand cmd)
     {
         bool success = _joystickMap.TryAdd(input, cmd);
-        if (success)
-        {
-            _previousJoystickStates[input] = false;
-        }
     }
 
     public void UnregisterCommand(GamepadButtonInput input)
@@ -58,90 +55,86 @@ public class GamepadController : IGamepadController
     public void UnregisterCommand(GamepadJoystickInput input)
     {
         _joystickMap.Remove(input);
-        _previousJoystickStates.Remove(input);
     }
 
     public void ClearCommands()
     {
         _buttonMap.Clear();
         _joystickMap.Clear();
-        _previousJoystickStates.Clear();
     }
 
     public void Update()
     {
-        // we use snapshots so bindings can safely change while commands run.
-        KeyValuePair<GamepadButtonInput, ICommand>[] buttonBindings = _buttonMap.ToArray();
+        if (!_gamepadService.IsConnected) return;
+        
+        _previousPressedButtons = _currentPressedButtons;
+        _currentPressedButtons = new HashSet<GamepadButton>(_gamepadService.GetPressedButtons());
+        _prevLeftJoystickPos = _currentLeftJoystickPos;
+        _prevRightJoystickPos = _currentRightJoystickPos;
+        _currentLeftJoystickPos = _gamepadService.GetLeftJoystickPosition();
+        _currentRightJoystickPos = _gamepadService.GetRightJoystickPosition();
 
-        foreach (var entry in buttonBindings)
+        bool buttonInputDetected = false;
+        bool joystickInputDetected = false;
+        
+        // Do _buttonMap.ToList() to prevent the _buttonMap being modified during iteration (from the command execution)
+        foreach (var pair in _buttonMap.ToList())
         {
-            GamepadButtonInput input = entry.Key;
-            ICommand command = entry.Value;
-
-            InputState currentState = _gamepadService.GetButtonState(input.Button);
-            InputState previousState = _previousButtonStates[input.Button];
-
-            bool isJustPressed =
-                currentState == InputState.Pressed &&
-                previousState == InputState.Released;
-
-            if (
-                (input.State == InputState.Pressed && currentState == InputState.Pressed) ||
-                (input.State == InputState.Released && currentState == InputState.Released) ||
-                (input.State == InputState.JustPressed && isJustPressed)
-            )
+            if (GetButtonState(pair.Key.Button) == pair.Key.State)
             {
-                command.Execute();
-                OnInputDetected?.Invoke(InputSchema.GamepadButton);
+                pair.Value.Execute();
+                buttonInputDetected = true;
             }
-
-            _previousButtonStates[input.Button] = currentState;
         }
 
-        KeyValuePair<GamepadJoystickInput, ICommand>[] joystickBindings = _joystickMap.ToArray();
-
-        foreach (var entry in joystickBindings)
+        // Same as above
+        foreach (var pair in _joystickMap.ToList())
         {
-            GamepadJoystickInput input = entry.Key;
-            ICommand command = entry.Value;
-
-            Vector2 rawInput;
-            switch (input.Stick)
+            if (GetJoystickState(pair.Key) == pair.Key.State)
             {
-                case GamepadStick.Left:
-                    rawInput = _gamepadService.GetLeftJoystickPosition();
-                    break;
-                case GamepadStick.Right:
-                    rawInput = _gamepadService.GetRightJoystickPosition();
-                    break;
-                default:
-                    rawInput = Vector2.Zero;
-                    break;
+                pair.Value.Execute();
+                joystickInputDetected = true;
             }
-
-            if (!_previousJoystickStates.ContainsKey(input))
-            {
-                _previousJoystickStates[input] = false;
-            }
-
-            bool isInRegion = input.Region.Contains(rawInput);
-            bool wasInRegion = _previousJoystickStates[input];
-            bool isJustPressed = isInRegion && !wasInRegion;
-            bool isJustReleased = !isInRegion && wasInRegion;
-
-            if (
-                (input.State == InputState.Pressed && isInRegion) ||
-                (input.State == InputState.Released && isJustReleased) ||
-                (input.State == InputState.JustPressed && isJustPressed)
-            )
-            {
-                command.Execute();
-                OnInputDetected?.Invoke(InputSchema.GamepadJoystick);
-            }
-
-            _previousJoystickStates[input] = isInRegion;
         }
+        
+        if (joystickInputDetected) OnInputDetected?.Invoke(InputSchema.GamepadJoystick);
+        else if (buttonInputDetected) OnInputDetected?.Invoke(InputSchema.GamepadButton);
+    }
+    
+    public IEnumerable<GamepadButton> GetPressedButtons()
+    {
+        return _currentPressedButtons;
+    }
+    
+    public IEnumerable<GamepadButton> GetJustPressedButtons()
+    {
+        return _currentPressedButtons.Except(_previousPressedButtons);
     }
 
-    public event Action<InputSchema> OnInputDetected;
+    public InputState GetButtonState(GamepadButton button)
+    {
+        bool isDownNow = _currentPressedButtons.Contains(button);
+        bool wasDown = _previousPressedButtons.Contains(button);
+
+        return DetermineState(isDownNow, wasDown);
+    }
+
+    public InputState GetJoystickState(GamepadJoystickInput input)
+    {
+        Vector2 currentPos = (input.Stick == GamepadStick.Left) ? _currentLeftJoystickPos : _currentRightJoystickPos;
+        Vector2 prevPos = (input.Stick == GamepadStick.Left) ? _prevLeftJoystickPos : _prevRightJoystickPos;
+
+        bool isDownNow = input.Region.Contains(currentPos);
+        bool wasDown = input.Region.Contains(prevPos);
+        
+        return DetermineState(isDownNow, wasDown);
+    }
+
+    private InputState DetermineState(bool isDownNow, bool wasDown)
+    {
+        if (isDownNow && !wasDown) return InputState.JustPressed;
+        else if (isDownNow && wasDown) return InputState.Pressed;
+        else if (!isDownNow && wasDown) return InputState.JustReleased;
+        else return InputState.Released;
+    }
 }

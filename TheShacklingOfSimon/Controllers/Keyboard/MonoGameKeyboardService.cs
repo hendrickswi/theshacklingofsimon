@@ -11,9 +11,6 @@ namespace TheShacklingOfSimon.Controllers.Keyboard;
 
 public class MonoGameKeyboardService : IKeyboardService
 {
-    private KeyboardState _prevState;
-    private KeyboardState _currentState;
-    
     private static readonly Dictionary<KeyboardButton, Keys> _keyMap = new Dictionary<KeyboardButton, Keys>
     {
         { KeyboardButton.None, Keys.None },
@@ -289,29 +286,16 @@ public class MonoGameKeyboardService : IKeyboardService
         { Keys.Zoom, KeyboardButton.Zoom },
         { Keys.Pa1, KeyboardButton.Pa1 }
     };
-
-    public void Update()
-    {
-        _prevState = _currentState;
-        _currentState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
-    }
     
-    public InputState GetKeyState(KeyboardButton button)
+    public bool GetKeyState(KeyboardButton button)
     {
-        if (!_keyMap.TryGetValue(button, out var xnaKey)) return InputState.Released;
-        
-        bool isDownNow = _currentState.IsKeyDown(xnaKey);
-        bool wasDown = _prevState.IsKeyDown(xnaKey);
-
-        if (isDownNow && !wasDown) return InputState.JustPressed;
-        else if (isDownNow && wasDown) return InputState.Pressed;
-        else return InputState.Released;
-        
+        if (!_keyMap.TryGetValue(button, out var xnaKey)) return false;
+        return Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(xnaKey);
     }
 
     public IEnumerable<KeyboardButton> GetPressedKeys()
     {
-        Keys[] xnaKeys = _currentState.GetPressedKeys();
+        Keys[] xnaKeys = Microsoft.Xna.Framework.Input.Keyboard.GetState().GetPressedKeys();
         var pressedButtons = new List<KeyboardButton>();
 
         foreach (var xnaKey in xnaKeys)
