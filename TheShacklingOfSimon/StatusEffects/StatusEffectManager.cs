@@ -64,6 +64,7 @@ public class StatusEffectManager
     {
         if (newEffect == null) return;
         _activePermanentEffects.Add(newEffect);
+        newEffect.OnApply();
     }
 
     public void Update(GameTime delta)
