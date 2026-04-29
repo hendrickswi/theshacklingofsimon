@@ -367,18 +367,18 @@ public class Game1 : Game
 
     private void CreateGameStates()
     {
-        // string fogEffectPath = System.IO.Path.Combine(
-        //     AppContext.BaseDirectory,
-        //     "Content",
-        //     "Effects",
-        //     "FogOfWarEffect.xnb"
-        // );
+        string fogEffectPath = System.IO.Path.Combine(
+            AppContext.BaseDirectory,
+            "Content",
+            "Effects",
+            "FogOfWarEffect.xnb"
+        );
 
         // System.Diagnostics.Debug.WriteLine("Fog effect expected at: " + fogEffectPath);
         // System.Diagnostics.Debug.WriteLine("Fog effect exists: " + System.IO.File.Exists(fogEffectPath));
 
-        // Effect fogEffect = Content.Load<Effect>("Effects/FogOfWarEffect");
-        HUD = new HUD(_player, _roomManager, GraphicsDevice/*, fogEffect*/);
+        Effect fogEffect = Content.Load<Effect>("Effects/FogOfWarEffect");
+        HUD = new HUD(_player, _roomManager, GraphicsDevice, fogEffect);
 
         _gameStateManager = new GameStateManager();
         _gameStateManager.AddState(

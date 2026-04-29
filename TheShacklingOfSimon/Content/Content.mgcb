@@ -98,10 +98,10 @@
 /build:Cohort.png
 
 #begin Effects/FogOfWarEffect.fx
-#/importer:EffectImporter
-#/processor:EffectProcessor
-#/processorParam:DebugMode=Auto
-#/build:Effects/FogOfWarEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/FogOfWarEffect.fx
 
 #begin fonts/spritefont/Arial.spritefont
 /importer:FontDescriptionImporter
