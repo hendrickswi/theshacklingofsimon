@@ -124,17 +124,27 @@ public class GamepadController : IGamepadController
         Vector2 currentPos = (input.Stick == GamepadStick.Left) ? _currentLeftJoystickPos : _currentRightJoystickPos;
         Vector2 prevPos = (input.Stick == GamepadStick.Left) ? _prevLeftJoystickPos : _prevRightJoystickPos;
 
-        bool isDownNow = input.Region.Contains(currentPos);
-        bool wasDown = input.Region.Contains(prevPos);
+        bool isInRegionNow = input.Region.Contains(currentPos);
+        bool wasInRegion = input.Region.Contains(prevPos);
         
-        return DetermineState(isDownNow, wasDown);
+        return DetermineState(isInRegionNow, wasInRegion);
+    }
+    
+    public Vector2 GetLeftJoystickPosition()
+    {
+        return _currentLeftJoystickPos;
+    }
+    
+    public Vector2 GetRightJoystickPosition()
+    {
+        return _currentRightJoystickPos;
     }
 
-    private InputState DetermineState(bool isDownNow, bool wasDown)
+    private InputState DetermineState(bool prevState, bool currentState)
     {
-        if (isDownNow && !wasDown) return InputState.JustPressed;
-        else if (isDownNow && wasDown) return InputState.Pressed;
-        else if (!isDownNow && wasDown) return InputState.JustReleased;
+        if (currentState && !prevState) return InputState.JustPressed;
+        else if (currentState && prevState) return InputState.Pressed;
+        else if (!currentState && prevState) return InputState.JustReleased;
         else return InputState.Released;
     }
 }

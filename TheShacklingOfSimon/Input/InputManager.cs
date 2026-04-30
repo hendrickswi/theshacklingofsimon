@@ -1,18 +1,15 @@
 ﻿#region
 
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheShacklingOfSimon.Commands;
-using TheShacklingOfSimon.Controllers;
 using TheShacklingOfSimon.Controllers.Gamepad;
 using TheShacklingOfSimon.Controllers.Keyboard;
 using TheShacklingOfSimon.Controllers.Mouse;
 using TheShacklingOfSimon.Input.Gamepad;
 using TheShacklingOfSimon.Input.Keyboard;
 using TheShacklingOfSimon.Input.Profiles;
-using KeyboardInput = TheShacklingOfSimon.Controllers.Keyboard.KeyboardInput;
 
 #endregion
 
@@ -28,24 +25,17 @@ public class InputManager
     private readonly IMouseController _mouseController;
     private readonly IGamepadController _gamepadController;
 
-    private readonly IKeyboardService _keyboardService;
-    private readonly IMouseService _mouseService;
-    private readonly IGamepadService _gamepadService;
-
     private InputProfile _currentProfile;
     private Vector2 _prevMousePos;
 
     public InputManager(GraphicsDevice graphicsDevice)
     {
         _graphicsDevice = graphicsDevice;
-        _keyboardService = new MonoGameKeyboardService();
-        _mouseService = new MonoGameMouseService();
-        _gamepadService = new MonoGameGamepadService(PlayerIndex.One);
-        
-        _keyboardController = new KeyboardController(_keyboardService);
-        _mouseController = new MouseController(_mouseService);
-        _gamepadController = new GamepadController(_gamepadService);
-        
+
+        _keyboardController = new KeyboardController(new MonoGameKeyboardService());
+        _mouseController = new MouseController(new MonoGameMouseService());
+        _gamepadController = new GamepadController(new MonoGameGamepadService(PlayerIndex.One));
+
         _keyboardController.OnInputDetected += HandleInputDetected;
         _mouseController.OnInputDetected += HandleInputDetected;
         _gamepadController.OnInputDetected += HandleInputDetected;
@@ -56,30 +46,39 @@ public class InputManager
         _keyboardController.Update();
         _mouseController.Update();
         _gamepadController.Update();
-        
+
         // Mouse tracking
-        Vector2 currentMousePos = _mouseService.GetPosition();
+        Vector2 currentMousePos = _mouseController.GetPosition();
         if (currentMousePos != _prevMousePos)
         {
             VirtualCursorPosition = currentMousePos;
             _prevMousePos = currentMousePos;
-            ActiveSchema = InputSchema.Mouse; 
+            ActiveSchema = InputSchema.Mouse;
         }
 
         // Gamepad (joystick) tracking
-        Vector2 joystickPos = _gamepadService.GetLeftJoystickPosition();
-        if (joystickPos.LengthSquared() > 0.05f) // Simple deadzone check
+        Vector2 leftJoystickPos = _gamepadController.GetLeftJoystickPosition();
+        if (leftJoystickPos.LengthSquared() > 0.05f)
         {
-            joystickPos.Y *= -1; // Invert Y so "Up" moves the cursor up the screen
-            VirtualCursorPosition += joystickPos * 10.0f; // 10.0f is cursor speed
+            leftJoystickPos.Y *= -1; // Invert Y so "Up" moves the cursor up the screen
+            VirtualCursorPosition += leftJoystickPos * 10.0f; // 10.0f is cursor speed
             ActiveSchema = InputSchema.GamepadJoystick;
         }
-        
+
+        // Allow right joystick to move the cursor as well
+        Vector2 rightJoystickPos = _gamepadController.GetRightJoystickPosition();
+        if (rightJoystickPos.LengthSquared() > 0.05f)
+        {
+            rightJoystickPos.Y *= -1;
+            VirtualCursorPosition += rightJoystickPos * 10.0f;
+            ActiveSchema = InputSchema.GamepadJoystick;
+        }
+
         // Keyboard tracking
         if (_currentProfile != null)
         {
             Vector2 keyboardMovement = Vector2.Zero;
-        
+
             // Use the helper we discussed to check if the bound keys are held down
             if (IsKeyboardActionPressed(PlayerAction.MenuUp)) keyboardMovement.Y -= 1;
             if (IsKeyboardActionPressed(PlayerAction.MenuDown)) keyboardMovement.Y += 1;
@@ -125,6 +124,7 @@ public class InputManager
                     _keyboardController.RegisterCommand(input, command);
                 }
             }
+
             if (profile.GamepadButtonMap != null &&
                 profile.GamepadButtonMap.TryGetValue(action, out var gamepadButtonInputs))
             {
@@ -133,6 +133,7 @@ public class InputManager
                     _gamepadController.RegisterCommand(input, command);
                 }
             }
+
             if (profile.GamepadJoystickMap != null &&
                 profile.GamepadJoystickMap.TryGetValue(action, out var gamepadJoystickInputs))
             {
@@ -141,6 +142,7 @@ public class InputManager
                     _gamepadController.RegisterCommand(input, command);
                 }
             }
+
             if (profile.MouseMap != null && profile.MouseMap.TryGetValue(action, out var mouseInputs))
             {
                 foreach (var input in mouseInputs)
@@ -153,14 +155,12 @@ public class InputManager
 
     public KeyboardButton? GetAnyKeyboardKeyJustPressed()
     {
-        var keys = _keyboardService.GetPressedKeys();
+        var keys = _keyboardController.GetJustPressedKeys();
 
+        // Arbitrarily return the first key
         foreach (var key in keys)
         {
-            if (_keyboardController.GetKeyState(key) == InputState.JustPressed)
-            {
-                return key;
-            }
+            return key;
         }
 
         return null;
@@ -168,16 +168,14 @@ public class InputManager
 
     public GamepadButton? GetAnyGamepadButtonJustPressed()
     {
-        var pressedButtons = _gamepadService.GetPressedButtons();
-        
+        var pressedButtons = _gamepadController.GetJustPressedButtons();
+
+        // Arbitrarily return the first button
         foreach (var button in pressedButtons)
         {
-            if (_gamepadController.GetButtonState(button) == InputState.JustPressed)
-            {
-                return button;
-            }
+            return button;
         }
-        
+
         return null;
     }
 

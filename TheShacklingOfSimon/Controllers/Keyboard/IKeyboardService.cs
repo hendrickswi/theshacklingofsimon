@@ -1,7 +1,6 @@
 ﻿#region
 
 using System.Collections.Generic;
-using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Keyboard;
 
 #endregion

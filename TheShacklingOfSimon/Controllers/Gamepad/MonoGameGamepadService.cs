@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using TheShacklingOfSimon.Input;
 using TheShacklingOfSimon.Input.Gamepad;
 
 #endregion

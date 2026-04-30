@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
@@ -367,7 +368,7 @@ public class Game1 : Game
 
     private void CreateGameStates()
     {
-        string fogEffectPath = System.IO.Path.Combine(
+        string fogEffectPath = Path.Combine(
             AppContext.BaseDirectory,
             "Content",
             "Effects",

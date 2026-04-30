@@ -20,7 +20,11 @@ public class MouseController : IMouseController
     // State logic
     private HashSet<MouseButton> _prevPressedButtons;
     private HashSet<MouseButton> _currentPressedButtons;
+    private Vector2 _prevMousePos;
+    private Vector2 _currentMousePos;
 
+    public event Action<InputSchema> OnInputDetected;
+        
     public MouseController(IMouseService service)
     {
         _mouseService = service;
@@ -48,8 +52,8 @@ public class MouseController : IMouseController
     {
         _prevPressedButtons = _currentPressedButtons;
         _currentPressedButtons = new HashSet<MouseButton>(_mouseService.GetPressedButtons());
-        
-        Vector2 pos = _mouseService.GetPosition();
+        _prevMousePos = _currentMousePos;
+        _currentMousePos = _mouseService.GetPosition();
 
         // Do _map.ToList() to prevent the _map being modified during iteration (from the command execution)
         foreach (var pair in _map.ToList())
@@ -57,7 +61,9 @@ public class MouseController : IMouseController
             MouseInput input = pair.Key;
             ICommand command = pair.Value;
 
-            if (GetButtonState(input.Button) == input.State && input.Region.ContainsPoint(pos.X, pos.Y))
+            if (GetButtonState(input.Button) == input.State && 
+                input.Region.ContainsPoint(_currentMousePos.X, _currentMousePos.Y)
+                )
             {
                 command.Execute();
                 OnInputDetected?.Invoke(InputSchema.Mouse);
@@ -79,12 +85,28 @@ public class MouseController : IMouseController
     {
         bool isDownNow = _currentPressedButtons.Contains(button);
         bool wasDown = _prevPressedButtons.Contains(button);
+
+        return DetermineState(isDownNow, wasDown);
+    }
+
+    public InputState GetCursorState(MouseInput input)
+    {
+        bool isInRegionNow = input.Region.ContainsPoint(_currentMousePos.X, _currentMousePos.Y);
+        bool wasInRegion = input.Region.ContainsPoint(_prevMousePos.X, _prevMousePos.Y);
         
-        if (isDownNow && !wasDown) return InputState.JustPressed;
-        else if (isDownNow && wasDown) return InputState.Pressed;
-        else if (!isDownNow && wasDown) return InputState.JustReleased;
-        else return InputState.Released;
+        return DetermineState(isInRegionNow, wasInRegion);       
+    }
+
+    public Vector2 GetPosition()
+    {
+        return _currentMousePos;
     }
     
-    public event Action<InputSchema> OnInputDetected;
+    private InputState DetermineState(bool prevState, bool currentState)
+    {
+        if (currentState && !prevState) return InputState.JustPressed;
+        else if (currentState && prevState) return InputState.Pressed;
+        else if (!currentState && prevState) return InputState.JustReleased;
+        else return InputState.Released;
+    }
 }
